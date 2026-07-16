@@ -23,8 +23,7 @@ concurrency:
 jobs:
   build:
     runs-on: macos-15
-    # 120 min : buildReactNativeFromSource compile tout React Native depuis les sources.
-    timeout-minutes: 120
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
 
@@ -41,28 +40,6 @@ jobs:
         run: eas build --platform ios --profile production --local --non-interactive --output build/pentaguin.ipa
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-          # Conserver le répertoire de build pour pouvoir lire les logs xcodebuild en cas d'échec.
-          EAS_LOCAL_BUILD_SKIP_CLEANUP: "1"
-
-      # Diagnostic : rassembler les logs xcodebuild COMPLETS (le résumé fastlane
-      # masque la sortie du sous-build ExpoModulesJSI) pour les uploader entiers.
-      - name: Collect Xcode logs on failure
-        if: failure()
-        run: |
-          mkdir -p "$GITHUB_WORKSPACE/xcode-logs"
-          find /private/var/folders /var/folders -name "Pentaguin-*.log" 2>/dev/null \
-            -exec cp {} "$GITHUB_WORKSPACE/xcode-logs/" \; || true
-          # DerivedData du sous-build SPM d'ExpoModulesJSI (où atterrit sa vraie erreur).
-          find /private/var/folders /var/folders -path "*expo-modules-jsi/apple/.DerivedData*" -name "*.txt" 2>/dev/null \
-            -exec cp --parents {} "$GITHUB_WORKSPACE/xcode-logs/" \; 2>/dev/null || true
-          ls -la "$GITHUB_WORKSPACE/xcode-logs/" || true
-
-      - uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: xcode-logs
-          path: xcode-logs/
-          retention-days: 7
 
       - uses: actions/upload-artifact@v4
         with:
