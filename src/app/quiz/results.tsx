@@ -1,6 +1,6 @@
 import { Redirect, router, Stack } from 'expo-router';
 import { useEffect } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text } from 'react-native';
+import { Pressable, ScrollView, StyleSheet } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -45,7 +45,6 @@ export default function QuizResultsScreen() {
       />
       <ScrollView contentContainerStyle={styles.content}>
         <ThemedView style={styles.hero}>
-          <Text style={styles.mascot}>{happy ? '🐧🎉' : '🐧💪'}</Text>
           <ThemedText type="title" style={{ color: happy ? theme.success : theme.streak }}>
             {pct} %
           </ThemedText>
@@ -97,9 +96,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: Spacing.two,
     paddingVertical: Spacing.four,
-  },
-  mascot: {
-    fontSize: 48,
   },
   reviewCard: {
     borderRadius: Spacing.two,

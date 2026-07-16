@@ -24,9 +24,13 @@ export function LessonBlockView({ block, pack, onQuickcheckAnswered }: Props) {
 
     case 'callout': {
       const variantStyle = {
-        tip: { background: theme.accentSoft, border: theme.accent, icon: '💡' },
-        warning: { background: theme.dangerSoft, border: theme.danger, icon: '⚠️' },
-        exam: { background: theme.streakSoft, border: theme.streak, icon: '🎯' },
+        tip: { background: theme.accentSoft, border: theme.accent, label: t.lesson.calloutTip },
+        warning: {
+          background: theme.dangerSoft,
+          border: theme.danger,
+          label: t.lesson.calloutWarning,
+        },
+        exam: { background: theme.streakSoft, border: theme.streak, label: t.lesson.calloutExam },
       }[block.variant];
       return (
         <View
@@ -34,12 +38,10 @@ export function LessonBlockView({ block, pack, onQuickcheckAnswered }: Props) {
             styles.callout,
             { backgroundColor: variantStyle.background, borderLeftColor: variantStyle.border },
           ]}>
-          <ThemedText type="small">
-            {variantStyle.icon} {' '}
+          <ThemedText type="smallBold" style={{ color: variantStyle.border }}>
+            {variantStyle.label}
           </ThemedText>
-          <View style={styles.calloutBody}>
-            <MarkdownText md={block.md} />
-          </View>
+          <MarkdownText md={block.md} />
         </View>
       );
     }
@@ -65,7 +67,7 @@ export function LessonBlockView({ block, pack, onQuickcheckAnswered }: Props) {
       if (!question) return null;
       return (
         <View style={styles.quickcheck}>
-          <ThemedText type="smallBold">🧠 {t.lesson.quickcheck}</ThemedText>
+          <ThemedText type="smallBold">{t.lesson.quickcheck}</ThemedText>
           <QuestionCard
             key={question.id}
             question={question}
@@ -79,13 +81,10 @@ export function LessonBlockView({ block, pack, onQuickcheckAnswered }: Props) {
 
 const styles = StyleSheet.create({
   callout: {
-    flexDirection: 'row',
     borderLeftWidth: 3,
     borderRadius: Spacing.two,
     padding: Spacing.three,
-  },
-  calloutBody: {
-    flex: 1,
+    gap: Spacing.one,
   },
   keyterms: {
     gap: Spacing.two,

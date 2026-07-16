@@ -66,9 +66,7 @@ export default function DomainScreen() {
                   )}
                 </View>
                 <ThemedText type="small" themeColor="textSecondary">
-                  {unlocked
-                    ? `${item.estMinutes} ${t.domain.minutes}`
-                    : `🔒 ${t.lesson.locked}`}
+                  {unlocked ? `${item.estMinutes} ${t.domain.minutes}` : t.lesson.locked}
                 </ThemedText>
               </ThemedView>
             );
