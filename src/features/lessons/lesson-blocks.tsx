@@ -38,7 +38,7 @@ export function LessonBlockView({ block, pack, onQuickcheckAnswered }: Props) {
             styles.callout,
             { backgroundColor: variantStyle.background, borderLeftColor: variantStyle.border },
           ]}>
-          <ThemedText type="smallBold" style={{ color: variantStyle.border }}>
+          <ThemedText type="label" style={{ color: variantStyle.border }}>
             {variantStyle.label}
           </ThemedText>
           <MarkdownText md={block.md} />
@@ -48,10 +48,15 @@ export function LessonBlockView({ block, pack, onQuickcheckAnswered }: Props) {
 
     case 'keyterms':
       return (
-        <View style={styles.keyterms}>
-          {block.terms.map((item) => (
-            <View key={item.term} style={styles.keytermRow}>
-              <ThemedText type="smallBold" themeColor="accent">
+        <View style={[styles.keyterms, { borderColor: theme.border }]}>
+          {block.terms.map((item, index) => (
+            <View
+              key={item.term}
+              style={[
+                styles.keytermRow,
+                index > 0 && { borderTopWidth: 1, borderTopColor: theme.border },
+              ]}>
+              <ThemedText type="mono" themeColor="accent" style={styles.term}>
                 {item.term}
               </ThemedText>
               <ThemedText type="small" themeColor="textSecondary">
@@ -67,7 +72,7 @@ export function LessonBlockView({ block, pack, onQuickcheckAnswered }: Props) {
       if (!question) return null;
       return (
         <View style={styles.quickcheck}>
-          <ThemedText type="smallBold">{t.lesson.quickcheck}</ThemedText>
+          <ThemedText type="label">{t.lesson.quickcheck}</ThemedText>
           <QuestionCard
             key={question.id}
             question={question}
@@ -82,15 +87,20 @@ export function LessonBlockView({ block, pack, onQuickcheckAnswered }: Props) {
 const styles = StyleSheet.create({
   callout: {
     borderLeftWidth: 3,
-    borderRadius: Spacing.two,
+    borderRadius: 12,
     padding: Spacing.three,
-    gap: Spacing.one,
-  },
-  keyterms: {
     gap: Spacing.two,
   },
+  keyterms: {
+    borderWidth: 1,
+    borderRadius: 12,
+  },
   keytermRow: {
+    padding: Spacing.three,
     gap: Spacing.half,
+  },
+  term: {
+    fontSize: 14,
   },
   quickcheck: {
     gap: Spacing.two,

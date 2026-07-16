@@ -19,7 +19,7 @@ export function ExamQuestion({ question, selected, onToggle }: Props) {
 
   return (
     <View style={styles.container}>
-      <ThemedText>{question.stem}</ThemedText>
+      <ThemedText style={styles.stem}>{question.stem}</ThemedText>
       {question.type === 'multi' && (
         <ThemedText type="small" themeColor="textSecondary">
           {t.quiz.multiHint}
@@ -32,14 +32,17 @@ export function ExamQuestion({ question, selected, onToggle }: Props) {
             <Pressable
               key={choice.id}
               onPress={() => onToggle(choice.id)}
-              style={[
+              style={({ pressed }) => [
                 styles.choice,
                 {
                   backgroundColor: isSelected ? theme.backgroundSelected : theme.backgroundElement,
-                  borderColor: isSelected ? theme.accent : theme.backgroundElement,
+                  borderColor: isSelected ? theme.accent : theme.border,
                 },
+                pressed && styles.pressed,
               ]}>
-              <ThemedText type="smallBold" themeColor="textSecondary" style={styles.letter}>
+              <ThemedText
+                type="mono"
+                style={[styles.letter, { color: isSelected ? theme.accent : theme.textSecondary }]}>
                 {choice.id.toUpperCase()}
               </ThemedText>
               <ThemedText type="small" style={styles.text}>
@@ -57,20 +60,27 @@ const styles = StyleSheet.create({
   container: {
     gap: Spacing.three,
   },
+  stem: {
+    fontWeight: 500,
+  },
   choices: {
     gap: Spacing.two,
   },
   choice: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: Spacing.two,
-    borderRadius: Spacing.two,
+    gap: Spacing.three,
+    borderRadius: 12,
     borderWidth: 1,
     paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.three,
+    paddingVertical: 14,
+  },
+  pressed: {
+    opacity: 0.85,
   },
   letter: {
-    minWidth: 18,
+    fontSize: 13,
+    minWidth: 16,
   },
   text: {
     flex: 1,

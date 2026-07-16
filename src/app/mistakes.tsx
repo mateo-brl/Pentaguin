@@ -1,16 +1,17 @@
 import { router, Stack, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { FlatList, Pressable, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { Spacing } from '@/constants/theme';
 import { getDefaultPack } from '@/content';
 import { getWrongQuestionIds } from '@/db/repositories';
 import { useEntitlements } from '@/features/monetization';
 import { playableQuestions } from '@/features/quiz/select';
 import { useQuizSession } from '@/features/quiz/session';
-import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
 
 const pack = getDefaultPack();
@@ -18,7 +19,6 @@ const REPLAY_MAX = 20;
 
 export default function MistakesScreen() {
   const t = useStrings();
-  const theme = useTheme();
   const entitlements = useEntitlements();
   const [wrongIds, setWrongIds] = useState<string[]>([]);
 
@@ -52,21 +52,17 @@ export default function MistakesScreen() {
           keyExtractor={(question) => question.id}
           contentContainerStyle={styles.list}
           ListHeaderComponent={
-            <>
+            <View style={styles.header}>
               <ThemedText type="small" themeColor="textSecondary">
                 {questions.length} {t.mistakes.count}
               </ThemedText>
-              <Pressable onPress={replay} style={[styles.replay, { backgroundColor: theme.accent }]}>
-                <ThemedText type="smallBold" style={{ color: theme.onAccent }}>
-                  {t.mistakes.replay}
-                </ThemedText>
-              </Pressable>
-            </>
+              <Button label={t.mistakes.replay} onPress={replay} />
+            </View>
           }
           renderItem={({ item }) => (
-            <ThemedView type="backgroundElement" style={styles.card}>
+            <Card>
               <ThemedText type="small">{item.stem}</ThemedText>
-            </ThemedView>
+            </Card>
           )}
         />
       )}
@@ -86,14 +82,8 @@ const styles = StyleSheet.create({
     padding: Spacing.four,
     gap: Spacing.two,
   },
-  replay: {
-    borderRadius: Spacing.three,
-    paddingVertical: Spacing.three,
-    alignItems: 'center',
-    marginVertical: Spacing.two,
-  },
-  card: {
-    borderRadius: Spacing.two,
-    padding: Spacing.three,
+  header: {
+    gap: Spacing.three,
+    marginBottom: Spacing.two,
   },
 });

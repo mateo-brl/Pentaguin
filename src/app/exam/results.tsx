@@ -1,9 +1,12 @@
 import { Link, Redirect, router, Stack } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, View, type DimensionValue } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { ProgressBar } from '@/components/ui/progress-bar';
 import { Spacing } from '@/constants/theme';
 import { getDefaultPack } from '@/content';
 import { useExamSession } from '@/features/exam/session';
@@ -77,63 +80,70 @@ export default function ExamResultsScreen() {
         options={{ headerShown: true, title: t.exam.resultsTitle, headerBackVisible: false }}
       />
       <ScrollView contentContainerStyle={styles.content}>
-        <ThemedView style={styles.hero}>
-          <ThemedText type="title" style={{ color: happy ? theme.success : theme.streak }}>
+        <View style={styles.hero}>
+          <ThemedText type="label">{t.exam.resultsTitle}</ThemedText>
+          <ThemedText
+            type="stat"
+            style={{ color: happy ? theme.success : theme.streak, fontSize: 56, lineHeight: 62 }}>
             {pct} %
           </ThemedText>
           <ThemedText type="small" themeColor="textSecondary">
             {correctCount}/{questions.length} {t.quiz.correctCount}
           </ThemedText>
-        </ThemedView>
+        </View>
 
-        <ThemedText type="smallBold">{t.exam.byDomain}</ThemedText>
-        {byDomain.map(({ domain, total, correct }) => {
-          const domainPct = scorePct(correct, total);
-          return (
-            <View key={domain.id} style={styles.domainRow}>
-              <View style={styles.domainHeader}>
-                <ThemedText type="small">
-                  {domain.code} {domain.title}
-                </ThemedText>
-                <ThemedText type="smallBold" themeColor="textSecondary">
-                  {correct}/{total}
-                </ThemedText>
-              </View>
-              <View style={[styles.track, { backgroundColor: theme.backgroundElement }]}>
-                <View
-                  style={[
-                    styles.fill,
-                    {
-                      backgroundColor: domainPct >= 70 ? theme.success : theme.streak,
-                      width: `${domainPct}%` as DimensionValue,
-                    },
-                  ]}
+        <ThemedText type="label">{t.exam.byDomain}</ThemedText>
+        <Card style={styles.domains}>
+          {byDomain.map(({ domain, total, correct }, index) => {
+            const domainPct = scorePct(correct, total);
+            return (
+              <View
+                key={domain.id}
+                style={[
+                  styles.domainRow,
+                  index > 0 && { borderTopWidth: 1, borderTopColor: theme.border },
+                ]}>
+                <View style={styles.domainHeader}>
+                  <ThemedText type="small" style={styles.domainTitle}>
+                    <ThemedText type="mono" themeColor="accent" style={styles.domainCode}>
+                      {domain.code}
+                    </ThemedText>
+                    {'  '}
+                    {domain.title}
+                  </ThemedText>
+                  <ThemedText type="mono" themeColor="textSecondary" style={styles.domainScore}>
+                    {correct}/{total}
+                  </ThemedText>
+                </View>
+                <ProgressBar
+                  value={domainPct / 100}
+                  color={domainPct >= 70 ? theme.success : theme.streak}
                 />
               </View>
-            </View>
-          );
-        })}
+            );
+          })}
+        </Card>
 
         {wrong.length > 0 && (
           <>
-            <ThemedText type="smallBold" themeColor="danger">
+            <ThemedText type="label" themeColor="danger">
               {t.exam.review} ({wrong.length})
             </ThemedText>
             {wrong.map((question) => (
-              <ThemedView key={question.id} type="backgroundElement" style={styles.reviewCard}>
-                <ThemedText type="small">{question.stem}</ThemedText>
+              <Card key={question.id}>
+                <ThemedText type="smallBold">{question.stem}</ThemedText>
                 <ThemedText type="small" themeColor="textSecondary">
                   {question.explanation}
                 </ThemedText>
-              </ThemedView>
+              </Card>
             ))}
           </>
         )}
 
         {showUpsell && (
           <Link href="/paywall" asChild>
-            <Pressable>
-              <ThemedView style={[styles.upsell, { backgroundColor: theme.accentSoft }]}>
+            <Pressable style={({ pressed }) => pressed && { opacity: 0.85 }}>
+              <Card background={theme.accentSoft} style={styles.upsell}>
                 <ThemedText type="smallBold" style={{ color: theme.accent }}>
                   {t.paywall.upsellTitle}
                 </ThemedText>
@@ -143,16 +153,12 @@ export default function ExamResultsScreen() {
                 <ThemedText type="smallBold" style={{ color: theme.accent }}>
                   {t.paywall.upsellCta}
                 </ThemedText>
-              </ThemedView>
+              </Card>
             </Pressable>
           </Link>
         )}
 
-        <Pressable onPress={backToTrain} style={[styles.button, { backgroundColor: theme.accent }]}>
-          <ThemedText type="smallBold" style={{ color: theme.onAccent }}>
-            {t.exam.backTrain}
-          </ThemedText>
-        </Pressable>
+        <Button label={t.exam.backTrain} onPress={backToTrain} />
       </ScrollView>
     </ThemedView>
   );
@@ -169,39 +175,32 @@ const styles = StyleSheet.create({
   hero: {
     alignItems: 'center',
     gap: Spacing.two,
-    paddingVertical: Spacing.four,
+    paddingVertical: Spacing.five,
+  },
+  domains: {
+    padding: 0,
+    gap: 0,
   },
   domainRow: {
-    gap: Spacing.one,
+    padding: Spacing.three,
+    gap: Spacing.two,
   },
   domainHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     gap: Spacing.two,
   },
-  track: {
-    height: 6,
-    borderRadius: 3,
-    overflow: 'hidden',
+  domainTitle: {
+    flex: 1,
   },
-  fill: {
-    height: '100%',
-    borderRadius: 3,
+  domainCode: {
+    fontSize: 13,
   },
-  reviewCard: {
-    borderRadius: Spacing.two,
-    padding: Spacing.three,
-    gap: Spacing.one,
+  domainScore: {
+    fontSize: 13,
   },
   upsell: {
-    borderRadius: Spacing.three,
-    padding: Spacing.three,
-    gap: Spacing.one,
-  },
-  button: {
-    borderRadius: Spacing.three,
-    paddingVertical: Spacing.three,
-    alignItems: 'center',
-    marginTop: Spacing.two,
+    borderColor: 'transparent',
   },
 });

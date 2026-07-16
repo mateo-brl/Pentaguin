@@ -1,23 +1,23 @@
 import { router, Stack } from 'expo-router';
 import { useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { Button } from '@/components/ui/button';
+import { Chip } from '@/components/ui/chip';
 import { Spacing } from '@/constants/theme';
 import { getDefaultPack } from '@/content';
 import { useEntitlements } from '@/features/monetization';
 import { pickQuestions } from '@/features/quiz/logic';
 import { playableQuestions } from '@/features/quiz/select';
 import { useQuizSession } from '@/features/quiz/session';
-import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
 
 const COUNTS = [5, 10, 20];
 
 export default function QuizSetupScreen() {
   const t = useStrings();
-  const theme = useTheme();
   const pack = getDefaultPack();
   const entitlements = useEntitlements();
   const [domainId, setDomainId] = useState<string | null>(null);
@@ -32,67 +32,46 @@ export default function QuizSetupScreen() {
     router.push('/quiz/play');
   };
 
-  const chipStyle = (selected: boolean) => [
-    styles.chip,
-    {
-      backgroundColor: selected ? theme.accent : theme.backgroundElement,
-    },
-  ];
-  const chipText = (selected: boolean) => ({
-    color: selected ? theme.onAccent : theme.text,
-  });
-
   return (
     <ThemedView style={styles.container}>
       <Stack.Screen options={{ headerShown: true, title: t.quiz.title }} />
       <ScrollView contentContainerStyle={styles.content}>
-        <ThemedText type="smallBold">{t.quiz.domain}</ThemedText>
+        <ThemedText type="label">{t.quiz.domain}</ThemedText>
         <View style={styles.chips}>
-          <Pressable onPress={() => setDomainId(null)} style={chipStyle(domainId === null)}>
-            <ThemedText type="small" style={chipText(domainId === null)}>
-              {t.quiz.allDomains}
-            </ThemedText>
-          </Pressable>
+          <Chip
+            label={t.quiz.allDomains}
+            selected={domainId === null}
+            onPress={() => setDomainId(null)}
+          />
           {pack.domains.map((domain) => (
-            <Pressable
+            <Chip
               key={domain.id}
+              label={domain.code}
+              selected={domainId === domain.id}
               onPress={() => setDomainId(domain.id)}
-              style={chipStyle(domainId === domain.id)}>
-              <ThemedText type="small" style={chipText(domainId === domain.id)}>
-                {domain.code}
-              </ThemedText>
-            </Pressable>
+            />
           ))}
         </View>
 
-        <ThemedText type="smallBold">{t.quiz.count}</ThemedText>
+        <ThemedText type="label" style={styles.section}>
+          {t.quiz.count}
+        </ThemedText>
         <View style={styles.chips}>
           {COUNTS.map((value) => (
-            <Pressable key={value} onPress={() => setCount(value)} style={chipStyle(count === value)}>
-              <ThemedText type="small" style={chipText(count === value)}>
-                {value}
-              </ThemedText>
-            </Pressable>
+            <Chip
+              key={value}
+              label={String(value)}
+              selected={count === value}
+              onPress={() => setCount(value)}
+            />
           ))}
         </View>
 
-        <ThemedText type="small" themeColor="textSecondary">
+        <ThemedText type="small" themeColor="textSecondary" style={styles.availability}>
           {canStart ? `${available.length} ${t.quiz.availableCount}` : t.quiz.noQuestions}
         </ThemedText>
 
-        <Pressable
-          disabled={!canStart}
-          onPress={start}
-          style={[
-            styles.start,
-            { backgroundColor: canStart ? theme.accent : theme.backgroundSelected },
-          ]}>
-          <ThemedText
-            type="smallBold"
-            style={{ color: canStart ? theme.onAccent : theme.textSecondary }}>
-            {t.quiz.start}
-          </ThemedText>
-        </Pressable>
+        <Button label={t.quiz.start} onPress={start} disabled={!canStart} />
       </ScrollView>
     </ThemedView>
   );
@@ -104,22 +83,17 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: Spacing.four,
-    gap: Spacing.three,
+    gap: Spacing.two,
+  },
+  section: {
+    marginTop: Spacing.three,
   },
   chips: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: Spacing.two,
   },
-  chip: {
-    borderRadius: Spacing.four,
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.two,
-  },
-  start: {
-    borderRadius: Spacing.three,
-    paddingVertical: Spacing.three,
-    alignItems: 'center',
-    marginTop: Spacing.two,
+  availability: {
+    marginVertical: Spacing.two,
   },
 });

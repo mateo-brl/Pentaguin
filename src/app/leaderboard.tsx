@@ -1,9 +1,13 @@
 import { Stack } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { FlatList, Pressable, StyleSheet, TextInput, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Chip } from '@/components/ui/chip';
+import { Input } from '@/components/ui/input';
 import { Spacing } from '@/constants/theme';
 import { getDailyActivity } from '@/db/repositories';
 import { getToken } from '@/features/account/token';
@@ -75,55 +79,36 @@ export default function LeaderboardScreen() {
 
       {!pseudo ? (
         <View style={styles.optIn}>
-          <ThemedText type="smallBold">{t.leaderboard.optInTitle}</ThemedText>
+          <ThemedText type="subtitle">{t.leaderboard.optInTitle}</ThemedText>
           <ThemedText type="small" themeColor="textSecondary">
             {t.leaderboard.optInBody}
           </ThemedText>
-          <TextInput
+          <Input
             value={input}
             onChangeText={setInput}
             placeholder={t.leaderboard.pseudoPlaceholder}
-            placeholderTextColor={theme.textSecondary}
             autoCapitalize="none"
             autoCorrect={false}
             maxLength={20}
-            style={[
-              styles.input,
-              {
-                backgroundColor: theme.backgroundElement,
-                color: theme.text,
-                borderColor: inputError ? theme.danger : theme.backgroundElement,
-              },
-            ]}
+            invalid={inputError}
           />
           {inputError && (
             <ThemedText type="small" themeColor="danger">
               {t.leaderboard.invalidPseudo}
             </ThemedText>
           )}
-          <Pressable onPress={join} style={[styles.join, { backgroundColor: theme.accent }]}>
-            <ThemedText type="smallBold" style={{ color: theme.onAccent }}>
-              {t.leaderboard.join}
-            </ThemedText>
-          </Pressable>
+          <Button label={t.leaderboard.join} onPress={join} />
         </View>
       ) : (
         <>
           <View style={styles.periods}>
             {(['all', '7d'] as const).map((value) => (
-              <Pressable
+              <Chip
                 key={value}
+                label={value === 'all' ? t.leaderboard.periodAll : t.leaderboard.period7d}
+                selected={period === value}
                 onPress={() => setPeriod(value)}
-                style={[
-                  styles.chip,
-                  { backgroundColor: period === value ? theme.accent : theme.backgroundElement },
-                ]}>
-                <ThemedText
-                  type="small"
-                  style={{ color: period === value ? theme.onAccent : theme.text }}>
-                  {value === 'all' ? t.leaderboard.periodAll : t.leaderboard.period7d}
-                </ThemedText>
-              </Pressable>
+              />
             ))}
           </View>
 
@@ -143,20 +128,20 @@ export default function LeaderboardScreen() {
               renderItem={({ item }) => {
                 const isSelf = item.pseudo === pseudo;
                 return (
-                  <ThemedView
-                    type={isSelf ? 'backgroundSelected' : 'backgroundElement'}
-                    style={styles.row}>
-                    <ThemedText type="smallBold" themeColor="textSecondary" style={styles.rank}>
+                  <Card selected={isSelf} style={styles.row}>
+                    <ThemedText
+                      type="mono"
+                      style={[styles.rank, { color: isSelf ? theme.accent : theme.textSecondary }]}>
                       {item.rank}
                     </ThemedText>
-                    <ThemedText type="small" style={styles.pseudo}>
+                    <ThemedText type="smallBold" style={styles.pseudo}>
                       {item.pseudo}
                       {isSelf ? ` (${t.leaderboard.you})` : ''}
                     </ThemedText>
-                    <ThemedText type="smallBold" themeColor="accent">
+                    <ThemedText type="mono" themeColor="accent" style={styles.xp}>
                       {item.xp} {t.leaderboard.points}
                     </ThemedText>
-                  </ThemedView>
+                  </Card>
                 );
               }}
             />
@@ -175,28 +160,11 @@ const styles = StyleSheet.create({
     padding: Spacing.four,
     gap: Spacing.three,
   },
-  input: {
-    borderRadius: Spacing.two,
-    borderWidth: 1,
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.three,
-    fontSize: 16,
-  },
-  join: {
-    borderRadius: Spacing.three,
-    paddingVertical: Spacing.three,
-    alignItems: 'center',
-  },
   periods: {
     flexDirection: 'row',
     gap: Spacing.two,
     padding: Spacing.four,
     paddingBottom: Spacing.two,
-  },
-  chip: {
-    borderRadius: Spacing.four,
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.two,
   },
   message: {
     padding: Spacing.four,
@@ -204,20 +172,23 @@ const styles = StyleSheet.create({
   },
   list: {
     padding: Spacing.four,
+    paddingTop: Spacing.two,
     gap: Spacing.two,
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: Spacing.three,
-    borderRadius: Spacing.two,
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.three,
+    paddingVertical: 14,
   },
   rank: {
-    minWidth: 28,
+    fontSize: 13,
+    minWidth: 26,
   },
   pseudo: {
     flex: 1,
+  },
+  xp: {
+    fontSize: 13,
   },
 });

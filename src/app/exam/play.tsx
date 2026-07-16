@@ -4,6 +4,8 @@ import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { Button } from '@/components/ui/button';
+import { ProgressBar } from '@/components/ui/progress-bar';
 import { Spacing } from '@/constants/theme';
 import { ExamQuestion } from '@/features/exam/exam-question';
 import { useExamSession } from '@/features/exam/session';
@@ -59,7 +61,11 @@ export default function ExamPlayScreen() {
     const unanswered = questions.filter((q) => !(selections[q.id]?.length > 0)).length;
     Alert.alert(t.exam.confirmTitle, `${unanswered} ${t.exam.confirmBody}`, [
       { text: t.exam.keepGoing, style: 'cancel' },
-      { text: t.exam.confirm, style: 'destructive', onPress: () => useExamSession.getState().finish() },
+      {
+        text: t.exam.confirm,
+        style: 'destructive',
+        onPress: () => useExamSession.getState().finish(),
+      },
     ]);
   };
 
@@ -71,47 +77,43 @@ export default function ExamPlayScreen() {
           title: `${currentIndex + 1}/${questions.length}`,
           headerBackVisible: false,
           headerRight: () => (
-            <ThemedText type="smallBold" style={{ color: lowTime ? theme.danger : theme.accent }}>
-              ⏱ {formatRemaining(remaining)}
+            <ThemedText type="mono" style={{ color: lowTime ? theme.danger : theme.accent }}>
+              {formatRemaining(remaining)}
             </ThemedText>
           ),
         }}
       />
       <ScrollView contentContainerStyle={styles.content}>
+        <ProgressBar value={(currentIndex + 1) / questions.length} />
+
         <ExamQuestion question={question} selected={selected} onToggle={toggle} />
 
-        <Pressable onPress={() => useExamSession.getState().toggleFlag(question.id)}>
-          <ThemedText type="small" style={{ color: isFlagged ? theme.streak : theme.textSecondary }}>
+        <Pressable
+          onPress={() => useExamSession.getState().toggleFlag(question.id)}
+          style={({ pressed }) => [styles.flag, pressed && styles.pressed]}>
+          <ThemedText
+            type="smallBold"
+            style={{ color: isFlagged ? theme.streak : theme.textSecondary }}>
             {isFlagged ? t.exam.unflag : t.exam.flag}
           </ThemedText>
         </Pressable>
 
         <View style={styles.nav}>
-          <Pressable
-            disabled={currentIndex === 0}
+          <Button
+            label={t.exam.previous}
             onPress={() => useExamSession.getState().goTo(currentIndex - 1)}
-            style={[
-              styles.navButton,
-              { backgroundColor: theme.backgroundElement, opacity: currentIndex === 0 ? 0.5 : 1 },
-            ]}>
-            <ThemedText type="smallBold">{t.exam.previous}</ThemedText>
-          </Pressable>
+            variant="secondary"
+            disabled={currentIndex === 0}
+            style={styles.navButton}
+          />
           {isLast ? (
-            <Pressable
-              onPress={confirmFinish}
-              style={[styles.navButton, { backgroundColor: theme.accent }]}>
-              <ThemedText type="smallBold" style={{ color: theme.onAccent }}>
-                {t.exam.finish}
-              </ThemedText>
-            </Pressable>
+            <Button label={t.exam.finish} onPress={confirmFinish} style={styles.navButton} />
           ) : (
-            <Pressable
+            <Button
+              label={t.exam.next}
               onPress={() => useExamSession.getState().goTo(currentIndex + 1)}
-              style={[styles.navButton, { backgroundColor: theme.accent }]}>
-              <ThemedText type="smallBold" style={{ color: theme.onAccent }}>
-                {t.exam.next}
-              </ThemedText>
-            </Pressable>
+              style={styles.navButton}
+            />
           )}
         </View>
 
@@ -135,15 +137,18 @@ const styles = StyleSheet.create({
     padding: Spacing.four,
     gap: Spacing.three,
   },
+  flag: {
+    alignSelf: 'flex-start',
+  },
+  pressed: {
+    opacity: 0.7,
+  },
   nav: {
     flexDirection: 'row',
     gap: Spacing.two,
   },
   navButton: {
     flex: 1,
-    borderRadius: Spacing.three,
-    paddingVertical: Spacing.three,
-    alignItems: 'center',
   },
   finishLink: {
     alignItems: 'center',
