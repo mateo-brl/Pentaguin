@@ -1,9 +1,11 @@
 import { Redirect, router, Stack } from 'expo-router';
+import { useEffect } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
+import { maybeProposeStreakReminder } from '@/features/gamification/reminders';
 import { scorePct } from '@/features/quiz/logic';
 import { useQuizSession } from '@/features/quiz/session';
 import { useTheme } from '@/hooks/use-theme';
@@ -13,6 +15,11 @@ export default function QuizResultsScreen() {
   const t = useStrings();
   const theme = useTheme();
   const { questions, answers, finished } = useQuizSession();
+
+  // Première session réussie = LE bon moment pour proposer le rappel (une seule fois, à vie).
+  useEffect(() => {
+    if (useQuizSession.getState().finished) void maybeProposeStreakReminder();
+  }, []);
 
   if (!finished || questions.length === 0) return <Redirect href="/quiz/setup" />;
 

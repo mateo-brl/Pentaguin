@@ -1,15 +1,27 @@
 import Constants from 'expo-constants';
-import { StyleSheet } from 'react-native';
+import { useFocusEffect } from 'expo-router';
+import { useCallback, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+import { getTotalXp } from '@/db/repositories';
+import { useStreak } from '@/features/gamification/use-streak';
 import { useStrings } from '@/i18n/strings';
 
 export default function ProfileScreen() {
   const t = useStrings();
   const version = Constants.expoConfig?.version ?? '0.0.0';
+  const { longest } = useStreak();
+
+  const [totalXp, setTotalXp] = useState(0);
+  useFocusEffect(
+    useCallback(() => {
+      setTotalXp(getTotalXp());
+    }, []),
+  );
 
   return (
     <ThemedView style={styles.container}>
@@ -18,7 +30,26 @@ export default function ProfileScreen() {
           {t.tabs.profile}
         </ThemedText>
 
-        {/* TODO(M3+) : progression par domaine, historique des tentatives */}
+        <View style={styles.statsRow}>
+          <ThemedView type="backgroundElement" style={styles.statCard}>
+            <ThemedText type="subtitle" themeColor="accent">
+              {totalXp}
+            </ThemedText>
+            <ThemedText type="small" themeColor="textSecondary">
+              {t.profile.xpTotal}
+            </ThemedText>
+          </ThemedView>
+          <ThemedView type="backgroundElement" style={styles.statCard}>
+            <ThemedText type="subtitle" themeColor="streak">
+              {longest}
+            </ThemedText>
+            <ThemedText type="small" themeColor="textSecondary">
+              {t.profile.bestStreak}
+            </ThemedText>
+          </ThemedView>
+        </View>
+
+        {/* TODO(M8) : progression par domaine, historique des tentatives */}
         <ThemedView type="backgroundElement" style={styles.card}>
           <ThemedText type="small" themeColor="textSecondary">
             {t.profile.statsSoon}
@@ -53,6 +84,17 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingVertical: Spacing.three,
+  },
+  statsRow: {
+    flexDirection: 'row',
+    gap: Spacing.two,
+  },
+  statCard: {
+    flex: 1,
+    borderRadius: Spacing.three,
+    padding: Spacing.three,
+    alignItems: 'center',
+    gap: Spacing.half,
   },
   card: {
     borderRadius: Spacing.three,
