@@ -30,3 +30,12 @@ export function getPseudo(): string | null {
 export function setPseudo(pseudo: string): void {
   setKv(PSEUDO_KEY, pseudo.trim());
 }
+
+/**
+ * Repart sur une identité anonyme neuve (après déconnexion d'un compte :
+ * l'ancienne identité appartient au compte, le serveur la refuse en anonyme).
+ */
+export function resetLeaderboardIdentity(): void {
+  setKv(DEVICE_ID_KEY, Crypto.randomUUID());
+  setKv(PSEUDO_KEY, '');
+}

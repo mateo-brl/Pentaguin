@@ -36,10 +36,13 @@ export function buildSyncPayload(
   return { deviceId, pseudo: pseudo.trim(), days: activity.slice(-maxDays) };
 }
 
-export async function syncActivity(payload: SyncPayload): Promise<void> {
+export async function syncActivity(payload: SyncPayload, token?: string | null): Promise<void> {
   await request('/v1/sync', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
     body: JSON.stringify(payload),
   });
 }
