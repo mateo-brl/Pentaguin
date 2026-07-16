@@ -1,3 +1,4 @@
+# Pipeline de release TestFlight
 # Build iOS sans Mac : runner macOS GitHub (gratuit sur repo public) + `eas build --local`
 # (ne consomme pas le quota EAS cloud). Secrets requis (GitHub → Settings → Secrets) :
 #   EXPO_TOKEN              token robot expo.dev — récupère les credentials de signature depuis EAS
