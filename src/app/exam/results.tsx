@@ -1,6 +1,6 @@
 import { Link, Redirect, router, Stack } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View, type DimensionValue } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View, type DimensionValue } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -78,7 +78,6 @@ export default function ExamResultsScreen() {
       />
       <ScrollView contentContainerStyle={styles.content}>
         <ThemedView style={styles.hero}>
-          <Text style={styles.mascot}>{happy ? '🐧🎉' : '🐧💪'}</Text>
           <ThemedText type="title" style={{ color: happy ? theme.success : theme.streak }}>
             {pct} %
           </ThemedText>
@@ -142,7 +141,7 @@ export default function ExamResultsScreen() {
                   {t.paywall.upsellDesc}
                 </ThemedText>
                 <ThemedText type="smallBold" style={{ color: theme.accent }}>
-                  {t.paywall.upsellCta} →
+                  {t.paywall.upsellCta}
                 </ThemedText>
               </ThemedView>
             </Pressable>
@@ -171,9 +170,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: Spacing.two,
     paddingVertical: Spacing.four,
-  },
-  mascot: {
-    fontSize: 48,
   },
   domainRow: {
     gap: Spacing.one,

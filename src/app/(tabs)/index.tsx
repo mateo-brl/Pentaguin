@@ -1,6 +1,6 @@
 import { Link, router, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/themed-text';
@@ -9,7 +9,6 @@ import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 import { getDefaultPack } from '@/content';
 import { getKv, localDateKey } from '@/db/repositories';
 import { DAILY_CHALLENGE_KV_KEY, dailyChallengeQuestions } from '@/features/gamification/daily-challenge';
-import { mascotEmoji } from '@/features/gamification/mascot';
 import { useStreak } from '@/features/gamification/use-streak';
 import { useEntitlements } from '@/features/monetization';
 import { useQuizSession } from '@/features/quiz/session';
@@ -22,7 +21,7 @@ export default function HomeScreen() {
   const t = useStrings();
   const theme = useTheme();
   const entitlements = useEntitlements();
-  const { current, longest, activeToday } = useStreak();
+  const { current, longest } = useStreak();
 
   const [challengeDoneDate, setChallengeDoneDate] = useState<string | null>(null);
   useFocusEffect(
@@ -45,7 +44,6 @@ export default function HomeScreen() {
     <ThemedView style={styles.container}>
       <SafeAreaView style={styles.safeArea}>
         <ThemedView style={styles.hero}>
-          <Text style={styles.mascot}>{mascotEmoji(current, activeToday)}</Text>
           <ThemedText type="title">Pentaguin</ThemedText>
           <ThemedText themeColor="textSecondary" style={styles.tagline}>
             {t.home.tagline}
@@ -55,7 +53,7 @@ export default function HomeScreen() {
         <ThemedView type="backgroundElement" style={styles.card}>
           <View style={styles.streakRow}>
             <ThemedText type="smallBold" themeColor="streak">
-              🔥 {t.home.streakLabel}
+              {t.home.streakLabel}
             </ThemedText>
             {longest > 0 && (
               <ThemedText type="small" themeColor="textSecondary">
@@ -64,7 +62,7 @@ export default function HomeScreen() {
             )}
           </View>
           <ThemedText type="subtitle">
-            {current} {t.home.days}
+            {current} {current > 1 ? t.home.days : t.home.day}
           </ThemedText>
         </ThemedView>
 
@@ -79,7 +77,7 @@ export default function HomeScreen() {
         <Pressable disabled={challengeDone} onPress={startChallenge}>
           <ThemedView type="backgroundElement" style={styles.card}>
             <ThemedText type="smallBold" style={challengeDone && { color: theme.success }}>
-              {challengeDone ? t.home.challengeDone : `⚡ ${t.home.dailyChallenge}`}
+              {challengeDone ? t.home.challengeDone : t.home.dailyChallenge}
             </ThemedText>
             {!challengeDone && (
               <ThemedText type="small" themeColor="textSecondary">
@@ -111,9 +109,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
     gap: Spacing.two,
-  },
-  mascot: {
-    fontSize: 72,
   },
   tagline: {
     textAlign: 'center',

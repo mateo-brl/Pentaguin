@@ -40,7 +40,7 @@ export default function LessonScreen() {
       <Stack.Screen options={{ headerShown: true, title: lesson.title }} />
       <ScrollView contentContainerStyle={styles.content}>
         <ThemedText type="small" themeColor="textSecondary">
-          ⏱ {lesson.estMinutes} {t.domain.minutes}
+          {lesson.estMinutes} {t.domain.minutes}
         </ThemedText>
 
         {lesson.blocks.map((block, index) => (

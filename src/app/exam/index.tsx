@@ -37,7 +37,7 @@ export default function ExamListScreen() {
               <ThemedText type="small" themeColor="textSecondary">
                 {unlocked
                   ? `${item.questionCount} ${t.exam.questions} · ${item.durationMin} ${t.domain.minutes}`
-                  : `🔒 ${t.exam.locked}`}
+                  : t.exam.locked}
               </ThemedText>
             </ThemedView>
           );
