@@ -72,12 +72,11 @@ export default function DomainScreen() {
                 </ThemedText>
               </ThemedView>
             );
-            if (!unlocked) {
-              // TODO(M6) : ouvrir le paywall (unique point d'entrée monétisation)
-              return card;
-            }
+            const href = unlocked
+              ? ({ pathname: '/lesson/[id]', params: { id: item.id } } as const)
+              : ('/paywall' as const);
             return (
-              <Link href={{ pathname: '/lesson/[id]', params: { id: item.id } }} asChild>
+              <Link href={href} asChild>
                 <Pressable>{card}</Pressable>
               </Link>
             );

@@ -11,7 +11,8 @@ import type { Entitlements } from './provider';
 export { activeProvider } from './active-provider';
 export { freeQuestionIds, isUnlocked, packEntitlement, type GatedItem } from './gates';
 export { noopProvider } from './noop.provider';
-export type { EntitlementId, Entitlements, PurchasesProvider } from './provider';
+export type { EntitlementId, Entitlements, ProOffer, PurchasesProvider } from './provider';
+export { canShowSpontaneousUpsell, getUpsellShownCount, markUpsellShown } from './upsell';
 export { useEntitlements } from './use-entitlements';
 
 /** isUnlocked() appliqué au curseur courant de l'app (raccourci pour les écrans). */
