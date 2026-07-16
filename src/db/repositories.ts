@@ -75,6 +75,7 @@ export function finishAttempt(attemptId: string, scorePct: number): void {
 
 // — Stats par question (« mes erreurs », future répétition espacée) ----------
 
+/** Une bonne réponse efface last_wrong_at : « mes erreurs » = dernière réponse fausse. */
 export function bumpQuestionStat(packId: string, questionId: string, isCorrect: boolean): void {
   const now = Date.now();
   getDb().runSync(
@@ -84,7 +85,7 @@ export function bumpQuestionStat(packId: string, questionId: string, isCorrect: 
        seen = seen + 1,
        correct = correct + excluded.correct,
        last_seen_at = excluded.last_seen_at,
-       last_wrong_at = COALESCE(excluded.last_wrong_at, last_wrong_at)`,
+       last_wrong_at = excluded.last_wrong_at`,
     [packId, questionId, isCorrect ? 1 : 0, now, isCorrect ? null : now],
   );
 }

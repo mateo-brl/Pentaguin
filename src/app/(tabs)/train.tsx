@@ -5,18 +5,20 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
 
 export default function TrainScreen() {
   const t = useStrings();
-  const theme = useTheme();
 
-  // TODO(M4) : brancher l'examen blanc et la revue d'erreurs.
   const items = [
     { key: 'quiz', title: t.train.quiz, desc: t.train.quizDesc, href: '/quiz/setup' as const },
-    { key: 'exam', title: t.train.exam, desc: t.train.examDesc, href: null },
-    { key: 'mistakes', title: t.train.mistakes, desc: t.train.mistakesDesc, href: null },
+    { key: 'exam', title: t.train.exam, desc: t.train.examDesc, href: '/exam' as const },
+    {
+      key: 'mistakes',
+      title: t.train.mistakes,
+      desc: t.train.mistakesDesc,
+      href: '/mistakes' as const,
+    },
   ];
 
   return (
@@ -25,36 +27,20 @@ export default function TrainScreen() {
         <ThemedText type="subtitle" style={styles.header}>
           {t.tabs.train}
         </ThemedText>
-        {items.map((item) => {
-          const card = (
-            <ThemedView type="backgroundElement" style={styles.card}>
-              <View style={styles.cardHeader}>
-                <ThemedText type="smallBold">{item.title}</ThemedText>
-                {!item.href && (
-                  <ThemedText
-                    type="small"
-                    style={[
-                      styles.chip,
-                      { backgroundColor: theme.accentSoft, color: theme.accent },
-                    ]}>
-                    {t.train.comingSoon}
-                  </ThemedText>
-                )}
-              </View>
-              <ThemedText type="small" themeColor="textSecondary">
-                {item.desc}
-              </ThemedText>
-            </ThemedView>
-          );
-          if (!item.href) {
-            return <View key={item.key}>{card}</View>;
-          }
-          return (
-            <Link key={item.key} href={item.href} asChild>
-              <Pressable>{card}</Pressable>
-            </Link>
-          );
-        })}
+        {items.map((item) => (
+          <Link key={item.key} href={item.href} asChild>
+            <Pressable>
+              <ThemedView type="backgroundElement" style={styles.card}>
+                <View style={styles.cardHeader}>
+                  <ThemedText type="smallBold">{item.title}</ThemedText>
+                </View>
+                <ThemedText type="small" themeColor="textSecondary">
+                  {item.desc}
+                </ThemedText>
+              </ThemedView>
+            </Pressable>
+          </Link>
+        ))}
       </SafeAreaView>
     </ThemedView>
   );
