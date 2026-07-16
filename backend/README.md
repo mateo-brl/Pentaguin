@@ -27,9 +27,13 @@ Base URL de l'app : **`http://82.66.208.23:8081`** (HTTP assumé : aucune donné
 sensible — UUID anonyme, pseudo, points ; nécessite l'exception ATS
 `NSAllowsArbitraryLoads` côté iOS). nginx écoute en public sur 8081 (ufw ouvert).
 
-**Reste une action (une fois)** : redirection de port sur la Freebox —
-Freebox OS → Paramètres → Mode avancé → Redirections de ports →
-TCP 8081 → 8081 vers l'IP locale du serveur.
+**Vérifié joignable depuis l'extérieur** (workflow « Probe » : curl depuis un
+runner GitHub → 200 OK) : le serveur est en DMZ, tout le trafic lui parvient.
+
+⚠️ Piège de test : depuis le LAN de la Freebox (PC ou iPhone en Wi-Fi maison),
+`http://82.66.208.23:8081` ne répond PAS (pas de hairpin NAT pour le trafic
+DMZ). Tester en 4G/5G, ou ajouter une redirection Freebox explicite
+8081/tcp → serveur (les redirections explicites, elles, ont le hairpin).
 
 Bascule future en domaine + HTTPS (recommandée avant l'App Store public) :
 DNS `pentaguin.mateobrl.fr` chez Infomaniak + site SafeLine → upstream
