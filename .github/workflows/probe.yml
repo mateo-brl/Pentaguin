@@ -1,0 +1,22 @@
+# Sonde réseau : teste une URL depuis l'extérieur (runner GitHub) — utile pour
+# vérifier l'exposition réelle de l'API (les tests depuis le LAN passent en
+# hairpin NAT et ne prouvent rien). Aucun secret.
+name: Probe (test externe)
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: "URL à tester"
+        required: true
+        default: "http://82.66.208.23:8081/healthz"
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: curl externe
+        run: |
+          echo "Cible : ${{ github.event.inputs.url }}"
+          curl -v --max-time 10 "${{ github.event.inputs.url }}" || echo "INJOIGNABLE depuis l'extérieur"
