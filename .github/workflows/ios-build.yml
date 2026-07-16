@@ -1,0 +1,78 @@
+# Build iOS sans Mac : runner macOS GitHub (gratuit sur repo public) + `eas build --local`
+# (ne consomme pas le quota EAS cloud). Secrets requis (GitHub → Settings → Secrets) :
+#   EXPO_TOKEN              token robot expo.dev — récupère les credentials de signature depuis EAS
+#   ASC_KEY_ID              id de la clé API App Store Connect
+#   ASC_ISSUER_ID           issuer id App Store Connect
+#   ASC_API_KEY_P8_BASE64   contenu du fichier .p8 encodé en base64
+#
+# Repo PUBLIC : déclenchement uniquement manuel ou par tag — jamais sur pull_request
+# (les forks n'ont pas les secrets, et on ne veut pas builder leur code avec).
+# Prérequis one-time (jalon M7) : `eas init` + `eas credentials` depuis la machine de dev.
+name: iOS build (EAS local)
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+
+concurrency:
+  group: ios-build-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: macos-15
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm install -g eas-cli
+
+      - name: Build IPA (local)
+        run: eas build --platform ios --profile production --local --non-interactive --output build/pentaguin.ipa
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pentaguin-ios
+          path: build/pentaguin.ipa
+          retention-days: 14
+
+  submit:
+    needs: build
+    runs-on: macos-15
+    timeout-minutes: 30
+    # Environnement GitHub « release » : ajouter une approbation manuelle requise
+    # (Settings → Environments → release → Required reviewers).
+    environment: release
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: pentaguin-ios
+
+      - name: Upload vers TestFlight (fastlane pilot + clé API ASC)
+        run: |
+          mkdir -p "$RUNNER_TEMP/asc"
+          printf '%s' "$ASC_API_KEY_P8_BASE64" | base64 -d > "$RUNNER_TEMP/asc/key.p8"
+          jq -n \
+            --arg key_id "$ASC_KEY_ID" \
+            --arg issuer_id "$ASC_ISSUER_ID" \
+            --rawfile key "$RUNNER_TEMP/asc/key.p8" \
+            '{key_id: $key_id, issuer_id: $issuer_id, key: $key, in_house: false}' \
+            > "$RUNNER_TEMP/asc/api_key.json"
+          fastlane pilot upload \
+            --ipa pentaguin.ipa \
+            --api_key_path "$RUNNER_TEMP/asc/api_key.json" \
+            --skip_waiting_for_build_processing true
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_API_KEY_P8_BASE64: ${{ secrets.ASC_API_KEY_P8_BASE64 }}
