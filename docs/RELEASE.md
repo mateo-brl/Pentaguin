@@ -12,6 +12,27 @@ Dev sur Linux, sans Mac. Les builds iOS se font sur un runner macOS GitHub Actio
   - `ASC_KEY_ID`, `ASC_ISSUER_ID`, `ASC_API_KEY_P8_BASE64` — clé API App Store Connect (rôle App Manager).
 - Environnement GitHub `release` avec **reviewer obligatoire** : le job d'upload TestFlight attend une approbation manuelle.
 
+## OTA (EAS Update) vs build natif
+
+Règle de décision :
+
+- **Changement 100 % JS/TS/JSON** (écrans, logique, contenu pédagogique, curseur
+  de monétisation, i18n) → **OTA** : Actions → « OTA update (EAS Update) » →
+  *Run workflow* avec un message, ou en local `npx eas-cli update --channel
+  production --message "..."`. ~1 min ; les apps installées récupèrent l'update
+  au lancement suivant.
+- **Changement natif** (nouveau module natif, config plugin, icône/splash,
+  version d'app) → **build complet** (ios-build.yml, ~20 min) puis TestFlight.
+
+Contraintes :
+
+- L'OTA ne touche que les builds dont la runtimeVersion correspond (policy
+  `appVersion` : même `version` dans app.json). Après un bump de version, les
+  anciens builds ne reçoivent plus les updates.
+- Quota EAS Update (plan gratuit) : 1 000 utilisateurs actifs/mois — séparé du
+  quota de builds, publication illimitée.
+- Prérequis : le build installé doit embarquer `expo-updates` (builds ≥ 13).
+
 ## Déclencher un build
 
 - **Manuel** : onglet Actions → « iOS build (EAS local) » → *Run workflow*, ou `gh workflow run ios-build.yml --repo mateo-brl/Pentaguin --ref master`.

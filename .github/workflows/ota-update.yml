@@ -1,0 +1,36 @@
+# Publication OTA via EAS Update : pousse le bundle JS + assets vers les apps
+# déjà installées (TestFlight incluses), sans rebuild natif. Runner Linux, ~1 min.
+#
+# À utiliser pour tout changement 100 % JS/TS/JSON (écrans, contenu pédagogique,
+# curseur de monétisation…). Un changement natif (nouveau module, config plugin,
+# icône/splash) exige toujours un build iOS complet (ios-build.yml).
+#
+# Ne cible que les builds dont la runtimeVersion correspond (policy appVersion :
+# même version d'app). Secret requis : EXPO_TOKEN.
+name: OTA update (EAS Update)
+
+on:
+  workflow_dispatch:
+    inputs:
+      message:
+        description: "Message de l'update (visible dans le dashboard EAS)"
+        required: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Publier l'update
+        run: npx eas-cli update --channel production --message "${{ github.event.inputs.message }}" --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
