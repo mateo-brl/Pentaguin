@@ -1,0 +1,85 @@
+[
+  {
+    "id": "q-d1-001",
+    "domainId": "d1",
+    "lessonIds": ["l-d1-001"],
+    "type": "single",
+    "stem": "Un hôpital chiffre les dossiers médicaux afin que seul le personnel autorisé puisse les consulter. Quel principe de la triade CIA est principalement renforcé ?",
+    "choices": [
+      { "id": "a", "text": "Confidentiality (confidentialité)" },
+      { "id": "b", "text": "Integrity (intégrité)" },
+      { "id": "c", "text": "Availability (disponibilité)" },
+      { "id": "d", "text": "Non-repudiation (non-répudiation)" }
+    ],
+    "correct": ["a"],
+    "explanation": "Le chiffrement au repos empêche la lecture des données par des personnes non autorisées : c'est la confidentialité. L'intégrité garantit que les données ne sont pas altérées (hachage, signatures), la disponibilité que le service reste accessible (redondance, sauvegardes), et la non-répudiation empêche de nier une action (signatures numériques) — elle ne fait d'ailleurs pas partie de la triade.",
+    "difficulty": 1,
+    "tags": ["cia", "seed-example"]
+  },
+  {
+    "id": "q-d1-002",
+    "domainId": "d1",
+    "lessonIds": ["l-d1-002"],
+    "type": "single",
+    "stem": "Après l'authentification d'un administrateur, le système journalise chacune de ses actions à des fins d'audit. Quelle composante du modèle AAA est décrite ?",
+    "choices": [
+      { "id": "a", "text": "Authentication" },
+      { "id": "b", "text": "Authorization" },
+      { "id": "c", "text": "Accounting" },
+      { "id": "d", "text": "Availability" }
+    ],
+    "correct": ["c"],
+    "explanation": "L'accounting (journalisation, traçabilité) enregistre qui a fait quoi et quand. L'authentication vérifie l'identité, l'authorization détermine les droits accordés. Availability appartient à la triade CIA, pas au modèle AAA.",
+    "difficulty": 1,
+    "tags": ["aaa", "seed-example"]
+  },
+  {
+    "id": "q-d1-003",
+    "domainId": "d1",
+    "type": "single",
+    "stem": "Une entreprise installe à l'entrée du site un panneau « Zone sous vidéosurveillance ». De quel type de contrôle de sécurité s'agit-il ?",
+    "choices": [
+      { "id": "a", "text": "Preventive (préventif)" },
+      { "id": "b", "text": "Deterrent (dissuasif)" },
+      { "id": "c", "text": "Detective (détectif)" },
+      { "id": "d", "text": "Corrective (correctif)" }
+    ],
+    "correct": ["b"],
+    "explanation": "Le panneau vise à décourager un intrus avant toute tentative : c'est un contrôle deterrent (dissuasif). Les caméras elles-mêmes sont plutôt detective (elles constatent un événement), un lecteur de badge est preventive (il empêche l'accès), et une restauration depuis sauvegarde est corrective (elle répare après incident).",
+    "difficulty": 2,
+    "tags": ["controles", "seed-example"]
+  },
+  {
+    "id": "q-d1-004",
+    "domainId": "d1",
+    "type": "multi",
+    "stem": "Quels éléments relèvent du contrôle d'accès physique ? (Choisissez deux réponses.)",
+    "choices": [
+      { "id": "a", "text": "Un sas d'accès (access control vestibule)" },
+      { "id": "b", "text": "Une liste de contrôle d'accès réseau (ACL)" },
+      { "id": "c", "text": "Un lecteur de badge" },
+      { "id": "d", "text": "Le chiffrement intégral de disque (FDE)" },
+      { "id": "e", "text": "Un pare-feu applicatif (WAF)" }
+    ],
+    "correct": ["a", "c"],
+    "explanation": "Le sas d'accès (access control vestibule, anciennement mantrap) et le lecteur de badge contrôlent physiquement l'entrée dans les locaux. Les ACL et le WAF sont des contrôles techniques côté réseau/application, et le chiffrement de disque protège les données, pas l'accès physique.",
+    "difficulty": 2,
+    "tags": ["physique", "seed-example"]
+  },
+  {
+    "id": "q-d1-005",
+    "domainId": "d1",
+    "type": "single",
+    "stem": "Une RSSI compare la posture de sécurité actuelle de son entreprise aux exigences d'un référentiel cible afin d'identifier ce qui manque. Comment s'appelle cette démarche ?",
+    "choices": [
+      { "id": "a", "text": "Penetration test" },
+      { "id": "b", "text": "Gap analysis" },
+      { "id": "c", "text": "Risk transference" },
+      { "id": "d", "text": "Tabletop exercise" }
+    ],
+    "correct": ["b"],
+    "explanation": "La gap analysis mesure l'écart entre l'état actuel et l'état souhaité (référentiel, norme, politique interne). Un penetration test évalue l'exploitabilité réelle des failles, la risk transference déplace le risque vers un tiers (assurance), et le tabletop exercise est une simulation de crise sur table.",
+    "difficulty": 2,
+    "tags": ["gouvernance", "seed-example"]
+  }
+]

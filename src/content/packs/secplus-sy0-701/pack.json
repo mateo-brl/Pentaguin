@@ -1,0 +1,44 @@
+{
+  "id": "secplus-sy0-701",
+  "certName": "Security+",
+  "examCode": "SY0-701",
+  "locale": "fr",
+  "version": 1,
+  "domains": [
+    {
+      "id": "d1",
+      "code": "1.0",
+      "title": "Concepts généraux de sécurité",
+      "weightPercent": 12,
+      "order": 1
+    },
+    {
+      "id": "d2",
+      "code": "2.0",
+      "title": "Menaces, vulnérabilités et atténuations",
+      "weightPercent": 22,
+      "order": 2
+    },
+    {
+      "id": "d3",
+      "code": "3.0",
+      "title": "Architecture de sécurité",
+      "weightPercent": 18,
+      "order": 3
+    },
+    {
+      "id": "d4",
+      "code": "4.0",
+      "title": "Opérations de sécurité",
+      "weightPercent": 28,
+      "order": 4
+    },
+    {
+      "id": "d5",
+      "code": "5.0",
+      "title": "Gestion et supervision du programme de sécurité",
+      "weightPercent": 20,
+      "order": 5
+    }
+  ]
+}
