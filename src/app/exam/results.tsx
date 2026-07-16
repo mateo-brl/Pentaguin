@@ -1,5 +1,5 @@
-import { Redirect, router, Stack } from 'expo-router';
-import { useEffect } from 'react';
+import { Link, Redirect, router, Stack } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View, type DimensionValue } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
@@ -8,6 +8,12 @@ import { Spacing } from '@/constants/theme';
 import { getDefaultPack } from '@/content';
 import { useExamSession } from '@/features/exam/session';
 import { maybeProposeStreakReminder } from '@/features/gamification/reminders';
+import {
+  activeProvider,
+  canShowSpontaneousUpsell,
+  getUpsellShownCount,
+  markUpsellShown,
+} from '@/features/monetization';
 import { isAnswerCorrect, scorePct } from '@/features/quiz/logic';
 import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
@@ -19,8 +25,23 @@ export default function ExamResultsScreen() {
   const theme = useTheme();
   const { questions, selections, finished } = useExamSession();
 
+  // L'UNIQUE proposition spontanée de l'app : fin du premier examen blanc
+  // gratuit — le moment où l'utilisateur atteint naturellement la limite.
+  const [showUpsell, setShowUpsell] = useState(false);
   useEffect(() => {
-    if (useExamSession.getState().finished) void maybeProposeStreakReminder();
+    let mounted = true;
+    (async () => {
+      if (!useExamSession.getState().finished) return;
+      void maybeProposeStreakReminder();
+      const entitlements = await activeProvider.getEntitlements();
+      if (mounted && canShowSpontaneousUpsell(getUpsellShownCount(), entitlements)) {
+        setShowUpsell(true);
+        markUpsellShown();
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   if (!finished || questions.length === 0) return <Redirect href="/exam" />;
@@ -110,6 +131,24 @@ export default function ExamResultsScreen() {
           </>
         )}
 
+        {showUpsell && (
+          <Link href="/paywall" asChild>
+            <Pressable>
+              <ThemedView style={[styles.upsell, { backgroundColor: theme.accentSoft }]}>
+                <ThemedText type="smallBold" style={{ color: theme.accent }}>
+                  {t.paywall.upsellTitle}
+                </ThemedText>
+                <ThemedText type="small" themeColor="textSecondary">
+                  {t.paywall.upsellDesc}
+                </ThemedText>
+                <ThemedText type="smallBold" style={{ color: theme.accent }}>
+                  {t.paywall.upsellCta} →
+                </ThemedText>
+              </ThemedView>
+            </Pressable>
+          </Link>
+        )}
+
         <Pressable onPress={backToTrain} style={[styles.button, { backgroundColor: theme.accent }]}>
           <ThemedText type="smallBold" style={{ color: theme.onAccent }}>
             {t.exam.backTrain}
@@ -155,6 +194,11 @@ const styles = StyleSheet.create({
   },
   reviewCard: {
     borderRadius: Spacing.two,
+    padding: Spacing.three,
+    gap: Spacing.one,
+  },
+  upsell: {
+    borderRadius: Spacing.three,
     padding: Spacing.three,
     gap: Spacing.one,
   },
