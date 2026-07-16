@@ -41,6 +41,26 @@ jobs:
         run: eas build --platform ios --profile production --local --non-interactive --output build/pentaguin.ipa
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          # Conserver le répertoire de build pour pouvoir lire les logs xcodebuild en cas d'échec.
+          EAS_LOCAL_BUILD_SKIP_CLEANUP: "1"
+
+      # Diagnostic : la sortie xcodebuild détaillée (dont l'échec du script ExpoModulesJSI)
+      # part dans un fichier tee séparé, invisible dans le résumé fastlane. On l'extrait ici.
+      - name: Dump Xcode logs on failure
+        if: failure()
+        run: |
+          echo "===== fichiers de log trouvés ====="
+          find /private/var/folders /var/folders "$HOME/Library/Logs" -name "*.log" 2>/dev/null \
+            | grep -iE "Pentaguin|xcodebuild|eas-build" | head -40
+          echo "===== erreurs xcodebuild (Pentaguin-*.log) ====="
+          find /private/var/folders /var/folders -name "Pentaguin-*.log" 2>/dev/null | while read -r f; do
+            echo "----- $f -----"
+            grep -nE "error:|error |fatal|failed|xcframework|ExpoModulesJSI|No such|not found|line [0-9]+:" "$f" | tail -120
+          done
+          echo "===== sortie brute des scripts de build phase (.sh) ExpoModulesJSI ====="
+          find /private/var/folders /var/folders -path "*ExpoModulesJSI.build*" -name "Script-*.sh" 2>/dev/null | while read -r s; do
+            echo "----- $s -----"; cat "$s"
+          done
 
       - uses: actions/upload-artifact@v4
         with:
