@@ -31,6 +31,7 @@ jobs:
       - run: npm ci
 
       - name: Publier l'update
-        run: npx eas-cli update --channel production --message "${{ github.event.inputs.message }}" --non-interactive
+        # --platform ios : le bundle web échoue (expo-sqlite) et Android est hors périmètre v1.
+        run: npx eas-cli update --channel production --environment production --platform ios --message "${{ github.event.inputs.message }}" --non-interactive
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
