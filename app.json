@@ -9,7 +9,6 @@
     "scheme": "pentaguin",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon",
       "bundleIdentifier": "fr.mateobrl.pentaguin"
     },
     "android": {
