@@ -7,6 +7,8 @@ After=network.target
 ExecStart=/usr/bin/node --experimental-sqlite /opt/pentaguin-api/server.mjs
 Environment=PORT=3002
 Environment=DB_PATH=/var/lib/pentaguin/pentaguin.db
+# Secrets (JWT_SECRET, GOOGLE_CLIENT_IDS…) — créé sur le serveur, jamais dans le repo.
+EnvironmentFile=-/etc/pentaguin/env
 DynamicUser=yes
 StateDirectory=pentaguin
 Restart=on-failure
