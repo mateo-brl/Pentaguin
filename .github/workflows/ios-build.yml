@@ -44,23 +44,25 @@ jobs:
           # Conserver le répertoire de build pour pouvoir lire les logs xcodebuild en cas d'échec.
           EAS_LOCAL_BUILD_SKIP_CLEANUP: "1"
 
-      # Diagnostic : la sortie xcodebuild détaillée (dont l'échec du script ExpoModulesJSI)
-      # part dans un fichier tee séparé, invisible dans le résumé fastlane. On l'extrait ici.
-      - name: Dump Xcode logs on failure
+      # Diagnostic : rassembler les logs xcodebuild COMPLETS (le résumé fastlane
+      # masque la sortie du sous-build ExpoModulesJSI) pour les uploader entiers.
+      - name: Collect Xcode logs on failure
         if: failure()
         run: |
-          echo "===== fichiers de log trouvés ====="
-          find /private/var/folders /var/folders "$HOME/Library/Logs" -name "*.log" 2>/dev/null \
-            | grep -iE "Pentaguin|xcodebuild|eas-build" | head -40
-          echo "===== erreurs xcodebuild (Pentaguin-*.log) ====="
-          find /private/var/folders /var/folders -name "Pentaguin-*.log" 2>/dev/null | while read -r f; do
-            echo "----- $f -----"
-            grep -nE "error:|error |fatal|failed|xcframework|ExpoModulesJSI|No such|not found|line [0-9]+:" "$f" | tail -120
-          done
-          echo "===== sortie brute des scripts de build phase (.sh) ExpoModulesJSI ====="
-          find /private/var/folders /var/folders -path "*ExpoModulesJSI.build*" -name "Script-*.sh" 2>/dev/null | while read -r s; do
-            echo "----- $s -----"; cat "$s"
-          done
+          mkdir -p "$GITHUB_WORKSPACE/xcode-logs"
+          find /private/var/folders /var/folders -name "Pentaguin-*.log" 2>/dev/null \
+            -exec cp {} "$GITHUB_WORKSPACE/xcode-logs/" \; || true
+          # DerivedData du sous-build SPM d'ExpoModulesJSI (où atterrit sa vraie erreur).
+          find /private/var/folders /var/folders -path "*expo-modules-jsi/apple/.DerivedData*" -name "*.txt" 2>/dev/null \
+            -exec cp --parents {} "$GITHUB_WORKSPACE/xcode-logs/" \; 2>/dev/null || true
+          ls -la "$GITHUB_WORKSPACE/xcode-logs/" || true
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: xcode-logs
+          path: xcode-logs/
+          retention-days: 7
 
       - uses: actions/upload-artifact@v4
         with:
