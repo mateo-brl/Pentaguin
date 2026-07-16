@@ -8,7 +8,9 @@ import {
   createAttempt,
   finishAttempt,
   recordAnswer,
+  setKv,
 } from '@/db/repositories';
+import { DAILY_CHALLENGE_KV_KEY } from '@/features/gamification/daily-challenge';
 
 import { isAnswerCorrect, scorePct } from './logic';
 
@@ -20,8 +22,10 @@ type QuizSessionState = {
   questions: Question[];
   currentIndex: number;
   answers: Record<string, AnswerRecord>;
+  /** Défini quand la session est le défi du jour (clé YYYY-MM-DD). */
+  challengeDate: string | null;
   finished: boolean;
-  start(packId: string, questions: Question[]): void;
+  start(packId: string, questions: Question[], options?: { challengeDate?: string }): void;
   /** Enregistre la réponse à la question courante (DB + XP) et retourne le verdict. */
   answerCurrent(selected: string[]): AnswerRecord;
   /** Passe à la question suivante, ou clôt la tentative si c'était la dernière. */
@@ -35,15 +39,24 @@ export const useQuizSession = create<QuizSessionState>((set, get) => ({
   questions: [],
   currentIndex: 0,
   answers: {},
+  challengeDate: null,
   finished: false,
 
-  start(packId, questions) {
+  start(packId, questions, options) {
     const attemptId = createAttempt(
       packId,
       'quiz',
       questions.map((q) => q.id),
     );
-    set({ packId, attemptId, questions, currentIndex: 0, answers: {}, finished: false });
+    set({
+      packId,
+      attemptId,
+      questions,
+      currentIndex: 0,
+      answers: {},
+      challengeDate: options?.challengeDate ?? null,
+      finished: false,
+    });
   },
 
   answerCurrent(selected) {
@@ -60,13 +73,14 @@ export const useQuizSession = create<QuizSessionState>((set, get) => ({
   },
 
   goNext() {
-    const { currentIndex, questions, attemptId, answers } = get();
+    const { currentIndex, questions, attemptId, answers, challengeDate } = get();
     if (currentIndex + 1 < questions.length) {
       set({ currentIndex: currentIndex + 1 });
       return;
     }
     const correctCount = Object.values(answers).filter((a) => a.isCorrect).length;
     if (attemptId) finishAttempt(attemptId, scorePct(correctCount, questions.length));
+    if (challengeDate) setKv(DAILY_CHALLENGE_KV_KEY, challengeDate);
     set({ finished: true });
   },
 
@@ -77,6 +91,7 @@ export const useQuizSession = create<QuizSessionState>((set, get) => ({
       questions: [],
       currentIndex: 0,
       answers: {},
+      challengeDate: null,
       finished: false,
     });
   },

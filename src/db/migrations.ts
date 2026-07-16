@@ -55,4 +55,12 @@ export const migrations: string[] = [
   CREATE INDEX idx_attempt_pack ON attempt(pack_id, started_at);
   CREATE INDEX idx_question_stat_wrong ON question_stat(pack_id, last_wrong_at);
   `,
+
+  // v2 — petit stockage clé/valeur (flags : défi du jour fait, rappel proposé…)
+  `
+  CREATE TABLE kv (
+    key TEXT PRIMARY KEY,
+    value TEXT NOT NULL
+  );
+  `,
 ];
