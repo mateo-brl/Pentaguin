@@ -1,11 +1,11 @@
 import { Tabs } from 'expo-router';
-import { Text } from 'react-native';
+import { Text, type ColorValue } from 'react-native';
 
 import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
 
 // Icônes emoji (pas de dépendance de police/icônes en v1 ; artwork dédié prévu M8/TODO).
-function TabEmoji({ emoji, color }: { emoji: string; color: string }) {
+function TabEmoji({ emoji, color }: { emoji: string; color: ColorValue }) {
   return <Text style={{ fontSize: 22, color }}>{emoji}</Text>;
 }
 
