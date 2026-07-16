@@ -3,12 +3,18 @@
  * depuis ce module (jamais les fichiers internes) et ne connaît que
  * isUnlocked()/les entitlements — voir AGENTS.md.
  */
-import { noopProvider } from './noop.provider';
-import type { PurchasesProvider } from './provider';
+import { monetizationConfig } from '@/config/monetization';
 
+import { isUnlocked, type GatedItem } from './gates';
+import type { Entitlements } from './provider';
+
+export { activeProvider } from './active-provider';
 export { freeQuestionIds, isUnlocked, packEntitlement, type GatedItem } from './gates';
 export { noopProvider } from './noop.provider';
 export type { EntitlementId, Entitlements, PurchasesProvider } from './provider';
+export { useEntitlements } from './use-entitlements';
 
-// TODO(M6) : remplacer par le RevenueCatProvider dans les builds natives.
-export const activeProvider: PurchasesProvider = noopProvider;
+/** isUnlocked() appliqué au curseur courant de l'app (raccourci pour les écrans). */
+export function isUnlockedNow(item: GatedItem, entitlements: Entitlements): boolean {
+  return isUnlocked(item, entitlements, monetizationConfig);
+}
