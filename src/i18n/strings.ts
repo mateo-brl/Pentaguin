@@ -11,7 +11,7 @@ const fr = {
     profile: 'Profil',
   },
   home: {
-    tagline: 'Révise la cybersécurité, cinq minutes à la fois.',
+    tagline: 'Prépare ta certification, cinq minutes à la fois.',
     streakLabel: 'Série en cours',
     day: 'jour',
     days: 'jours',
@@ -141,7 +141,7 @@ const en: Strings = {
     profile: 'Profile',
   },
   home: {
-    tagline: 'Brush up on cybersecurity, five minutes at a time.',
+    tagline: 'Prep your certification, five minutes at a time.',
     streakLabel: 'Current streak',
     day: 'day',
     days: 'days',
