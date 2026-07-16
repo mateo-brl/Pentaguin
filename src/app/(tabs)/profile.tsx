@@ -57,6 +57,14 @@ export default function ProfileScreen() {
           </Pressable>
         </Link>
 
+        <Link href="/account" asChild>
+          <Pressable>
+            <ThemedView type="backgroundElement" style={styles.card}>
+              <ThemedText type="smallBold">{t.profile.account}</ThemedText>
+            </ThemedView>
+          </Pressable>
+        </Link>
+
         {/* TODO : progression par domaine, historique des tentatives */}
         <ThemedView type="backgroundElement" style={styles.card}>
           <ThemedText type="small" themeColor="textSecondary">

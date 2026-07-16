@@ -6,6 +6,7 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
 import { getDailyActivity } from '@/db/repositories';
+import { getToken } from '@/features/account/token';
 import {
   buildSyncPayload,
   fetchLeaderboard,
@@ -42,7 +43,8 @@ export default function LeaderboardScreen() {
     let cancelled = false;
     (async () => {
       try {
-        await syncActivity(buildSyncPayload(getDeviceId(), pseudo, getDailyActivity()));
+        const token = await getToken();
+        await syncActivity(buildSyncPayload(getDeviceId(), pseudo, getDailyActivity()), token);
         const data = await fetchLeaderboard(period);
         if (!cancelled) {
           setEntries(data);

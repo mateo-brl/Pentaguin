@@ -9,7 +9,11 @@
     "scheme": "pentaguin",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "bundleIdentifier": "fr.mateobrl.pentaguin"
+      "bundleIdentifier": "fr.mateobrl.pentaguin",
+      "usesAppleSignIn": true,
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "package": "fr.mateobrl.pentaguin",
@@ -36,7 +40,9 @@
         }
       ],
       "expo-sqlite",
-      "expo-asset"
+      "expo-asset",
+      "expo-secure-store",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,
