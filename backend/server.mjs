@@ -123,6 +123,9 @@ function dateKeyDaysAgo(days) {
 
 // — routes ----------------------------------------------------------------------
 async function handleSync(req, res) {
+  const contentType = req.headers['content-type'] ?? '';
+  if (!contentType.includes('application/json'))
+    return send(res, 415, { error: 'Content-Type application/json requis' });
   const body = await readJson(req);
   const { deviceId, pseudo, days } = body ?? {};
   if (!isDeviceId(deviceId)) return send(res, 400, { error: 'deviceId invalide' });
