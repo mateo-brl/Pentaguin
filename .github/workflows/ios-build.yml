@@ -22,7 +22,7 @@ concurrency:
 
 jobs:
   build:
-    runs-on: macos-15
+    runs-on: macos-26
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
@@ -35,6 +35,19 @@ jobs:
       - run: npm ci
 
       - run: npm install -g eas-cli
+
+      # Apple exige le SDK iOS 26+ (Xcode 26+) pour tout upload vers App Store
+      # Connect : on sélectionne explicitement le Xcode le plus récent du runner.
+      - name: Sélectionner Xcode 26+
+        run: |
+          ls -d /Applications/Xcode*.app
+          XCODE=$(ls -d /Applications/Xcode*.app | sort -V | tail -1)
+          echo "Xcode retenu : $XCODE"
+          sudo xcode-select -s "$XCODE"
+          xcodebuild -version
+          echo "SDK iOS disponible :"
+          xcodebuild -showsdks | grep -i iphoneos
+          echo "DEVELOPER_DIR=$XCODE/Contents/Developer" >> "$GITHUB_ENV"
 
       - name: Build IPA (local)
         run: eas build --platform ios --profile production --local --non-interactive --output build/pentaguin.ipa
@@ -49,7 +62,7 @@ jobs:
 
   submit:
     needs: build
-    runs-on: macos-15
+    runs-on: macos-26
     timeout-minutes: 30
     # Environnement GitHub « release » : ajouter une approbation manuelle requise
     # (Settings → Environments → release → Required reviewers).
