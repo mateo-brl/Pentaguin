@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -91,7 +91,6 @@ export default function PaywallScreen() {
           </ThemedText>
         </Pressable>
 
-        <Text style={styles.mascot}>🐧✨</Text>
         <ThemedText type="subtitle" style={styles.title}>
           {t.paywall.title}
         </ThemedText>
@@ -162,9 +161,6 @@ const styles = StyleSheet.create({
   },
   close: {
     alignSelf: 'flex-end',
-  },
-  mascot: {
-    fontSize: 56,
   },
   title: {
     textAlign: 'center',
