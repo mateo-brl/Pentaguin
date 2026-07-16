@@ -21,10 +21,20 @@ Backend minimal hébergé sur mateobrl.fr : Node 22 pur (**zéro dépendance npm
 - Données : `/var/lib/pentaguin/pentaguin.db` (SQLite WAL, service en `DynamicUser` + `StateDirectory`).
 - Vhost nginx interne : `127.0.0.1:4008` (`pentaguin.conf`).
 
-## Exposition publique — reste à faire (une fois)
+## Exposition publique — IP directe (choix v1.1)
 
-1. **DNS (Infomaniak)** : A `pentaguin.mateobrl.fr` → `82.66.208.23`.
-2. **SafeLine** (console WAF) : ajouter le site `pentaguin.mateobrl.fr` avec upstream `http://127.0.0.1:4008` + certificat (comme les autres sous-domaines).
+Base URL de l'app : **`http://82.66.208.23:8081`** (HTTP assumé : aucune donnée
+sensible — UUID anonyme, pseudo, points ; nécessite l'exception ATS
+`NSAllowsArbitraryLoads` côté iOS). nginx écoute en public sur 8081 (ufw ouvert).
+
+**Reste une action (une fois)** : redirection de port sur la Freebox —
+Freebox OS → Paramètres → Mode avancé → Redirections de ports →
+TCP 8081 → 8081 vers l'IP locale du serveur.
+
+Bascule future en domaine + HTTPS (recommandée avant l'App Store public) :
+DNS `pentaguin.mateobrl.fr` chez Infomaniak + site SafeLine → upstream
+`http://127.0.0.1:4008` (vhost déjà en place) ; côté app, simple changement
+d'URL poussé en OTA.
 
 ## Côté app (à venir)
 
