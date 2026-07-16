@@ -1,7 +1,7 @@
 import Constants from 'expo-constants';
-import { useFocusEffect } from 'expo-router';
+import { Link, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/themed-text';
@@ -49,7 +49,15 @@ export default function ProfileScreen() {
           </ThemedView>
         </View>
 
-        {/* TODO(M8) : progression par domaine, historique des tentatives */}
+        <Link href="/leaderboard" asChild>
+          <Pressable>
+            <ThemedView type="backgroundElement" style={styles.card}>
+              <ThemedText type="smallBold">{t.profile.leaderboard}</ThemedText>
+            </ThemedView>
+          </Pressable>
+        </Link>
+
+        {/* TODO : progression par domaine, historique des tentatives */}
         <ThemedView type="backgroundElement" style={styles.card}>
           <ThemedText type="small" themeColor="textSecondary">
             {t.profile.statsSoon}
