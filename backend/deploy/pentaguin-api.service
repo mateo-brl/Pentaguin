@@ -1,0 +1,19 @@
+# /etc/systemd/system/pentaguin-api.service
+[Unit]
+Description=API Pentaguin (classement et stats)
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/node --experimental-sqlite /opt/pentaguin-api/server.mjs
+Environment=PORT=3002
+Environment=DB_PATH=/var/lib/pentaguin/pentaguin.db
+DynamicUser=yes
+StateDirectory=pentaguin
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+
+[Install]
+WantedBy=multi-user.target
