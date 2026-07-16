@@ -1,0 +1,49 @@
+[
+  {
+    "id": "l-d1-001",
+    "domainId": "d1",
+    "title": "La triade CIA",
+    "order": 1,
+    "estMinutes": 5,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "La **triade CIA** — *Confidentiality, Integrity, Availability* — est le socle de toute la sécurité de l'information. Chaque mesure de sécurité que tu rencontreras (chiffrement, hachage, redondance…) sert au moins l'un de ces trois objectifs.\n\n- **Confidentiality** : seules les personnes autorisées accèdent à l'information (chiffrement, contrôle d'accès).\n- **Integrity** : l'information n'est ni altérée ni falsifiée (hachage, signatures numériques).\n- **Availability** : l'information reste accessible quand on en a besoin (redondance, sauvegardes, plans de continuité)."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          { "term": "Confidentiality", "def": "Confidentialité — l'information n'est lisible que par les personnes autorisées." },
+          { "term": "Integrity", "def": "Intégrité — l'information ne peut pas être modifiée sans que cela se détecte." },
+          { "term": "Availability", "def": "Disponibilité — l'information et les services restent accessibles." },
+          { "term": "Non-repudiation", "def": "Non-répudiation — l'auteur d'une action ne peut pas la nier (hors triade, mais souvent citée avec elle)." }
+        ]
+      },
+      {
+        "type": "callout",
+        "variant": "exam",
+        "md": "À l'examen, repère le **verbe** dans l'énoncé : chiffrer → confidentialité · hacher, signer → intégrité · redonder, sauvegarder → disponibilité · prouver l'auteur d'une action → non-répudiation."
+      },
+      { "type": "quickcheck", "questionId": "q-d1-001" }
+    ]
+  },
+  {
+    "id": "l-d1-002",
+    "domainId": "d1",
+    "title": "Le modèle AAA",
+    "order": 2,
+    "estMinutes": 4,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "Le modèle **AAA** décrit les trois étapes du contrôle d'accès :\n\n1. **Authentication** — prouver son identité (mot de passe, MFA, certificat).\n2. **Authorization** — déterminer ce que l'identité a le droit de faire (rôles, permissions).\n3. **Accounting** — tracer qui a fait quoi et quand (journaux, audit).\n\nNe confonds pas *authentification* (qui es-tu ?) et *autorisation* (qu'as-tu le droit de faire ?) : c'est un piège classique."
+      },
+      {
+        "type": "callout",
+        "variant": "tip",
+        "md": "Mnémotechnique : à l'entrée d'une salle de concert, on vérifie ton billet nominatif et ta pièce d'identité (*authentication*), ton bracelet donne accès à certaines zones (*authorization*), et les caméras enregistrent les passages (*accounting*)."
+      },
+      { "type": "quickcheck", "questionId": "q-d1-002" }
+    ]
+  }
+]
