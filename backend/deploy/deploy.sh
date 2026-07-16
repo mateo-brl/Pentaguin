@@ -9,6 +9,7 @@ APP_DIR=/opt/pentaguin-api
 rsync -az --delete -e ssh backend/server.mjs "$HOST:$APP_DIR/"
 rsync -az -e ssh backend/deploy/pentaguin-api.service "$HOST:/etc/systemd/system/"
 rsync -az -e ssh backend/deploy/nginx-pentaguin.conf "$HOST:/etc/nginx/sites-available/pentaguin.conf"
+rsync -az -e ssh backend/deploy/nginx-pentaguin-limits.conf "$HOST:/etc/nginx/conf.d/pentaguin-limits.conf"
 
 ssh "$HOST" '
   set -e

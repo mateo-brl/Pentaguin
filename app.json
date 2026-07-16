@@ -9,7 +9,12 @@
     "scheme": "pentaguin",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "bundleIdentifier": "fr.mateobrl.pentaguin"
+      "bundleIdentifier": "fr.mateobrl.pentaguin",
+      "infoPlist": {
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true
+        }
+      }
     },
     "android": {
       "package": "fr.mateobrl.pentaguin",

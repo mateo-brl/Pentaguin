@@ -110,6 +110,12 @@ export function addDailyXp(xp: number): void {
   );
 }
 
+export function getDailyActivity(): { date: string; xp: number }[] {
+  return getDb().getAllSync<{ date: string; xp: number }>(
+    'SELECT date, xp FROM daily_activity ORDER BY date',
+  );
+}
+
 export function getActivityDates(): string[] {
   const rows = getDb().getAllSync<{ date: string }>(
     'SELECT date FROM daily_activity ORDER BY date',
