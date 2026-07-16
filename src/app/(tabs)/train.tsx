@@ -1,4 +1,5 @@
-import { StyleSheet } from 'react-native';
+import { Link } from 'expo-router';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/themed-text';
@@ -11,11 +12,11 @@ export default function TrainScreen() {
   const t = useStrings();
   const theme = useTheme();
 
-  // TODO(M3/M4) : brancher quiz, examen blanc et revue d'erreurs.
+  // TODO(M4) : brancher l'examen blanc et la revue d'erreurs.
   const items = [
-    { key: 'quiz', title: t.train.quiz, desc: t.train.quizDesc },
-    { key: 'exam', title: t.train.exam, desc: t.train.examDesc },
-    { key: 'mistakes', title: t.train.mistakes, desc: t.train.mistakesDesc },
+    { key: 'quiz', title: t.train.quiz, desc: t.train.quizDesc, href: '/quiz/setup' as const },
+    { key: 'exam', title: t.train.exam, desc: t.train.examDesc, href: null },
+    { key: 'mistakes', title: t.train.mistakes, desc: t.train.mistakesDesc, href: null },
   ];
 
   return (
@@ -24,21 +25,36 @@ export default function TrainScreen() {
         <ThemedText type="subtitle" style={styles.header}>
           {t.tabs.train}
         </ThemedText>
-        {items.map((item) => (
-          <ThemedView key={item.key} type="backgroundElement" style={styles.card}>
-            <ThemedView type="backgroundElement" style={styles.cardHeader}>
-              <ThemedText type="smallBold">{item.title}</ThemedText>
-              <ThemedText
-                type="small"
-                style={[styles.chip, { backgroundColor: theme.accentSoft, color: theme.accent }]}>
-                {t.train.comingSoon}
+        {items.map((item) => {
+          const card = (
+            <ThemedView type="backgroundElement" style={styles.card}>
+              <View style={styles.cardHeader}>
+                <ThemedText type="smallBold">{item.title}</ThemedText>
+                {!item.href && (
+                  <ThemedText
+                    type="small"
+                    style={[
+                      styles.chip,
+                      { backgroundColor: theme.accentSoft, color: theme.accent },
+                    ]}>
+                    {t.train.comingSoon}
+                  </ThemedText>
+                )}
+              </View>
+              <ThemedText type="small" themeColor="textSecondary">
+                {item.desc}
               </ThemedText>
             </ThemedView>
-            <ThemedText type="small" themeColor="textSecondary">
-              {item.desc}
-            </ThemedText>
-          </ThemedView>
-        ))}
+          );
+          if (!item.href) {
+            return <View key={item.key}>{card}</View>;
+          }
+          return (
+            <Link key={item.key} href={item.href} asChild>
+              <Pressable>{card}</Pressable>
+            </Link>
+          );
+        })}
       </SafeAreaView>
     </ThemedView>
   );
