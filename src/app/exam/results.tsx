@@ -1,4 +1,5 @@
 import { Redirect, router, Stack } from 'expo-router';
+import { useEffect } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View, type DimensionValue } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
@@ -6,6 +7,7 @@ import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
 import { getDefaultPack } from '@/content';
 import { useExamSession } from '@/features/exam/session';
+import { maybeProposeStreakReminder } from '@/features/gamification/reminders';
 import { isAnswerCorrect, scorePct } from '@/features/quiz/logic';
 import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
@@ -16,6 +18,10 @@ export default function ExamResultsScreen() {
   const t = useStrings();
   const theme = useTheme();
   const { questions, selections, finished } = useExamSession();
+
+  useEffect(() => {
+    if (useExamSession.getState().finished) void maybeProposeStreakReminder();
+  }, []);
 
   if (!finished || questions.length === 0) return <Redirect href="/exam" />;
 

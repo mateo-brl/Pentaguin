@@ -17,6 +17,23 @@ export function scorePct(correctCount: number, total: number): number {
 
 export type Rng = () => number;
 
+/** Générateur pseudo-aléatoire déterministe (LCG) — tirages rejouables (défi du jour, tests). */
+export function seededRng(seed: number): Rng {
+  let state = seed % 233280;
+  return () => {
+    state = (state * 9301 + 49297) % 233280;
+    return state / 233280;
+  };
+}
+
+export function hashString(value: string): number {
+  let hash = 0;
+  for (let i = 0; i < value.length; i++) {
+    hash = (hash * 31 + value.charCodeAt(i)) >>> 0;
+  }
+  return hash;
+}
+
 /** Fisher-Yates, rng injectable pour les tests. */
 export function shuffle<T>(items: readonly T[], rng: Rng = Math.random): T[] {
   const result = [...items];

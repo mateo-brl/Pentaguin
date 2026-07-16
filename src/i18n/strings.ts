@@ -16,7 +16,9 @@ const fr = {
     days: 'jour(s)',
     continueCta: 'Commencer à apprendre',
     dailyChallenge: 'Défi du jour',
-    comingSoon: 'Bientôt disponible',
+    challengeDesc: '5 questions rapides, tirage du jour',
+    challengeDone: 'Défi du jour réussi ✓',
+    streakRecord: 'Record',
   },
   learn: {
     lessons: 'leçon(s)',
@@ -92,8 +94,14 @@ const fr = {
     mistakesDesc: 'Rejoue les questions que tu as ratées.',
     comingSoon: 'Bientôt',
   },
+  notifications: {
+    reminderTitle: '🐧 Ta série t’attend !',
+    reminderBody: 'Cinq minutes de révision pour garder ta série en vie.',
+  },
   profile: {
     statsSoon: 'Tes statistiques de progression arriveront ici.',
+    xpTotal: 'XP au total',
+    bestStreak: 'Meilleure série',
     version: 'Version',
     disclaimer:
       'Pentaguin est une application indépendante d’entraînement. CompTIA®, Security+® et les autres marques citées appartiennent à leurs propriétaires respectifs ; aucune affiliation ni approbation n’est revendiquée.',
@@ -115,7 +123,9 @@ const en: Strings = {
     days: 'day(s)',
     continueCta: 'Start learning',
     dailyChallenge: 'Daily challenge',
-    comingSoon: 'Coming soon',
+    challengeDesc: '5 quick questions, today’s picks',
+    challengeDone: 'Daily challenge done ✓',
+    streakRecord: 'Best',
   },
   learn: {
     lessons: 'lesson(s)',
@@ -191,8 +201,14 @@ const en: Strings = {
     mistakesDesc: 'Replay the questions you got wrong.',
     comingSoon: 'Soon',
   },
+  notifications: {
+    reminderTitle: '🐧 Your streak is waiting!',
+    reminderBody: 'Five minutes of review to keep it alive.',
+  },
   profile: {
     statsSoon: 'Your progress statistics will appear here.',
+    xpTotal: 'Total XP',
+    bestStreak: 'Best streak',
     version: 'Version',
     disclaimer:
       'Pentaguin is an independent training application. CompTIA®, Security+® and other cited trademarks belong to their respective owners; no affiliation or endorsement is claimed.',
@@ -211,6 +227,11 @@ export function setLocale(locale: Locale) {
 
 export function getLocale(): Locale {
   return currentLocale;
+}
+
+/** Accès hors composant React (ex. contenu d'une notification). */
+export function getStrings(): Strings {
+  return dictionaries[currentLocale];
 }
 
 export function useStrings(): Strings {

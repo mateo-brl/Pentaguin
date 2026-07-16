@@ -100,12 +100,40 @@ export function getWrongQuestionIds(packId: string): string[] {
   return rows.map((row) => row.question_id);
 }
 
-// — Activité quotidienne (streak, jalon M5) ----------------------------------
+// — Activité quotidienne (streak) ---------------------------------------------
 
 export function addDailyXp(xp: number): void {
   getDb().runSync(
     `INSERT INTO daily_activity (date, xp) VALUES (?, ?)
      ON CONFLICT(date) DO UPDATE SET xp = xp + excluded.xp`,
     [localDateKey(), xp],
+  );
+}
+
+export function getActivityDates(): string[] {
+  const rows = getDb().getAllSync<{ date: string }>(
+    'SELECT date FROM daily_activity ORDER BY date',
+  );
+  return rows.map((row) => row.date);
+}
+
+export function getTotalXp(): number {
+  const row = getDb().getFirstSync<{ total: number }>(
+    'SELECT COALESCE(SUM(xp), 0) AS total FROM daily_activity',
+  );
+  return row?.total ?? 0;
+}
+
+// — Clé/valeur ----------------------------------------------------------------
+
+export function getKv(key: string): string | null {
+  const row = getDb().getFirstSync<{ value: string }>('SELECT value FROM kv WHERE key = ?', [key]);
+  return row?.value ?? null;
+}
+
+export function setKv(key: string, value: string): void {
+  getDb().runSync(
+    'INSERT INTO kv (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value',
+    [key, value],
   );
 }
