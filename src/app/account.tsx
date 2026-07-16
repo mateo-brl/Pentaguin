@@ -2,10 +2,13 @@ import * as AppleAuthentication from 'expo-apple-authentication';
 import * as Google from 'expo-auth-session/providers/google';
 import { Stack } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Alert, Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
+import { Alert, ScrollView, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import { Spacing } from '@/constants/theme';
 import {
   ApiError,
@@ -21,7 +24,6 @@ import {
 import { clearToken, getToken, setToken } from '@/features/account/token';
 import { getDeviceId, resetLeaderboardIdentity } from '@/features/leaderboard/identity';
 import { useColorScheme } from '@/hooks/use-color-scheme';
-import { useTheme } from '@/hooks/use-theme';
 import { useStrings, type Strings } from '@/i18n/strings';
 
 const GOOGLE_IOS_CLIENT_ID = process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID ?? '';
@@ -43,7 +45,6 @@ function GoogleSignInButton({
   onSession: (session: Session) => void;
   onError: () => void;
 }) {
-  const theme = useTheme();
   const t = useStrings();
   const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
     iosClientId: GOOGLE_IOS_CLIENT_ID,
@@ -57,18 +58,17 @@ function GoogleSignInButton({
   }, [response, onSession, onError]);
 
   return (
-    <Pressable
-      disabled={!request}
+    <Button
+      label={t.account.google}
       onPress={() => promptAsync()}
-      style={[styles.button, { backgroundColor: theme.backgroundElement }]}>
-      <ThemedText type="smallBold">{t.account.google}</ThemedText>
-    </Pressable>
+      variant="secondary"
+      disabled={!request}
+    />
   );
 }
 
 export default function AccountScreen() {
   const t = useStrings();
-  const theme = useTheme();
   const scheme = useColorScheme();
 
   const [token, setTokenState] = useState<string | null | undefined>(undefined);
@@ -176,28 +176,22 @@ export default function AccountScreen() {
       <ScrollView contentContainerStyle={styles.content}>
         {token && me ? (
           <>
-            <ThemedView type="backgroundElement" style={styles.card}>
-              <ThemedText type="smallBold">{t.account.loggedTitle}</ThemedText>
-              <ThemedText type="small" themeColor="textSecondary">
+            <Card>
+              <ThemedText type="label">{t.account.loggedTitle}</ThemedText>
+              <ThemedText type="smallBold">
                 {me.email ??
-                  (me.providers.includes('apple') ? t.account.appleAccount : t.account.googleAccount)}
+                  (me.providers.includes('apple')
+                    ? t.account.appleAccount
+                    : t.account.googleAccount)}
               </ThemedText>
               {me.pseudo && (
                 <ThemedText type="small" themeColor="textSecondary">
                   {me.pseudo} · {me.xpTotal} XP
                 </ThemedText>
               )}
-            </ThemedView>
-            <Pressable
-              onPress={logout}
-              style={[styles.button, { backgroundColor: theme.backgroundElement }]}>
-              <ThemedText type="smallBold">{t.account.logout}</ThemedText>
-            </Pressable>
-            <Pressable onPress={confirmDelete} style={styles.deleteLink}>
-              <ThemedText type="small" themeColor="danger">
-                {t.account.delete}
-              </ThemedText>
-            </Pressable>
+            </Card>
+            <Button label={t.account.logout} onPress={logout} variant="secondary" />
+            <Button label={t.account.delete} onPress={confirmDelete} variant="danger" />
           </>
         ) : (
           <>
@@ -205,29 +199,19 @@ export default function AccountScreen() {
               {t.account.intro}
             </ThemedText>
 
-            <TextInput
+            <Input
               value={email}
               onChangeText={setEmail}
               placeholder={t.account.emailPlaceholder}
-              placeholderTextColor={theme.textSecondary}
               autoCapitalize="none"
               autoCorrect={false}
               keyboardType="email-address"
-              style={[
-                styles.input,
-                { backgroundColor: theme.backgroundElement, color: theme.text },
-              ]}
             />
-            <TextInput
+            <Input
               value={password}
               onChangeText={setPassword}
               placeholder={t.account.passwordPlaceholder}
-              placeholderTextColor={theme.textSecondary}
               secureTextEntry
-              style={[
-                styles.input,
-                { backgroundColor: theme.backgroundElement, color: theme.text },
-              ]}
             />
             {error && (
               <ThemedText type="small" themeColor="danger">
@@ -235,26 +219,17 @@ export default function AccountScreen() {
               </ThemedText>
             )}
 
-            <Pressable
-              disabled={busy}
-              onPress={() => submit('login')}
-              style={[styles.button, { backgroundColor: theme.accent, opacity: busy ? 0.6 : 1 }]}>
-              <ThemedText type="smallBold" style={{ color: theme.onAccent }}>
-                {t.account.login}
-              </ThemedText>
-            </Pressable>
-            <Pressable
-              disabled={busy}
+            <Button label={t.account.login} onPress={() => submit('login')} disabled={busy} />
+            <Button
+              label={t.account.register}
               onPress={() => submit('register')}
-              style={[styles.button, { backgroundColor: theme.backgroundElement }]}>
-              <ThemedText type="smallBold">{t.account.register}</ThemedText>
-            </Pressable>
+              variant="secondary"
+              disabled={busy}
+            />
 
             {(appleAvailable || GOOGLE_IOS_CLIENT_ID) && (
               <View style={styles.divider}>
-                <ThemedText type="small" themeColor="textSecondary">
-                  {t.account.or}
-                </ThemedText>
+                <ThemedText type="label">{t.account.or}</ThemedText>
               </View>
             )}
 
@@ -266,7 +241,7 @@ export default function AccountScreen() {
                     ? AppleAuthentication.AppleAuthenticationButtonStyle.WHITE
                     : AppleAuthentication.AppleAuthenticationButtonStyle.BLACK
                 }
-                cornerRadius={Spacing.three}
+                cornerRadius={14}
                 style={styles.appleButton}
                 onPress={handleApple}
               />
@@ -293,30 +268,11 @@ const styles = StyleSheet.create({
     padding: Spacing.four,
     gap: Spacing.three,
   },
-  card: {
-    borderRadius: Spacing.three,
-    padding: Spacing.three,
-    gap: Spacing.one,
-  },
-  input: {
-    borderRadius: Spacing.two,
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.three,
-    fontSize: 16,
-  },
-  button: {
-    borderRadius: Spacing.three,
-    paddingVertical: Spacing.three,
-    alignItems: 'center',
-  },
-  appleButton: {
-    height: 48,
-  },
   divider: {
     alignItems: 'center',
+    paddingVertical: Spacing.one,
   },
-  deleteLink: {
-    alignItems: 'center',
-    paddingVertical: Spacing.two,
+  appleButton: {
+    height: 52,
   },
 });

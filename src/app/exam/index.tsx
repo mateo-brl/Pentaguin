@@ -1,17 +1,21 @@
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { Link, Stack } from 'expo-router';
-import { FlatList, Pressable, StyleSheet } from 'react-native';
+import { FlatList, Pressable, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { Card } from '@/components/ui/card';
 import { Spacing } from '@/constants/theme';
 import { getDefaultPack } from '@/content';
 import { isUnlockedNow, packEntitlement, useEntitlements } from '@/features/monetization';
+import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
 
 const pack = getDefaultPack();
 
 export default function ExamListScreen() {
   const t = useStrings();
+  const theme = useTheme();
   const entitlements = useEntitlements();
 
   return (
@@ -31,22 +35,28 @@ export default function ExamListScreen() {
             { kind: 'exam', examIndex: index, entitlement: packEntitlement(pack.id) },
             entitlements,
           );
-          const card = (
-            <ThemedView type="backgroundElement" style={[styles.card, !unlocked && styles.locked]}>
-              <ThemedText>{item.title}</ThemedText>
-              <ThemedText type="small" themeColor="textSecondary">
-                {unlocked
-                  ? `${item.questionCount} ${t.exam.questions} · ${item.durationMin} ${t.domain.minutes}`
-                  : t.exam.locked}
-              </ThemedText>
-            </ThemedView>
-          );
           const href = unlocked
             ? ({ pathname: '/exam/[id]', params: { id: item.id } } as const)
             : ('/paywall' as const);
           return (
             <Link href={href} asChild>
-              <Pressable>{card}</Pressable>
+              <Pressable style={({ pressed }) => pressed && styles.pressed}>
+                <Card style={[styles.card, !unlocked && styles.locked]}>
+                  <View style={styles.body}>
+                    <ThemedText type="smallBold">{item.title}</ThemedText>
+                    <ThemedText type="mono" themeColor="textSecondary" style={styles.meta}>
+                      {unlocked
+                        ? `${item.questionCount} ${t.exam.questions} · ${item.durationMin} ${t.domain.minutes}`
+                        : t.exam.locked}
+                    </ThemedText>
+                  </View>
+                  <Ionicons
+                    name={unlocked ? 'chevron-forward' : 'lock-closed-outline'}
+                    size={18}
+                    color={theme.textSecondary}
+                  />
+                </Card>
+              </Pressable>
             </Link>
           );
         }}
@@ -66,13 +76,22 @@ const styles = StyleSheet.create({
   intro: {
     marginBottom: Spacing.two,
   },
+  pressed: {
+    opacity: 0.85,
+  },
   card: {
-    borderRadius: Spacing.three,
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.three,
-    gap: Spacing.half,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.three,
   },
   locked: {
     opacity: 0.6,
+  },
+  body: {
+    flex: 1,
+    gap: 2,
+  },
+  meta: {
+    fontSize: 13,
   },
 });

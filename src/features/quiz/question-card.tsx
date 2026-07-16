@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
+import { Button } from '@/components/ui/button';
 import { Spacing } from '@/constants/theme';
 import type { Question } from '@/content';
 import { useTheme } from '@/hooks/use-theme';
@@ -56,7 +56,7 @@ export function QuestionCard({ question, onAnswered }: Props) {
 
   return (
     <View style={styles.container}>
-      <ThemedText>{question.stem}</ThemedText>
+      <ThemedText style={styles.stem}>{question.stem}</ThemedText>
       {question.type === 'multi' && (
         <ThemedText type="small" themeColor="textSecondary">
           {t.quiz.multiHint}
@@ -68,24 +68,32 @@ export function QuestionCard({ question, onAnswered }: Props) {
           const isSelected = selected.includes(choice.id);
           const isExpected = question.correct.includes(choice.id);
           let background: string = theme.backgroundElement;
-          let border: string = theme.backgroundElement;
+          let border: string = theme.border;
+          let letterColor: string = theme.textSecondary;
           if (validated && isExpected) {
             background = theme.successSoft;
             border = theme.success;
+            letterColor = theme.success;
           } else if (validated && isSelected && !isExpected) {
             background = theme.dangerSoft;
             border = theme.danger;
+            letterColor = theme.danger;
           } else if (isSelected) {
             background = theme.backgroundSelected;
             border = theme.accent;
+            letterColor = theme.accent;
           }
           return (
             <Pressable
               key={choice.id}
               disabled={validated}
               onPress={() => toggle(choice.id)}
-              style={[styles.choice, { backgroundColor: background, borderColor: border }]}>
-              <ThemedText type="smallBold" themeColor="textSecondary" style={styles.choiceLetter}>
+              style={({ pressed }) => [
+                styles.choice,
+                { backgroundColor: background, borderColor: border },
+                pressed && !validated && styles.pressed,
+              ]}>
+              <ThemedText type="mono" style={[styles.choiceLetter, { color: letterColor }]}>
                 {choice.id.toUpperCase()}
               </ThemedText>
               <ThemedText type="small" style={styles.choiceText}>
@@ -97,30 +105,18 @@ export function QuestionCard({ question, onAnswered }: Props) {
       </View>
 
       {!validated ? (
-        <Pressable
-          disabled={selected.length === 0}
-          onPress={validate}
-          style={[
-            styles.validate,
-            { backgroundColor: selected.length === 0 ? theme.backgroundSelected : theme.accent },
-          ]}>
-          <ThemedText
-            type="smallBold"
-            style={{ color: selected.length === 0 ? theme.textSecondary : theme.onAccent }}>
-            {t.quiz.validate}
-          </ThemedText>
-        </Pressable>
+        <Button label={t.quiz.validate} onPress={validate} disabled={selected.length === 0} />
       ) : (
-        <ThemedView
+        <View
           style={[
             styles.feedback,
             { backgroundColor: correct ? theme.successSoft : theme.dangerSoft },
           ]}>
-          <ThemedText type="smallBold" style={{ color: correct ? theme.success : theme.danger }}>
+          <ThemedText type="label" style={{ color: correct ? theme.success : theme.danger }}>
             {correct ? t.quiz.correct : t.quiz.incorrect}
           </ThemedText>
           <ThemedText type="small">{question.explanation}</ThemedText>
-        </ThemedView>
+        </View>
       )}
     </View>
   );
@@ -130,31 +126,33 @@ const styles = StyleSheet.create({
   container: {
     gap: Spacing.three,
   },
+  stem: {
+    fontWeight: 500,
+  },
   choices: {
     gap: Spacing.two,
   },
   choice: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: Spacing.two,
-    borderRadius: Spacing.two,
+    gap: Spacing.three,
+    borderRadius: 12,
     borderWidth: 1,
     paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.three,
+    paddingVertical: 14,
+  },
+  pressed: {
+    opacity: 0.85,
   },
   choiceLetter: {
-    minWidth: 18,
+    fontSize: 13,
+    minWidth: 16,
   },
   choiceText: {
     flex: 1,
   },
-  validate: {
-    borderRadius: Spacing.three,
-    paddingVertical: Spacing.three,
-    alignItems: 'center',
-  },
   feedback: {
-    borderRadius: Spacing.two,
+    borderRadius: 12,
     padding: Spacing.three,
     gap: Spacing.one,
   },

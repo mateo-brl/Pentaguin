@@ -1,9 +1,11 @@
 import { Redirect, router, Stack } from 'expo-router';
 import { useEffect } from 'react';
-import { Pressable, ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { Spacing } from '@/constants/theme';
 import { maybeProposeStreakReminder } from '@/features/gamification/reminders';
 import { scorePct } from '@/features/quiz/logic';
@@ -44,41 +46,34 @@ export default function QuizResultsScreen() {
         options={{ headerShown: true, title: t.quiz.resultsTitle, headerBackVisible: false }}
       />
       <ScrollView contentContainerStyle={styles.content}>
-        <ThemedView style={styles.hero}>
-          <ThemedText type="title" style={{ color: happy ? theme.success : theme.streak }}>
+        <View style={styles.hero}>
+          <ThemedText type="label">{t.quiz.resultsTitle}</ThemedText>
+          <ThemedText type="stat" style={{ color: happy ? theme.success : theme.streak, fontSize: 56, lineHeight: 62 }}>
             {pct} %
           </ThemedText>
           <ThemedText type="small" themeColor="textSecondary">
             {correctCount}/{questions.length} {t.quiz.correctCount}
           </ThemedText>
-        </ThemedView>
+        </View>
 
         {wrong.length > 0 && (
           <>
-            <ThemedText type="smallBold" themeColor="danger">
+            <ThemedText type="label" themeColor="danger">
               {t.quiz.review} ({wrong.length})
             </ThemedText>
             {wrong.map((question) => (
-              <ThemedView key={question.id} type="backgroundElement" style={styles.reviewCard}>
-                <ThemedText type="small">{question.stem}</ThemedText>
+              <Card key={question.id}>
+                <ThemedText type="smallBold">{question.stem}</ThemedText>
                 <ThemedText type="small" themeColor="textSecondary">
                   {question.explanation}
                 </ThemedText>
-              </ThemedView>
+              </Card>
             ))}
           </>
         )}
 
-        <Pressable onPress={replay} style={[styles.button, { backgroundColor: theme.accent }]}>
-          <ThemedText type="smallBold" style={{ color: theme.onAccent }}>
-            {t.quiz.replay}
-          </ThemedText>
-        </Pressable>
-        <Pressable
-          onPress={backToTrain}
-          style={[styles.button, { backgroundColor: theme.backgroundElement }]}>
-          <ThemedText type="smallBold">{t.quiz.backTrain}</ThemedText>
-        </Pressable>
+        <Button label={t.quiz.replay} onPress={replay} />
+        <Button label={t.quiz.backTrain} onPress={backToTrain} variant="secondary" />
       </ScrollView>
     </ThemedView>
   );
@@ -95,16 +90,6 @@ const styles = StyleSheet.create({
   hero: {
     alignItems: 'center',
     gap: Spacing.two,
-    paddingVertical: Spacing.four,
-  },
-  reviewCard: {
-    borderRadius: Spacing.two,
-    padding: Spacing.three,
-    gap: Spacing.one,
-  },
-  button: {
-    borderRadius: Spacing.three,
-    paddingVertical: Spacing.three,
-    alignItems: 'center',
+    paddingVertical: Spacing.five,
   },
 });

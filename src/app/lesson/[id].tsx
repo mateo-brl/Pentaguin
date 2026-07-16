@@ -1,9 +1,10 @@
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
-import { Pressable, ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { Button } from '@/components/ui/button';
 import { XP } from '@/config/gamification';
 import { Spacing } from '@/constants/theme';
 import { getDefaultPack } from '@/content';
@@ -39,7 +40,7 @@ export default function LessonScreen() {
     <ThemedView style={styles.container}>
       <Stack.Screen options={{ headerShown: true, title: lesson.title }} />
       <ScrollView contentContainerStyle={styles.content}>
-        <ThemedText type="small" themeColor="textSecondary">
+        <ThemedText type="mono" themeColor="textSecondary" style={styles.meta}>
           {lesson.estMinutes} {t.domain.minutes}
         </ThemedText>
 
@@ -56,17 +57,13 @@ export default function LessonScreen() {
         ))}
 
         {completed ? (
-          <ThemedView style={[styles.done, { backgroundColor: theme.successSoft }]}>
+          <View style={[styles.done, { backgroundColor: theme.successSoft }]}>
             <ThemedText type="smallBold" style={{ color: theme.success }}>
               {t.lesson.done}
             </ThemedText>
-          </ThemedView>
+          </View>
         ) : (
-          <Pressable onPress={markDone} style={[styles.done, { backgroundColor: theme.accent }]}>
-            <ThemedText type="smallBold" style={{ color: theme.onAccent }}>
-              {t.lesson.markDone}
-            </ThemedText>
-          </Pressable>
+          <Button label={t.lesson.markDone} onPress={markDone} style={styles.doneButton} />
         )}
       </ScrollView>
     </ThemedView>
@@ -81,10 +78,17 @@ const styles = StyleSheet.create({
     padding: Spacing.four,
     gap: Spacing.three,
   },
+  meta: {
+    fontSize: 13,
+  },
   done: {
-    borderRadius: Spacing.three,
-    paddingVertical: Spacing.three,
+    borderRadius: 14,
+    height: 52,
     alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: Spacing.two,
+  },
+  doneButton: {
     marginTop: Spacing.two,
   },
 });

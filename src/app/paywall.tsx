@@ -1,9 +1,12 @@
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { purchasesConfig } from '@/config/monetization';
 import { Spacing } from '@/constants/theme';
 import { getDefaultPack } from '@/content';
@@ -86,51 +89,45 @@ export default function PaywallScreen() {
     <ThemedView style={styles.container}>
       <ScrollView contentContainerStyle={styles.content}>
         <Pressable onPress={() => router.back()} style={styles.close} hitSlop={Spacing.two}>
-          <ThemedText type="smallBold" themeColor="textSecondary">
-            ✕
-          </ThemedText>
+          <Ionicons name="close" size={22} color={theme.textSecondary} />
         </Pressable>
 
-        <ThemedText type="subtitle" style={styles.title}>
+        <ThemedText type="title" style={styles.title}>
           {t.paywall.title}
         </ThemedText>
 
         {isPro ? (
-          <ThemedView style={[styles.proBadge, { backgroundColor: theme.successSoft }]}>
+          <Card background={theme.successSoft} style={styles.proBadge}>
             <ThemedText type="smallBold" style={{ color: theme.success }}>
               {t.paywall.alreadyPro}
             </ThemedText>
-          </ThemedView>
+          </Card>
         ) : (
           <>
-            <ThemedText type="small" themeColor="textSecondary">
+            <ThemedText type="small" themeColor="textSecondary" style={styles.pitch}>
               {t.paywall.pitch}
             </ThemedText>
-            <View style={styles.bullets}>
+
+            <Card style={styles.bullets}>
               {bullets.map((bullet) => (
-                <ThemedText key={bullet} type="small">
-                  ✓ {bullet}
-                </ThemedText>
+                <View key={bullet} style={styles.bullet}>
+                  <Ionicons name="checkmark-circle" size={18} color={theme.accent} />
+                  <ThemedText type="small" style={styles.bulletText}>
+                    {bullet}
+                  </ThemedText>
+                </View>
               ))}
-            </View>
-            <ThemedText type="small" themeColor="textSecondary">
+            </Card>
+
+            <ThemedText type="small" themeColor="textSecondary" style={styles.oneTime}>
               {t.paywall.oneTime}
             </ThemedText>
 
-            <Pressable
-              disabled={!offer || busy}
+            <Button
+              label={`${t.paywall.buy}${offer ? ` · ${offer.priceString}` : ''}`}
               onPress={buy}
-              style={[
-                styles.buy,
-                { backgroundColor: offer && !busy ? theme.accent : theme.backgroundSelected },
-              ]}>
-              <ThemedText
-                type="smallBold"
-                style={{ color: offer && !busy ? theme.onAccent : theme.textSecondary }}>
-                {t.paywall.buy}
-                {offer ? ` · ${offer.priceString}` : ''}
-              </ThemedText>
-            </Pressable>
+              disabled={!offer || busy}
+            />
 
             {!offer && (
               <ThemedText type="small" themeColor="textSecondary" style={styles.note}>
@@ -138,11 +135,7 @@ export default function PaywallScreen() {
               </ThemedText>
             )}
 
-            <Pressable disabled={busy} onPress={restore} style={styles.restore}>
-              <ThemedText type="small" themeColor="accent">
-                {t.paywall.restore}
-              </ThemedText>
-            </Pressable>
+            <Button label={t.paywall.restore} onPress={restore} variant="ghost" disabled={busy} />
           </>
         )}
       </ScrollView>
@@ -157,7 +150,6 @@ const styles = StyleSheet.create({
   content: {
     padding: Spacing.four,
     gap: Spacing.three,
-    alignItems: 'center',
   },
   close: {
     alignSelf: 'flex-end',
@@ -165,26 +157,28 @@ const styles = StyleSheet.create({
   title: {
     textAlign: 'center',
   },
+  pitch: {
+    textAlign: 'center',
+  },
   proBadge: {
-    borderRadius: Spacing.three,
-    paddingHorizontal: Spacing.four,
-    paddingVertical: Spacing.three,
+    alignItems: 'center',
+    borderColor: 'transparent',
   },
   bullets: {
     gap: Spacing.two,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.four,
   },
-  buy: {
-    alignSelf: 'stretch',
-    borderRadius: Spacing.three,
-    paddingVertical: Spacing.three,
+  bullet: {
+    flexDirection: 'row',
     alignItems: 'center',
+    gap: Spacing.two,
+  },
+  bulletText: {
+    flex: 1,
+  },
+  oneTime: {
+    textAlign: 'center',
   },
   note: {
     textAlign: 'center',
-  },
-  restore: {
-    paddingVertical: Spacing.two,
   },
 });
