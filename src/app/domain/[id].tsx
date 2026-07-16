@@ -1,9 +1,11 @@
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { Link, Stack, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { FlatList, Pressable, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { Card } from '@/components/ui/card';
 import { Spacing } from '@/constants/theme';
 import { getDefaultPack, getDomain, lessonsByDomain } from '@/content';
 import { getCompletedLessonIds } from '@/db/repositories';
@@ -56,26 +58,39 @@ export default function DomainScreen() {
           renderItem={({ item }) => {
             const isDone = completed.has(item.id);
             const card = (
-              <ThemedView type="backgroundElement" style={[styles.card, !unlocked && styles.locked]}>
-                <View style={styles.cardHeader}>
-                  <ThemedText style={styles.cardTitle}>{item.title}</ThemedText>
-                  {isDone && (
-                    <ThemedText type="smallBold" style={{ color: theme.success }}>
-                      ✓
+              <Card style={[styles.card, !unlocked && styles.locked]}>
+                <View
+                  style={[
+                    styles.status,
+                    { backgroundColor: isDone ? theme.successSoft : theme.backgroundSelected },
+                  ]}>
+                  {isDone ? (
+                    <Ionicons name="checkmark" size={16} color={theme.success} />
+                  ) : (
+                    <ThemedText type="mono" themeColor="textSecondary" style={styles.order}>
+                      {item.order}
                     </ThemedText>
                   )}
                 </View>
-                <ThemedText type="small" themeColor="textSecondary">
-                  {unlocked ? `${item.estMinutes} ${t.domain.minutes}` : t.lesson.locked}
-                </ThemedText>
-              </ThemedView>
+                <View style={styles.body}>
+                  <ThemedText type="smallBold">{item.title}</ThemedText>
+                  <ThemedText type="small" themeColor="textSecondary">
+                    {unlocked ? `${item.estMinutes} ${t.domain.minutes}` : t.lesson.locked}
+                  </ThemedText>
+                </View>
+                {unlocked ? (
+                  <Ionicons name="chevron-forward" size={18} color={theme.textSecondary} />
+                ) : (
+                  <Ionicons name="lock-closed-outline" size={16} color={theme.textSecondary} />
+                )}
+              </Card>
             );
             const href = unlocked
               ? ({ pathname: '/lesson/[id]', params: { id: item.id } } as const)
               : ('/paywall' as const);
             return (
               <Link href={href} asChild>
-                <Pressable>{card}</Pressable>
+                <Pressable style={({ pressed }) => pressed && styles.pressed}>{card}</Pressable>
               </Link>
             );
           }}
@@ -97,22 +112,29 @@ const styles = StyleSheet.create({
     padding: Spacing.four,
     gap: Spacing.two,
   },
+  pressed: {
+    opacity: 0.85,
+  },
   card: {
-    borderRadius: Spacing.three,
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.three,
-    gap: Spacing.half,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.three,
   },
   locked: {
     opacity: 0.6,
   },
-  cardHeader: {
-    flexDirection: 'row',
+  status: {
+    width: 32,
+    height: 32,
+    borderRadius: 10,
     alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: Spacing.two,
+    justifyContent: 'center',
   },
-  cardTitle: {
+  order: {
+    fontSize: 13,
+  },
+  body: {
     flex: 1,
+    gap: 2,
   },
 });

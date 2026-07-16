@@ -1,3 +1,4 @@
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { Link, router, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
@@ -5,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { Card } from '@/components/ui/card';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 import { getDefaultPack } from '@/content';
 import { getKv, localDateKey } from '@/db/repositories';
@@ -43,39 +45,48 @@ export default function HomeScreen() {
   return (
     <ThemedView style={styles.container}>
       <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.hero}>
+        <View style={styles.header}>
           <ThemedText type="title">Pentaguin</ThemedText>
-          <ThemedText themeColor="textSecondary" style={styles.tagline}>
+          <ThemedText type="small" themeColor="textSecondary">
             {t.home.tagline}
           </ThemedText>
-        </ThemedView>
+        </View>
 
-        <ThemedView type="backgroundElement" style={styles.card}>
-          <View style={styles.streakRow}>
-            <ThemedText type="smallBold" themeColor="streak">
-              {t.home.streakLabel}
-            </ThemedText>
+        <Card style={styles.streakCard}>
+          <View style={styles.streakHeader}>
+            <ThemedText type="label">{t.home.streakLabel}</ThemedText>
             {longest > 0 && (
-              <ThemedText type="small" themeColor="textSecondary">
-                {t.home.streakRecord} : {longest}
+              <ThemedText type="mono" themeColor="textSecondary" style={styles.record}>
+                {t.home.streakRecord} {longest}
               </ThemedText>
             )}
           </View>
-          <ThemedText type="subtitle">
-            {current} {current > 1 ? t.home.days : t.home.day}
-          </ThemedText>
-        </ThemedView>
-
-        <Link href="/learn" asChild>
-          <Pressable style={[styles.cta, { backgroundColor: theme.accent }]}>
-            <ThemedText type="smallBold" style={{ color: theme.onAccent }}>
-              {t.home.continueCta}
+          <View style={styles.streakValue}>
+            <ThemedText type="stat" themeColor={current > 0 ? 'streak' : 'text'}>
+              {current}
             </ThemedText>
-          </Pressable>
-        </Link>
+            <ThemedText type="small" themeColor="textSecondary" style={styles.streakUnit}>
+              {current > 1 ? t.home.days : t.home.day}
+            </ThemedText>
+          </View>
+        </Card>
 
-        <Pressable disabled={challengeDone} onPress={startChallenge}>
-          <ThemedView type="backgroundElement" style={styles.card}>
+        <Card
+          onPress={challengeDone ? undefined : startChallenge}
+          background={challengeDone ? theme.successSoft : undefined}
+          style={styles.challengeCard}>
+          <View
+            style={[
+              styles.challengeIcon,
+              { backgroundColor: challengeDone ? 'transparent' : theme.accentSoft },
+            ]}>
+            <Ionicons
+              name={challengeDone ? 'checkmark-circle' : 'flash-outline'}
+              size={22}
+              color={challengeDone ? theme.success : theme.accent}
+            />
+          </View>
+          <View style={styles.challengeBody}>
             <ThemedText type="smallBold" style={challengeDone && { color: theme.success }}>
               {challengeDone ? t.home.challengeDone : t.home.dailyChallenge}
             </ThemedText>
@@ -84,8 +95,21 @@ export default function HomeScreen() {
                 {t.home.challengeDesc}
               </ThemedText>
             )}
-          </ThemedView>
-        </Pressable>
+          </View>
+          {!challengeDone && (
+            <Ionicons name="chevron-forward" size={18} color={theme.textSecondary} />
+          )}
+        </Card>
+
+        <View style={styles.spacer} />
+
+        <Link href="/learn" asChild>
+          <Pressable style={({ pressed }) => [styles.cta, { backgroundColor: theme.accent }, pressed && { opacity: 0.85 }]}>
+            <ThemedText type="smallBold" style={{ color: theme.onAccent, fontSize: 15 }}>
+              {t.home.continueCta}
+            </ThemedText>
+          </Pressable>
+        </Link>
       </SafeAreaView>
     </ThemedView>
   );
@@ -104,29 +128,54 @@ const styles = StyleSheet.create({
     paddingBottom: BottomTabInset + Spacing.three,
     gap: Spacing.three,
   },
-  hero: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    gap: Spacing.two,
-  },
-  tagline: {
-    textAlign: 'center',
-  },
-  card: {
-    borderRadius: Spacing.three,
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.three,
+  header: {
+    paddingTop: Spacing.five,
+    paddingBottom: Spacing.two,
     gap: Spacing.one,
   },
-  streakRow: {
+  streakCard: {
+    padding: Spacing.four,
+    gap: Spacing.two,
+  },
+  streakHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  cta: {
-    borderRadius: Spacing.three,
-    paddingVertical: Spacing.three,
+  record: {
+    fontSize: 13,
+  },
+  streakValue: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    gap: Spacing.two,
+  },
+  streakUnit: {
+    marginBottom: 4,
+  },
+  challengeCard: {
+    flexDirection: 'row',
     alignItems: 'center',
+    gap: Spacing.three,
+  },
+  challengeIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  challengeBody: {
+    flex: 1,
+    gap: 2,
+  },
+  spacer: {
+    flex: 1,
+  },
+  cta: {
+    height: 54,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

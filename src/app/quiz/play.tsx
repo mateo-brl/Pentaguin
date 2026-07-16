@@ -1,17 +1,17 @@
 import { Redirect, Stack } from 'expo-router';
-import { Pressable, ScrollView, StyleSheet, View, type DimensionValue } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { Button } from '@/components/ui/button';
+import { ProgressBar } from '@/components/ui/progress-bar';
 import { Spacing } from '@/constants/theme';
 import { QuestionCard } from '@/features/quiz/question-card';
 import { useQuizSession } from '@/features/quiz/session';
-import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
 
 export default function QuizPlayScreen() {
   const t = useStrings();
-  const theme = useTheme();
   const { questions, currentIndex, answers, finished } = useQuizSession();
 
   if (finished) return <Redirect href="/quiz/results" />;
@@ -20,24 +20,19 @@ export default function QuizPlayScreen() {
   const question = questions[currentIndex];
   const answered = answers[question.id] !== undefined;
   const isLast = currentIndex + 1 === questions.length;
-  const progress = ((currentIndex + (answered ? 1 : 0)) / questions.length) * 100;
+  const progress = (currentIndex + (answered ? 1 : 0)) / questions.length;
 
   return (
     <ThemedView style={styles.container}>
-      <Stack.Screen
-        options={{
-          headerShown: true,
-          title: `${t.quiz.question} ${currentIndex + 1}/${questions.length}`,
-        }}
-      />
+      <Stack.Screen options={{ headerShown: true, title: t.quiz.title }} />
       <ScrollView contentContainerStyle={styles.content}>
-        <View style={[styles.progressTrack, { backgroundColor: theme.backgroundElement }]}>
-          <View
-            style={[
-              styles.progressFill,
-              { backgroundColor: theme.accent, width: `${progress}%` as DimensionValue },
-            ]}
-          />
+        <View style={styles.progressRow}>
+          <View style={styles.progressTrack}>
+            <ProgressBar value={progress} />
+          </View>
+          <ThemedText type="mono" themeColor="textSecondary" style={styles.counter}>
+            {currentIndex + 1}/{questions.length}
+          </ThemedText>
         </View>
 
         <QuestionCard
@@ -47,13 +42,10 @@ export default function QuizPlayScreen() {
         />
 
         {answered && (
-          <Pressable
+          <Button
+            label={isLast ? t.quiz.seeResults : t.quiz.next}
             onPress={() => useQuizSession.getState().goNext()}
-            style={[styles.next, { backgroundColor: theme.accent }]}>
-            <ThemedText type="smallBold" style={{ color: theme.onAccent }}>
-              {isLast ? t.quiz.seeResults : t.quiz.next}
-            </ThemedText>
-          </Pressable>
+          />
         )}
       </ScrollView>
     </ThemedView>
@@ -68,18 +60,15 @@ const styles = StyleSheet.create({
     padding: Spacing.four,
     gap: Spacing.three,
   },
-  progressTrack: {
-    height: 6,
-    borderRadius: 3,
-    overflow: 'hidden',
-  },
-  progressFill: {
-    height: '100%',
-    borderRadius: 3,
-  },
-  next: {
-    borderRadius: Spacing.three,
-    paddingVertical: Spacing.three,
+  progressRow: {
+    flexDirection: 'row',
     alignItems: 'center',
+    gap: Spacing.three,
+  },
+  progressTrack: {
+    flex: 1,
+  },
+  counter: {
+    fontSize: 13,
   },
 });

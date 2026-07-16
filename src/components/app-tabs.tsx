@@ -14,7 +14,7 @@ export default function AppTabs() {
         headerShown: false,
         tabBarActiveTintColor: theme.accent,
         tabBarInactiveTintColor: theme.textSecondary,
-        tabBarStyle: { backgroundColor: theme.background, borderTopColor: theme.backgroundElement },
+        tabBarStyle: { backgroundColor: theme.background, borderTopColor: theme.border },
       }}>
       <Tabs.Screen
         name="index"
