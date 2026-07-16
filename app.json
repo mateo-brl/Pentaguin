@@ -2,6 +2,7 @@
   "expo": {
     "name": "Pentaguin",
     "slug": "pentaguin",
+    "owner": "matal",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -40,6 +41,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "d388c746-917f-422d-8f68-00956932cabb"
+      }
     }
   }
 }
