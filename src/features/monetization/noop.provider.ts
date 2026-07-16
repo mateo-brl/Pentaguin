@@ -13,6 +13,9 @@ export const noopProvider: PurchasesProvider = {
   async getEntitlements() {
     return none;
   },
+  async getProOffer() {
+    return null;
+  },
   async purchase() {
     throw new Error('Achats indisponibles dans cette build.');
   },
