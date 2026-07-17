@@ -20,6 +20,7 @@ export type Me = {
   providers: string[];
   pseudo: string | null;
   avatar: string | null;
+  rankId: number | null;
   twoFactor: boolean;
   xpTotal: number;
 };

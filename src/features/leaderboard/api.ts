@@ -4,11 +4,21 @@ const TIMEOUT_MS = 8000;
 const MAX_DAYS = 60;
 
 export type LeaderboardPeriod = 'all' | '7d';
-export type LeaderboardEntry = { rank: number; pseudo: string; avatar: string | null; xp: number };
+export type LeaderboardEntry = {
+  /** Position au classement (1er, 2e…). */
+  rank: number;
+  pseudo: string;
+  avatar: string | null;
+  /** Rang de compétence 1-15 (badge), ou null si non classé. */
+  rankId: number | null;
+  xp: number;
+};
 export type SyncPayload = {
   deviceId: string;
   pseudo: string;
   days: { date: string; xp: number }[];
+  /** Rang de compétence 1-15 à publier au classement (optionnel). */
+  rank?: number;
 };
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
@@ -31,9 +41,12 @@ export function buildSyncPayload(
   deviceId: string,
   pseudo: string,
   activity: { date: string; xp: number }[],
+  rank: number | null = null,
   maxDays: number = MAX_DAYS,
 ): SyncPayload {
-  return { deviceId, pseudo: pseudo.trim(), days: activity.slice(-maxDays) };
+  const payload: SyncPayload = { deviceId, pseudo: pseudo.trim(), days: activity.slice(-maxDays) };
+  if (rank != null) payload.rank = rank;
+  return payload;
 }
 
 export async function syncActivity(payload: SyncPayload, token?: string | null): Promise<void> {
