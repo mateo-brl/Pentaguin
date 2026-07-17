@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="all" />
+    <title>Politique de confidentialité — Pentaguin</title>
+    <style>
+      :root {
+        --bg: #f6f8fb;
+        --card: #ffffff;
+        --text: #0b1626;
+        --muted: #5b6b80;
+        --border: #e3e9f2;
+        --accent: #0f9d8f;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0b1220;
+          --card: #131c2e;
+          --text: #eaf0fa;
+          --muted: #93a1b8;
+          --border: #24334e;
+          --accent: #2dd4bf;
+        }
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        padding: 24px 16px 64px;
+      }
+      main {
+        max-width: 720px;
+        margin: 0 auto;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 28px 24px;
+      }
+      h1 { font-size: 26px; margin: 0 0 4px; letter-spacing: -0.3px; }
+      h2 { font-size: 18px; margin: 28px 0 8px; }
+      .updated { color: var(--muted); font-size: 14px; margin-bottom: 20px; }
+      p, li { color: var(--text); }
+      ul { padding-left: 20px; }
+      a { color: var(--accent); }
+      strong { font-weight: 650; }
+      code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 14px; }
+      .muted { color: var(--muted); }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Politique de confidentialité — Pentaguin</h1>
+      <p class="updated">Dernière mise à jour : 17 juillet 2026</p>
+
+      <p>
+        Pentaguin est une application d'entraînement à la certification en
+        cybersécurité. Cette politique décrit les données que l'application
+        traite, pourquoi, et les droits dont tu disposes. Le responsable du
+        traitement est <strong>Mateo Baril</strong>. Contact :
+        <a href="mailto:pentaguin@mateobrl.fr">pentaguin@mateobrl.fr</a>.
+      </p>
+
+      <h2>Ce que nous collectons</h2>
+      <p>
+        Pentaguin est pensée « offline-first » : la majorité de ton usage reste
+        sur ton appareil. Un compte est <strong>obligatoire</strong> pour
+        utiliser l'application ; il sert d'identité pour le classement et à
+        retrouver ta progression.
+      </p>
+      <p><strong>Données de compte</strong> (sur notre serveur) :</p>
+      <ul>
+        <li>
+          une <strong>adresse e-mail</strong> (inscription e-mail) ou un
+          identifiant fourni par <strong>Apple / Google</strong> ; les mots de
+          passe éventuels ne sont jamais stockés en clair (hachage scrypt + sel) ;
+        </li>
+        <li>un <strong>pseudo</strong> et un <strong>avatar</strong> que tu choisis ;</li>
+        <li>ton <strong>XP quotidien</strong>, pour le classement et tes statistiques ;</li>
+        <li>si tu actives la double authentification, un <strong>secret TOTP</strong>.</li>
+      </ul>
+      <p><strong>Données sur l'appareil uniquement</strong> (jamais envoyées) :</p>
+      <ul>
+        <li>ta <strong>progression pédagogique</strong> (leçons, réponses, séries, réglages), stockée localement ;</li>
+        <li>ton <strong>jeton de session</strong>, gardé dans le trousseau iOS sécurisé.</li>
+      </ul>
+      <p>
+        <strong>Achats</strong> : les achats intégrés sont gérés par
+        <strong>Apple</strong> et <strong>RevenueCat</strong>. Pentaguin ne voit
+        jamais tes informations de paiement.
+      </p>
+
+      <h2>Ce que nous NE collectons pas</h2>
+      <p>
+        Pas de publicité, pas de traceurs tiers, pas d'analytics comportementaux,
+        pas de revente de données. Aucune géolocalisation, aucun accès aux
+        contacts, photos ou micro.
+      </p>
+
+      <h2>Pourquoi</h2>
+      <p>
+        Les données de compte servent uniquement à t'authentifier, afficher le
+        classement, et synchroniser ton XP entre appareils. Base légale :
+        l'exécution du service que tu demandes.
+      </p>
+
+      <h2>Hébergement</h2>
+      <p>
+        Les données de compte sont hébergées sur un serveur privé en France,
+        derrière un pare-feu applicatif. Les échanges sont chiffrés en HTTPS.
+      </p>
+
+      <h2>Tes droits</h2>
+      <ul>
+        <li><strong>Accès / rectification</strong> : pseudo, avatar et mot de passe modifiables dans l'application (Compte, Sécurité).</li>
+        <li><strong>Suppression</strong> : « Supprimer mon compte » (écran Compte) efface définitivement compte, pseudo, avatar et historique d'XP.</li>
+        <li>Tu peux aussi écrire à <a href="mailto:pentaguin@mateobrl.fr">pentaguin@mateobrl.fr</a>.</li>
+      </ul>
+
+      <h2>Conservation</h2>
+      <p>Les données de compte sont conservées tant que le compte existe, et supprimées immédiatement à sa suppression.</p>
+
+      <h2>Enfants</h2>
+      <p>Pentaguin ne s'adresse pas aux enfants de moins de 13 ans et ne collecte pas sciemment leurs données.</p>
+
+      <h2>Modifications</h2>
+      <p class="muted">Cette politique peut évoluer ; la date en tête indique la dernière mise à jour.</p>
+    </main>
+  </body>
+</html>
