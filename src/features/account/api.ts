@@ -65,3 +65,9 @@ export const deleteAccount = (token: string) =>
     method: 'DELETE',
     headers: { Authorization: `Bearer ${token}` },
   });
+
+export const requestPasswordReset = (email: string) =>
+  post<{ ok: boolean }>('/v1/auth/reset-request', { email });
+
+export const resetPassword = (email: string, code: string, newPassword: string) =>
+  post<{ ok: boolean }>('/v1/auth/reset', { email, code, newPassword });
