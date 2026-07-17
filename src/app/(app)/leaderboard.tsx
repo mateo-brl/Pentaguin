@@ -8,9 +8,11 @@ import { Avatar } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Chip } from '@/components/ui/chip';
 import { Input } from '@/components/ui/input';
+import { rankLabel } from '@/components/ui/rank-badge';
 import { Row, RowGroup, SquareBadge } from '@/components/ui/row';
 import { Spacing } from '@/constants/theme';
 import { parseAvatar } from '@/features/account/avatar';
+import { getRank } from '@/features/rank/ranks';
 import { getDailyActivity } from '@/db/repositories';
 import { getToken } from '@/features/account/token';
 import {
@@ -50,7 +52,10 @@ export default function LeaderboardScreen() {
     (async () => {
       try {
         const token = await getToken();
-        await syncActivity(buildSyncPayload(getDeviceId(), pseudo, getDailyActivity()), token);
+        await syncActivity(
+          buildSyncPayload(getDeviceId(), pseudo, getDailyActivity(), getRank()),
+          token,
+        );
         const data = await fetchLeaderboard(period);
         if (!cancelled) {
           setEntries(data);
@@ -135,6 +140,7 @@ export default function LeaderboardScreen() {
                       key={item.rank}
                       first={index === 0}
                       title={`${item.pseudo}${isSelf ? ` (${t.leaderboard.you})` : ''}`}
+                      subtitle={item.rankId != null ? rankLabel(item.rankId, t) : undefined}
                       leading={
                         <View style={styles.rank}>
                           <SquareBadge

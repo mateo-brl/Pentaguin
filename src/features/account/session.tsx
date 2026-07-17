@@ -14,6 +14,7 @@ import {
   resetLeaderboardIdentity,
   setPseudo as setLocalPseudo,
 } from '@/features/leaderboard/identity';
+import { getRank, setRank } from '@/features/rank/ranks';
 
 import {
   ApiError,
@@ -70,6 +71,9 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   // bascule vers ready / needsPseudo selon qu'un pseudo est déjà défini.
   const applyMe = useCallback((data: Me) => {
     setMe(data);
+    // Restaure le rang du compte sur un appareil qui n'en a pas encore (le local
+    // reste prioritaire s'il existe déjà).
+    if (data.rankId != null && getRank() == null) setRank(data.rankId);
     if (data.pseudo && data.pseudo.trim()) {
       setLocalPseudo(data.pseudo);
       setKv(READY_KEY, '1');

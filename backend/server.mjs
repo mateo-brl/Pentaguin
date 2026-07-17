@@ -112,6 +112,11 @@ try {
 } catch {
   // colonne déjà présente
 }
+try {
+  db.exec('ALTER TABLE players ADD COLUMN rank INTEGER');
+} catch {
+  // colonne déjà présente
+}
 for (const alter of [
   'ALTER TABLE users ADD COLUMN totp_secret TEXT',
   'ALTER TABLE users ADD COLUMN totp_enabled INTEGER NOT NULL DEFAULT 0',
@@ -135,12 +140,12 @@ const upsertDay = db.prepare(`
   ON CONFLICT(device_id, date) DO UPDATE SET xp = MAX(daily_xp.xp, excluded.xp)
 `);
 const leaderboardAll = db.prepare(`
-  SELECT p.pseudo, p.avatar, SUM(d.xp) AS xp
+  SELECT p.pseudo, p.avatar, p.rank, SUM(d.xp) AS xp
   FROM players p JOIN daily_xp d ON d.device_id = p.device_id
   GROUP BY p.device_id ORDER BY xp DESC LIMIT ?
 `);
 const leaderboardSince = db.prepare(`
-  SELECT p.pseudo, p.avatar, SUM(d.xp) AS xp
+  SELECT p.pseudo, p.avatar, p.rank, SUM(d.xp) AS xp
   FROM players p JOIN daily_xp d ON d.device_id = p.device_id
   WHERE d.date >= ?
   GROUP BY p.device_id ORDER BY xp DESC LIMIT ?
@@ -160,7 +165,7 @@ const updateTotp = db.prepare(
   'UPDATE users SET totp_secret = ?, totp_enabled = ?, updated_at = ? WHERE id = ?',
 );
 const selectPlayerByUser = db.prepare(
-  'SELECT device_id, pseudo, avatar FROM players WHERE user_id = ?',
+  'SELECT device_id, pseudo, avatar, rank FROM players WHERE user_id = ?',
 );
 const selectPlayerByDevice = db.prepare(
   'SELECT device_id, user_id FROM players WHERE device_id = ?',
@@ -219,6 +224,7 @@ const isAvatar = (value) => {
   const match = /^([a-z]+)\.([0-4])$/.exec(value);
   return Boolean(match) && AVATAR_ICONS.has(match[1]);
 };
+const isRank = (value) => Number.isInteger(value) && value >= 1 && value <= 15;
 const isDateKey = (value) => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value);
 const isEmail = (value) =>
   typeof value === 'string' && value.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value);
@@ -350,6 +356,9 @@ const updatePlayerPseudo = db.prepare(
 const updatePlayerAvatar = db.prepare(
   'UPDATE players SET avatar = ?, updated_at = ? WHERE device_id = ?',
 );
+const updatePlayerRank = db.prepare(
+  'UPDATE players SET rank = ?, updated_at = ? WHERE device_id = ?',
+);
 
 function sendMail(to, subject, text) {
   return new Promise((resolve, reject) => {
@@ -410,6 +419,7 @@ function handleLeaderboard(res, url) {
       rank: index + 1,
       pseudo: row.pseudo,
       avatar: row.avatar ?? null,
+      rankId: row.rank ?? null,
       xp: row.xp,
     })),
   });
@@ -418,7 +428,7 @@ function handleLeaderboard(res, url) {
 async function handleSync(req, res) {
   if (!requireJson(req, res)) return;
   const body = await readJson(req);
-  const { deviceId, pseudo, days } = body ?? {};
+  const { deviceId, pseudo, days, rank } = body ?? {};
   if (!isPseudo(pseudo)) return send(res, 400, { error: 'pseudo invalide (3-20 caractères)' });
   if (!Array.isArray(days) || days.length > MAX_DAYS_PER_SYNC)
     return send(res, 400, { error: 'days invalide' });
@@ -441,6 +451,7 @@ async function handleSync(req, res) {
 
   const now = Date.now();
   upsertPlayer.run(key, pseudo.trim(), now, now);
+  if (isRank(rank)) updatePlayerRank.run(rank, now, key);
   for (const day of days) upsertDay.run(key, day.date, Math.min(day.xp, MAX_XP_PER_DAY));
   send(res, 200, { ok: true });
 }
@@ -617,6 +628,7 @@ function handleMe(req, res) {
     ].filter(Boolean),
     pseudo: player?.pseudo ?? null,
     avatar: player?.avatar ?? null,
+    rankId: player?.rank ?? null,
     twoFactor: Boolean(user.totp_enabled),
     xpTotal,
   });
