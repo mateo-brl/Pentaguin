@@ -19,6 +19,17 @@ const fr = {
     body: 'Quelque chose a mal tourné. Réessaie — si le problème persiste, redémarre l’application.',
     retry: 'Réessayer',
   },
+  ranks: {
+    label: 'Rang',
+    unranked: 'Non classé',
+    bronze: 'Bronze',
+    silver: 'Argent',
+    gold: 'Or',
+    platinum: 'Platine',
+    diamond: 'Diamant',
+    master: 'Maître',
+    emperor: 'Empereur',
+  },
   onboarding: {
     title: 'Bienvenue sur Pentaguin',
     subtitle: 'Ta préparation à la certification, cinq minutes à la fois.',
@@ -72,6 +83,8 @@ const fr = {
   learn: {
     lessons: 'leçon(s)',
     examWeight: 'de l’examen',
+    tagline: 'Tes cours, adaptés à ton rang.',
+    empty: 'Le contenu arrive bientôt. Établis d’abord ton rang pour être orienté.',
   },
   domain: {
     minutes: 'min',
@@ -295,6 +308,17 @@ const en: Strings = {
     body: 'Something broke. Try again — if it persists, restart the app.',
     retry: 'Try again',
   },
+  ranks: {
+    label: 'Rank',
+    unranked: 'Unranked',
+    bronze: 'Bronze',
+    silver: 'Silver',
+    gold: 'Gold',
+    platinum: 'Platinum',
+    diamond: 'Diamond',
+    master: 'Master',
+    emperor: 'Emperor',
+  },
   onboarding: {
     title: 'Welcome to Pentaguin',
     subtitle: 'Your certification prep, five minutes at a time.',
@@ -348,6 +372,8 @@ const en: Strings = {
   learn: {
     lessons: 'lesson(s)',
     examWeight: 'of the exam',
+    tagline: 'Your lessons, tailored to your rank.',
+    empty: 'Content is coming soon. Set your rank first to get guided.',
   },
   domain: {
     minutes: 'min',
