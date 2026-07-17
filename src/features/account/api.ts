@@ -13,7 +13,8 @@ export class ApiError extends Error {
 
 export type Session = { token: string; email: string | null };
 export type MfaChallenge = { mfaRequired: true; mfaToken: string };
-export type LoginResult = Session | MfaChallenge;
+export type VerifyChallenge = { verifyRequired: true; verifyToken: string };
+export type LoginResult = Session | MfaChallenge | VerifyChallenge;
 export type Me = {
   email: string | null;
   providers: string[];
@@ -25,6 +26,10 @@ export type Me = {
 
 export function isMfaChallenge(result: LoginResult): result is MfaChallenge {
   return 'mfaRequired' in result && result.mfaRequired === true;
+}
+
+export function isVerifyChallenge(result: LoginResult): result is VerifyChallenge {
+  return 'verifyRequired' in result && result.verifyRequired === true;
 }
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
@@ -54,13 +59,19 @@ const post = <T,>(path: string, body: unknown, token?: string | null) =>
   });
 
 export const register = (email: string, password: string, deviceId: string) =>
-  post<Session>('/v1/auth/register', { email, password, deviceId });
+  post<LoginResult>('/v1/auth/register', { email, password, deviceId });
 
 export const login = (email: string, password: string, deviceId: string) =>
   post<LoginResult>('/v1/auth/login', { email, password, deviceId });
 
 export const verify2fa = (mfaToken: string, code: string) =>
   post<Session>('/v1/auth/2fa', { mfaToken, code });
+
+export const verifyEmail = (verifyToken: string, code: string) =>
+  post<Session>('/v1/auth/verify-email', { verifyToken, code });
+
+export const resendVerification = (verifyToken: string) =>
+  post<{ ok: boolean }>('/v1/auth/resend-verification', { verifyToken });
 
 export const loginWithApple = (identityToken: string, deviceId: string) =>
   post<Session>('/v1/auth/apple', { identityToken, deviceId });
