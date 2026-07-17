@@ -2,6 +2,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -38,6 +39,7 @@ function isUserCancellation(error: unknown): boolean {
 export default function PaywallScreen() {
   const t = useStrings();
   const theme = useTheme();
+  const insets = useSafeAreaInsets();
   const entitlements = useEntitlements();
   const isPro = entitlements.has(packEntitlement(pack.id));
 
@@ -87,11 +89,24 @@ export default function PaywallScreen() {
 
   return (
     <ThemedView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.content}>
-        <Pressable onPress={() => router.back()} style={styles.close} hitSlop={Spacing.two}>
-          <Ionicons name="close" size={22} color={theme.textSecondary} />
+      {/* Barre fixe hors du scroll : la fermeture reste toujours atteignable,
+          grande cible (44×44) sous la safe area (Dynamic Island incluse). */}
+      <View style={[styles.header, { paddingTop: Math.max(insets.top, Spacing.three) }]}>
+        <Pressable
+          onPress={() => router.back()}
+          hitSlop={12}
+          accessibilityRole="button"
+          accessibilityLabel={t.paywall.close}
+          style={({ pressed }) => [
+            styles.closeBtn,
+            { backgroundColor: theme.backgroundElement, borderColor: theme.border },
+            pressed && styles.closePressed,
+          ]}>
+          <Ionicons name="close" size={24} color={theme.text} />
         </Pressable>
+      </View>
 
+      <ScrollView contentContainerStyle={styles.content}>
         <ThemedText type="title" style={styles.title}>
           {t.paywall.title}
         </ThemedText>
@@ -147,12 +162,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  content: {
-    padding: Spacing.four,
-    gap: Spacing.three,
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    paddingHorizontal: Spacing.three,
+    paddingBottom: Spacing.one,
   },
-  close: {
-    alignSelf: 'flex-end',
+  closeBtn: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    borderWidth: StyleSheet.hairlineWidth,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  closePressed: {
+    opacity: 0.7,
+    transform: [{ scale: 0.96 }],
+  },
+  content: {
+    paddingHorizontal: Spacing.four,
+    paddingBottom: Spacing.four,
+    gap: Spacing.three,
   },
   title: {
     textAlign: 'center',

@@ -2,7 +2,7 @@ import { describe, expect, it } from '@jest/globals';
 
 import type { MonetizationConfig } from '@/config/monetization';
 
-import { canShowSpontaneousUpsell } from '../upsell';
+import { canShowSpontaneousUpsell, isCrucialUpsellMoment, UPSELL_MIN_LESSONS } from '../upsell';
 
 const config: MonetizationConfig = {
   enabled: true,
@@ -28,5 +28,17 @@ describe('canShowSpontaneousUpsell', () => {
 
   it('jamais quand la monétisation est coupée', () => {
     expect(canShowSpontaneousUpsell(0, none, { ...config, enabled: false })).toBe(false);
+  });
+});
+
+describe('isCrucialUpsellMoment', () => {
+  it('refuse tant que le contenu gratuit n’a pas été goûté', () => {
+    expect(isCrucialUpsellMoment(0)).toBe(false);
+    expect(isCrucialUpsellMoment(UPSELL_MIN_LESSONS - 1)).toBe(false);
+  });
+
+  it('autorise une fois le palier d’engagement atteint', () => {
+    expect(isCrucialUpsellMoment(UPSELL_MIN_LESSONS)).toBe(true);
+    expect(isCrucialUpsellMoment(UPSELL_MIN_LESSONS + 5)).toBe(true);
   });
 });
