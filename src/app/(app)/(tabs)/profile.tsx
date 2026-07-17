@@ -16,6 +16,7 @@ import { getDefaultPack, lessonsByDomain } from '@/content';
 import { getCompletedLessonIds, getTotalXp } from '@/db/repositories';
 import { parseAvatar } from '@/features/account/avatar';
 import { useSession } from '@/features/account/session';
+import { usePlacementSession } from '@/features/placement/session';
 import { useRank } from '@/features/rank/ranks';
 import { useStreak } from '@/features/gamification/use-streak';
 import { getPseudo } from '@/features/leaderboard/identity';
@@ -180,6 +181,24 @@ export default function ProfileScreen() {
               />
             ))}
           </RowGroup>
+
+          {rank != null && (
+            <RowGroup style={styles.linksGroup}>
+              <Row
+                first
+                title={t.placement.retake}
+                leading={
+                  <SquareBadge color={hueFor(2).base} background={hueFor(2).soft}>
+                    <Ionicons name="medal" size={19} color={hueFor(2).base} />
+                  </SquareBadge>
+                }
+                onPress={() => {
+                  usePlacementSession.getState().reset();
+                  router.push('/placement');
+                }}
+              />
+            </RowGroup>
+          )}
 
           <ThemedView style={styles.footer}>
             <ThemedText type="small" themeColor="textSecondary">

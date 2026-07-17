@@ -1,0 +1,79 @@
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { router } from 'expo-router';
+import { useEffect } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { ThemedText } from '@/components/themed-text';
+import { ThemedView } from '@/components/themed-view';
+import { Button } from '@/components/ui/button';
+import { Spacing } from '@/constants/theme';
+import { usePlacementSession } from '@/features/placement/session';
+import { useTheme } from '@/hooks/use-theme';
+import { useStrings } from '@/i18n/strings';
+
+export default function PlacementIntroScreen() {
+  const t = useStrings();
+  const theme = useTheme();
+  const start = usePlacementSession((s) => s.start);
+  const started = usePlacementSession((s) => s.state.step > 0 && !s.finished);
+
+  // Prépare la session (reprise si un test est en cours, sinon neuf).
+  useEffect(() => {
+    start();
+  }, [start]);
+
+  return (
+    <ThemedView style={styles.container}>
+      <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
+        <View style={styles.content}>
+          <View style={[styles.medal, { backgroundColor: theme.accentSoft }]}>
+            <Ionicons name="medal" size={44} color={theme.accent} />
+          </View>
+          <ThemedText type="title" style={styles.title}>
+            {t.placement.title}
+          </ThemedText>
+          <ThemedText type="small" themeColor="textSecondary" style={styles.intro}>
+            {t.placement.intro}
+          </ThemedText>
+        </View>
+
+        <Button
+          label={started ? t.placement.resume : t.placement.start}
+          onPress={() => router.push('/placement/play')}
+        />
+      </SafeAreaView>
+    </ThemedView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  safe: {
+    flex: 1,
+    padding: Spacing.four,
+    justifyContent: 'space-between',
+  },
+  content: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: Spacing.three,
+  },
+  medal: {
+    width: 88,
+    height: 88,
+    borderRadius: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: Spacing.two,
+  },
+  title: {
+    textAlign: 'center',
+  },
+  intro: {
+    textAlign: 'center',
+  },
+});
