@@ -1,0 +1,12 @@
+# /etc/systemd/system/pentaguin-backup.timer
+# Déclenche la sauvegarde tous les jours à 03h30 (rattrape si la machine était
+# éteinte grâce à Persistent).
+[Unit]
+Description=Sauvegarde quotidienne de la base Pentaguin
+
+[Timer]
+OnCalendar=*-*-* 03:30:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

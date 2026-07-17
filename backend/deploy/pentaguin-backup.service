@@ -1,0 +1,12 @@
+# /etc/systemd/system/pentaguin-backup.service
+# Sauvegarde ponctuelle de la base (déclenchée par pentaguin-backup.timer).
+# Tourne en root pour lire la base du service (DynamicUser) et écrire dans
+# /var/backups/pentaguin.
+[Unit]
+Description=Sauvegarde de la base Pentaguin
+
+[Service]
+Type=oneshot
+Environment=DB_PATH=/var/lib/pentaguin/pentaguin.db
+Environment=BACKUP_DIR=/var/backups/pentaguin
+ExecStart=/opt/pentaguin-api/backup.sh

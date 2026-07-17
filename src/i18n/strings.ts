@@ -14,6 +14,11 @@ const fr = {
     train: 'S’entraîner',
     profile: 'Profil',
   },
+  crash: {
+    title: 'Oups, une erreur est survenue',
+    body: 'Quelque chose a mal tourné. Réessaie — si le problème persiste, redémarre l’application.',
+    retry: 'Réessayer',
+  },
   onboarding: {
     title: 'Bienvenue sur Pentaguin',
     subtitle: 'Ta préparation à la certification, cinq minutes à la fois.',
@@ -244,6 +249,11 @@ const fr = {
     mfaPlaceholder: 'Code à 6 chiffres',
     mfaValidate: 'Valider',
     errorMfaCode: 'Code invalide. Réessaie.',
+    verifyTitle: 'Vérifie ton e-mail',
+    verifyIntro:
+      'On t’a envoyé un code à 6 chiffres par e-mail. Saisis-le pour activer ton compte.',
+    verifyResend: 'Renvoyer le code',
+    verifyResent: 'Code renvoyé.',
     twoFactorTitle: 'Double authentification',
     twoFactorStatusOn: 'Activée',
     twoFactorStatusOff: 'Désactivée',
@@ -279,6 +289,11 @@ const en: Strings = {
     learn: 'Learn',
     train: 'Practice',
     profile: 'Profile',
+  },
+  crash: {
+    title: 'Oops, something went wrong',
+    body: 'Something broke. Try again — if it persists, restart the app.',
+    retry: 'Try again',
   },
   onboarding: {
     title: 'Welcome to Pentaguin',
@@ -509,6 +524,10 @@ const en: Strings = {
     mfaPlaceholder: '6-digit code',
     mfaValidate: 'Verify',
     errorMfaCode: 'Invalid code. Try again.',
+    verifyTitle: 'Verify your email',
+    verifyIntro: 'We sent a 6-digit code to your email. Enter it to activate your account.',
+    verifyResend: 'Resend code',
+    verifyResent: 'Code resent.',
     twoFactorTitle: 'Two-factor authentication',
     twoFactorStatusOn: 'Enabled',
     twoFactorStatusOff: 'Disabled',
