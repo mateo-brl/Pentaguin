@@ -1,21 +1,35 @@
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { Stack } from 'expo-router';
 import { useState } from 'react';
-import { Alert, ScrollView, StyleSheet, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { Avatar } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Spacing } from '@/constants/theme';
 import { deleteAccount } from '@/features/account/api';
+import {
+  AVATAR_COLORS,
+  AVATAR_ICONS,
+  ioniconFor,
+  parseAvatar,
+  serializeAvatar,
+  type AvatarIcon,
+  type AvatarSpec,
+} from '@/features/account/avatar';
 import { useSession } from '@/features/account/session';
 import { getPseudo, isValidPseudo } from '@/features/leaderboard/identity';
+import { useHues } from '@/hooks/use-hues';
+import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
 
 export default function AccountScreen() {
   const t = useStrings();
-  const { me, token, signOut, submitPseudo } = useSession();
+  const theme = useTheme();
+  const { hueFor } = useHues();
+  const { me, token, signOut, submitPseudo, updateAvatar } = useSession();
 
   const currentPseudo = me?.pseudo ?? getPseudo() ?? '';
   const identity =
@@ -26,10 +40,16 @@ export default function AccountScreen() {
         ? t.account.googleAccount
         : t.account.emailAccount);
 
+  const [avatar, setAvatarSpec] = useState<AvatarSpec>(() => parseAvatar(me?.avatar, currentPseudo));
   const [pseudo, setPseudo] = useState(currentPseudo);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+
+  const applyAvatar = (next: AvatarSpec) => {
+    setAvatarSpec(next);
+    updateAvatar(serializeAvatar(next)).catch(() => setError(t.account.errorGeneric));
+  };
 
   const savePseudo = async () => {
     if (!isValidPseudo(pseudo)) {
@@ -71,16 +91,50 @@ export default function AccountScreen() {
     <ThemedView style={styles.container}>
       <Stack.Screen options={{ headerShown: true, title: t.account.title }} />
       <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-        <Card>
-          <ThemedText type="label">{t.account.loggedTitle}</ThemedText>
-          <ThemedText type="smallBold">{identity}</ThemedText>
-          {me && (
-            <ThemedText type="small" themeColor="textSecondary">
-              {me.xpTotal} XP
-            </ThemedText>
-          )}
-        </Card>
+        {/* En-tête identité */}
+        <View style={styles.hero}>
+          <Avatar spec={avatar} pseudo={currentPseudo} size={88} />
+          <ThemedText type="subtitle">{currentPseudo}</ThemedText>
+          <ThemedText type="small" themeColor="textSecondary">
+            {identity}
+            {me ? ` · ${me.xpTotal} XP` : ''}
+          </ThemedText>
+        </View>
 
+        {/* Choix de l'avatar */}
+        <View style={styles.field}>
+          <ThemedText type="label">{t.account.avatarLabel}</ThemedText>
+          <View style={styles.iconGrid}>
+            {AVATAR_ICONS.map((icon) => (
+              <AvatarIconChoice
+                key={icon}
+                icon={icon}
+                selected={avatar.icon === icon}
+                pseudo={currentPseudo}
+                onPress={() => applyAvatar({ ...avatar, icon })}
+              />
+            ))}
+          </View>
+          <View style={styles.colorRow}>
+            {Array.from({ length: AVATAR_COLORS }, (_, color) => {
+              const hue = hueFor(color);
+              const selected = avatar.color === color;
+              return (
+                <Pressable
+                  key={color}
+                  onPress={() => applyAvatar({ ...avatar, color })}
+                  style={[
+                    styles.colorSwatch,
+                    { backgroundColor: hue.base },
+                    selected && { borderColor: theme.text, borderWidth: 3 },
+                  ]}
+                />
+              );
+            })}
+          </View>
+        </View>
+
+        {/* Pseudo */}
         <View style={styles.field}>
           <ThemedText type="label">{t.account.pseudoLabel}</ThemedText>
           <Input
@@ -115,15 +169,80 @@ export default function AccountScreen() {
   );
 }
 
+function AvatarIconChoice({
+  icon,
+  selected,
+  pseudo,
+  onPress,
+}: {
+  icon: AvatarIcon;
+  selected: boolean;
+  pseudo: string;
+  onPress: () => void;
+}) {
+  const theme = useTheme();
+  const ionicon = ioniconFor(icon);
+  const initial = pseudo.trim().slice(0, 1).toUpperCase() || 'P';
+  return (
+    <Pressable
+      onPress={onPress}
+      style={[
+        styles.iconChoice,
+        { backgroundColor: theme.backgroundElement, borderColor: theme.border },
+        selected && { borderColor: theme.accent, borderWidth: 2 },
+      ]}>
+      {ionicon ? (
+        <Ionicons
+          name={ionicon as keyof typeof Ionicons.glyphMap}
+          size={22}
+          color={selected ? theme.accent : theme.textSecondary}
+        />
+      ) : (
+        <ThemedText type="smallBold" style={{ color: selected ? theme.accent : theme.textSecondary }}>
+          {initial}
+        </ThemedText>
+      )}
+    </Pressable>
+  );
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
   content: {
     padding: Spacing.four,
-    gap: Spacing.three,
+    gap: Spacing.four,
+  },
+  hero: {
+    alignItems: 'center',
+    gap: Spacing.one,
   },
   field: {
     gap: Spacing.two,
+  },
+  iconGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: Spacing.two,
+  },
+  iconChoice: {
+    width: 48,
+    height: 48,
+    borderRadius: 14,
+    borderWidth: StyleSheet.hairlineWidth,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  colorRow: {
+    flexDirection: 'row',
+    gap: Spacing.two,
+    marginTop: Spacing.one,
+  },
+  colorSwatch: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    borderColor: 'transparent',
   },
 });
