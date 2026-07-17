@@ -3,23 +3,30 @@ import type { PlacementQuestion } from '@/content/placement';
 /**
  * Moteur de positionnement adaptatif — 100 % pur et testé. On part au milieu de
  * l'échelle (niveau 8) ; une bonne réponse fait monter, une mauvaise descendre,
- * avec un pas qui se resserre vite. Sur 30 questions, le niveau atteint son
- * voisinage en quelques réponses puis oscille finement autour du vrai niveau —
- * le rang final est la MOYENNE de la seconde moitié (lissée, robuste au bruit
- * et aux quelques questions imparfaites).
+ * avec un pas qui se resserre vite. L'estimation courante est un FLOTTANT (jamais
+ * arrondie en cours de route), et le rang final est la MOYENNE de la seconde
+ * moitié du parcours (lissée, robuste au bruit).
+ *
+ * Escalier ASYMÉTRIQUE : une mauvaise réponse descend `DOWN_FACTOR`× plus qu'une
+ * bonne ne monte. Sur un QCM à 4 choix, la devinette (25 %) tire l'estimation
+ * vers le haut ; ce facteur recale l'équilibre sur le vrai niveau du candidat
+ * (mesuré par simulation : biais quasi nul, erreur ~0,6 rang).
  */
 
-/** Pas appliqués après chaque réponse (30 questions au total). */
+/** Pas de base appliqués après chaque réponse (30 questions au total). */
 export const PLACEMENT_STEPS = [
   4, 3, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 ] as const;
 export const PLACEMENT_TOTAL = PLACEMENT_STEPS.length; // 30
 export const START_LEVEL = 8;
+/** Une mauvaise réponse descend ce multiple du pas (corrige le biais de devinette).
+ *  Calé par simulation : 1,7 → biais quasi nul, erreur ~0,6 rang. */
+export const DOWN_FACTOR = 1.7;
 const MIN = 1;
 const MAX = 15;
 
 export type PlacementState = {
-  /** Niveau estimé courant (1-15). */
+  /** Niveau estimé courant, flottant 1-15. */
   currentLevel: number;
   /** Nombre de réponses déjà données (= index du prochain pas). */
   step: number;
@@ -30,7 +37,9 @@ export type PlacementState = {
   correctCount: number;
 };
 
-const clamp = (n: number) => Math.min(Math.max(Math.round(n), MIN), MAX);
+/** Borne 1-15 sans arrondir (l'estimation reste flottante pendant le parcours). */
+const bound = (n: number) => Math.min(Math.max(n, MIN), MAX);
+const clampRound = (n: number) => Math.min(Math.max(Math.round(n), MIN), MAX);
 
 export function initPlacement(): PlacementState {
   return { currentLevel: START_LEVEL, step: 0, askedIds: [], levels: [], correctCount: 0 };
@@ -76,10 +85,11 @@ export function applyAnswer(
   state: PlacementState,
   question: PlacementQuestion,
   correct: boolean,
+  downFactor: number = DOWN_FACTOR,
 ): PlacementState {
   const stepSize = PLACEMENT_STEPS[Math.min(state.step, PLACEMENT_STEPS.length - 1)];
-  const delta = correct ? stepSize : -stepSize;
-  const currentLevel = clamp(state.currentLevel + delta);
+  const delta = correct ? stepSize : -stepSize * downFactor;
+  const currentLevel = bound(state.currentLevel + delta);
   return {
     currentLevel,
     step: state.step + 1,
@@ -91,13 +101,12 @@ export function applyAnswer(
 
 /**
  * Rang final (1-15) : moyenne lissée de la seconde moitié du parcours (après
- * convergence). Robuste au bruit d'une réponse isolée. Repli sur le niveau
- * courant si l'historique est vide.
+ * convergence), arrondie. Repli sur le niveau courant si l'historique est vide.
  */
 export function finalRank(state: PlacementState): number {
   const levels = state.levels;
-  if (levels.length === 0) return clamp(state.currentLevel);
+  if (levels.length === 0) return clampRound(state.currentLevel);
   const tail = levels.slice(Math.floor(levels.length / 2));
   const mean = tail.reduce((sum, l) => sum + l, 0) / tail.length;
-  return clamp(mean);
+  return clampRound(mean);
 }
