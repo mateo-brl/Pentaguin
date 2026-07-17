@@ -1,4 +1,3 @@
-import * as Haptics from 'expo-haptics';
 import { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
@@ -6,6 +5,7 @@ import { ThemedText } from '@/components/themed-text';
 import { Button } from '@/components/ui/button';
 import { Spacing } from '@/constants/theme';
 import type { Question } from '@/content';
+import { errorFeedback, successFeedback } from '@/features/haptics/haptics';
 import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
 
@@ -46,11 +46,8 @@ export function QuestionCard({ question, onAnswered }: Props) {
   const validate = () => {
     const isCorrect = isAnswerCorrect(question, selected);
     setValidated(true);
-    Haptics.notificationAsync(
-      isCorrect
-        ? Haptics.NotificationFeedbackType.Success
-        : Haptics.NotificationFeedbackType.Error,
-    );
+    if (isCorrect) successFeedback();
+    else errorFeedback();
     onAnswered?.({ selected, isCorrect });
   };
 
