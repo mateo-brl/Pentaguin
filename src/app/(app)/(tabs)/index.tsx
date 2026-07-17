@@ -37,11 +37,12 @@ export default function HomeScreen() {
   const today = localDateKey();
   const challengeDone = challengeDoneDate === today;
   const challengeHue = hueFor(1); // violet
+  const challengeQuestions = dailyChallengeQuestions(pack, entitlements, today);
+  const hasChallenge = challengeQuestions.length > 0;
 
   const startChallenge = () => {
-    const questions = dailyChallengeQuestions(pack, entitlements, today);
-    if (questions.length === 0) return;
-    useQuizSession.getState().start(pack.id, questions, { challengeDate: today });
+    if (challengeQuestions.length === 0) return;
+    useQuizSession.getState().start(pack.id, challengeQuestions, { challengeDate: today });
     router.push('/quiz/play');
   };
 
@@ -72,7 +73,9 @@ export default function HomeScreen() {
           )}
         </View>
 
-        {/* Défi du jour : aplat teinté, tactile */}
+        {/* Défi du jour : aplat teinté, tactile. Masqué tant qu'aucune question
+            n'est disponible (base sans contenu) pour ne pas offrir un tap mort. */}
+        {hasChallenge && (
         <Pressable
           disabled={challengeDone}
           onPress={startChallenge}
@@ -108,6 +111,7 @@ export default function HomeScreen() {
             <Ionicons name="arrow-forward" size={20} color={challengeHue.base} />
           )}
         </Pressable>
+        )}
 
         <View style={styles.spacer} />
 
