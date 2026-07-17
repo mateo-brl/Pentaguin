@@ -2,18 +2,23 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import Constants from 'expo-constants';
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { ProgressBar } from '@/components/ui/progress-bar';
 import { Row, RowGroup, SquareBadge } from '@/components/ui/row';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-import { getTotalXp } from '@/db/repositories';
+import { getDefaultPack, lessonsByDomain } from '@/content';
+import { getCompletedLessonIds, getTotalXp } from '@/db/repositories';
 import { useStreak } from '@/features/gamification/use-streak';
 import { useHues } from '@/hooks/use-hues';
 import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
+
+const pack = getDefaultPack();
+const domains = [...pack.domains].sort((a, b) => a.order - b.order);
 
 export default function ProfileScreen() {
   const t = useStrings();
@@ -23,9 +28,11 @@ export default function ProfileScreen() {
   const { longest } = useStreak();
 
   const [totalXp, setTotalXp] = useState(0);
+  const [completed, setCompleted] = useState<Set<string>>(new Set());
   useFocusEffect(
     useCallback(() => {
       setTotalXp(getTotalXp());
+      setCompleted(getCompletedLessonIds(pack.id));
     }, []),
   );
 
@@ -49,6 +56,7 @@ export default function ProfileScreen() {
   return (
     <ThemedView style={styles.container}>
       <SafeAreaView style={styles.safeArea}>
+        <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <ThemedText type="title" style={styles.title}>
             {t.tabs.profile}
@@ -74,7 +82,48 @@ export default function ProfileScreen() {
           </View>
         </View>
 
+        <ThemedText type="smallBold" style={styles.sectionTitle}>
+          {t.profile.progress}
+        </ThemedText>
         <RowGroup>
+          {domains.map((domain, index) => {
+            const hue = hueFor(index);
+            const lessons = lessonsByDomain(pack, domain.id);
+            const done = lessons.filter((lesson) => completed.has(lesson.id)).length;
+            return (
+              <View
+                key={domain.id}
+                style={[
+                  styles.progressRow,
+                  index > 0 && {
+                    borderTopWidth: StyleSheet.hairlineWidth,
+                    borderTopColor: theme.border,
+                  },
+                ]}>
+                <SquareBadge color={hue.base} background={hue.soft}>
+                  {domain.code}
+                </SquareBadge>
+                <View style={styles.progressBody}>
+                  <View style={styles.progressHeader}>
+                    <ThemedText type="small" numberOfLines={1} style={styles.progressTitle}>
+                      {domain.title}
+                    </ThemedText>
+                    <ThemedText type="smallBold" themeColor="textSecondary">
+                      {done}/{lessons.length}
+                    </ThemedText>
+                  </View>
+                  <ProgressBar
+                    value={lessons.length > 0 ? done / lessons.length : 0}
+                    color={hue.base}
+                    height={8}
+                  />
+                </View>
+              </View>
+            );
+          })}
+        </RowGroup>
+
+        <RowGroup style={styles.linksGroup}>
           {links.map((item, index) => (
             <Row
               key={item.key}
@@ -98,6 +147,7 @@ export default function ProfileScreen() {
             {t.profile.disclaimer}
           </ThemedText>
         </ThemedView>
+        </ScrollView>
       </SafeAreaView>
     </ThemedView>
   );
@@ -112,12 +162,42 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     maxWidth: MaxContentWidth,
+  },
+  scroll: {
     paddingHorizontal: Spacing.four,
     paddingBottom: BottomTabInset + Spacing.three,
     gap: Spacing.three,
   },
   header: {
     paddingTop: Spacing.five,
+  },
+  sectionTitle: {
+    fontSize: 15,
+    marginTop: Spacing.one,
+    marginBottom: -Spacing.one,
+  },
+  linksGroup: {
+    marginTop: Spacing.one,
+  },
+  progressRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.three,
+    paddingHorizontal: Spacing.three,
+    paddingVertical: 12,
+  },
+  progressBody: {
+    flex: 1,
+    gap: 7,
+  },
+  progressHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: Spacing.two,
+  },
+  progressTitle: {
+    flex: 1,
   },
   title: {
     fontSize: 28,
