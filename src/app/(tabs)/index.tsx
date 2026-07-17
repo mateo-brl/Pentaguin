@@ -1,12 +1,12 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { Link, router, useFocusEffect } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 import { getDefaultPack } from '@/content';
 import { getKv, localDateKey } from '@/db/repositories';
@@ -14,6 +14,7 @@ import { DAILY_CHALLENGE_KV_KEY, dailyChallengeQuestions } from '@/features/gami
 import { useStreak } from '@/features/gamification/use-streak';
 import { useEntitlements } from '@/features/monetization';
 import { useQuizSession } from '@/features/quiz/session';
+import { useHues } from '@/hooks/use-hues';
 import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
 
@@ -22,6 +23,7 @@ const pack = getDefaultPack();
 export default function HomeScreen() {
   const t = useStrings();
   const theme = useTheme();
+  const { hueFor } = useHues();
   const entitlements = useEntitlements();
   const { current, longest } = useStreak();
 
@@ -34,6 +36,7 @@ export default function HomeScreen() {
 
   const today = localDateKey();
   const challengeDone = challengeDoneDate === today;
+  const challengeHue = hueFor(1); // violet
 
   const startChallenge = () => {
     const questions = dailyChallengeQuestions(pack, entitlements, today);
@@ -52,42 +55,47 @@ export default function HomeScreen() {
           </ThemedText>
         </View>
 
-        <Card style={styles.streakCard}>
-          <View style={styles.streakHeader}>
-            <ThemedText type="label">{t.home.streakLabel}</ThemedText>
-            {longest > 0 && (
-              <ThemedText type="mono" themeColor="textSecondary" style={styles.record}>
-                {t.home.streakRecord} {longest}
-              </ThemedText>
-            )}
-          </View>
-          <View style={styles.streakValue}>
-            <ThemedText type="stat" themeColor={current > 0 ? 'streak' : 'text'}>
+        {/* Bloc streak : aplat plein, gros chiffre — l'élément central de l'accueil */}
+        <View style={[styles.streakTile, { backgroundColor: theme.streakSoft }]}>
+          <View style={styles.streakMain}>
+            <ThemedText type="stat" themeColor="streak" style={styles.streakNumber}>
               {current}
             </ThemedText>
-            <ThemedText type="small" themeColor="textSecondary" style={styles.streakUnit}>
-              {current > 1 ? t.home.days : t.home.day}
+            <ThemedText type="smallBold" themeColor="streak" style={styles.streakUnit}>
+              {current > 1 ? t.home.days : t.home.day} · {t.home.streakLabel.toLowerCase()}
             </ThemedText>
           </View>
-        </Card>
+          {longest > 0 && (
+            <ThemedText type="small" themeColor="textSecondary">
+              {t.home.streakRecord} · {longest}
+            </ThemedText>
+          )}
+        </View>
 
-        <Card
-          onPress={challengeDone ? undefined : startChallenge}
-          background={challengeDone ? theme.successSoft : undefined}
-          style={styles.challengeCard}>
+        {/* Défi du jour : aplat teinté, tactile */}
+        <Pressable
+          disabled={challengeDone}
+          onPress={startChallenge}
+          style={({ pressed }) => [
+            styles.challengeTile,
+            { backgroundColor: challengeDone ? theme.successSoft : challengeHue.soft },
+            pressed && !challengeDone && styles.pressed,
+          ]}>
           <View
             style={[
               styles.challengeIcon,
-              { backgroundColor: challengeDone ? 'transparent' : theme.accentSoft },
+              { backgroundColor: challengeDone ? theme.success : challengeHue.base },
             ]}>
             <Ionicons
-              name={challengeDone ? 'checkmark-circle' : 'flash-outline'}
-              size={22}
-              color={challengeDone ? theme.success : theme.accent}
+              name={challengeDone ? 'checkmark' : 'flash'}
+              size={20}
+              color={challengeDone ? theme.successSoft : challengeHue.soft}
             />
           </View>
           <View style={styles.challengeBody}>
-            <ThemedText type="smallBold" style={challengeDone && { color: theme.success }}>
+            <ThemedText
+              type="smallBold"
+              style={{ color: challengeDone ? theme.success : challengeHue.base, fontSize: 15 }}>
               {challengeDone ? t.home.challengeDone : t.home.dailyChallenge}
             </ThemedText>
             {!challengeDone && (
@@ -97,19 +105,13 @@ export default function HomeScreen() {
             )}
           </View>
           {!challengeDone && (
-            <Ionicons name="chevron-forward" size={18} color={theme.textSecondary} />
+            <Ionicons name="arrow-forward" size={20} color={challengeHue.base} />
           )}
-        </Card>
+        </Pressable>
 
         <View style={styles.spacer} />
 
-        <Link href="/learn" asChild>
-          <Pressable style={({ pressed }) => [styles.cta, { backgroundColor: theme.accent }, pressed && { opacity: 0.85 }]}>
-            <ThemedText type="smallBold" style={{ color: theme.onAccent, fontSize: 15 }}>
-              {t.home.continueCta}
-            </ThemedText>
-          </Pressable>
-        </Link>
+        <Button label={t.home.continueCta} onPress={() => router.navigate('/learn')} />
       </SafeAreaView>
     </ThemedView>
   );
@@ -133,35 +135,38 @@ const styles = StyleSheet.create({
     paddingBottom: Spacing.two,
     gap: Spacing.one,
   },
-  streakCard: {
+  streakTile: {
+    borderRadius: 24,
     padding: Spacing.four,
     gap: Spacing.two,
   },
-  streakHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  record: {
-    fontSize: 13,
-  },
-  streakValue: {
+  streakMain: {
     flexDirection: 'row',
     alignItems: 'baseline',
     gap: Spacing.two,
   },
-  streakUnit: {
-    marginBottom: 4,
+  streakNumber: {
+    fontSize: 64,
+    lineHeight: 70,
   },
-  challengeCard: {
+  streakUnit: {
+    fontSize: 15,
+  },
+  challengeTile: {
+    borderRadius: 24,
+    padding: Spacing.three,
     flexDirection: 'row',
     alignItems: 'center',
     gap: Spacing.three,
   },
+  pressed: {
+    opacity: 0.85,
+    transform: [{ scale: 0.99 }],
+  },
   challengeIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 12,
+    width: 42,
+    height: 42,
+    borderRadius: 21,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -171,11 +176,5 @@ const styles = StyleSheet.create({
   },
   spacer: {
     flex: 1,
-  },
-  cta: {
-    height: 54,
-    borderRadius: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });

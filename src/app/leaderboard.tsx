@@ -1,13 +1,13 @@
 import { Stack } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import { Chip } from '@/components/ui/chip';
 import { Input } from '@/components/ui/input';
+import { Row, RowGroup, SquareBadge } from '@/components/ui/row';
 import { Spacing } from '@/constants/theme';
 import { getDailyActivity } from '@/db/repositories';
 import { getToken } from '@/features/account/token';
@@ -121,30 +121,41 @@ export default function LeaderboardScreen() {
               {t.leaderboard.empty}
             </ThemedText>
           ) : (
-            <FlatList
-              data={entries ?? []}
-              keyExtractor={(entry) => String(entry.rank)}
-              contentContainerStyle={styles.list}
-              renderItem={({ item }) => {
-                const isSelf = item.pseudo === pseudo;
-                return (
-                  <Card selected={isSelf} style={styles.row}>
-                    <ThemedText
-                      type="mono"
-                      style={[styles.rank, { color: isSelf ? theme.accent : theme.textSecondary }]}>
-                      {item.rank}
-                    </ThemedText>
-                    <ThemedText type="smallBold" style={styles.pseudo}>
-                      {item.pseudo}
-                      {isSelf ? ` (${t.leaderboard.you})` : ''}
-                    </ThemedText>
-                    <ThemedText type="mono" themeColor="accent" style={styles.xp}>
-                      {item.xp} {t.leaderboard.points}
-                    </ThemedText>
-                  </Card>
-                );
-              }}
-            />
+            <ScrollView contentContainerStyle={styles.list}>
+              <RowGroup>
+                {(entries ?? []).map((item, index) => {
+                  const isSelf = item.pseudo === pseudo;
+                  const podium = item.rank <= 3;
+                  return (
+                    <Row
+                      key={item.rank}
+                      first={index === 0}
+                      title={`${item.pseudo}${isSelf ? ` (${t.leaderboard.you})` : ''}`}
+                      leading={
+                        <SquareBadge
+                          color={
+                            isSelf ? theme.accent : podium ? theme.streak : theme.textSecondary
+                          }
+                          background={
+                            isSelf
+                              ? theme.accentSoft
+                              : podium
+                                ? theme.streakSoft
+                                : theme.backgroundSelected
+                          }>
+                          {String(item.rank)}
+                        </SquareBadge>
+                      }
+                      trailing={
+                        <ThemedText type="smallBold" themeColor="accent">
+                          {item.xp} {t.leaderboard.points}
+                        </ThemedText>
+                      }
+                    />
+                  );
+                })}
+              </RowGroup>
+            </ScrollView>
           )}
         </>
       )}
@@ -173,22 +184,5 @@ const styles = StyleSheet.create({
   list: {
     padding: Spacing.four,
     paddingTop: Spacing.two,
-    gap: Spacing.two,
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingVertical: 14,
-  },
-  rank: {
-    fontSize: 13,
-    minWidth: 26,
-  },
-  pseudo: {
-    flex: 1,
-  },
-  xp: {
-    fontSize: 13,
   },
 });

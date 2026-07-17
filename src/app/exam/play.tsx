@@ -84,7 +84,7 @@ export default function ExamPlayScreen() {
         }}
       />
       <ScrollView contentContainerStyle={styles.content}>
-        <ProgressBar value={(currentIndex + 1) / questions.length} />
+        <ProgressBar value={(currentIndex + 1) / questions.length} height={10} />
 
         <ExamQuestion question={question} selected={selected} onToggle={toggle} />
 
