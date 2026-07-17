@@ -18,6 +18,8 @@ import {
   loginWithApple,
   loginWithGoogle,
   register,
+  requestPasswordReset,
+  resetPassword,
   type Me,
   type Session,
 } from '@/features/account/api';
@@ -77,7 +79,12 @@ export default function AccountScreen() {
   const [password, setPassword] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
   const [appleAvailable, setAppleAvailable] = useState(false);
+  const [resetMode, setResetMode] = useState(false);
+  const [codeSent, setCodeSent] = useState(false);
+  const [code, setCode] = useState('');
+  const [newPassword, setNewPassword] = useState('');
 
   useEffect(() => {
     AppleAuthentication.isAvailableAsync()
@@ -113,6 +120,7 @@ export default function AccountScreen() {
   const submit = async (action: 'login' | 'register') => {
     setBusy(true);
     setError(null);
+    setNotice(null);
     try {
       const call = action === 'login' ? login : register;
       await finishLogin(await call(email.trim(), password, getDeviceId()));
@@ -121,6 +129,47 @@ export default function AccountScreen() {
     } finally {
       setBusy(false);
     }
+  };
+
+  const sendResetCode = async () => {
+    setBusy(true);
+    setError(null);
+    try {
+      await requestPasswordReset(email.trim());
+      setCodeSent(true);
+      setNotice(t.account.codeSent);
+    } catch (err) {
+      setError(errorMessage(err, t));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const doReset = async () => {
+    setBusy(true);
+    setError(null);
+    try {
+      await resetPassword(email.trim(), code.trim(), newPassword);
+      setResetMode(false);
+      setCodeSent(false);
+      setCode('');
+      setNewPassword('');
+      setPassword('');
+      setNotice(t.account.resetDone);
+    } catch (err) {
+      setError(
+        err instanceof ApiError && err.status === 401 ? t.account.errorReset : errorMessage(err, t),
+      );
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const toggleResetMode = (value: boolean) => {
+    setResetMode(value);
+    setCodeSent(false);
+    setError(null);
+    setNotice(null);
   };
 
   const handleApple = async () => {
@@ -193,6 +242,50 @@ export default function AccountScreen() {
             <Button label={t.account.logout} onPress={logout} variant="secondary" />
             <Button label={t.account.delete} onPress={confirmDelete} variant="danger" />
           </>
+        ) : resetMode ? (
+          <>
+            <Input
+              value={email}
+              onChangeText={setEmail}
+              placeholder={t.account.emailPlaceholder}
+              autoCapitalize="none"
+              autoCorrect={false}
+              keyboardType="email-address"
+            />
+            {notice && (
+              <ThemedText type="small" themeColor="success">
+                {notice}
+              </ThemedText>
+            )}
+            {error && (
+              <ThemedText type="small" themeColor="danger">
+                {error}
+              </ThemedText>
+            )}
+            {!codeSent ? (
+              <Button label={t.account.sendCode} onPress={sendResetCode} disabled={busy} />
+            ) : (
+              <>
+                <Input
+                  value={code}
+                  onChangeText={setCode}
+                  placeholder={t.account.codePlaceholder}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  keyboardType="number-pad"
+                  maxLength={6}
+                />
+                <Input
+                  value={newPassword}
+                  onChangeText={setNewPassword}
+                  placeholder={t.account.newPasswordPlaceholder}
+                  secureTextEntry
+                />
+                <Button label={t.account.resetDo} onPress={doReset} disabled={busy} />
+              </>
+            )}
+            <Button label={t.account.back} onPress={() => toggleResetMode(false)} variant="ghost" />
+          </>
         ) : (
           <>
             <ThemedText type="small" themeColor="textSecondary">
@@ -213,6 +306,11 @@ export default function AccountScreen() {
               placeholder={t.account.passwordPlaceholder}
               secureTextEntry
             />
+            {notice && (
+              <ThemedText type="small" themeColor="success">
+                {notice}
+              </ThemedText>
+            )}
             {error && (
               <ThemedText type="small" themeColor="danger">
                 {error}
@@ -226,6 +324,7 @@ export default function AccountScreen() {
               variant="secondary"
               disabled={busy}
             />
+            <Button label={t.account.forgot} onPress={() => toggleResetMode(true)} variant="ghost" />
 
             {(appleAvailable || GOOGLE_IOS_CLIENT_ID) && (
               <View style={styles.divider}>
