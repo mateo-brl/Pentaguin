@@ -64,6 +64,95 @@ export function verifySession(token, secret) {
   }
 }
 
+// — Jeton de défi 2FA (court, entre le mot de passe et le code TOTP) -------------
+
+/** Jeton éphémère (5 min) prouvant « mot de passe OK, TOTP restant à fournir ». */
+export function signMfaToken(userId, secret) {
+  const header = toB64url(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
+  const now = Math.floor(Date.now() / 1000);
+  const payload = toB64url(JSON.stringify({ sub: userId, mfa: 1, iat: now, exp: now + 300 }));
+  const signature = createHmac('sha256', secret)
+    .update(`${header}.${payload}`)
+    .digest('base64url');
+  return `${header}.${payload}.${signature}`;
+}
+
+// — TOTP (RFC 6238, HMAC-SHA1, 30 s, 6 chiffres) ---------------------------------
+
+const B32_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+
+function base32Encode(buffer) {
+  let bits = 0;
+  let value = 0;
+  let output = '';
+  for (const byte of buffer) {
+    value = (value << 8) | byte;
+    bits += 8;
+    while (bits >= 5) {
+      output += B32_ALPHABET[(value >>> (bits - 5)) & 31];
+      bits -= 5;
+    }
+  }
+  if (bits > 0) output += B32_ALPHABET[(value << (5 - bits)) & 31];
+  return output;
+}
+
+function base32Decode(input) {
+  const clean = String(input).toUpperCase().replace(/[^A-Z2-7]/g, '');
+  let bits = 0;
+  let value = 0;
+  const output = [];
+  for (const char of clean) {
+    value = (value << 5) | B32_ALPHABET.indexOf(char);
+    bits += 5;
+    if (bits >= 8) {
+      output.push((value >>> (bits - 8)) & 0xff);
+      bits -= 8;
+    }
+  }
+  return Buffer.from(output);
+}
+
+function hotp(secretBuffer, counter) {
+  const counterBuffer = Buffer.alloc(8);
+  counterBuffer.writeBigUInt64BE(BigInt(counter));
+  const digest = createHmac('sha1', secretBuffer).update(counterBuffer).digest();
+  const offset = digest[digest.length - 1] & 0x0f;
+  const binary =
+    ((digest[offset] & 0x7f) << 24) |
+    ((digest[offset + 1] & 0xff) << 16) |
+    ((digest[offset + 2] & 0xff) << 8) |
+    (digest[offset + 3] & 0xff);
+  return (binary % 1_000_000).toString().padStart(6, '0');
+}
+
+/** Secret TOTP neuf, en base32 (format attendu par les apps d'authentification). */
+export function generateTotpSecret() {
+  return base32Encode(randomBytes(20));
+}
+
+/** Vérifie un code à ±1 fenêtre de 30 s (tolérance à la dérive d'horloge). */
+export function verifyTotp(base32Secret, code, window = 1) {
+  const candidate = String(code ?? '').trim();
+  if (!/^\d{6}$/.test(candidate)) return false;
+  const secret = base32Decode(base32Secret);
+  const counter = Math.floor(Date.now() / 1000 / 30);
+  for (let i = -window; i <= window; i += 1) {
+    if (hotp(secret, counter + i) === candidate) return true;
+  }
+  return false;
+}
+
+/** URI otpauth:// (deep link + QR standard) pour l'app d'authentification. */
+export function otpauthUri(base32Secret, account, issuer = 'Pentaguin') {
+  const label = encodeURIComponent(`${issuer}:${account}`);
+  const query =
+    `secret=${base32Secret}` +
+    `&issuer=${encodeURIComponent(issuer)}` +
+    `&algorithm=SHA1&digits=6&period=30`;
+  return `otpauth://totp/${label}?${query}`;
+}
+
 // — Identity tokens Apple / Google (RS256 + JWKS) --------------------------------
 
 const jwksCache = new Map(); // url → { keys, fetchedAt }

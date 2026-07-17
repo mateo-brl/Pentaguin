@@ -19,11 +19,15 @@ import { createServer } from 'node:http';
 import { DatabaseSync } from 'node:sqlite';
 
 import {
+  generateTotpSecret,
   hashPassword,
+  otpauthUri,
+  signMfaToken,
   signSession,
   verifyIdentityToken,
   verifyPassword,
   verifySession,
+  verifyTotp,
 } from './auth.mjs';
 
 const PORT = Number(process.env.PORT ?? 3002);
@@ -88,6 +92,16 @@ try {
 } catch {
   // colonne déjà présente
 }
+for (const alter of [
+  'ALTER TABLE users ADD COLUMN totp_secret TEXT',
+  'ALTER TABLE users ADD COLUMN totp_enabled INTEGER NOT NULL DEFAULT 0',
+]) {
+  try {
+    db.exec(alter);
+  } catch {
+    // colonne déjà présente
+  }
+}
 
 // — requêtes préparées -----------------------------------------------------------
 const upsertPlayer = db.prepare(`
@@ -120,6 +134,9 @@ const insertUser = db.prepare(`
 `);
 const updatePassword = db.prepare(
   'UPDATE users SET password_hash = ?, password_salt = ?, updated_at = ? WHERE id = ?',
+);
+const updateTotp = db.prepare(
+  'UPDATE users SET totp_secret = ?, totp_enabled = ?, updated_at = ? WHERE id = ?',
 );
 const selectPlayerByUser = db.prepare(
   'SELECT device_id, pseudo, avatar FROM players WHERE user_id = ?',
@@ -241,6 +258,8 @@ function authUserId(req) {
   if (!header.startsWith('Bearer ')) return null;
   const claims = verifySession(header.slice(7), JWT_SECRET);
   if (!claims) return null;
+  // Un jeton de défi 2FA (mfa:1) n'est PAS une session complète : refusé ici.
+  if (claims.mfa) return null;
   return selectUserById.get(claims.sub) ? claims.sub : null;
 }
 
@@ -362,6 +381,20 @@ async function handleLogin(req, res) {
   if (!user?.password_hash || !verifyPassword(password, user.password_salt, user.password_hash))
     return send(res, 401, { error: 'identifiants invalides' });
   resolveAccountPlayer(user.id, isDeviceId(deviceId) ? deviceId : null);
+  // 2FA activée : on ne délivre pas la session, on renvoie un défi TOTP.
+  if (user.totp_enabled)
+    return send(res, 200, { mfaRequired: true, mfaToken: signMfaToken(user.id, JWT_SECRET) });
+  issueSession(res, user);
+}
+
+async function handleVerify2fa(req, res) {
+  if (!requireJson(req, res)) return;
+  const { mfaToken, code } = (await readJson(req)) ?? {};
+  const claims = typeof mfaToken === 'string' ? verifySession(mfaToken, JWT_SECRET) : null;
+  if (!claims || !claims.mfa) return send(res, 401, { error: 'défi invalide ou expiré' });
+  const user = selectUserById.get(claims.sub);
+  if (!user?.totp_enabled || !verifyTotp(user.totp_secret, code))
+    return send(res, 401, { error: 'code invalide' });
   issueSession(res, user);
 }
 
@@ -429,6 +462,7 @@ function handleMe(req, res) {
     ].filter(Boolean),
     pseudo: player?.pseudo ?? null,
     avatar: player?.avatar ?? null,
+    twoFactor: Boolean(user.totp_enabled),
     xpTotal,
   });
 }
@@ -474,6 +508,42 @@ async function handleChangePassword(req, res) {
   const { salt, hash } = hashPassword(newPassword);
   updatePassword.run(hash, salt, Date.now(), userId);
   send(res, 200, { ok: true });
+}
+
+async function handle2faSetup(req, res) {
+  const userId = authUserId(req);
+  if (!userId) return send(res, 401, { error: 'non connecté' });
+  const user = selectUserById.get(userId);
+  if (user.totp_enabled) return send(res, 409, { error: '2FA déjà activée' });
+  const account = user.email ?? `pentaguin-${userId.slice(0, 8)}`;
+  const secret = generateTotpSecret();
+  updateTotp.run(secret, 0, Date.now(), userId); // secret en attente, pas encore activé
+  send(res, 200, { secret, otpauth: otpauthUri(secret, account) });
+}
+
+async function handle2faEnable(req, res) {
+  if (!requireJson(req, res)) return;
+  const userId = authUserId(req);
+  if (!userId) return send(res, 401, { error: 'non connecté' });
+  const { code } = (await readJson(req)) ?? {};
+  const user = selectUserById.get(userId);
+  if (user.totp_enabled) return send(res, 409, { error: '2FA déjà activée' });
+  if (!user.totp_secret) return send(res, 400, { error: '2FA non initialisée' });
+  if (!verifyTotp(user.totp_secret, code)) return send(res, 401, { error: 'code invalide' });
+  updateTotp.run(user.totp_secret, 1, Date.now(), userId);
+  send(res, 200, { ok: true, twoFactor: true });
+}
+
+async function handle2faDisable(req, res) {
+  if (!requireJson(req, res)) return;
+  const userId = authUserId(req);
+  if (!userId) return send(res, 401, { error: 'non connecté' });
+  const { code } = (await readJson(req)) ?? {};
+  const user = selectUserById.get(userId);
+  if (!user.totp_enabled) return send(res, 400, { error: '2FA non activée' });
+  if (!verifyTotp(user.totp_secret, code)) return send(res, 401, { error: 'code invalide' });
+  updateTotp.run(null, 0, Date.now(), userId);
+  send(res, 200, { ok: true, twoFactor: false });
 }
 
 function handleDeleteMe(req, res) {
@@ -535,6 +605,7 @@ const AUTH_ROUTES = new Set([
   '/v1/auth/login',
   '/v1/auth/apple',
   '/v1/auth/google',
+  '/v1/auth/2fa',
   '/v1/auth/reset-request',
   '/v1/auth/reset',
 ]);
@@ -563,6 +634,8 @@ const server = createServer(async (req, res) => {
       return await handleOAuth(req, res, 'apple');
     if (req.method === 'POST' && url.pathname === '/v1/auth/google')
       return await handleOAuth(req, res, 'google');
+    if (req.method === 'POST' && url.pathname === '/v1/auth/2fa')
+      return await handleVerify2fa(req, res);
     if (req.method === 'GET' && url.pathname === '/v1/me') return handleMe(req, res);
     if (req.method === 'POST' && url.pathname === '/v1/me/pseudo')
       return await handleSetPseudo(req, res);
@@ -570,6 +643,12 @@ const server = createServer(async (req, res) => {
       return await handleSetAvatar(req, res);
     if (req.method === 'POST' && url.pathname === '/v1/me/password')
       return await handleChangePassword(req, res);
+    if (req.method === 'POST' && url.pathname === '/v1/me/2fa/setup')
+      return await handle2faSetup(req, res);
+    if (req.method === 'POST' && url.pathname === '/v1/me/2fa/enable')
+      return await handle2faEnable(req, res);
+    if (req.method === 'POST' && url.pathname === '/v1/me/2fa/disable')
+      return await handle2faDisable(req, res);
     if (req.method === 'DELETE' && url.pathname === '/v1/me') return handleDeleteMe(req, res);
     if (req.method === 'POST' && url.pathname === '/v1/auth/reset-request')
       return await handleResetRequest(req, res);

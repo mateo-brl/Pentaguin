@@ -11,12 +11,14 @@ import { Input } from '@/components/ui/input';
 import { Spacing } from '@/constants/theme';
 import {
   ApiError,
+  isMfaChallenge,
   login,
   loginWithApple,
   loginWithGoogle,
   register,
   requestPasswordReset,
   resetPassword,
+  verify2fa,
   type Session,
 } from '@/features/account/api';
 import { useSession } from '@/features/account/session';
@@ -80,6 +82,9 @@ export default function SignInScreen() {
   const [codeSent, setCodeSent] = useState(false);
   const [code, setCode] = useState('');
   const [newPassword, setNewPassword] = useState('');
+  // Étape 2FA : jeton de défi reçu après un mot de passe valide.
+  const [mfaToken, setMfaToken] = useState<string | null>(null);
+  const [mfaCode, setMfaCode] = useState('');
 
   useEffect(() => {
     AppleAuthentication.isAvailableAsync()
@@ -92,13 +97,41 @@ export default function SignInScreen() {
     setError(null);
     setNotice(null);
     try {
-      const call = action === 'login' ? login : register;
-      await signIn(await call(email.trim(), password, getDeviceId()));
+      if (action === 'register') {
+        await signIn(await register(email.trim(), password, getDeviceId()));
+        return;
+      }
+      const result = await login(email.trim(), password, getDeviceId());
+      if (isMfaChallenge(result)) {
+        setMfaToken(result.mfaToken);
+        setMfaCode('');
+      } else {
+        await signIn(result);
+      }
     } catch (err) {
       setError(errorMessage(err, t));
     } finally {
       setBusy(false);
     }
+  };
+
+  const submitMfa = async () => {
+    if (!mfaToken) return;
+    setBusy(true);
+    setError(null);
+    try {
+      await signIn(await verify2fa(mfaToken, mfaCode.trim()));
+    } catch (err) {
+      setError(err instanceof ApiError && err.status === 401 ? t.account.errorMfaCode : errorMessage(err, t));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const cancelMfa = () => {
+    setMfaToken(null);
+    setMfaCode('');
+    setError(null);
   };
 
   const handleApple = async () => {
@@ -164,13 +197,41 @@ export default function SignInScreen() {
           keyboardShouldPersistTaps="handled"
         >
           <View style={styles.header}>
-            <ThemedText type="title">{t.account.gateTitle}</ThemedText>
+            <ThemedText type="title">{mfaToken ? t.account.mfaTitle : t.account.gateTitle}</ThemedText>
             <ThemedText type="small" themeColor="textSecondary">
-              {resetMode ? t.account.resetIntro : t.account.gateSubtitle}
+              {mfaToken
+                ? t.account.mfaIntro
+                : resetMode
+                  ? t.account.resetIntro
+                  : t.account.gateSubtitle}
             </ThemedText>
           </View>
 
-          {resetMode ? (
+          {mfaToken ? (
+            <>
+              <Input
+                value={mfaCode}
+                onChangeText={setMfaCode}
+                placeholder={t.account.mfaPlaceholder}
+                autoCapitalize="none"
+                autoCorrect={false}
+                keyboardType="number-pad"
+                maxLength={6}
+                autoFocus
+              />
+              {error && (
+                <ThemedText type="small" themeColor="danger">
+                  {error}
+                </ThemedText>
+              )}
+              <Button
+                label={t.account.mfaValidate}
+                onPress={submitMfa}
+                disabled={busy || mfaCode.trim().length < 6}
+              />
+              <Button label={t.account.back} onPress={cancelMfa} variant="ghost" />
+            </>
+          ) : resetMode ? (
             <>
               <Input
                 value={email}

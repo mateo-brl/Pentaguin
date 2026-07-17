@@ -12,13 +12,20 @@ export class ApiError extends Error {
 }
 
 export type Session = { token: string; email: string | null };
+export type MfaChallenge = { mfaRequired: true; mfaToken: string };
+export type LoginResult = Session | MfaChallenge;
 export type Me = {
   email: string | null;
   providers: string[];
   pseudo: string | null;
   avatar: string | null;
+  twoFactor: boolean;
   xpTotal: number;
 };
+
+export function isMfaChallenge(result: LoginResult): result is MfaChallenge {
+  return 'mfaRequired' in result && result.mfaRequired === true;
+}
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const controller = new AbortController();
@@ -50,7 +57,10 @@ export const register = (email: string, password: string, deviceId: string) =>
   post<Session>('/v1/auth/register', { email, password, deviceId });
 
 export const login = (email: string, password: string, deviceId: string) =>
-  post<Session>('/v1/auth/login', { email, password, deviceId });
+  post<LoginResult>('/v1/auth/login', { email, password, deviceId });
+
+export const verify2fa = (mfaToken: string, code: string) =>
+  post<Session>('/v1/auth/2fa', { mfaToken, code });
 
 export const loginWithApple = (identityToken: string, deviceId: string) =>
   post<Session>('/v1/auth/apple', { identityToken, deviceId });
@@ -69,6 +79,15 @@ export const setAvatar = (token: string, avatar: string) =>
 
 export const changePassword = (token: string, currentPassword: string, newPassword: string) =>
   post<{ ok: boolean }>('/v1/me/password', { currentPassword, newPassword }, token);
+
+export const setup2fa = (token: string) =>
+  post<{ secret: string; otpauth: string }>('/v1/me/2fa/setup', {}, token);
+
+export const enable2fa = (token: string, code: string) =>
+  post<{ ok: boolean; twoFactor: boolean }>('/v1/me/2fa/enable', { code }, token);
+
+export const disable2fa = (token: string, code: string) =>
+  post<{ ok: boolean; twoFactor: boolean }>('/v1/me/2fa/disable', { code }, token);
 
 export const deleteAccount = (token: string) =>
   request<{ ok: boolean }>('/v1/me', {
