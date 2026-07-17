@@ -1,5 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { router } from 'expo-router';
+import { Redirect, router } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -7,12 +7,17 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Row, RowGroup, SquareBadge } from '@/components/ui/row';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+import { useRank } from '@/features/rank/ranks';
 import { useHues } from '@/hooks/use-hues';
 import { useStrings } from '@/i18n/strings';
 
 export default function TrainScreen() {
   const t = useStrings();
   const { hueFor } = useHues();
+  const rank = useRank();
+
+  // Positionnement obligatoire avant de s'entraîner.
+  if (rank == null) return <Redirect href="/placement" />;
 
   const items = [
     {
