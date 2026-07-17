@@ -14,7 +14,7 @@
  */
 import { spawn } from 'node:child_process';
 import { createHash, randomBytes, randomUUID } from 'node:crypto';
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { DatabaseSync } from 'node:sqlite';
 
@@ -301,6 +301,26 @@ function sendMail(to, subject, text) {
   });
 }
 const mailAvailable = existsSync(SENDMAIL);
+
+// Politique de confidentialité servie en HTML (URL publique pour l'App Store) :
+// https://pentaguin.mateobrl.fr/privacy — chargée au démarrage, servie telle quelle.
+const PRIVACY_HTML = (() => {
+  try {
+    return readFileSync(new URL('./privacy.html', import.meta.url), 'utf-8');
+  } catch {
+    return '';
+  }
+})();
+
+function handlePrivacy(res) {
+  if (!PRIVACY_HTML) return send(res, 404, { error: 'introuvable' });
+  res.writeHead(200, {
+    'Content-Type': 'text/html; charset=utf-8',
+    'Cache-Control': 'public, max-age=3600',
+    'X-Content-Type-Options': 'nosniff',
+  });
+  res.end(PRIVACY_HTML);
+}
 
 // — routes ------------------------------------------------------------------------
 
@@ -623,6 +643,8 @@ const server = createServer(async (req, res) => {
 
   try {
     if (req.method === 'GET' && url.pathname === '/healthz') return send(res, 200, { ok: true });
+    if (req.method === 'GET' && (url.pathname === '/privacy' || url.pathname === '/privacy.html'))
+      return handlePrivacy(res);
     if (req.method === 'GET' && url.pathname === '/v1/leaderboard')
       return handleLeaderboard(res, url);
     if (req.method === 'POST' && url.pathname === '/v1/sync') return await handleSync(req, res);
