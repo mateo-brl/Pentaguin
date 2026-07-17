@@ -73,6 +73,13 @@ export default function ProfileScreen() {
       href: '/security' as const,
       hue: hueFor(0),
     },
+    {
+      key: 'settings',
+      icon: 'settings-outline' as const,
+      title: t.settings.title,
+      href: '/settings' as const,
+      hue: hueFor(2),
+    },
   ];
 
   return (

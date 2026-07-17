@@ -1,6 +1,7 @@
 import * as Notifications from 'expo-notifications';
 
 import { getKv, setKv } from '@/db/repositories';
+import { markRemindersEnabled } from '@/features/settings/notifications';
 import { getStrings } from '@/i18n/strings';
 
 const PROMPTED_KEY = 'reminder_prompted';
@@ -32,6 +33,7 @@ export async function maybeProposeStreakReminder(): Promise<void> {
         minute: 0,
       },
     });
+    markRemindersEnabled(); // reflète l'état dans les Réglages
   } catch {
     // Notifications indisponibles (simulateur, permission système…) : ne jamais bloquer.
   }
