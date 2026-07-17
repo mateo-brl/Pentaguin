@@ -1,0 +1,66 @@
+[
+  {
+    "id": "l-d2-001",
+    "domainId": "d2",
+    "title": "L'ingénierie sociale",
+    "order": 1,
+    "estMinutes": 6,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "L'**ingénierie sociale** (*social engineering*) manipule les personnes plutôt que la technique. Les grandes familles :\n\n- **Phishing** : hameçonnage par e-mail. Décliné en **smishing** (SMS), **vishing** (voix/téléphone).\n- **Spear phishing** : phishing ciblé sur une personne précise ; **whaling** quand la cible est un dirigeant.\n- **Pretexting** : inventer un scénario crédible pour obtenir une information.\n- **Business Email Compromise (BEC)** : usurpation d'un cadre pour ordonner un virement.\n- **Impersonation** : se faire passer pour quelqu'un d'autorisé (support IT, livreur…)."
+      },
+      {
+        "type": "text",
+        "md": "Ces attaques exploitent des **leviers psychologiques** récurrents : **authority** (autorité), **urgency** (urgence), **scarcity** (rareté), **fear** (peur), **familiarity/liking** (sympathie), **social proof** (preuve sociale) et **trust** (confiance). Repérer le levier, c'est déjà se méfier."
+      },
+      {
+        "type": "callout",
+        "variant": "warning",
+        "md": "Un message qui combine **autorité** (« le DAF ») et **urgence** (« virement à faire dans l'heure ») est le schéma classique du BEC. La bonne réaction : vérifier par un canal indépendant, jamais en répondant au message."
+      },
+      { "type": "quickcheck", "questionId": "q-d2-001" }
+    ]
+  },
+  {
+    "id": "l-d2-002",
+    "domainId": "d2",
+    "title": "Panorama des logiciels malveillants",
+    "order": 2,
+    "estMinutes": 7,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "Un **malware** est un logiciel conçu pour nuire. Les types à connaître :\n\n- **Virus** : code qui s'attache à un fichier et se propage quand on l'exécute.\n- **Worm** : se propage seul sur le réseau, sans action de l'utilisateur.\n- **Trojan** (cheval de Troie) : se fait passer pour un logiciel légitime.\n- **RAT** (Remote Access Trojan) : ouvre un accès distant à l'attaquant.\n- **Ransomware** : chiffre les données et exige une rançon.\n- **Spyware / Keylogger** : espionne l'activité, capture les frappes.\n- **Rootkit** : se cache au plus bas niveau du système pour rester indétectable.\n- **Logic bomb** : charge malveillante qui se déclenche à une condition (date, événement)."
+      },
+      {
+        "type": "callout",
+        "variant": "exam",
+        "md": "Distinction classique **virus vs worm** : le virus a besoin qu'on l'exécute (action humaine), le worm se propage **tout seul**. Si l'énoncé insiste sur une propagation automatique sur le réseau → worm."
+      },
+      { "type": "quickcheck", "questionId": "q-d2-003" }
+    ]
+  },
+  {
+    "id": "l-d2-003",
+    "domainId": "d2",
+    "title": "Acteurs de menace et motivations",
+    "order": 3,
+    "estMinutes": 6,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "Identifier l'**acteur de menace** (*threat actor*) aide à anticiper ses moyens et ses cibles :\n\n- **Nation-state** (APT) : très financé, discret, motivé par l'espionnage ou le sabotage.\n- **Organized crime** : motivé par l'argent (ransomware, fraude).\n- **Hacktivist** : motivé par une idéologie ou une cause.\n- **Insider threat** : personne interne (malveillante ou négligente).\n- **Unskilled attacker** (« script kiddie ») : compétences limitées, réutilise des outils tout faits.\n- **Shadow IT** : ressources IT déployées hors du contrôle de la DSI — pas un attaquant, mais une source de risque."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          { "term": "APT", "def": "Advanced Persistent Threat — attaquant sophistiqué qui s'installe durablement et discrètement." },
+          { "term": "Threat vector", "def": "Le chemin/moyen par lequel l'attaque atteint sa cible (e-mail, clé USB, service exposé…)." },
+          { "term": "Attack surface", "def": "L'ensemble des points par lesquels un attaquant peut tenter d'entrer." }
+        ]
+      },
+      { "type": "quickcheck", "questionId": "q-d2-005" }
+    ]
+  }
+]
