@@ -19,6 +19,17 @@ export function canShowSpontaneousUpsell(
   return shownCount < config.upsell.maxSpontaneousPrompts;
 }
 
+/**
+ * Palier d'engagement minimal avant TOUTE proposition spontanée : l'utilisateur
+ * doit d'abord avoir goûté au contenu gratuit. Garantit qu'on ne propose jamais
+ * Pro « dès l'inscription » — seulement à un moment où l'offre a du sens.
+ */
+export const UPSELL_MIN_LESSONS = 3;
+
+export function isCrucialUpsellMoment(completedLessons: number): boolean {
+  return completedLessons >= UPSELL_MIN_LESSONS;
+}
+
 export function getUpsellShownCount(): number {
   return Number(getKv(SHOWN_COUNT_KEY) ?? '0');
 }

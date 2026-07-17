@@ -9,12 +9,14 @@ import { Card } from '@/components/ui/card';
 import { ProgressBar } from '@/components/ui/progress-bar';
 import { Spacing } from '@/constants/theme';
 import { getDefaultPack } from '@/content';
+import { getCompletedLessonIds } from '@/db/repositories';
 import { useExamSession } from '@/features/exam/session';
 import { maybeProposeStreakReminder } from '@/features/gamification/reminders';
 import {
   activeProvider,
   canShowSpontaneousUpsell,
   getUpsellShownCount,
+  isCrucialUpsellMoment,
   markUpsellShown,
 } from '@/features/monetization';
 import { isAnswerCorrect, scorePct } from '@/features/quiz/logic';
@@ -37,7 +39,14 @@ export default function ExamResultsScreen() {
       if (!useExamSession.getState().finished) return;
       void maybeProposeStreakReminder();
       const entitlements = await activeProvider.getEntitlements();
-      if (mounted && canShowSpontaneousUpsell(getUpsellShownCount(), entitlements)) {
+      // Moment clé : fin d'un examen ET l'utilisateur a déjà exploré le gratuit
+      // (≥ UPSELL_MIN_LESSONS leçons). Jamais « dès l'inscription ».
+      const completedLessons = getCompletedLessonIds(pack.id).size;
+      if (
+        mounted &&
+        canShowSpontaneousUpsell(getUpsellShownCount(), entitlements) &&
+        isCrucialUpsellMoment(completedLessons)
+      ) {
         setShowUpsell(true);
         markUpsellShown();
       }
