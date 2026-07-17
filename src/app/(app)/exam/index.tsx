@@ -30,6 +30,11 @@ export default function ExamListScreen() {
             {t.exam.intro}
           </ThemedText>
         }
+        ListEmptyComponent={
+          <ThemedText type="small" themeColor="textSecondary" style={styles.empty}>
+            {t.exam.empty}
+          </ThemedText>
+        }
         renderItem={({ item, index }) => {
           const unlocked = isUnlockedNow(
             { kind: 'exam', examIndex: index, entitlement: packEntitlement(pack.id) },
@@ -75,6 +80,10 @@ const styles = StyleSheet.create({
   },
   intro: {
     marginBottom: Spacing.two,
+  },
+  empty: {
+    textAlign: 'center',
+    paddingVertical: Spacing.four,
   },
   pressed: {
     opacity: 0.85,
