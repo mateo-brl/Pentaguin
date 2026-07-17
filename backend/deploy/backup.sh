@@ -18,3 +18,18 @@ node --experimental-sqlite -e 'const {DatabaseSync}=require("node:sqlite");const
 gzip -f "$OUT"
 find "$DEST_DIR" -name 'pentaguin-*.db.gz' -mtime +"$KEEP_DAYS" -delete
 echo "Sauvegarde OK : $OUT.gz"
+
+# Copie hors-site OPTIONNELLE (ex. NAS sur le LAN), pour une vraie règle 3-2-1.
+# Configurée hors repo, dans /etc/pentaguin/env (chargé par le service) :
+#   OFFSITE_TARGET="backup@192.168.x.x:/volume1/backups/pentaguin"
+#   OFFSITE_SSH_KEY="/etc/pentaguin/backup_key"      # clé dédiée, jamais le mdp admin
+# Un échec hors-site n'est qu'un avertissement (la sauvegarde locale est déjà faite).
+if [ -n "${OFFSITE_TARGET:-}" ]; then
+  RSH="ssh -o StrictHostKeyChecking=accept-new -o ConnectTimeout=10"
+  [ -n "${OFFSITE_SSH_KEY:-}" ] && RSH="$RSH -i ${OFFSITE_SSH_KEY}"
+  if rsync -az -e "$RSH" "$OUT.gz" "$OFFSITE_TARGET/"; then
+    echo "Copie hors-site OK : $OFFSITE_TARGET"
+  else
+    echo "AVERTISSEMENT : copie hors-site échouée vers $OFFSITE_TARGET" >&2
+  fi
+fi
