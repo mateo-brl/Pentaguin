@@ -30,6 +30,21 @@ const fr = {
     master: 'Maître',
     emperor: 'Empereur',
   },
+  placement: {
+    title: 'Établis ton rang',
+    intro:
+      'Douze questions, environ 5 minutes, pour situer ton niveau. Pas de piège : ça sert juste à t’orienter vers le bon contenu. Tu pourras le repasser quand tu veux.',
+    start: 'Commencer',
+    resume: 'Reprendre le test',
+    question: 'Question',
+    validate: 'Valider',
+    finish: 'Voir mon rang',
+    resultTitle: 'Ton rang de départ',
+    resultBody:
+      'Voici ton point de départ. Il montera à mesure que tu progresses — et tu peux repasser le test quand tu veux depuis ton profil.',
+    resultCta: 'C’est parti',
+    retake: 'Repasser le test de rang',
+  },
   onboarding: {
     title: 'Bienvenue sur Pentaguin',
     subtitle: 'Ta préparation à la certification, cinq minutes à la fois.',
@@ -318,6 +333,21 @@ const en: Strings = {
     diamond: 'Diamond',
     master: 'Master',
     emperor: 'Emperor',
+  },
+  placement: {
+    title: 'Set your rank',
+    intro:
+      'Twelve questions, about 5 minutes, to gauge your level. No tricks: it just guides you to the right content. You can retake it anytime.',
+    start: 'Start',
+    resume: 'Resume test',
+    question: 'Question',
+    validate: 'Confirm',
+    finish: 'See my rank',
+    resultTitle: 'Your starting rank',
+    resultBody:
+      'This is your starting point. It will climb as you progress — and you can retake the test anytime from your profile.',
+    resultCta: 'Let’s go',
+    retake: 'Retake the rank test',
   },
   onboarding: {
     title: 'Welcome to Pentaguin',

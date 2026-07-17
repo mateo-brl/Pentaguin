@@ -1,4 +1,4 @@
-import { router } from 'expo-router';
+import { Redirect, router } from 'expo-router';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -7,14 +7,19 @@ import { ThemedView } from '@/components/themed-view';
 import { Row, RowGroup, SquareBadge } from '@/components/ui/row';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 import { getDefaultPack, lessonsByDomain } from '@/content';
+import { useRank } from '@/features/rank/ranks';
 import { useHues } from '@/hooks/use-hues';
 import { useStrings } from '@/i18n/strings';
 
 export default function LearnScreen() {
   const t = useStrings();
   const { hueFor } = useHues();
+  const rank = useRank();
   const pack = getDefaultPack();
   const domains = [...pack.domains].sort((a, b) => a.order - b.order);
+
+  // Positionnement obligatoire avant d'accéder au contenu.
+  if (rank == null) return <Redirect href="/placement" />;
 
   return (
     <ThemedView style={styles.container}>

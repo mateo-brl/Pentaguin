@@ -1,0 +1,89 @@
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { Redirect, router } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { Animated, StyleSheet, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { ThemedText } from '@/components/themed-text';
+import { ThemedView } from '@/components/themed-view';
+import { Button } from '@/components/ui/button';
+import { rankLabel } from '@/components/ui/rank-badge';
+import { Spacing } from '@/constants/theme';
+import { successFeedback } from '@/features/haptics/haptics';
+import { usePlacementSession } from '@/features/placement/session';
+import { rankById } from '@/features/rank/ranks';
+import { useStrings } from '@/i18n/strings';
+
+export default function PlacementResultScreen() {
+  const t = useStrings();
+  const resultRank = usePlacementSession((s) => s.resultRank);
+  const [scale] = useState(() => new Animated.Value(0.6));
+  const [opacity] = useState(() => new Animated.Value(0));
+
+  useEffect(() => {
+    if (resultRank == null) return;
+    successFeedback();
+    Animated.parallel([
+      Animated.spring(scale, { toValue: 1, friction: 5, useNativeDriver: true }),
+      Animated.timing(opacity, { toValue: 1, duration: 300, useNativeDriver: true }),
+    ]).start();
+  }, [resultRank, scale, opacity]);
+
+  if (resultRank == null) return <Redirect href="/placement" />;
+
+  const rank = rankById(resultRank);
+
+  return (
+    <ThemedView style={styles.container}>
+      <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
+        <View style={styles.content}>
+          <ThemedText type="label" themeColor="textSecondary">
+            {t.placement.resultTitle}
+          </ThemedText>
+
+          <Animated.View style={{ opacity, transform: [{ scale }], alignItems: 'center', gap: Spacing.two }}>
+            <View style={[styles.medal, { backgroundColor: rank.color + '22' }]}>
+              <Ionicons name="medal" size={64} color={rank.color} />
+            </View>
+            <ThemedText type="title" style={{ color: rank.color }}>
+              {rankLabel(resultRank, t)}
+            </ThemedText>
+          </Animated.View>
+
+          <ThemedText type="small" themeColor="textSecondary" style={styles.body}>
+            {t.placement.resultBody}
+          </ThemedText>
+        </View>
+
+        <Button label={t.placement.resultCta} onPress={() => router.replace('/learn')} />
+      </SafeAreaView>
+    </ThemedView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  safe: {
+    flex: 1,
+    padding: Spacing.four,
+    justifyContent: 'space-between',
+  },
+  content: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: Spacing.four,
+  },
+  medal: {
+    width: 128,
+    height: 128,
+    borderRadius: 64,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  body: {
+    textAlign: 'center',
+  },
+});
