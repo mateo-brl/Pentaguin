@@ -62,6 +62,7 @@ const fr = {
   exam: {
     listTitle: 'Examens blancs',
     intro: 'Conditions réelles : chrono, aucun feedback avant la fin, résultat détaillé par domaine.',
+    empty: 'Aucun examen blanc disponible pour le moment.',
     questions: 'questions',
     rules:
       'Pas de feedback pendant l’épreuve. Tu peux naviguer entre les questions et marquer celles à revoir. Les questions sans réponse comptent fausses.',
@@ -288,6 +289,7 @@ const en: Strings = {
   exam: {
     listTitle: 'Mock exams',
     intro: 'Real conditions: timed, no feedback until the end, detailed per-domain results.',
+    empty: 'No mock exam available yet.',
     questions: 'questions',
     rules:
       'No feedback during the exam. Navigate between questions and mark the ones to revisit. Unanswered questions count as wrong.',
