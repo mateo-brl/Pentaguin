@@ -85,4 +85,13 @@ describe('moteur de positionnement', () => {
     const b = run(makeBank(), (q) => q.difficulty <= 7);
     expect(a).toEqual(b);
   });
+
+  it('descend plus fort qu’il ne monte (correction du biais de devinette)', () => {
+    const bank = makeBank();
+    const s0 = initPlacement();
+    const q = nextQuestion(bank, s0, rng0)!;
+    const up = applyAnswer(s0, q, true).currentLevel - s0.currentLevel;
+    const down = s0.currentLevel - applyAnswer(s0, q, false).currentLevel;
+    expect(down).toBeGreaterThan(up);
+  });
 });
