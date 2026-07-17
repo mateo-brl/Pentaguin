@@ -1,8 +1,11 @@
 import { Stack } from 'expo-router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { activeProvider } from '@/features/monetization';
 import { SessionProvider, useSession } from '@/features/account/session';
+import { useHasSeenOnboarding } from '@/features/settings/first-run';
+import { initThemeMode } from '@/features/settings/theme-mode';
+import { initLocale } from '@/i18n/strings';
 
 // Garde d'entrée : tant qu'aucun compte n'est connecté, seul l'écran de
 // connexion est monté ; après connexion mais avant le choix du pseudo, seul
@@ -11,6 +14,7 @@ import { SessionProvider, useSession } from '@/features/account/session';
 // dès que la garde change (Stack.Protected, SDK 57).
 function RootNavigator() {
   const { status } = useSession();
+  const onboardingSeen = useHasSeenOnboarding();
 
   // status 'loading' : le splash natif reste affiché (voir SessionProvider).
   if (status === 'loading') return null;
@@ -23,7 +27,10 @@ function RootNavigator() {
       <Stack.Protected guard={status === 'needsPseudo'}>
         <Stack.Screen name="choose-pseudo" />
       </Stack.Protected>
-      <Stack.Protected guard={status === 'signedOut'}>
+      <Stack.Protected guard={status === 'signedOut' && !onboardingSeen}>
+        <Stack.Screen name="onboarding" />
+      </Stack.Protected>
+      <Stack.Protected guard={status === 'signedOut' && onboardingSeen}>
         <Stack.Screen name="sign-in" />
       </Stack.Protected>
     </Stack>
@@ -31,6 +38,13 @@ function RootNavigator() {
 }
 
 export default function RootLayout() {
+  // Lecture des préférences persistantes avant le premier rendu (pas de flash).
+  useState(() => {
+    initLocale();
+    initThemeMode();
+    return true;
+  });
+
   useEffect(() => {
     void activeProvider.init();
   }, []);
