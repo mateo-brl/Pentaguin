@@ -57,15 +57,21 @@ if (!placement.success) {
       errors.push(`${q.id} : ids de choix en double`);
     perDifficulty.set(q.difficulty, (perDifficulty.get(q.difficulty) ?? 0) + 1);
   }
+  const counts: number[] = [];
   for (let d = 1; d <= 15; d += 1) {
     const count = perDifficulty.get(d) ?? 0;
-    if (count !== 2) errors.push(`difficulté ${d} : ${count} question(s) au lieu de 2`);
+    counts.push(count);
+    if (count < 2) errors.push(`difficulté ${d} : ${count} question(s) (minimum 2)`);
   }
   if (errors.length > 0) {
     failed = true;
     for (const error of errors) console.error(`  ✖ ${error}`);
   } else {
-    console.log(`✔ positionnement — ${placement.data.length} questions (2 par difficulté 1-15)`);
+    const min = Math.min(...counts);
+    const max = Math.max(...counts);
+    console.log(
+      `✔ positionnement — ${placement.data.length} questions (difficultés 1-15 : ${min}-${max} par niveau)`,
+    );
   }
 }
 

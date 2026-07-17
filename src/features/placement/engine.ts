@@ -3,12 +3,17 @@ import type { PlacementQuestion } from '@/content/placement';
 /**
  * Moteur de positionnement adaptatif — 100 % pur et testé. On part au milieu de
  * l'échelle (niveau 8) ; une bonne réponse fait monter, une mauvaise descendre,
- * avec un pas qui se resserre → convergence vers l'un des 15 rangs en 12 questions.
+ * avec un pas qui se resserre vite. Sur 30 questions, le niveau atteint son
+ * voisinage en quelques réponses puis oscille finement autour du vrai niveau —
+ * le rang final est la MOYENNE de la seconde moitié (lissée, robuste au bruit
+ * et aux quelques questions imparfaites).
  */
 
-/** Pas appliqués après chaque réponse (12 questions au total). */
-export const PLACEMENT_STEPS = [4, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1] as const;
-export const PLACEMENT_TOTAL = PLACEMENT_STEPS.length; // 12
+/** Pas appliqués après chaque réponse (30 questions au total). */
+export const PLACEMENT_STEPS = [
+  4, 3, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+] as const;
+export const PLACEMENT_TOTAL = PLACEMENT_STEPS.length; // 30
 export const START_LEVEL = 8;
 const MIN = 1;
 const MAX = 15;
@@ -20,13 +25,15 @@ export type PlacementState = {
   step: number;
   /** Ids déjà posés (jamais re-posés). */
   askedIds: string[];
+  /** Historique du niveau estimé après chaque réponse (pour le lissage final). */
+  levels: number[];
   correctCount: number;
 };
 
 const clamp = (n: number) => Math.min(Math.max(Math.round(n), MIN), MAX);
 
 export function initPlacement(): PlacementState {
-  return { currentLevel: START_LEVEL, step: 0, askedIds: [], correctCount: 0 };
+  return { currentLevel: START_LEVEL, step: 0, askedIds: [], levels: [], correctCount: 0 };
 }
 
 export function isPlacementDone(state: PlacementState): boolean {
@@ -72,15 +79,25 @@ export function applyAnswer(
 ): PlacementState {
   const stepSize = PLACEMENT_STEPS[Math.min(state.step, PLACEMENT_STEPS.length - 1)];
   const delta = correct ? stepSize : -stepSize;
+  const currentLevel = clamp(state.currentLevel + delta);
   return {
-    currentLevel: clamp(state.currentLevel + delta),
+    currentLevel,
     step: state.step + 1,
     askedIds: [...state.askedIds, question.id],
+    levels: [...state.levels, currentLevel],
     correctCount: state.correctCount + (correct ? 1 : 0),
   };
 }
 
-/** Rang final (1-15) une fois le test terminé. */
+/**
+ * Rang final (1-15) : moyenne lissée de la seconde moitié du parcours (après
+ * convergence). Robuste au bruit d'une réponse isolée. Repli sur le niveau
+ * courant si l'historique est vide.
+ */
 export function finalRank(state: PlacementState): number {
-  return clamp(state.currentLevel);
+  const levels = state.levels;
+  if (levels.length === 0) return clamp(state.currentLevel);
+  const tail = levels.slice(Math.floor(levels.length / 2));
+  const mean = tail.reduce((sum, l) => sum + l, 0) / tail.length;
+  return clamp(mean);
 }

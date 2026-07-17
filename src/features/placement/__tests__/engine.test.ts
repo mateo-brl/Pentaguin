@@ -12,15 +12,15 @@ import {
   type PlacementState,
 } from '../engine';
 
-/** Banque synthétique : 2 questions par difficulté 1-15 (comme la vraie). */
-function makeBank(): PlacementQuestion[] {
+/** Banque synthétique : plusieurs questions par difficulté 1-15. */
+function makeBank(perLevel = 6): PlacementQuestion[] {
   const bank: PlacementQuestion[] = [];
   for (let d = 1; d <= 15; d += 1) {
-    for (const suffix of ['a', 'b']) {
+    for (let i = 0; i < perLevel; i += 1) {
       bank.push({
-        id: `d${d}${suffix}`,
+        id: `d${d}-${i}`,
         difficulty: d,
-        stem: `q ${d}${suffix}`,
+        stem: `q ${d}-${i}`,
         choices: [
           { id: 'a', text: 'a' },
           { id: 'b', text: 'b' },
@@ -50,7 +50,8 @@ function run(
 }
 
 describe('moteur de positionnement', () => {
-  it('pose exactement 12 questions sans répétition', () => {
+  it('pose exactement 30 questions sans répétition', () => {
+    expect(PLACEMENT_TOTAL).toBe(30);
     const state = run(makeBank(), () => true);
     expect(state.step).toBe(PLACEMENT_TOTAL);
     expect(state.askedIds).toHaveLength(PLACEMENT_TOTAL);
