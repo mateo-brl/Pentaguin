@@ -1,6 +1,6 @@
 import { Stack } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -118,7 +118,9 @@ export default function LeaderboardScreen() {
             <ThemedText type="small" themeColor="textSecondary" style={styles.message}>
               {t.leaderboard.error}
             </ThemedText>
-          ) : entries && entries.length === 0 ? (
+          ) : entries === null ? (
+            <ActivityIndicator style={styles.loading} color={theme.accent} />
+          ) : entries.length === 0 ? (
             <ThemedText type="small" themeColor="textSecondary" style={styles.message}>
               {t.leaderboard.empty}
             </ThemedText>
@@ -185,6 +187,9 @@ const styles = StyleSheet.create({
   message: {
     padding: Spacing.four,
     textAlign: 'center',
+  },
+  loading: {
+    padding: Spacing.five,
   },
   list: {
     padding: Spacing.four,

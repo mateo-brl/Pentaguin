@@ -18,12 +18,14 @@ import {
   setup2fa,
 } from '@/features/account/api';
 import { useSession } from '@/features/account/session';
+import { useToast } from '@/features/toast/toast';
 import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
 
 export default function SecurityScreen() {
   const t = useStrings();
   const theme = useTheme();
+  const toast = useToast();
   const { me, token, refresh } = useSession();
 
   const hasPassword = Boolean(me?.providers.includes('email'));
@@ -31,8 +33,6 @@ export default function SecurityScreen() {
   const twoFactorOn = Boolean(me?.twoFactor);
 
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [notice, setNotice] = useState<string | null>(null);
 
   // Changement de mot de passe (compte e-mail : on connaît l'ancien).
   const [current, setCurrent] = useState('');
@@ -52,17 +52,17 @@ export default function SecurityScreen() {
   const doChange = async () => {
     if (!token) return;
     setBusy(true);
-    setError(null);
-    setNotice(null);
     try {
       await changePassword(token, current, next);
       setCurrent('');
       setNext('');
-      setNotice(t.account.passwordChanged);
+      toast.show(t.account.passwordChanged, 'success');
     } catch (err) {
-      if (err instanceof ApiError && err.status === 401) setError(t.account.errorCurrentPassword);
-      else if (err instanceof ApiError && err.status === 400) setError(t.account.errorInvalid);
-      else setError(t.account.errorGeneric);
+      if (err instanceof ApiError && err.status === 401)
+        toast.show(t.account.errorCurrentPassword, 'error');
+      else if (err instanceof ApiError && err.status === 400)
+        toast.show(t.account.errorInvalid, 'error');
+      else toast.show(t.account.errorGeneric, 'error');
     } finally {
       setBusy(false);
     }
@@ -71,14 +71,12 @@ export default function SecurityScreen() {
   const sendCode = async () => {
     if (!me?.email) return;
     setBusy(true);
-    setError(null);
-    setNotice(null);
     try {
       await requestPasswordReset(me.email);
       setCodeSent(true);
-      setNotice(t.account.codeSent);
+      toast.show(t.account.codeSent, 'info');
     } catch {
-      setError(t.account.errorGeneric);
+      toast.show(t.account.errorGeneric, 'error');
     } finally {
       setBusy(false);
     }
@@ -87,17 +85,17 @@ export default function SecurityScreen() {
   const doReset = async () => {
     if (!me?.email) return;
     setBusy(true);
-    setError(null);
     try {
       await resetPassword(me.email, code.trim(), resetPw);
       setResetOpen(false);
       setCodeSent(false);
       setCode('');
       setResetPw('');
-      setNotice(t.account.resetDone);
+      toast.show(t.account.resetDone, 'success');
     } catch (err) {
-      setError(
+      toast.show(
         err instanceof ApiError && err.status === 401 ? t.account.errorReset : t.account.errorGeneric,
+        'error',
       );
     } finally {
       setBusy(false);
@@ -107,13 +105,11 @@ export default function SecurityScreen() {
   const startSetup = async () => {
     if (!token) return;
     setBusy(true);
-    setError(null);
-    setNotice(null);
     try {
       setSetupData(await setup2fa(token));
       setTwoFaCode('');
     } catch {
-      setError(t.account.errorGeneric);
+      toast.show(t.account.errorGeneric, 'error');
     } finally {
       setBusy(false);
     }
@@ -122,15 +118,17 @@ export default function SecurityScreen() {
   const confirmEnable = async () => {
     if (!token) return;
     setBusy(true);
-    setError(null);
     try {
       await enable2fa(token, twoFaCode.trim());
       setSetupData(null);
       setTwoFaCode('');
       await refresh();
-      setNotice(t.account.twoFactorEnabled);
+      toast.show(t.account.twoFactorEnabled, 'success');
     } catch (err) {
-      setError(err instanceof ApiError && err.status === 401 ? t.account.errorMfaCode : t.account.errorGeneric);
+      toast.show(
+        err instanceof ApiError && err.status === 401 ? t.account.errorMfaCode : t.account.errorGeneric,
+        'error',
+      );
     } finally {
       setBusy(false);
     }
@@ -139,15 +137,17 @@ export default function SecurityScreen() {
   const confirmDisable = async () => {
     if (!token) return;
     setBusy(true);
-    setError(null);
     try {
       await disable2fa(token, twoFaCode.trim());
       setDisableOpen(false);
       setTwoFaCode('');
       await refresh();
-      setNotice(t.account.twoFactorDisabled);
+      toast.show(t.account.twoFactorDisabled, 'success');
     } catch (err) {
-      setError(err instanceof ApiError && err.status === 401 ? t.account.errorMfaCode : t.account.errorGeneric);
+      toast.show(
+        err instanceof ApiError && err.status === 401 ? t.account.errorMfaCode : t.account.errorGeneric,
+        'error',
+      );
     } finally {
       setBusy(false);
     }
@@ -163,17 +163,6 @@ export default function SecurityScreen() {
               {t.account.noPasswordProvider}
             </ThemedText>
           </Card>
-        )}
-
-        {notice && (
-          <ThemedText type="small" themeColor="success">
-            {notice}
-          </ThemedText>
-        )}
-        {error && (
-          <ThemedText type="small" themeColor="danger">
-            {error}
-          </ThemedText>
         )}
 
         {hasPassword && (
@@ -255,8 +244,6 @@ export default function SecurityScreen() {
                   onPress={() => {
                     setDisableOpen(true);
                     setTwoFaCode('');
-                    setError(null);
-                    setNotice(null);
                   }}
                 />
               ) : (
