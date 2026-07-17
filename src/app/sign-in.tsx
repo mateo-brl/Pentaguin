@@ -12,13 +12,17 @@ import { Spacing } from '@/constants/theme';
 import {
   ApiError,
   isMfaChallenge,
+  isVerifyChallenge,
   login,
   loginWithApple,
   loginWithGoogle,
   register,
   requestPasswordReset,
+  resendVerification,
   resetPassword,
   verify2fa,
+  verifyEmail,
+  type LoginResult,
   type Session,
 } from '@/features/account/api';
 import { useSession } from '@/features/account/session';
@@ -85,6 +89,9 @@ export default function SignInScreen() {
   // Étape 2FA : jeton de défi reçu après un mot de passe valide.
   const [mfaToken, setMfaToken] = useState<string | null>(null);
   const [mfaCode, setMfaCode] = useState('');
+  // Étape vérification d'e-mail : jeton reçu à l'inscription / connexion non vérifiée.
+  const [verifyToken, setVerifyToken] = useState<string | null>(null);
+  const [verifyCode, setVerifyCode] = useState('');
 
   useEffect(() => {
     AppleAuthentication.isAvailableAsync()
@@ -92,22 +99,28 @@ export default function SignInScreen() {
       .catch(() => {});
   }, []);
 
+  const handleResult = async (result: LoginResult) => {
+    if (isVerifyChallenge(result)) {
+      setVerifyToken(result.verifyToken);
+      setVerifyCode('');
+    } else if (isMfaChallenge(result)) {
+      setMfaToken(result.mfaToken);
+      setMfaCode('');
+    } else {
+      await signIn(result);
+    }
+  };
+
   const submit = async (action: 'login' | 'register') => {
     setBusy(true);
     setError(null);
     setNotice(null);
     try {
-      if (action === 'register') {
-        await signIn(await register(email.trim(), password, getDeviceId()));
-        return;
-      }
-      const result = await login(email.trim(), password, getDeviceId());
-      if (isMfaChallenge(result)) {
-        setMfaToken(result.mfaToken);
-        setMfaCode('');
-      } else {
-        await signIn(result);
-      }
+      const result =
+        action === 'register'
+          ? await register(email.trim(), password, getDeviceId())
+          : await login(email.trim(), password, getDeviceId());
+      await handleResult(result);
     } catch (err) {
       setError(errorMessage(err, t));
     } finally {
@@ -132,6 +145,37 @@ export default function SignInScreen() {
     setMfaToken(null);
     setMfaCode('');
     setError(null);
+  };
+
+  const submitVerify = async () => {
+    if (!verifyToken) return;
+    setBusy(true);
+    setError(null);
+    try {
+      await signIn(await verifyEmail(verifyToken, verifyCode.trim()));
+    } catch (err) {
+      setError(err instanceof ApiError && err.status === 401 ? t.account.errorMfaCode : errorMessage(err, t));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const resendVerify = async () => {
+    if (!verifyToken) return;
+    setError(null);
+    try {
+      await resendVerification(verifyToken);
+      setNotice(t.account.verifyResent);
+    } catch {
+      setError(t.account.errorGeneric);
+    }
+  };
+
+  const cancelVerify = () => {
+    setVerifyToken(null);
+    setVerifyCode('');
+    setError(null);
+    setNotice(null);
   };
 
   const handleApple = async () => {
@@ -197,17 +241,55 @@ export default function SignInScreen() {
           keyboardShouldPersistTaps="handled"
         >
           <View style={styles.header}>
-            <ThemedText type="title">{mfaToken ? t.account.mfaTitle : t.account.gateTitle}</ThemedText>
+            <ThemedText type="title">
+              {verifyToken
+                ? t.account.verifyTitle
+                : mfaToken
+                  ? t.account.mfaTitle
+                  : t.account.gateTitle}
+            </ThemedText>
             <ThemedText type="small" themeColor="textSecondary">
-              {mfaToken
-                ? t.account.mfaIntro
-                : resetMode
-                  ? t.account.resetIntro
-                  : t.account.gateSubtitle}
+              {verifyToken
+                ? t.account.verifyIntro
+                : mfaToken
+                  ? t.account.mfaIntro
+                  : resetMode
+                    ? t.account.resetIntro
+                    : t.account.gateSubtitle}
             </ThemedText>
           </View>
 
-          {mfaToken ? (
+          {verifyToken ? (
+            <>
+              <Input
+                value={verifyCode}
+                onChangeText={setVerifyCode}
+                placeholder={t.account.mfaPlaceholder}
+                autoCapitalize="none"
+                autoCorrect={false}
+                keyboardType="number-pad"
+                maxLength={6}
+                autoFocus
+              />
+              {notice && (
+                <ThemedText type="small" themeColor="success">
+                  {notice}
+                </ThemedText>
+              )}
+              {error && (
+                <ThemedText type="small" themeColor="danger">
+                  {error}
+                </ThemedText>
+              )}
+              <Button
+                label={t.account.mfaValidate}
+                onPress={submitVerify}
+                disabled={busy || verifyCode.trim().length < 6}
+              />
+              <Button label={t.account.verifyResend} onPress={resendVerify} variant="secondary" />
+              <Button label={t.account.back} onPress={cancelVerify} variant="ghost" />
+            </>
+          ) : mfaToken ? (
             <>
               <Input
                 value={mfaCode}

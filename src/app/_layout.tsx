@@ -5,6 +5,8 @@ import { activeProvider } from '@/features/monetization';
 import { SessionProvider, useSession } from '@/features/account/session';
 import { useHasSeenOnboarding } from '@/features/settings/first-run';
 import { initThemeMode } from '@/features/settings/theme-mode';
+import { ErrorBoundary } from '@/features/telemetry/error-boundary';
+import { installErrorReporter } from '@/features/telemetry/report';
 import { ToastProvider } from '@/features/toast/toast';
 import { initLocale } from '@/i18n/strings';
 
@@ -39,10 +41,11 @@ function RootNavigator() {
 }
 
 export default function RootLayout() {
-  // Lecture des préférences persistantes avant le premier rendu (pas de flash).
+  // Lecture des préférences persistantes + capteur d'erreurs avant le 1er rendu.
   useState(() => {
     initLocale();
     initThemeMode();
+    installErrorReporter();
     return true;
   });
 
@@ -51,10 +54,12 @@ export default function RootLayout() {
   }, []);
 
   return (
-    <SessionProvider>
-      <ToastProvider>
-        <RootNavigator />
-      </ToastProvider>
-    </SessionProvider>
+    <ErrorBoundary>
+      <SessionProvider>
+        <ToastProvider>
+          <RootNavigator />
+        </ToastProvider>
+      </SessionProvider>
+    </ErrorBoundary>
   );
 }

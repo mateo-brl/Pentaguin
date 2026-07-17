@@ -68,9 +68,20 @@ export function verifySession(token, secret) {
 
 /** Jeton éphémère (5 min) prouvant « mot de passe OK, TOTP restant à fournir ». */
 export function signMfaToken(userId, secret) {
+  return signShortToken(userId, secret, { mfa: 1 }, 300);
+}
+
+/** Jeton éphémère (15 min) prouvant « compte identifié, e-mail restant à vérifier ». */
+export function signVerifyToken(userId, secret) {
+  return signShortToken(userId, secret, { vrf: 1 }, 900);
+}
+
+function signShortToken(userId, secret, extra, ttlSeconds) {
   const header = toB64url(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
   const now = Math.floor(Date.now() / 1000);
-  const payload = toB64url(JSON.stringify({ sub: userId, mfa: 1, iat: now, exp: now + 300 }));
+  const payload = toB64url(
+    JSON.stringify({ sub: userId, ...extra, iat: now, exp: now + ttlSeconds }),
+  );
   const signature = createHmac('sha256', secret)
     .update(`${header}.${payload}`)
     .digest('base64url');

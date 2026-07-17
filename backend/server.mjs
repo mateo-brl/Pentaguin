@@ -24,6 +24,7 @@ import {
   otpauthUri,
   signMfaToken,
   signSession,
+  signVerifyToken,
   verifyIdentityToken,
   verifyPassword,
   verifySession,
@@ -49,6 +50,10 @@ const RATE_LIMIT_PER_MIN = 60;
 const AUTH_RATE_LIMIT_PER_MIN = 10;
 const LEADERBOARD_SIZE = 50;
 const RESET_CODE_TTL_MS = 15 * 60_000;
+const VERIFY_CODE_TTL_MS = 15 * 60_000;
+const MAX_LOGIN_FAILS = 6; // verrouillage temporaire au-delà
+const LOGIN_LOCK_MS = 15 * 60_000;
+const MAX_ERROR_REPORTS = 5000; // borne la croissance de la table
 
 const db = new DatabaseSync(DB_PATH);
 db.exec(`
@@ -81,6 +86,21 @@ db.exec(`
     code_hash  TEXT NOT NULL,
     expires_at INTEGER NOT NULL
   );
+  CREATE TABLE IF NOT EXISTS email_verifications (
+    email      TEXT PRIMARY KEY,
+    code_hash  TEXT NOT NULL,
+    expires_at INTEGER NOT NULL
+  );
+  CREATE TABLE IF NOT EXISTS error_reports (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    created_at INTEGER NOT NULL,
+    app_ver    TEXT,
+    platform   TEXT,
+    message    TEXT NOT NULL,
+    stack      TEXT,
+    context    TEXT
+  );
+  CREATE INDEX IF NOT EXISTS idx_error_reports_created ON error_reports(created_at);
 `);
 try {
   db.exec('ALTER TABLE players ADD COLUMN user_id TEXT');
@@ -95,6 +115,7 @@ try {
 for (const alter of [
   'ALTER TABLE users ADD COLUMN totp_secret TEXT',
   'ALTER TABLE users ADD COLUMN totp_enabled INTEGER NOT NULL DEFAULT 0',
+  'ALTER TABLE users ADD COLUMN email_verified INTEGER NOT NULL DEFAULT 0',
 ]) {
   try {
     db.exec(alter);
@@ -159,6 +180,24 @@ const upsertResetCode = db.prepare(`
 `);
 const selectResetCode = db.prepare('SELECT * FROM reset_codes WHERE email = ?');
 const deleteResetCode = db.prepare('DELETE FROM reset_codes WHERE email = ?');
+const upsertVerifyCode = db.prepare(`
+  INSERT INTO email_verifications (email, code_hash, expires_at) VALUES (?, ?, ?)
+  ON CONFLICT(email) DO UPDATE SET code_hash = excluded.code_hash, expires_at = excluded.expires_at
+`);
+const selectVerifyCode = db.prepare('SELECT * FROM email_verifications WHERE email = ?');
+const deleteVerifyCode = db.prepare('DELETE FROM email_verifications WHERE email = ?');
+const setEmailVerified = db.prepare(
+  'UPDATE users SET email_verified = 1, updated_at = ? WHERE id = ?',
+);
+const insertErrorReport = db.prepare(`
+  INSERT INTO error_reports (created_at, app_ver, platform, message, stack, context)
+  VALUES (?, ?, ?, ?, ?, ?)
+`);
+const pruneErrorReports = db.prepare(`
+  DELETE FROM error_reports WHERE id NOT IN (
+    SELECT id FROM error_reports ORDER BY id DESC LIMIT ?
+  )
+`);
 
 // — validation --------------------------------------------------------------------
 const isDeviceId = (value) => typeof value === 'string' && /^[0-9a-f-]{16,64}$/i.test(value);
@@ -205,6 +244,28 @@ function makeBucket(limitPerMin) {
 }
 const rateLimited = makeBucket(RATE_LIMIT_PER_MIN);
 const authRateLimited = makeBucket(AUTH_RATE_LIMIT_PER_MIN);
+
+// — verrou anti-bourrage par compte (en mémoire) --------------------------------
+const loginFails = new Map(); // email → { count, lockedUntil }
+setInterval(() => {
+  const now = Date.now();
+  for (const [email, entry] of loginFails)
+    if (!entry.lockedUntil || now > entry.lockedUntil) loginFails.delete(email);
+}, 600_000).unref();
+
+function loginLockedUntil(email) {
+  const entry = loginFails.get(email);
+  return entry && entry.lockedUntil && Date.now() < entry.lockedUntil ? entry.lockedUntil : 0;
+}
+function recordLoginFail(email) {
+  const entry = loginFails.get(email) ?? { count: 0, lockedUntil: 0 };
+  entry.count += 1;
+  if (entry.count >= MAX_LOGIN_FAILS) entry.lockedUntil = Date.now() + LOGIN_LOCK_MS;
+  loginFails.set(email, entry);
+}
+function clearLoginFails(email) {
+  loginFails.delete(email);
+}
 
 // — helpers HTTP ---------------------------------------------------------------------
 function send(res, status, payload) {
@@ -258,8 +319,8 @@ function authUserId(req) {
   if (!header.startsWith('Bearer ')) return null;
   const claims = verifySession(header.slice(7), JWT_SECRET);
   if (!claims) return null;
-  // Un jeton de défi 2FA (mfa:1) n'est PAS une session complète : refusé ici.
-  if (claims.mfa) return null;
+  // Les jetons de défi (2FA mfa:1, vérif e-mail vrf:1) ne sont PAS des sessions.
+  if (claims.mfa || claims.vrf) return null;
   return selectUserById.get(claims.sub) ? claims.sub : null;
 }
 
@@ -296,11 +357,24 @@ function sendMail(to, subject, text) {
     proc.on('error', reject);
     proc.on('close', (code) => (code === 0 ? resolve() : reject(new Error(`sendmail_${code}`))));
     proc.stdin.end(
-      `To: ${to}\nFrom: Pentaguin <${MAIL_FROM}>\nSubject: Code de reinitialisation Pentaguin\nContent-Type: text/plain; charset=utf-8\n\n${text}\n`,
+      `To: ${to}\nFrom: Pentaguin <${MAIL_FROM}>\nSubject: ${subject}\nContent-Type: text/plain; charset=utf-8\n\n${text}\n`,
     );
   });
 }
 const mailAvailable = existsSync(SENDMAIL);
+
+/** Génère + envoie un code de vérification d'e-mail (6 chiffres, valable 15 min). */
+function sendVerificationCode(email) {
+  const code = String(randomBytes(4).readUInt32BE() % 1_000_000).padStart(6, '0');
+  const codeHash = createHash('sha256').update(code).digest('hex');
+  upsertVerifyCode.run(email, codeHash, Date.now() + VERIFY_CODE_TTL_MS);
+  if (mailAvailable)
+    sendMail(
+      email,
+      'Verifie ton adresse Pentaguin',
+      `Ton code de vérification Pentaguin : ${code}\nIl expire dans 15 minutes. Si tu n'es pas à l'origine de cette inscription, ignore ce message.`,
+    ).catch(() => {});
+}
 
 // Politique de confidentialité servie en HTML (URL publique pour l'App Store) :
 // https://pentaguin.mateobrl.fr/privacy — chargée au démarrage, servie telle quelle.
@@ -389,7 +463,10 @@ async function handleRegister(req, res) {
   const id = randomUUID();
   insertUser.run(id, normalized, hash, salt, null, null, now, now);
   resolveAccountPlayer(id, isDeviceId(deviceId) ? deviceId : null);
-  issueSession(res, { id, email: normalized });
+  // E-mail à vérifier avant toute session : on envoie un code et on renvoie un
+  // défi (pas de session tant que l'adresse n'est pas confirmée).
+  sendVerificationCode(normalized);
+  send(res, 200, { verifyRequired: true, verifyToken: signVerifyToken(id, JWT_SECRET) });
 }
 
 async function handleLogin(req, res) {
@@ -397,14 +474,56 @@ async function handleLogin(req, res) {
   const { email, password, deviceId } = (await readJson(req)) ?? {};
   if (!isEmail(email) || typeof password !== 'string')
     return send(res, 401, { error: 'identifiants invalides' });
-  const user = selectUserByEmail.get(email.trim().toLowerCase());
-  if (!user?.password_hash || !verifyPassword(password, user.password_salt, user.password_hash))
+  const normalized = email.trim().toLowerCase();
+  // Verrou anti-bourrage par compte (au-dessus du rate-limit par IP).
+  if (loginLockedUntil(normalized))
+    return send(res, 429, { error: 'trop de tentatives, réessaie dans quelques minutes' });
+  const user = selectUserByEmail.get(normalized);
+  if (!user?.password_hash || !verifyPassword(password, user.password_salt, user.password_hash)) {
+    recordLoginFail(normalized);
     return send(res, 401, { error: 'identifiants invalides' });
+  }
+  clearLoginFails(normalized);
   resolveAccountPlayer(user.id, isDeviceId(deviceId) ? deviceId : null);
+  // E-mail non vérifié : renvoyer un défi (on renvoie un nouveau code).
+  if (!user.email_verified) {
+    sendVerificationCode(normalized);
+    return send(res, 200, {
+      verifyRequired: true,
+      verifyToken: signVerifyToken(user.id, JWT_SECRET),
+    });
+  }
   // 2FA activée : on ne délivre pas la session, on renvoie un défi TOTP.
   if (user.totp_enabled)
     return send(res, 200, { mfaRequired: true, mfaToken: signMfaToken(user.id, JWT_SECRET) });
   issueSession(res, user);
+}
+
+async function handleVerifyEmail(req, res) {
+  if (!requireJson(req, res)) return;
+  const { verifyToken, code } = (await readJson(req)) ?? {};
+  const claims = typeof verifyToken === 'string' ? verifySession(verifyToken, JWT_SECRET) : null;
+  if (!claims || !claims.vrf) return send(res, 401, { error: 'défi invalide ou expiré' });
+  const user = selectUserById.get(claims.sub);
+  if (!user?.email) return send(res, 401, { error: 'défi invalide ou expiré' });
+  const entry = selectVerifyCode.get(user.email);
+  const codeHash = createHash('sha256').update(String(code ?? '')).digest('hex');
+  if (!entry || entry.expires_at < Date.now() || entry.code_hash !== codeHash)
+    return send(res, 401, { error: 'code invalide ou expiré' });
+  setEmailVerified.run(Date.now(), user.id);
+  deleteVerifyCode.run(user.email);
+  clearLoginFails(user.email);
+  issueSession(res, user);
+}
+
+async function handleResendVerification(req, res) {
+  if (!requireJson(req, res)) return;
+  const { verifyToken } = (await readJson(req)) ?? {};
+  const claims = typeof verifyToken === 'string' ? verifySession(verifyToken, JWT_SECRET) : null;
+  if (!claims || !claims.vrf) return send(res, 401, { error: 'défi invalide ou expiré' });
+  const user = selectUserById.get(claims.sub);
+  if (user?.email && !user.email_verified) sendVerificationCode(user.email);
+  send(res, 200, { ok: true });
 }
 
 async function handleVerify2fa(req, res) {
@@ -461,10 +580,26 @@ async function handleOAuth(req, res, provider) {
       now,
       now,
     );
+    setEmailVerified.run(now, id); // e-mail garanti par le fournisseur
     user = { id, email };
   }
   resolveAccountPlayer(user.id, isDeviceId(body.deviceId) ? body.deviceId : null);
   issueSession(res, user);
+}
+
+async function handleTelemetry(req, res) {
+  if (!requireJson(req, res)) return;
+  const body = (await readJson(req)) ?? {};
+  const message = typeof body.message === 'string' ? body.message.slice(0, 500).trim() : '';
+  if (!message) return send(res, 400, { error: 'message requis' });
+  const stack = typeof body.stack === 'string' ? body.stack.slice(0, 4000) : null;
+  const appVer = typeof body.appVersion === 'string' ? body.appVersion.slice(0, 20) : null;
+  const platform = typeof body.platform === 'string' ? body.platform.slice(0, 20) : null;
+  const context = typeof body.context === 'string' ? body.context.slice(0, 500) : null;
+  insertErrorReport.run(Date.now(), appVer, platform, message, stack, context);
+  pruneErrorReports.run(MAX_ERROR_REPORTS);
+  console.error(`[error-report] ${platform ?? '?'} v${appVer ?? '?'}: ${message}`);
+  send(res, 200, { ok: true });
 }
 
 function handleMe(req, res) {
@@ -626,6 +761,8 @@ const AUTH_ROUTES = new Set([
   '/v1/auth/apple',
   '/v1/auth/google',
   '/v1/auth/2fa',
+  '/v1/auth/verify-email',
+  '/v1/auth/resend-verification',
   '/v1/auth/reset-request',
   '/v1/auth/reset',
 ]);
@@ -658,6 +795,12 @@ const server = createServer(async (req, res) => {
       return await handleOAuth(req, res, 'google');
     if (req.method === 'POST' && url.pathname === '/v1/auth/2fa')
       return await handleVerify2fa(req, res);
+    if (req.method === 'POST' && url.pathname === '/v1/auth/verify-email')
+      return await handleVerifyEmail(req, res);
+    if (req.method === 'POST' && url.pathname === '/v1/auth/resend-verification')
+      return await handleResendVerification(req, res);
+    if (req.method === 'POST' && url.pathname === '/v1/telemetry')
+      return await handleTelemetry(req, res);
     if (req.method === 'GET' && url.pathname === '/v1/me') return handleMe(req, res);
     if (req.method === 'POST' && url.pathname === '/v1/me/pseudo')
       return await handleSetPseudo(req, res);
