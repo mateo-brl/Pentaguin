@@ -1,0 +1,63 @@
+[
+  {
+    "id": "l-d4-001",
+    "domainId": "d4",
+    "title": "Identités et accès (IAM)",
+    "order": 1,
+    "estMinutes": 7,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "La **gestion des identités et des accès** (IAM) répond à : qui accède à quoi, et comment le prouver ?\n\n**Facteurs d'authentification** :\n- *Something you know* (mot de passe, PIN).\n- *Something you have* (téléphone, token, carte).\n- *Something you are* (biométrie).\n- Facteurs contextuels : *somewhere you are*, *something you do*.\n\nLe **MFA** combine des facteurs de **catégories différentes** : mot de passe + code sur téléphone = MFA ; mot de passe + PIN = **pas** du MFA (deux fois « know »)."
+      },
+      {
+        "type": "text",
+        "md": "**Modèles d'autorisation** :\n- **Least privilege** : chacun n'a que les droits strictement nécessaires.\n- **RBAC** : droits attribués selon le rôle.\n- **ABAC** : droits selon des attributs (service, heure, appareil…).\n- **MAC** : imposé par le système selon des niveaux de classification.\n- **DAC** : le propriétaire de la ressource décide.\n\n**SSO** simplifie la connexion (une seule authentification), souvent via **SAML** ou **OIDC**."
+      },
+      {
+        "type": "callout",
+        "variant": "exam",
+        "md": "Piège fréquent : « mot de passe + question secrète » n'est **pas** du MFA — les deux relèvent de *something you know*. Le vrai MFA mélange les catégories."
+      },
+      { "type": "quickcheck", "questionId": "q-d4-001" }
+    ]
+  },
+  {
+    "id": "l-d4-002",
+    "domainId": "d4",
+    "title": "Durcir les systèmes",
+    "order": 2,
+    "estMinutes": 6,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "**Durcir** (*hardening*) un système, c'est réduire sa surface d'attaque avant qu'il ne soit visé :\n\n- Désactiver les services et ports inutiles.\n- Fermer ou changer les comptes par défaut.\n- Appliquer une **baseline** de configuration sécurisée (référentiel type CIS Benchmarks).\n- Maintenir le **patch management** à jour.\n- Chiffrer les disques, activer la journalisation.\n\nLe principe du **secure by default** veut qu'un système soit livré déjà configuré de façon sûre, plutôt que sécurisé après coup."
+      },
+      {
+        "type": "callout",
+        "variant": "tip",
+        "md": "« Réduire la surface d'attaque » revient presque toujours à **enlever** quelque chose : un service, un port, un compte, une permission. Moins il y a d'exposition, moins il y a à défendre."
+      },
+      { "type": "quickcheck", "questionId": "q-d4-003" }
+    ]
+  },
+  {
+    "id": "l-d4-003",
+    "domainId": "d4",
+    "title": "Répondre à un incident",
+    "order": 3,
+    "estMinutes": 7,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "La **réponse à incident** suit un cycle (proche du NIST SP 800-61) :\n\n1. **Preparation** — outils, plans, équipe prêts *avant*.\n2. **Detection & analysis** — repérer et qualifier l'incident.\n3. **Containment** — limiter la propagation (isoler la machine).\n4. **Eradication** — supprimer la cause (malware, compte compromis).\n5. **Recovery** — remettre en service proprement.\n6. **Lessons learned** — retour d'expérience pour s'améliorer.\n\nLe **SIEM** centralise et corrèle les journaux pour la détection ; le **SOAR** automatise une partie des réponses."
+      },
+      {
+        "type": "callout",
+        "variant": "warning",
+        "md": "Ordre à ne pas confondre : on **contient** (containment) *avant* d'**éradiquer** (eradication). Isoler d'abord pour stopper l'hémorragie, nettoyer ensuite."
+      },
+      { "type": "quickcheck", "questionId": "q-d4-005" }
+    ]
+  }
+]
