@@ -1,5 +1,5 @@
 import Constants from 'expo-constants';
-import { Stack } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import { useState } from 'react';
 import { ScrollView, StyleSheet, Switch, View } from 'react-native';
 
@@ -91,6 +91,12 @@ export default function SettingsScreen() {
 
         <View style={styles.section}>
           <ThemedText type="label">{t.settings.about}</ThemedText>
+          <ThemedText
+            type="small"
+            themeColor="accent"
+            onPress={() => router.push('/legal')}>
+            {t.settings.privacy}
+          </ThemedText>
           <ThemedText type="small" themeColor="textSecondary">
             {t.settings.version} {version}
           </ThemedText>
