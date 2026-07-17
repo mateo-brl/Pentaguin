@@ -36,24 +36,28 @@ export default function QuizSetupScreen() {
     <ThemedView style={styles.container}>
       <Stack.Screen options={{ headerShown: true, title: t.quiz.title }} />
       <ScrollView contentContainerStyle={styles.content}>
-        <ThemedText type="label">{t.quiz.domain}</ThemedText>
-        <View style={styles.chips}>
-          <Chip
-            label={t.quiz.allDomains}
-            selected={domainId === null}
-            onPress={() => setDomainId(null)}
-          />
-          {pack.domains.map((domain) => (
-            <Chip
-              key={domain.id}
-              label={domain.code}
-              selected={domainId === domain.id}
-              onPress={() => setDomainId(domain.id)}
-            />
-          ))}
-        </View>
+        {pack.domains.length > 0 && (
+          <>
+            <ThemedText type="label">{t.quiz.domain}</ThemedText>
+            <View style={styles.chips}>
+              <Chip
+                label={t.quiz.allDomains}
+                selected={domainId === null}
+                onPress={() => setDomainId(null)}
+              />
+              {pack.domains.map((domain) => (
+                <Chip
+                  key={domain.id}
+                  label={domain.code}
+                  selected={domainId === domain.id}
+                  onPress={() => setDomainId(domain.id)}
+                />
+              ))}
+            </View>
+          </>
+        )}
 
-        <ThemedText type="label" style={styles.section}>
+        <ThemedText type="label" style={pack.domains.length > 0 ? styles.section : undefined}>
           {t.quiz.count}
         </ThemedText>
         <View style={styles.chips}>

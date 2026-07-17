@@ -38,6 +38,8 @@ export const lessonSchema = z.object({
   order: z.number().int().min(1),
   estMinutes: z.number().int().min(1),
   blocks: z.array(lessonBlockSchema).min(1),
+  /** Rang cible (1-15) pour l'orientation par niveau (optionnel). */
+  level: z.number().int().min(1).max(15).optional(),
 });
 
 export const questionSchema = z.object({
@@ -54,6 +56,8 @@ export const questionSchema = z.object({
   correct: z.array(z.string()).min(1),
   explanation: z.string().min(20, 'chaque question doit avoir une explication détaillée'),
   difficulty: z.union([z.literal(1), z.literal(2), z.literal(3)]),
+  /** Rang cible (1-15) pour l'orientation par niveau (optionnel). */
+  level: z.number().int().min(1).max(15).optional(),
   tags: z.array(z.string()).default([]),
 });
 
@@ -74,7 +78,7 @@ export const contentPackSchema = z.object({
   locale: z.enum(['fr', 'en']),
   /** À incrémenter à chaque publication de contenu (suivi OTA) */
   version: z.number().int().min(1),
-  domains: z.array(domainSchema).min(1),
+  domains: z.array(domainSchema),
   lessons: z.array(lessonSchema),
   questions: z.array(questionSchema),
   exams: z.array(mockExamSchema),
