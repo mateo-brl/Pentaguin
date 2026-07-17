@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
+import { tapFeedback } from '@/features/haptics/haptics';
 import { useTheme } from '@/hooks/use-theme';
 
 type Variant = 'primary' | 'secondary' | 'ghost' | 'danger';
@@ -23,10 +24,15 @@ const FACE = 52;
 export function Button({ label, onPress, variant = 'primary', disabled, style }: Props) {
   const theme = useTheme();
 
+  const press = () => {
+    tapFeedback();
+    onPress();
+  };
+
   if (variant === 'ghost') {
     return (
       <Pressable
-        onPress={onPress}
+        onPress={press}
         disabled={disabled}
         style={({ pressed }) => [styles.ghost, pressed && { opacity: 0.6 }, disabled && styles.disabled, style]}>
         <ThemedText type="smallBold" style={{ color: theme.accent, fontSize: 15 }}>
@@ -49,7 +55,7 @@ export function Button({ label, onPress, variant = 'primary', disabled, style }:
   const colors = palette[variant];
 
   return (
-    <Pressable onPress={onPress} disabled={disabled} style={[styles.container, disabled && styles.disabled, style]}>
+    <Pressable onPress={press} disabled={disabled} style={[styles.container, disabled && styles.disabled, style]}>
       {({ pressed }) => (
         <View style={styles.inner}>
           <View style={[styles.edge, { backgroundColor: colors.edge }]} />
