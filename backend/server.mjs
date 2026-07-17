@@ -233,9 +233,16 @@ function resolveAccountPlayer(userId, deviceId) {
     }
   }
   const freshId = deviceId && !selectPlayerByDevice.get(deviceId) ? deviceId : randomUUID();
-  insertPlayer.run(freshId, 'Joueur', userId, now, now);
+  // Pseudo vide = « pas encore choisi » : l'app force l'écran de choix du pseudo
+  // après l'inscription (obligatoire). Un joueur sans pseudo n'a jamais de XP
+  // (l'app est verrouillée avant le choix) donc n'apparaît pas au classement.
+  insertPlayer.run(freshId, '', userId, now, now);
   return freshId;
 }
+
+const updatePlayerPseudo = db.prepare(
+  'UPDATE players SET pseudo = ?, updated_at = ? WHERE device_id = ?',
+);
 
 function sendMail(to, subject, text) {
   return new Promise((resolve, reject) => {
@@ -393,6 +400,18 @@ function handleMe(req, res) {
   });
 }
 
+async function handleSetPseudo(req, res) {
+  if (!requireJson(req, res)) return;
+  const userId = authUserId(req);
+  if (!userId) return send(res, 401, { error: 'non connecté' });
+  const { pseudo } = (await readJson(req)) ?? {};
+  if (!isPseudo(pseudo)) return send(res, 400, { error: 'pseudo invalide (3-20 caractères)' });
+  // resolveAccountPlayer garantit la présence d'une ligne joueur pour ce compte.
+  const deviceId = resolveAccountPlayer(userId, null);
+  updatePlayerPseudo.run(pseudo.trim(), Date.now(), deviceId);
+  send(res, 200, { ok: true, pseudo: pseudo.trim() });
+}
+
 function handleDeleteMe(req, res) {
   const userId = authUserId(req);
   if (!userId) return send(res, 401, { error: 'non connecté' });
@@ -481,6 +500,8 @@ const server = createServer(async (req, res) => {
     if (req.method === 'POST' && url.pathname === '/v1/auth/google')
       return await handleOAuth(req, res, 'google');
     if (req.method === 'GET' && url.pathname === '/v1/me') return handleMe(req, res);
+    if (req.method === 'POST' && url.pathname === '/v1/me/pseudo')
+      return await handleSetPseudo(req, res);
     if (req.method === 'DELETE' && url.pathname === '/v1/me') return handleDeleteMe(req, res);
     if (req.method === 'POST' && url.pathname === '/v1/auth/reset-request')
       return await handleResetRequest(req, res);
