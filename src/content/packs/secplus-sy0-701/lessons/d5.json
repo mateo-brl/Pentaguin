@@ -1,0 +1,66 @@
+[
+  {
+    "id": "l-d5-001",
+    "domainId": "d5",
+    "title": "Gérer le risque",
+    "order": 1,
+    "estMinutes": 7,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "Le **risque** naît de la rencontre d'une **menace** et d'une **vulnérabilité**. On ne le supprime jamais totalement : on le **traite**.\n\nQuatre stratégies :\n- **Accept** : assumer le risque tel quel.\n- **Mitigate** : le réduire par des contrôles.\n- **Transfer** : le déplacer vers un tiers (assurance, sous-traitance).\n- **Avoid** : renoncer à l'activité qui le génère.\n\nL'**appétence au risque** (*risk appetite*) définit combien de risque l'organisation accepte de prendre."
+      },
+      {
+        "type": "text",
+        "md": "L'analyse peut être **qualitative** (échelles faible/moyen/élevé) ou **quantitative**, avec des formules :\n- **SLE** (Single Loss Expectancy) = valeur de l'actif × facteur d'exposition.\n- **ARO** (Annualized Rate of Occurrence) = nombre d'occurrences par an.\n- **ALE** (Annualized Loss Expectancy) = **SLE × ARO**.\n\nL'ALE aide à décider combien il est rationnel d'investir pour réduire un risque."
+      },
+      {
+        "type": "callout",
+        "variant": "exam",
+        "md": "Retiens la chaîne : **SLE × ARO = ALE**. Si une perte unique coûte 10 000 € et survient 2 fois par an, l'ALE vaut 20 000 €/an — ta réduction de risque ne devrait pas coûter plus cher que ça."
+      },
+      { "type": "quickcheck", "questionId": "q-d5-001" }
+    ]
+  },
+  {
+    "id": "l-d5-002",
+    "domainId": "d5",
+    "title": "Continuité, reprise et disponibilité",
+    "order": 2,
+    "estMinutes": 6,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "Face à un sinistre, deux objectifs se négocient à l'avance :\n- **RTO** (Recovery Time Objective) : en combien de temps le service doit être rétabli.\n- **RPO** (Recovery Point Objective) : quelle quantité de données on accepte de perdre (jusqu'à quel point de sauvegarde revenir).\n\nUn **BIA** (Business Impact Analysis) identifie les processus critiques et fixe ces objectifs. Le **MTTR** mesure le temps moyen de réparation, le **MTBF** le temps moyen entre deux pannes."
+      },
+      {
+        "type": "callout",
+        "variant": "tip",
+        "md": "**RTO = temps** (combien de temps sans service), **RPO = données** (combien de données perdues). Un RPO de 1 h impose des sauvegardes au moins toutes les heures."
+      },
+      { "type": "quickcheck", "questionId": "q-d5-003" }
+    ]
+  },
+  {
+    "id": "l-d5-003",
+    "domainId": "d5",
+    "title": "Conformité et risque tiers",
+    "order": 3,
+    "estMinutes": 6,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "Les organisations s'appuient sur des **cadres** (frameworks) et doivent respecter des **réglementations** :\n- **NIST CSF**, **ISO/IEC 27001** : cadres de gestion de la sécurité.\n- **PCI DSS** : données de cartes bancaires.\n- **RGPD/GDPR**, **HIPAA** : données personnelles / de santé.\n\nLe **risque tiers** (*third-party / supply chain*) se gère par des accords :\n- **SLA** : niveau de service attendu.\n- **MOU** : accord d'intention.\n- **BPA** : accord de partenariat commercial.\n- **NDA** : accord de confidentialité.\n- **Due diligence** : vérification préalable d'un fournisseur."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          { "term": "SLA", "def": "Service Level Agreement — engagement mesurable sur le niveau de service (disponibilité, délais)." },
+          { "term": "NDA", "def": "Non-Disclosure Agreement — accord de confidentialité." },
+          { "term": "Due diligence", "def": "Évaluation préalable des risques d'un tiers avant de s'engager." }
+        ]
+      },
+      { "type": "quickcheck", "questionId": "q-d5-005" }
+    ]
+  }
+]

@@ -1,0 +1,117 @@
+[
+  {
+    "id": "q-d2-001",
+    "domainId": "d2",
+    "lessonIds": ["l-d2-001"],
+    "type": "single",
+    "stem": "Un employé reçoit un SMS prétendant venir de sa banque, avec un lien pour « débloquer son compte immédiatement ». De quelle technique s'agit-il ?",
+    "choices": [
+      { "id": "a", "text": "Vishing" },
+      { "id": "b", "text": "Smishing" },
+      { "id": "c", "text": "Whaling" },
+      { "id": "d", "text": "Pretexting" }
+    ],
+    "correct": ["b"],
+    "explanation": "Le hameçonnage par SMS s'appelle smishing (SMS + phishing). Le vishing utilise la voix/le téléphone, le whaling cible spécifiquement un dirigeant, et le pretexting consiste à bâtir un scénario mensonger pour soutirer une information.",
+    "difficulty": 1,
+    "tags": ["social-engineering", "generated-v1"]
+  },
+  {
+    "id": "q-d2-002",
+    "domainId": "d2",
+    "type": "single",
+    "stem": "Un comptable reçoit un e-mail semblant venir du PDG, exigeant un virement urgent vers un nouveau fournisseur avant la fin de la journée. Quel levier psychologique est principalement exploité ?",
+    "choices": [
+      { "id": "a", "text": "Scarcity (rareté)" },
+      { "id": "b", "text": "Social proof (preuve sociale)" },
+      { "id": "c", "text": "Authority et urgency (autorité et urgence)" },
+      { "id": "d", "text": "Familiarity (sympathie)" }
+    ],
+    "correct": ["c"],
+    "explanation": "L'attaque combine l'autorité (le PDG) et l'urgence (avant la fin de la journée) — le schéma typique du Business Email Compromise. La rareté joue sur une quantité limitée, la preuve sociale sur « tout le monde le fait », la sympathie sur une relation amicale.",
+    "difficulty": 2,
+    "tags": ["social-engineering", "generated-v1"]
+  },
+  {
+    "id": "q-d2-003",
+    "domainId": "d2",
+    "lessonIds": ["l-d2-002"],
+    "type": "single",
+    "stem": "Un logiciel malveillant se propage automatiquement d'une machine à l'autre sur le réseau, sans qu'aucun utilisateur n'ait à ouvrir de fichier. De quel type de malware s'agit-il ?",
+    "choices": [
+      { "id": "a", "text": "Virus" },
+      { "id": "b", "text": "Trojan" },
+      { "id": "c", "text": "Worm" },
+      { "id": "d", "text": "Logic bomb" }
+    ],
+    "correct": ["c"],
+    "explanation": "Un worm (ver) se propage seul sur le réseau, sans action humaine — c'est ce qui le distingue du virus, qui a besoin d'être exécuté. Un trojan se déguise en logiciel légitime, une logic bomb se déclenche à une condition précise.",
+    "difficulty": 1,
+    "tags": ["malware", "generated-v1"]
+  },
+  {
+    "id": "q-d2-004",
+    "domainId": "d2",
+    "type": "single",
+    "stem": "Après l'ouverture d'une pièce jointe, les fichiers d'un poste deviennent illisibles et un message réclame un paiement en cryptomonnaie pour les récupérer. Quel malware est en cause ?",
+    "choices": [
+      { "id": "a", "text": "Rootkit" },
+      { "id": "b", "text": "Ransomware" },
+      { "id": "c", "text": "Spyware" },
+      { "id": "d", "text": "Worm" }
+    ],
+    "correct": ["b"],
+    "explanation": "Le chiffrement des fichiers accompagné d'une demande de rançon est la signature du ransomware. Un rootkit se dissimule pour maintenir un accès, un spyware espionne discrètement, un worm se concentre sur la propagation.",
+    "difficulty": 1,
+    "tags": ["malware", "generated-v1"]
+  },
+  {
+    "id": "q-d2-005",
+    "domainId": "d2",
+    "lessonIds": ["l-d2-003"],
+    "type": "single",
+    "stem": "Une campagne d'espionnage très sophistiquée, dotée de moyens importants, reste discrètement présente dans un réseau gouvernemental pendant des mois. Quel acteur de menace correspond le mieux ?",
+    "choices": [
+      { "id": "a", "text": "Unskilled attacker (script kiddie)" },
+      { "id": "b", "text": "Hacktivist" },
+      { "id": "c", "text": "Nation-state (APT)" },
+      { "id": "d", "text": "Insider threat" }
+    ],
+    "correct": ["c"],
+    "explanation": "Moyens importants, discrétion et persistance sur la durée caractérisent un acteur étatique (nation-state), souvent qualifié d'APT. Un script kiddie a peu de compétences, un hacktivist agit par idéologie et cherche souvent la visibilité, un insider est une menace interne.",
+    "difficulty": 2,
+    "tags": ["threat-actors", "generated-v1"]
+  },
+  {
+    "id": "q-d2-006",
+    "domainId": "d2",
+    "type": "single",
+    "stem": "Un développeur mécontent insère dans le code une routine qui effacera la base de données si son compte est un jour désactivé. Comment nomme-t-on cette charge malveillante ?",
+    "choices": [
+      { "id": "a", "text": "Logic bomb" },
+      { "id": "b", "text": "Backdoor" },
+      { "id": "c", "text": "Keylogger" },
+      { "id": "d", "text": "Worm" }
+    ],
+    "correct": ["a"],
+    "explanation": "Une logic bomb est un code malveillant qui se déclenche lorsqu'une condition est remplie (ici, la désactivation du compte). Une backdoor offre un accès caché, un keylogger enregistre les frappes, un worm se propage sur le réseau.",
+    "difficulty": 2,
+    "tags": ["malware", "generated-v1"]
+  },
+  {
+    "id": "q-d2-007",
+    "domainId": "d2",
+    "type": "single",
+    "stem": "Une faille est activement exploitée alors qu'aucun correctif n'existe encore et que l'éditeur n'en avait pas connaissance. Comment qualifie-t-on cette vulnérabilité ?",
+    "choices": [
+      { "id": "a", "text": "Vulnérabilité héritée (legacy)" },
+      { "id": "b", "text": "Zero-day" },
+      { "id": "c", "text": "Misconfiguration" },
+      { "id": "d", "text": "Race condition" }
+    ],
+    "correct": ["b"],
+    "explanation": "Une vulnérabilité zero-day est inconnue de l'éditeur et sans correctif au moment où elle est exploitée — d'où sa dangerosité. Une misconfiguration est une erreur de paramétrage, une race condition exploite un problème de synchronisation, une vulnérabilité legacy vient d'un système obsolète.",
+    "difficulty": 2,
+    "tags": ["vulnerabilites", "generated-v1"]
+  }
+]
