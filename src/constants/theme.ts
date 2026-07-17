@@ -20,11 +20,13 @@ export const Colors = {
     textSecondary: '#5B6B80',
     accent: '#0F9D8F',
     accentSoft: '#DDF5F1',
+    accentDark: '#0B7568',
     onAccent: '#FFFFFF',
     success: '#16A34A',
     successSoft: '#DCFCE7',
     danger: '#E11D48',
     dangerSoft: '#FDE7EB',
+    dangerDark: '#B31848',
     streak: '#D97706',
     streakSoft: '#FCEFD8',
   },
@@ -37,14 +39,38 @@ export const Colors = {
     textSecondary: '#93A1B8',
     accent: '#2DD4BF',
     accentSoft: '#0E2A2C',
+    accentDark: '#179C8B',
     onAccent: '#04211D',
     success: '#4ADE80',
     successSoft: '#10321F',
     danger: '#FB7185',
     dangerSoft: '#371824',
+    dangerDark: '#D14D66',
     streak: '#FBBF24',
     streakSoft: '#33270D',
   },
+} as const;
+
+/**
+ * Teintes secondaires (une par domaine/section) : la variété de couleur
+ * intentionnelle est ce qui distingue une vraie identité d'un thème
+ * mono-accent générique. Cycle stable par index.
+ */
+export const Hues = {
+  light: [
+    { base: '#0F9D8F', soft: '#DDF5F1' }, // menthe
+    { base: '#6D5AE6', soft: '#EAE6FC' }, // violet
+    { base: '#D97706', soft: '#FCEFD8' }, // ambre
+    { base: '#2E7CE6', soft: '#E1EDFC' }, // bleu
+    { base: '#DB2777', soft: '#FBE3EF' }, // rose
+  ],
+  dark: [
+    { base: '#2DD4BF', soft: '#0E2A2C' },
+    { base: '#A78BFA', soft: '#231D3E' },
+    { base: '#FBBF24', soft: '#33270D' },
+    { base: '#60A5FA', soft: '#12233D' },
+    { base: '#F472B6', soft: '#3A1229' },
+  ],
 } as const;
 
 export type ThemeColor = keyof typeof Colors.light & keyof typeof Colors.dark;

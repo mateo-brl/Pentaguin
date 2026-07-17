@@ -1,11 +1,11 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { Link, Stack, useFocusEffect, useLocalSearchParams } from 'expo-router';
+import { router, Stack, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { FlatList, Pressable, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { Card } from '@/components/ui/card';
+import { Row, RowGroup, SquareBadge } from '@/components/ui/row';
 import { Spacing } from '@/constants/theme';
 import { getDefaultPack, getDomain, lessonsByDomain } from '@/content';
 import { getCompletedLessonIds } from '@/db/repositories';
@@ -43,58 +43,49 @@ export default function DomainScreen() {
 
   return (
     <ThemedView style={styles.container}>
-      <Stack.Screen
-        options={{ headerShown: true, title: `${domain.code} · ${domain.title}` }}
-      />
+      <Stack.Screen options={{ headerShown: true, title: `${domain.code} · ${domain.title}` }} />
       {lessons.length === 0 ? (
         <ThemedText type="small" themeColor="textSecondary" style={styles.empty}>
           {t.domain.empty}
         </ThemedText>
       ) : (
-        <FlatList
-          data={lessons}
-          keyExtractor={(lesson) => lesson.id}
-          contentContainerStyle={styles.list}
-          renderItem={({ item }) => {
-            const isDone = completed.has(item.id);
-            const card = (
-              <Card style={[styles.card, !unlocked && styles.locked]}>
-                <View
-                  style={[
-                    styles.status,
-                    { backgroundColor: isDone ? theme.successSoft : theme.backgroundSelected },
-                  ]}>
-                  {isDone ? (
-                    <Ionicons name="checkmark" size={16} color={theme.success} />
-                  ) : (
-                    <ThemedText type="mono" themeColor="textSecondary" style={styles.order}>
-                      {item.order}
-                    </ThemedText>
-                  )}
-                </View>
-                <View style={styles.body}>
-                  <ThemedText type="smallBold">{item.title}</ThemedText>
-                  <ThemedText type="small" themeColor="textSecondary">
-                    {unlocked ? `${item.estMinutes} ${t.domain.minutes}` : t.lesson.locked}
-                  </ThemedText>
-                </View>
-                {unlocked ? (
-                  <Ionicons name="chevron-forward" size={18} color={theme.textSecondary} />
-                ) : (
-                  <Ionicons name="lock-closed-outline" size={16} color={theme.textSecondary} />
-                )}
-              </Card>
-            );
-            const href = unlocked
-              ? ({ pathname: '/lesson/[id]', params: { id: item.id } } as const)
-              : ('/paywall' as const);
-            return (
-              <Link href={href} asChild>
-                <Pressable style={({ pressed }) => pressed && styles.pressed}>{card}</Pressable>
-              </Link>
-            );
-          }}
-        />
+        <ScrollView contentContainerStyle={styles.content}>
+          <RowGroup>
+            {lessons.map((lesson, index) => {
+              const isDone = completed.has(lesson.id);
+              return (
+                <Row
+                  key={lesson.id}
+                  first={index === 0}
+                  dimmed={!unlocked}
+                  title={lesson.title}
+                  subtitle={unlocked ? `${lesson.estMinutes} ${t.domain.minutes}` : t.lesson.locked}
+                  leading={
+                    <SquareBadge
+                      color={isDone ? theme.success : theme.textSecondary}
+                      background={isDone ? theme.successSoft : theme.backgroundSelected}>
+                      {isDone ? (
+                        <Ionicons name="checkmark" size={18} color={theme.success} />
+                      ) : (
+                        String(lesson.order)
+                      )}
+                    </SquareBadge>
+                  }
+                  trailing={
+                    unlocked ? undefined : (
+                      <Ionicons name="lock-closed" size={15} color={theme.textSecondary} />
+                    )
+                  }
+                  onPress={() =>
+                    unlocked
+                      ? router.push({ pathname: '/lesson/[id]', params: { id: lesson.id } })
+                      : router.push('/paywall')
+                  }
+                />
+              );
+            })}
+          </RowGroup>
+        </ScrollView>
       )}
     </ThemedView>
   );
@@ -108,33 +99,7 @@ const styles = StyleSheet.create({
     padding: Spacing.four,
     textAlign: 'center',
   },
-  list: {
+  content: {
     padding: Spacing.four,
-    gap: Spacing.two,
-  },
-  pressed: {
-    opacity: 0.85,
-  },
-  card: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: Spacing.three,
-  },
-  locked: {
-    opacity: 0.6,
-  },
-  status: {
-    width: 32,
-    height: 32,
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  order: {
-    fontSize: 13,
-  },
-  body: {
-    flex: 1,
-    gap: 2,
   },
 });
