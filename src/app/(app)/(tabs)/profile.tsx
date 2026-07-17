@@ -9,12 +9,14 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Avatar } from '@/components/ui/avatar';
 import { ProgressBar } from '@/components/ui/progress-bar';
+import { RankBadge } from '@/components/ui/rank-badge';
 import { Row, RowGroup, SquareBadge } from '@/components/ui/row';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 import { getDefaultPack, lessonsByDomain } from '@/content';
 import { getCompletedLessonIds, getTotalXp } from '@/db/repositories';
 import { parseAvatar } from '@/features/account/avatar';
 import { useSession } from '@/features/account/session';
+import { useRank } from '@/features/rank/ranks';
 import { useStreak } from '@/features/gamification/use-streak';
 import { getPseudo } from '@/features/leaderboard/identity';
 import { useHues } from '@/hooks/use-hues';
@@ -29,6 +31,7 @@ export default function ProfileScreen() {
   const theme = useTheme();
   const { hueFor } = useHues();
   const { me } = useSession();
+  const rank = useRank();
   const version = Constants.expoConfig?.version ?? '0.0.0';
   const { longest } = useStreak();
 
@@ -94,6 +97,7 @@ export default function ProfileScreen() {
               leading={<Avatar spec={avatar} pseudo={pseudo} size={56} />}
               title={pseudo}
               subtitle={identity}
+              trailing={rank != null ? <RankBadge rankId={rank} compact /> : undefined}
             />
           </RowGroup>
 
@@ -116,9 +120,12 @@ export default function ProfileScreen() {
             </View>
           </View>
 
+          {domains.length > 0 && (
           <ThemedText type="smallBold" style={styles.sectionTitle}>
             {t.profile.progress}
           </ThemedText>
+          )}
+          {domains.length > 0 && (
           <RowGroup>
             {domains.map((domain, index) => {
               const hue = hueFor(index);
@@ -156,6 +163,7 @@ export default function ProfileScreen() {
               );
             })}
           </RowGroup>
+          )}
 
           <RowGroup style={styles.linksGroup}>
             {links.map((item, index) => (

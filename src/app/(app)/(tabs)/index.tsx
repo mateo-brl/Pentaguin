@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
+import { RankBadge } from '@/components/ui/rank-badge';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 import { getDefaultPack } from '@/content';
 import { getKv, localDateKey } from '@/db/repositories';
@@ -14,6 +15,7 @@ import { DAILY_CHALLENGE_KV_KEY, dailyChallengeQuestions } from '@/features/gami
 import { useStreak } from '@/features/gamification/use-streak';
 import { useEntitlements } from '@/features/monetization';
 import { useQuizSession } from '@/features/quiz/session';
+import { useRank } from '@/features/rank/ranks';
 import { useHues } from '@/hooks/use-hues';
 import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
@@ -25,6 +27,7 @@ export default function HomeScreen() {
   const theme = useTheme();
   const { hueFor } = useHues();
   const entitlements = useEntitlements();
+  const rank = useRank();
   const { current, longest } = useStreak();
 
   const [challengeDoneDate, setChallengeDoneDate] = useState<string | null>(null);
@@ -54,6 +57,11 @@ export default function HomeScreen() {
           <ThemedText type="small" themeColor="textSecondary">
             {t.home.tagline}
           </ThemedText>
+          {rank != null && (
+            <View style={styles.rank}>
+              <RankBadge rankId={rank} />
+            </View>
+          )}
         </View>
 
         {/* Bloc streak : aplat plein, gros chiffre — l'élément central de l'accueil */}
@@ -138,6 +146,9 @@ const styles = StyleSheet.create({
     paddingTop: Spacing.five,
     paddingBottom: Spacing.two,
     gap: Spacing.one,
+  },
+  rank: {
+    marginTop: Spacing.two,
   },
   streakTile: {
     borderRadius: 24,

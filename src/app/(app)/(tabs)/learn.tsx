@@ -25,30 +25,38 @@ export default function LearnScreen() {
               {t.tabs.learn}
             </ThemedText>
             <ThemedText type="small" themeColor="textSecondary">
-              {pack.certName} {pack.examCode}
+              {t.learn.tagline}
             </ThemedText>
           </View>
 
-          <RowGroup>
-            {domains.map((domain, index) => {
-              const hue = hueFor(index);
-              const lessonCount = lessonsByDomain(pack, domain.id).length;
-              return (
-                <Row
-                  key={domain.id}
-                  first={index === 0}
-                  title={domain.title}
-                  subtitle={`${lessonCount} ${t.learn.lessons} · ${domain.weightPercent} % ${t.learn.examWeight}`}
-                  leading={
-                    <SquareBadge color={hue.base} background={hue.soft}>
-                      {domain.code}
-                    </SquareBadge>
-                  }
-                  onPress={() => router.push({ pathname: '/domain/[id]', params: { id: domain.id } })}
-                />
-              );
-            })}
-          </RowGroup>
+          {domains.length === 0 ? (
+            <ThemedText type="small" themeColor="textSecondary" style={styles.empty}>
+              {t.learn.empty}
+            </ThemedText>
+          ) : (
+            <RowGroup>
+              {domains.map((domain, index) => {
+                const hue = hueFor(index);
+                const lessonCount = lessonsByDomain(pack, domain.id).length;
+                return (
+                  <Row
+                    key={domain.id}
+                    first={index === 0}
+                    title={domain.title}
+                    subtitle={`${lessonCount} ${t.learn.lessons} · ${domain.weightPercent} % ${t.learn.examWeight}`}
+                    leading={
+                      <SquareBadge color={hue.base} background={hue.soft}>
+                        {domain.code}
+                      </SquareBadge>
+                    }
+                    onPress={() =>
+                      router.push({ pathname: '/domain/[id]', params: { id: domain.id } })
+                    }
+                  />
+                );
+              })}
+            </RowGroup>
+          )}
         </ScrollView>
       </SafeAreaView>
     </ThemedView>
@@ -77,5 +85,9 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     lineHeight: 34,
+  },
+  empty: {
+    paddingVertical: Spacing.four,
+    textAlign: 'center',
   },
 });
