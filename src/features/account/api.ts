@@ -60,6 +60,9 @@ export const loginWithGoogle = (idToken: string, deviceId: string) =>
 export const fetchMe = (token: string) =>
   request<Me>('/v1/me', { headers: { Authorization: `Bearer ${token}` } });
 
+export const setPseudo = (token: string, pseudo: string) =>
+  post<{ ok: boolean; pseudo: string }>('/v1/me/pseudo', { pseudo }, token);
+
 export const deleteAccount = (token: string) =>
   request<{ ok: boolean }>('/v1/me', {
     method: 'DELETE',
