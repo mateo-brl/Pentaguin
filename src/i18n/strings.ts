@@ -36,6 +36,22 @@ const fr = {
     privacy: 'Confidentialité',
     version: 'Version',
   },
+  legal: {
+    title: 'Confidentialité',
+    intro:
+      'Pentaguin est « offline-first » : l’essentiel reste sur ton appareil. Un compte sert d’identité pour le classement et à retrouver ta progression.',
+    collectTitle: 'Ce qu’on traite',
+    collectBody:
+      'Sur notre serveur : e-mail ou identifiant Apple/Google, pseudo, avatar et XP quotidien. Sur l’appareil uniquement : ta progression et ton jeton de session (trousseau iOS sécurisé).',
+    noneTitle: 'Ce qu’on ne fait pas',
+    noneBody:
+      'Pas de publicité, pas de traceurs tiers, pas de revente de données. Les paiements passent par Apple et RevenueCat — on ne voit jamais tes informations bancaires.',
+    rightsTitle: 'Tes droits',
+    rightsBody:
+      'Tu modifies ton pseudo, ton avatar et ton mot de passe dans l’app. « Supprimer mon compte » efface définitivement ton compte, ton pseudo, ton avatar et ton historique d’XP.',
+    contactTitle: 'Contact',
+    contactBody: 'pentaguin@mateobrl.fr',
+  },
   home: {
     tagline: 'Prépare ta certification, cinq minutes à la fois.',
     streakLabel: 'Série en cours',
@@ -284,6 +300,22 @@ const en: Strings = {
     about: 'About',
     privacy: 'Privacy',
     version: 'Version',
+  },
+  legal: {
+    title: 'Privacy',
+    intro:
+      'Pentaguin is offline-first: most of your usage stays on your device. An account is your leaderboard identity and lets you recover your progress.',
+    collectTitle: 'What we process',
+    collectBody:
+      'On our server: email or Apple/Google identifier, pseudonym, avatar and daily XP. On the device only: your progress and session token (secure iOS keychain).',
+    noneTitle: 'What we don’t do',
+    noneBody:
+      'No ads, no third-party trackers, no selling of data. Payments go through Apple and RevenueCat — we never see your payment details.',
+    rightsTitle: 'Your rights',
+    rightsBody:
+      'You can change your pseudonym, avatar and password in the app. “Delete my account” permanently erases your account, pseudonym, avatar and XP history.',
+    contactTitle: 'Contact',
+    contactBody: 'pentaguin@mateobrl.fr',
   },
   home: {
     tagline: 'Prep your certification, five minutes at a time.',
