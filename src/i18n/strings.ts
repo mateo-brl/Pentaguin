@@ -51,6 +51,7 @@ const fr = {
       'Tu modifies ton pseudo, ton avatar et ton mot de passe dans l’app. « Supprimer mon compte » efface définitivement ton compte, ton pseudo, ton avatar et ton historique d’XP.',
     contactTitle: 'Contact',
     contactBody: 'pentaguin@mateobrl.fr',
+    fullPolicy: 'Lire la politique complète',
   },
   home: {
     tagline: 'Prépare ta certification, cinq minutes à la fois.',
@@ -316,6 +317,7 @@ const en: Strings = {
       'You can change your pseudonym, avatar and password in the app. “Delete my account” permanently erases your account, pseudonym, avatar and XP history.',
     contactTitle: 'Contact',
     contactBody: 'pentaguin@mateobrl.fr',
+    fullPolicy: 'Read the full policy',
   },
   home: {
     tagline: 'Prep your certification, five minutes at a time.',

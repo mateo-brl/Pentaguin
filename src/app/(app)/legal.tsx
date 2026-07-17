@@ -3,6 +3,7 @@ import { Linking, ScrollView, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { backendConfig } from '@/config/backend';
 import { Spacing } from '@/constants/theme';
 import { useStrings } from '@/i18n/strings';
 
@@ -39,6 +40,13 @@ export default function LegalScreen() {
             {t.legal.contactBody}
           </ThemedText>
         </View>
+
+        <ThemedText
+          type="small"
+          themeColor="accent"
+          onPress={() => Linking.openURL(`${backendConfig.baseUrl}/privacy`)}>
+          {t.legal.fullPolicy}
+        </ThemedText>
       </ScrollView>
     </ThemedView>
   );

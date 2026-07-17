@@ -8,9 +8,9 @@ Connect ou à héberger.
 
 - [x] Rédigée : `docs/PRIVACY.md`.
 - [x] Résumé consultable dans l'app : Réglages → Confidentialité (`legal.tsx`).
-- [ ] **Héberger `docs/PRIVACY.md` sur une URL publique** (ex. une page GitHub
-      Pages ou mateobrl.fr) et renseigner cette URL dans App Store Connect →
-      App Privacy → Privacy Policy URL. **Obligatoire** pour la soumission.
+- [x] **Hébergée** et servie par l'API (`backend/privacy.html`, route `GET /privacy`) :
+      **https://pentaguin.mateobrl.fr/privacy** (HTTPS, vérifiée 200 text/html).
+- [ ] Coller cette URL dans App Store Connect → App Privacy → Privacy Policy URL.
 
 ## App Privacy (« nutrition labels ») à déclarer
 
