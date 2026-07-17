@@ -34,4 +34,9 @@ describe('buildSyncPayload', () => {
   it('nettoie le pseudo', () => {
     expect(buildSyncPayload('id', '  Tux  ', []).pseudo).toBe('Tux');
   });
+
+  it('inclut le rang quand fourni, l’omet sinon', () => {
+    expect(buildSyncPayload('id', 'Tux', [], 7).rank).toBe(7);
+    expect(buildSyncPayload('id', 'Tux', []).rank).toBeUndefined();
+  });
 });
