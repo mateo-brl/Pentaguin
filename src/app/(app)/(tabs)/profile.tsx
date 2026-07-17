@@ -7,12 +7,16 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { Avatar } from '@/components/ui/avatar';
 import { ProgressBar } from '@/components/ui/progress-bar';
 import { Row, RowGroup, SquareBadge } from '@/components/ui/row';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 import { getDefaultPack, lessonsByDomain } from '@/content';
 import { getCompletedLessonIds, getTotalXp } from '@/db/repositories';
+import { parseAvatar } from '@/features/account/avatar';
+import { useSession } from '@/features/account/session';
 import { useStreak } from '@/features/gamification/use-streak';
+import { getPseudo } from '@/features/leaderboard/identity';
 import { useHues } from '@/hooks/use-hues';
 import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
@@ -24,6 +28,7 @@ export default function ProfileScreen() {
   const t = useStrings();
   const theme = useTheme();
   const { hueFor } = useHues();
+  const { me } = useSession();
   const version = Constants.expoConfig?.version ?? '0.0.0';
   const { longest } = useStreak();
 
@@ -35,6 +40,16 @@ export default function ProfileScreen() {
       setCompleted(getCompletedLessonIds(pack.id));
     }, []),
   );
+
+  const pseudo = me?.pseudo ?? getPseudo() ?? '';
+  const avatar = parseAvatar(me?.avatar, pseudo);
+  const identity =
+    me?.email ??
+    (me?.providers.includes('apple')
+      ? t.account.appleAccount
+      : me?.providers.includes('google')
+        ? t.account.googleAccount
+        : t.account.emailAccount);
 
   const links = [
     {
@@ -51,102 +66,114 @@ export default function ProfileScreen() {
       href: '/account' as const,
       hue: hueFor(1),
     },
+    {
+      key: 'security',
+      icon: 'lock-closed' as const,
+      title: t.profile.security,
+      href: '/security' as const,
+      hue: hueFor(0),
+    },
   ];
 
   return (
     <ThemedView style={styles.container}>
       <SafeAreaView style={styles.safeArea}>
         <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
-        <View style={styles.header}>
-          <ThemedText type="title" style={styles.title}>
-            {t.tabs.profile}
-          </ThemedText>
-        </View>
-
-        <View style={styles.statsRow}>
-          <View style={[styles.statTile, { backgroundColor: theme.accentSoft }]}>
-            <ThemedText type="stat" themeColor="accent" style={styles.statValue}>
-              {totalXp}
-            </ThemedText>
-            <ThemedText type="smallBold" themeColor="accent">
-              {t.profile.xpTotal}
-            </ThemedText>
-          </View>
-          <View style={[styles.statTile, { backgroundColor: theme.streakSoft }]}>
-            <ThemedText type="stat" themeColor="streak" style={styles.statValue}>
-              {longest}
-            </ThemedText>
-            <ThemedText type="smallBold" themeColor="streak">
-              {t.profile.bestStreak}
-            </ThemedText>
-          </View>
-        </View>
-
-        <ThemedText type="smallBold" style={styles.sectionTitle}>
-          {t.profile.progress}
-        </ThemedText>
-        <RowGroup>
-          {domains.map((domain, index) => {
-            const hue = hueFor(index);
-            const lessons = lessonsByDomain(pack, domain.id);
-            const done = lessons.filter((lesson) => completed.has(lesson.id)).length;
-            return (
-              <View
-                key={domain.id}
-                style={[
-                  styles.progressRow,
-                  index > 0 && {
-                    borderTopWidth: StyleSheet.hairlineWidth,
-                    borderTopColor: theme.border,
-                  },
-                ]}>
-                <SquareBadge color={hue.base} background={hue.soft}>
-                  {domain.code}
-                </SquareBadge>
-                <View style={styles.progressBody}>
-                  <View style={styles.progressHeader}>
-                    <ThemedText type="small" numberOfLines={1} style={styles.progressTitle}>
-                      {domain.title}
-                    </ThemedText>
-                    <ThemedText type="smallBold" themeColor="textSecondary">
-                      {done}/{lessons.length}
-                    </ThemedText>
-                  </View>
-                  <ProgressBar
-                    value={lessons.length > 0 ? done / lessons.length : 0}
-                    color={hue.base}
-                    height={8}
-                  />
-                </View>
-              </View>
-            );
-          })}
-        </RowGroup>
-
-        <RowGroup style={styles.linksGroup}>
-          {links.map((item, index) => (
+          {/* En-tête identité, tactile → écran Compte */}
+          <RowGroup style={styles.heroGroup}>
             <Row
-              key={item.key}
-              first={index === 0}
-              title={item.title}
-              leading={
-                <SquareBadge color={item.hue.base} background={item.hue.soft}>
-                  <Ionicons name={item.icon} size={19} color={item.hue.base} />
-                </SquareBadge>
-              }
-              onPress={() => router.push(item.href)}
+              first
+              onPress={() => router.push('/account')}
+              leading={<Avatar spec={avatar} pseudo={pseudo} size={56} />}
+              title={pseudo}
+              subtitle={identity}
             />
-          ))}
-        </RowGroup>
+          </RowGroup>
 
-        <ThemedView style={styles.footer}>
-          <ThemedText type="small" themeColor="textSecondary">
-            {t.profile.version} {version}
+          <View style={styles.statsRow}>
+            <View style={[styles.statTile, { backgroundColor: theme.accentSoft }]}>
+              <ThemedText type="stat" themeColor="accent" style={styles.statValue}>
+                {totalXp}
+              </ThemedText>
+              <ThemedText type="smallBold" themeColor="accent">
+                {t.profile.xpTotal}
+              </ThemedText>
+            </View>
+            <View style={[styles.statTile, { backgroundColor: theme.streakSoft }]}>
+              <ThemedText type="stat" themeColor="streak" style={styles.statValue}>
+                {longest}
+              </ThemedText>
+              <ThemedText type="smallBold" themeColor="streak">
+                {t.profile.bestStreak}
+              </ThemedText>
+            </View>
+          </View>
+
+          <ThemedText type="smallBold" style={styles.sectionTitle}>
+            {t.profile.progress}
           </ThemedText>
-          <ThemedText type="small" themeColor="textSecondary" style={styles.disclaimer}>
-            {t.profile.disclaimer}
-          </ThemedText>
-        </ThemedView>
+          <RowGroup>
+            {domains.map((domain, index) => {
+              const hue = hueFor(index);
+              const lessons = lessonsByDomain(pack, domain.id);
+              const done = lessons.filter((lesson) => completed.has(lesson.id)).length;
+              return (
+                <View
+                  key={domain.id}
+                  style={[
+                    styles.progressRow,
+                    index > 0 && {
+                      borderTopWidth: StyleSheet.hairlineWidth,
+                      borderTopColor: theme.border,
+                    },
+                  ]}>
+                  <SquareBadge color={hue.base} background={hue.soft}>
+                    {domain.code}
+                  </SquareBadge>
+                  <View style={styles.progressBody}>
+                    <View style={styles.progressHeader}>
+                      <ThemedText type="small" numberOfLines={1} style={styles.progressTitle}>
+                        {domain.title}
+                      </ThemedText>
+                      <ThemedText type="smallBold" themeColor="textSecondary">
+                        {done}/{lessons.length}
+                      </ThemedText>
+                    </View>
+                    <ProgressBar
+                      value={lessons.length > 0 ? done / lessons.length : 0}
+                      color={hue.base}
+                      height={8}
+                    />
+                  </View>
+                </View>
+              );
+            })}
+          </RowGroup>
+
+          <RowGroup style={styles.linksGroup}>
+            {links.map((item, index) => (
+              <Row
+                key={item.key}
+                first={index === 0}
+                title={item.title}
+                leading={
+                  <SquareBadge color={item.hue.base} background={item.hue.soft}>
+                    <Ionicons name={item.icon} size={19} color={item.hue.base} />
+                  </SquareBadge>
+                }
+                onPress={() => router.push(item.href)}
+              />
+            ))}
+          </RowGroup>
+
+          <ThemedView style={styles.footer}>
+            <ThemedText type="small" themeColor="textSecondary">
+              {t.profile.version} {version}
+            </ThemedText>
+            <ThemedText type="small" themeColor="textSecondary" style={styles.disclaimer}>
+              {t.profile.disclaimer}
+            </ThemedText>
+          </ThemedView>
         </ScrollView>
       </SafeAreaView>
     </ThemedView>
@@ -165,11 +192,12 @@ const styles = StyleSheet.create({
   },
   scroll: {
     paddingHorizontal: Spacing.four,
+    paddingTop: Spacing.four,
     paddingBottom: BottomTabInset + Spacing.three,
     gap: Spacing.three,
   },
-  header: {
-    paddingTop: Spacing.five,
+  heroGroup: {
+    marginBottom: Spacing.one,
   },
   sectionTitle: {
     fontSize: 15,
@@ -198,10 +226,6 @@ const styles = StyleSheet.create({
   },
   progressTitle: {
     flex: 1,
-  },
-  title: {
-    fontSize: 28,
-    lineHeight: 34,
   },
   statsRow: {
     flexDirection: 'row',

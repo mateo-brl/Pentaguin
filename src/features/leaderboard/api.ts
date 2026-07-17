@@ -4,7 +4,7 @@ const TIMEOUT_MS = 8000;
 const MAX_DAYS = 60;
 
 export type LeaderboardPeriod = 'all' | '7d';
-export type LeaderboardEntry = { rank: number; pseudo: string; xp: number };
+export type LeaderboardEntry = { rank: number; pseudo: string; avatar: string | null; xp: number };
 export type SyncPayload = {
   deviceId: string;
   pseudo: string;

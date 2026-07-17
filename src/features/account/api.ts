@@ -16,6 +16,7 @@ export type Me = {
   email: string | null;
   providers: string[];
   pseudo: string | null;
+  avatar: string | null;
   xpTotal: number;
 };
 
@@ -62,6 +63,12 @@ export const fetchMe = (token: string) =>
 
 export const setPseudo = (token: string, pseudo: string) =>
   post<{ ok: boolean; pseudo: string }>('/v1/me/pseudo', { pseudo }, token);
+
+export const setAvatar = (token: string, avatar: string) =>
+  post<{ ok: boolean; avatar: string }>('/v1/me/avatar', { avatar }, token);
+
+export const changePassword = (token: string, currentPassword: string, newPassword: string) =>
+  post<{ ok: boolean }>('/v1/me/password', { currentPassword, newPassword }, token);
 
 export const deleteAccount = (token: string) =>
   request<{ ok: boolean }>('/v1/me', {

@@ -83,6 +83,11 @@ try {
 } catch {
   // colonne déjà présente
 }
+try {
+  db.exec('ALTER TABLE players ADD COLUMN avatar TEXT');
+} catch {
+  // colonne déjà présente
+}
 
 // — requêtes préparées -----------------------------------------------------------
 const upsertPlayer = db.prepare(`
@@ -95,12 +100,12 @@ const upsertDay = db.prepare(`
   ON CONFLICT(device_id, date) DO UPDATE SET xp = MAX(daily_xp.xp, excluded.xp)
 `);
 const leaderboardAll = db.prepare(`
-  SELECT p.pseudo, SUM(d.xp) AS xp
+  SELECT p.pseudo, p.avatar, SUM(d.xp) AS xp
   FROM players p JOIN daily_xp d ON d.device_id = p.device_id
   GROUP BY p.device_id ORDER BY xp DESC LIMIT ?
 `);
 const leaderboardSince = db.prepare(`
-  SELECT p.pseudo, SUM(d.xp) AS xp
+  SELECT p.pseudo, p.avatar, SUM(d.xp) AS xp
   FROM players p JOIN daily_xp d ON d.device_id = p.device_id
   WHERE d.date >= ?
   GROUP BY p.device_id ORDER BY xp DESC LIMIT ?
@@ -116,7 +121,9 @@ const insertUser = db.prepare(`
 const updatePassword = db.prepare(
   'UPDATE users SET password_hash = ?, password_salt = ?, updated_at = ? WHERE id = ?',
 );
-const selectPlayerByUser = db.prepare('SELECT device_id, pseudo FROM players WHERE user_id = ?');
+const selectPlayerByUser = db.prepare(
+  'SELECT device_id, pseudo, avatar FROM players WHERE user_id = ?',
+);
 const selectPlayerByDevice = db.prepare(
   'SELECT device_id, user_id FROM players WHERE device_id = ?',
 );
@@ -139,6 +146,23 @@ const deleteResetCode = db.prepare('DELETE FROM reset_codes WHERE email = ?');
 // — validation --------------------------------------------------------------------
 const isDeviceId = (value) => typeof value === 'string' && /^[0-9a-f-]{16,64}$/i.test(value);
 const isPseudo = (value) => typeof value === 'string' && /^[\p{L}\p{N} _.-]{3,20}$/u.test(value.trim());
+// Avatar = « <icône>.<teinte> » (ex. shield.3). Icône dans la liste blanche,
+// teinte 0-4 (miroir du barème de teintes de l'app). Rendu 100 % côté client.
+const AVATAR_ICONS = new Set([
+  'initials',
+  'shield',
+  'terminal',
+  'bug',
+  'fingerprint',
+  'lock',
+  'flash',
+  'rocket',
+]);
+const isAvatar = (value) => {
+  if (typeof value !== 'string') return false;
+  const match = /^([a-z]+)\.([0-4])$/.exec(value);
+  return Boolean(match) && AVATAR_ICONS.has(match[1]);
+};
 const isDateKey = (value) => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value);
 const isEmail = (value) =>
   typeof value === 'string' && value.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value);
@@ -243,6 +267,9 @@ function resolveAccountPlayer(userId, deviceId) {
 const updatePlayerPseudo = db.prepare(
   'UPDATE players SET pseudo = ?, updated_at = ? WHERE device_id = ?',
 );
+const updatePlayerAvatar = db.prepare(
+  'UPDATE players SET avatar = ?, updated_at = ? WHERE device_id = ?',
+);
 
 function sendMail(to, subject, text) {
   return new Promise((resolve, reject) => {
@@ -266,7 +293,12 @@ function handleLeaderboard(res, url) {
       : leaderboardAll.all(LEADERBOARD_SIZE);
   send(res, 200, {
     period,
-    entries: rows.map((row, index) => ({ rank: index + 1, pseudo: row.pseudo, xp: row.xp })),
+    entries: rows.map((row, index) => ({
+      rank: index + 1,
+      pseudo: row.pseudo,
+      avatar: row.avatar ?? null,
+      xp: row.xp,
+    })),
   });
 }
 
@@ -396,6 +428,7 @@ function handleMe(req, res) {
       user.google_sub ? 'google' : null,
     ].filter(Boolean),
     pseudo: player?.pseudo ?? null,
+    avatar: player?.avatar ?? null,
     xpTotal,
   });
 }
@@ -410,6 +443,37 @@ async function handleSetPseudo(req, res) {
   const deviceId = resolveAccountPlayer(userId, null);
   updatePlayerPseudo.run(pseudo.trim(), Date.now(), deviceId);
   send(res, 200, { ok: true, pseudo: pseudo.trim() });
+}
+
+async function handleSetAvatar(req, res) {
+  if (!requireJson(req, res)) return;
+  const userId = authUserId(req);
+  if (!userId) return send(res, 401, { error: 'non connecté' });
+  const { avatar } = (await readJson(req)) ?? {};
+  if (!isAvatar(avatar)) return send(res, 400, { error: 'avatar invalide' });
+  const deviceId = resolveAccountPlayer(userId, null);
+  updatePlayerAvatar.run(avatar, Date.now(), deviceId);
+  send(res, 200, { ok: true, avatar });
+}
+
+async function handleChangePassword(req, res) {
+  if (!requireJson(req, res)) return;
+  const userId = authUserId(req);
+  if (!userId) return send(res, 401, { error: 'non connecté' });
+  const { currentPassword, newPassword } = (await readJson(req)) ?? {};
+  if (!isPassword(newPassword))
+    return send(res, 400, { error: 'mot de passe invalide (8 caractères minimum)' });
+  const user = selectUserById.get(userId);
+  if (!user?.password_hash)
+    return send(res, 400, { error: 'aucun mot de passe sur ce compte' });
+  if (
+    typeof currentPassword !== 'string' ||
+    !verifyPassword(currentPassword, user.password_salt, user.password_hash)
+  )
+    return send(res, 401, { error: 'mot de passe actuel incorrect' });
+  const { salt, hash } = hashPassword(newPassword);
+  updatePassword.run(hash, salt, Date.now(), userId);
+  send(res, 200, { ok: true });
 }
 
 function handleDeleteMe(req, res) {
@@ -502,6 +566,10 @@ const server = createServer(async (req, res) => {
     if (req.method === 'GET' && url.pathname === '/v1/me') return handleMe(req, res);
     if (req.method === 'POST' && url.pathname === '/v1/me/pseudo')
       return await handleSetPseudo(req, res);
+    if (req.method === 'POST' && url.pathname === '/v1/me/avatar')
+      return await handleSetAvatar(req, res);
+    if (req.method === 'POST' && url.pathname === '/v1/me/password')
+      return await handleChangePassword(req, res);
     if (req.method === 'DELETE' && url.pathname === '/v1/me') return handleDeleteMe(req, res);
     if (req.method === 'POST' && url.pathname === '/v1/auth/reset-request')
       return await handleResetRequest(req, res);

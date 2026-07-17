@@ -4,11 +4,13 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { Avatar } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Chip } from '@/components/ui/chip';
 import { Input } from '@/components/ui/input';
 import { Row, RowGroup, SquareBadge } from '@/components/ui/row';
 import { Spacing } from '@/constants/theme';
+import { parseAvatar } from '@/features/account/avatar';
 import { getDailyActivity } from '@/db/repositories';
 import { getToken } from '@/features/account/token';
 import {
@@ -132,19 +134,22 @@ export default function LeaderboardScreen() {
                       first={index === 0}
                       title={`${item.pseudo}${isSelf ? ` (${t.leaderboard.you})` : ''}`}
                       leading={
-                        <SquareBadge
-                          color={
-                            isSelf ? theme.accent : podium ? theme.streak : theme.textSecondary
-                          }
-                          background={
-                            isSelf
-                              ? theme.accentSoft
-                              : podium
-                                ? theme.streakSoft
-                                : theme.backgroundSelected
-                          }>
-                          {String(item.rank)}
-                        </SquareBadge>
+                        <View style={styles.rank}>
+                          <SquareBadge
+                            color={
+                              isSelf ? theme.accent : podium ? theme.streak : theme.textSecondary
+                            }
+                            background={
+                              isSelf
+                                ? theme.accentSoft
+                                : podium
+                                  ? theme.streakSoft
+                                  : theme.backgroundSelected
+                            }>
+                            {String(item.rank)}
+                          </SquareBadge>
+                          <Avatar spec={parseAvatar(item.avatar, item.pseudo)} pseudo={item.pseudo} size={34} />
+                        </View>
                       }
                       trailing={
                         <ThemedText type="smallBold" themeColor="accent">
@@ -185,4 +190,10 @@ const styles = StyleSheet.create({
     padding: Spacing.four,
     paddingTop: Spacing.two,
   },
+  rank: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.two,
+  },
 });
+
