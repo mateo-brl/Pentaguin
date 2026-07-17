@@ -1,22 +1,24 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Constants from 'expo-constants';
-import { Link, useFocusEffect } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { Card } from '@/components/ui/card';
+import { Row, RowGroup, SquareBadge } from '@/components/ui/row';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 import { getTotalXp } from '@/db/repositories';
 import { useStreak } from '@/features/gamification/use-streak';
+import { useHues } from '@/hooks/use-hues';
 import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
 
 export default function ProfileScreen() {
   const t = useStrings();
   const theme = useTheme();
+  const { hueFor } = useHues();
   const version = Constants.expoConfig?.version ?? '0.0.0';
   const { longest } = useStreak();
 
@@ -28,48 +30,68 @@ export default function ProfileScreen() {
   );
 
   const links = [
-    { key: 'leaderboard', icon: 'podium-outline' as const, title: t.profile.leaderboard, href: '/leaderboard' as const },
-    { key: 'account', icon: 'person-circle-outline' as const, title: t.profile.account, href: '/account' as const },
+    {
+      key: 'leaderboard',
+      icon: 'podium' as const,
+      title: t.profile.leaderboard,
+      href: '/leaderboard' as const,
+      hue: hueFor(3),
+    },
+    {
+      key: 'account',
+      icon: 'person' as const,
+      title: t.profile.account,
+      href: '/account' as const,
+      hue: hueFor(1),
+    },
   ];
 
   return (
     <ThemedView style={styles.container}>
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.header}>
-          <ThemedText type="subtitle">{t.tabs.profile}</ThemedText>
+          <ThemedText type="title" style={styles.title}>
+            {t.tabs.profile}
+          </ThemedText>
         </View>
 
         <View style={styles.statsRow}>
-          <Card style={styles.statCard}>
+          <View style={[styles.statTile, { backgroundColor: theme.accentSoft }]}>
             <ThemedText type="stat" themeColor="accent" style={styles.statValue}>
               {totalXp}
             </ThemedText>
-            <ThemedText type="label">{t.profile.xpTotal}</ThemedText>
-          </Card>
-          <Card style={styles.statCard}>
+            <ThemedText type="smallBold" themeColor="accent">
+              {t.profile.xpTotal}
+            </ThemedText>
+          </View>
+          <View style={[styles.statTile, { backgroundColor: theme.streakSoft }]}>
             <ThemedText type="stat" themeColor="streak" style={styles.statValue}>
               {longest}
             </ThemedText>
-            <ThemedText type="label">{t.profile.bestStreak}</ThemedText>
-          </Card>
+            <ThemedText type="smallBold" themeColor="streak">
+              {t.profile.bestStreak}
+            </ThemedText>
+          </View>
         </View>
 
-        {links.map((item) => (
-          <Link key={item.key} href={item.href} asChild>
-            <Pressable style={({ pressed }) => pressed && styles.pressed}>
-              <Card style={styles.linkCard}>
-                <Ionicons name={item.icon} size={20} color={theme.accent} />
-                <ThemedText type="smallBold" style={styles.linkTitle}>
-                  {item.title}
-                </ThemedText>
-                <Ionicons name="chevron-forward" size={18} color={theme.textSecondary} />
-              </Card>
-            </Pressable>
-          </Link>
-        ))}
+        <RowGroup>
+          {links.map((item, index) => (
+            <Row
+              key={item.key}
+              first={index === 0}
+              title={item.title}
+              leading={
+                <SquareBadge color={item.hue.base} background={item.hue.soft}>
+                  <Ionicons name={item.icon} size={19} color={item.hue.base} />
+                </SquareBadge>
+              }
+              onPress={() => router.push(item.href)}
+            />
+          ))}
+        </RowGroup>
 
         <ThemedView style={styles.footer}>
-          <ThemedText type="mono" themeColor="textSecondary" style={styles.version}>
+          <ThemedText type="small" themeColor="textSecondary">
             {t.profile.version} {version}
           </ThemedText>
           <ThemedText type="small" themeColor="textSecondary" style={styles.disclaimer}>
@@ -92,43 +114,33 @@ const styles = StyleSheet.create({
     maxWidth: MaxContentWidth,
     paddingHorizontal: Spacing.four,
     paddingBottom: BottomTabInset + Spacing.three,
-    gap: Spacing.two,
+    gap: Spacing.three,
   },
   header: {
-    paddingTop: Spacing.four,
-    paddingBottom: Spacing.two,
+    paddingTop: Spacing.five,
+  },
+  title: {
+    fontSize: 28,
+    lineHeight: 34,
   },
   statsRow: {
     flexDirection: 'row',
     gap: Spacing.two,
   },
-  statCard: {
+  statTile: {
     flex: 1,
+    borderRadius: 24,
     alignItems: 'center',
     padding: Spacing.four,
     gap: Spacing.one,
   },
   statValue: {
-    fontSize: 32,
-    lineHeight: 38,
-  },
-  pressed: {
-    opacity: 0.85,
-  },
-  linkCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: Spacing.three,
-  },
-  linkTitle: {
-    flex: 1,
+    fontSize: 36,
+    lineHeight: 42,
   },
   footer: {
     marginTop: 'auto',
     gap: Spacing.one,
-  },
-  version: {
-    fontSize: 12,
   },
   disclaimer: {
     fontSize: 12,

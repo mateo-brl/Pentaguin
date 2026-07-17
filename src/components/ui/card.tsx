@@ -44,7 +44,7 @@ export function Card({ children, onPress, disabled, selected, background, style 
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 16,
+    borderRadius: 20,
     borderWidth: 1,
     padding: Spacing.three,
     gap: Spacing.one,

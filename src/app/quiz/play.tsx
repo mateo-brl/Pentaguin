@@ -28,7 +28,7 @@ export default function QuizPlayScreen() {
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.progressRow}>
           <View style={styles.progressTrack}>
-            <ProgressBar value={progress} />
+            <ProgressBar value={progress} height={10} />
           </View>
           <ThemedText type="mono" themeColor="textSecondary" style={styles.counter}>
             {currentIndex + 1}/{questions.length}
