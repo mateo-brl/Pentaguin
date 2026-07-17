@@ -21,6 +21,7 @@ import {
 } from '@/features/account/avatar';
 import { useSession } from '@/features/account/session';
 import { getPseudo, isValidPseudo } from '@/features/leaderboard/identity';
+import { useToast } from '@/features/toast/toast';
 import { useHues } from '@/hooks/use-hues';
 import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
@@ -30,6 +31,7 @@ export default function AccountScreen() {
   const theme = useTheme();
   const { hueFor } = useHues();
   const { me, token, signOut, submitPseudo, updateAvatar } = useSession();
+  const toast = useToast();
 
   const currentPseudo = me?.pseudo ?? getPseudo() ?? '';
   const identity =
@@ -43,27 +45,23 @@ export default function AccountScreen() {
   const [avatar, setAvatarSpec] = useState<AvatarSpec>(() => parseAvatar(me?.avatar, currentPseudo));
   const [pseudo, setPseudo] = useState(currentPseudo);
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [notice, setNotice] = useState<string | null>(null);
 
   const applyAvatar = (next: AvatarSpec) => {
     setAvatarSpec(next);
-    updateAvatar(serializeAvatar(next)).catch(() => setError(t.account.errorGeneric));
+    updateAvatar(serializeAvatar(next)).catch(() => toast.show(t.account.errorGeneric, 'error'));
   };
 
   const savePseudo = async () => {
     if (!isValidPseudo(pseudo)) {
-      setError(t.account.pseudoInvalid);
+      toast.show(t.account.pseudoInvalid, 'error');
       return;
     }
     setBusy(true);
-    setError(null);
-    setNotice(null);
     try {
       await submitPseudo(pseudo.trim());
-      setNotice(t.account.pseudoUpdated);
+      toast.show(t.account.pseudoUpdated, 'success');
     } catch {
-      setError(t.account.errorGeneric);
+      toast.show(t.account.errorGeneric, 'error');
     } finally {
       setBusy(false);
     }
@@ -80,7 +78,7 @@ export default function AccountScreen() {
             if (token) await deleteAccount(token);
             await signOut();
           } catch {
-            setError(t.account.errorGeneric);
+            toast.show(t.account.errorGeneric, 'error');
           }
         },
       },
@@ -145,16 +143,6 @@ export default function AccountScreen() {
             autoCorrect={false}
             maxLength={20}
           />
-          {notice && (
-            <ThemedText type="small" themeColor="success">
-              {notice}
-            </ThemedText>
-          )}
-          {error && (
-            <ThemedText type="small" themeColor="danger">
-              {error}
-            </ThemedText>
-          )}
           <Button
             label={t.account.pseudoSave}
             onPress={savePseudo}

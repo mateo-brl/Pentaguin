@@ -1,7 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/themed-text';
@@ -44,13 +44,19 @@ export default function PaywallScreen() {
   const isPro = entitlements.has(packEntitlement(pack.id));
 
   const [offer, setOffer] = useState<ProOffer | null>(null);
+  const [offerLoading, setOfferLoading] = useState(true);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
     let mounted = true;
-    activeProvider.getProOffer(productId).then((value) => {
-      if (mounted) setOffer(value);
-    });
+    activeProvider
+      .getProOffer(productId)
+      .then((value) => {
+        if (mounted) setOffer(value);
+      })
+      .finally(() => {
+        if (mounted) setOfferLoading(false);
+      });
     return () => {
       mounted = false;
     };
@@ -138,16 +144,21 @@ export default function PaywallScreen() {
               {t.paywall.oneTime}
             </ThemedText>
 
-            <Button
-              label={`${t.paywall.buy}${offer ? ` · ${offer.priceString}` : ''}`}
-              onPress={buy}
-              disabled={!offer || busy}
-            />
-
-            {!offer && (
-              <ThemedText type="small" themeColor="textSecondary" style={styles.note}>
-                {t.paywall.unavailable}
-              </ThemedText>
+            {offerLoading ? (
+              <ActivityIndicator style={styles.loading} color={theme.accent} />
+            ) : (
+              <>
+                <Button
+                  label={`${t.paywall.buy}${offer ? ` · ${offer.priceString}` : ''}`}
+                  onPress={buy}
+                  disabled={!offer || busy}
+                />
+                {!offer && (
+                  <ThemedText type="small" themeColor="textSecondary" style={styles.note}>
+                    {t.paywall.unavailable}
+                  </ThemedText>
+                )}
+              </>
             )}
 
             <Button label={t.paywall.restore} onPress={restore} variant="ghost" disabled={busy} />
@@ -211,5 +222,8 @@ const styles = StyleSheet.create({
   },
   note: {
     textAlign: 'center',
+  },
+  loading: {
+    paddingVertical: Spacing.two,
   },
 });

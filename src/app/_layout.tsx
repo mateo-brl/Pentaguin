@@ -5,6 +5,7 @@ import { activeProvider } from '@/features/monetization';
 import { SessionProvider, useSession } from '@/features/account/session';
 import { useHasSeenOnboarding } from '@/features/settings/first-run';
 import { initThemeMode } from '@/features/settings/theme-mode';
+import { ToastProvider } from '@/features/toast/toast';
 import { initLocale } from '@/i18n/strings';
 
 // Garde d'entrée : tant qu'aucun compte n'est connecté, seul l'écran de
@@ -51,7 +52,9 @@ export default function RootLayout() {
 
   return (
     <SessionProvider>
-      <RootNavigator />
+      <ToastProvider>
+        <RootNavigator />
+      </ToastProvider>
     </SessionProvider>
   );
 }
