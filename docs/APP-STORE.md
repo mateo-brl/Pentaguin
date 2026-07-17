@@ -10,7 +10,8 @@ Connect ou à héberger.
 - [x] Résumé consultable dans l'app : Réglages → Confidentialité (`legal.tsx`).
 - [x] **Hébergée** et servie par l'API (`backend/privacy.html`, route `GET /privacy`) :
       **https://pentaguin.mateobrl.fr/privacy** (HTTPS, vérifiée 200 text/html).
-- [ ] Coller cette URL dans App Store Connect → App Privacy → Privacy Policy URL.
+- [x] **Renseignée dans App Store Connect** → Confidentialité de l'app → Politique
+      de confidentialité (17/07/2026).
 
 ## App Privacy (« nutrition labels ») à déclarer
 
