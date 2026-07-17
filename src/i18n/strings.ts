@@ -1,7 +1,11 @@
 import { useSyncExternalStore } from 'react';
 
+import { getKv, setKv } from '@/db/repositories';
+
 export const locales = ['fr', 'en'] as const;
 export type Locale = (typeof locales)[number];
+
+const LOCALE_KEY = 'locale';
 
 const fr = {
   tabs: {
@@ -9,6 +13,28 @@ const fr = {
     learn: 'Apprendre',
     train: 'S’entraîner',
     profile: 'Profil',
+  },
+  onboarding: {
+    title: 'Bienvenue sur Pentaguin',
+    subtitle: 'Ta préparation à la certification, cinq minutes à la fois.',
+    bullet1: 'Des leçons claires, en français avec les termes techniques anglais.',
+    bullet2: 'Quiz et examens blancs chronométrés, en conditions réelles.',
+    bullet3: 'Séries, XP et classement pour garder le rythme.',
+    cta: 'Commencer',
+  },
+  settings: {
+    title: 'Réglages',
+    language: 'Langue',
+    theme: 'Thème',
+    themeSystem: 'Système',
+    themeLight: 'Clair',
+    themeDark: 'Sombre',
+    notifications: 'Rappel quotidien',
+    notificationsDesc: 'Une notification à 19 h pour entretenir ta série.',
+    notificationsDenied: 'Autorise les notifications dans les réglages iOS pour activer le rappel.',
+    about: 'À propos',
+    privacy: 'Confidentialité',
+    version: 'Version',
   },
   home: {
     tagline: 'Prépare ta certification, cinq minutes à la fois.',
@@ -237,6 +263,28 @@ const en: Strings = {
     train: 'Practice',
     profile: 'Profile',
   },
+  onboarding: {
+    title: 'Welcome to Pentaguin',
+    subtitle: 'Your certification prep, five minutes at a time.',
+    bullet1: 'Clear lessons, in French with English technical terms.',
+    bullet2: 'Quizzes and timed mock exams, under real conditions.',
+    bullet3: 'Streaks, XP and a leaderboard to keep your momentum.',
+    cta: 'Get started',
+  },
+  settings: {
+    title: 'Settings',
+    language: 'Language',
+    theme: 'Theme',
+    themeSystem: 'System',
+    themeLight: 'Light',
+    themeDark: 'Dark',
+    notifications: 'Daily reminder',
+    notificationsDesc: 'A notification at 7 PM to keep your streak alive.',
+    notificationsDenied: 'Allow notifications in iOS settings to enable the reminder.',
+    about: 'About',
+    privacy: 'Privacy',
+    version: 'Version',
+  },
   home: {
     tagline: 'Prep your certification, five minutes at a time.',
     streakLabel: 'Current streak',
@@ -461,11 +509,18 @@ const listeners = new Set<() => void>();
 
 export function setLocale(locale: Locale) {
   currentLocale = locale;
+  setKv(LOCALE_KEY, locale);
   listeners.forEach((notify) => notify());
 }
 
 export function getLocale(): Locale {
   return currentLocale;
+}
+
+/** À appeler une fois au démarrage (lecture de la langue persistante). */
+export function initLocale() {
+  const stored = getKv(LOCALE_KEY);
+  if (stored === 'fr' || stored === 'en') currentLocale = stored;
 }
 
 /** Accès hors composant React (ex. contenu d'une notification). */
