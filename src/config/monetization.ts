@@ -39,13 +39,19 @@ export const monetizationConfig: MonetizationConfig = {
 };
 
 /**
- * Config boutique. La clé SDK RevenueCat est PUBLIQUE par conception (safe
- * dans le bundle) ; elle passe par l'env pour rester ajustable sans commit.
+ * Config boutique. La clé SDK RevenueCat est **publique par conception** :
+ * RevenueCat la destine au code client, elle est extractible de tout binaire
+ * — ce n'est PAS un secret (contrairement aux clés API secrètes / .p8, qui
+ * restent hors du repo). On la met donc en dur en repli, pour qu'elle soit
+ * toujours présente (builds ET OTA) sans dépendre d'une variable d'env ;
+ * EXPO_PUBLIC_REVENUECAT_IOS_KEY permet quand même de la surcharger.
+ *
  * Les ids produit App Store Connect et les entitlements RevenueCat doivent
  * correspondre : entitlement `pro:<packId>` (voir packEntitlement()).
  */
 export const purchasesConfig = {
-  revenueCatIosKey: process.env.EXPO_PUBLIC_REVENUECAT_IOS_KEY ?? '',
+  revenueCatIosKey:
+    process.env.EXPO_PUBLIC_REVENUECAT_IOS_KEY ?? 'appl_ZcJDQirsburfcDexXoeYuNNcQcO',
   iosProductByPack: {
     'secplus-sy0-701': 'pentaguin.pro.secplus',
   } as Record<string, string>,
