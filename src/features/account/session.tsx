@@ -18,6 +18,7 @@ import {
 import {
   ApiError,
   fetchMe,
+  setAvatar as apiSetAvatar,
   setPseudo as apiSetPseudo,
   type Me,
   type Session,
@@ -44,6 +45,7 @@ type SessionValue = {
   token: string | null;
   signIn: (session: Session) => Promise<void>;
   submitPseudo: (pseudo: string) => Promise<void>;
+  updateAvatar: (avatar: string) => Promise<void>;
   signOut: () => Promise<void>;
   refresh: () => Promise<void>;
 };
@@ -143,6 +145,15 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     [token],
   );
 
+  const updateAvatar = useCallback(
+    async (avatar: string) => {
+      if (!token) throw new Error('non connecté');
+      const result = await apiSetAvatar(token, avatar);
+      setMe((prev) => (prev ? { ...prev, avatar: result.avatar } : prev));
+    },
+    [token],
+  );
+
   const signOut = useCallback(async () => {
     await clearToken();
     setKv(READY_KEY, '');
@@ -162,8 +173,8 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   }, [token, applyMe]);
 
   const value = useMemo<SessionValue>(
-    () => ({ status, me, token, signIn, submitPseudo, signOut, refresh }),
-    [status, me, token, signIn, submitPseudo, signOut, refresh],
+    () => ({ status, me, token, signIn, submitPseudo, updateAvatar, signOut, refresh }),
+    [status, me, token, signIn, submitPseudo, updateAvatar, signOut, refresh],
   );
 
   return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>;
