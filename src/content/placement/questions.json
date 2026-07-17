@@ -4,419 +4,839 @@
     "difficulty": 1,
     "stem": "Parmi ces mots de passe, lequel est le plus difficile à deviner ?",
     "choices": [
-      { "id": "a", "text": "azerty" },
-      { "id": "b", "text": "Prenom2024" },
-      { "id": "c", "text": "9!kQz$7wLp2@" },
-      { "id": "d", "text": "motdepasse" }
+      {
+        "id": "a",
+        "text": "azerty"
+      },
+      {
+        "id": "b",
+        "text": "Julien2024"
+      },
+      {
+        "id": "c",
+        "text": "9!kQz$7wLp2@"
+      },
+      {
+        "id": "d",
+        "text": "motdepasse"
+      }
     ],
     "correct": "c",
     "explanation": "Long, aléatoire, mélangeant majuscules, chiffres et symboles : bien plus résistant qu'un mot courant ou un prénom.",
-    "tags": ["placement-v1"]
+    "tags": [
+      "placement-v1"
+    ]
   },
   {
     "id": "pl-01-2",
     "difficulty": 1,
     "stem": "Un e-mail « Votre banque : cliquez vite pour débloquer votre compte » contient un lien. Quel est le bon réflexe ?",
     "choices": [
-      { "id": "a", "text": "Cliquer sur le lien pour vérifier" },
-      { "id": "b", "text": "Ne pas cliquer et contacter la banque par un canal officiel" },
-      { "id": "c", "text": "Répondre avec ses identifiants" },
-      { "id": "d", "text": "Transférer l'e-mail à ses contacts" }
+      {
+        "id": "a",
+        "text": "Cliquer sur le lien pour vérifier"
+      },
+      {
+        "id": "b",
+        "text": "Ne pas cliquer et contacter la banque par un canal officiel"
+      },
+      {
+        "id": "c",
+        "text": "Répondre avec ses identifiants"
+      },
+      {
+        "id": "d",
+        "text": "Transférer l'e-mail à ses contacts"
+      }
     ],
     "correct": "b",
     "explanation": "Urgence + lien à cliquer = signal classique d'hameçonnage (phishing). On vérifie toujours par un canal officiel.",
-    "tags": ["placement-v1"]
+    "tags": [
+      "placement-v1"
+    ]
   },
   {
     "id": "pl-02-1",
     "difficulty": 2,
     "stem": "À quoi sert l'authentification à deux facteurs (2FA / MFA) ?",
     "choices": [
-      { "id": "a", "text": "À retenir le mot de passe à ta place" },
-      { "id": "b", "text": "À exiger une seconde preuve d'identité en plus du mot de passe" },
-      { "id": "c", "text": "À chiffrer le disque dur" },
-      { "id": "d", "text": "À bloquer les publicités" }
+      {
+        "id": "a",
+        "text": "À retenir le mot de passe à ta place"
+      },
+      {
+        "id": "b",
+        "text": "À exiger une seconde preuve d'identité en plus du mot de passe"
+      },
+      {
+        "id": "c",
+        "text": "À chiffrer le disque dur"
+      },
+      {
+        "id": "d",
+        "text": "À bloquer les publicités"
+      }
     ],
     "correct": "b",
     "explanation": "Même si le mot de passe fuite, l'attaquant n'a pas le second facteur (code, appli, clé).",
-    "tags": ["placement-v1"]
+    "tags": [
+      "placement-v1"
+    ]
   },
   {
     "id": "pl-02-2",
     "difficulty": 2,
     "stem": "Pourquoi installer rapidement les mises à jour logicielles ?",
     "choices": [
-      { "id": "a", "text": "Pour changer les couleurs de l'interface" },
-      { "id": "b", "text": "Parce qu'elles corrigent souvent des failles de sécurité connues" },
-      { "id": "c", "text": "Pour vider la batterie plus vite" },
-      { "id": "d", "text": "Ça n'a aucun intérêt" }
+      {
+        "id": "a",
+        "text": "Pour changer les couleurs de l'interface"
+      },
+      {
+        "id": "b",
+        "text": "Parce qu'elles corrigent souvent des failles de sécurité connues"
+      },
+      {
+        "id": "c",
+        "text": "Pour vider la batterie plus vite"
+      },
+      {
+        "id": "d",
+        "text": "Ça n'a aucun intérêt"
+      }
     ],
     "correct": "b",
     "explanation": "Les correctifs (patches) ferment des vulnérabilités déjà connues et exploitées.",
-    "tags": ["placement-v1"]
+    "tags": [
+      "placement-v1"
+    ]
   },
   {
     "id": "pl-03-1",
     "difficulty": 3,
     "stem": "Le cadenas et « https:// » dans le navigateur indiquent surtout que…",
     "choices": [
-      { "id": "a", "text": "le site est gratuit" },
-      { "id": "b", "text": "la connexion au site est chiffrée" },
-      { "id": "c", "text": "le site est garanti sans virus" },
-      { "id": "d", "text": "le site est une entreprise officielle" }
+      {
+        "id": "a",
+        "text": "Le site est gratuit"
+      },
+      {
+        "id": "b",
+        "text": "La connexion au site est chiffrée"
+      },
+      {
+        "id": "c",
+        "text": "Le site est garanti sans virus"
+      },
+      {
+        "id": "d",
+        "text": "Le site est une entreprise officielle"
+      }
     ],
     "correct": "b",
     "explanation": "HTTPS chiffre le transport. Cela ne garantit PAS que le site soit honnête — un site malveillant peut aussi être en HTTPS.",
-    "tags": ["placement-v1"]
+    "tags": [
+      "placement-v1"
+    ]
   },
   {
     "id": "pl-03-2",
     "difficulty": 3,
     "stem": "Quel est le rôle principal d'un pare-feu (firewall) ?",
     "choices": [
-      { "id": "a", "text": "Accélérer la connexion Internet" },
-      { "id": "b", "text": "Filtrer le trafic réseau entrant et sortant selon des règles" },
-      { "id": "c", "text": "Sauvegarder automatiquement les fichiers" },
-      { "id": "d", "text": "Supprimer les spams de la boîte mail" }
+      {
+        "id": "a",
+        "text": "Accélérer la connexion Internet"
+      },
+      {
+        "id": "b",
+        "text": "Filtrer le trafic réseau entrant et sortant selon des règles"
+      },
+      {
+        "id": "c",
+        "text": "Sauvegarder automatiquement les fichiers"
+      },
+      {
+        "id": "d",
+        "text": "Supprimer les spams de la boîte mail"
+      }
     ],
     "correct": "b",
     "explanation": "Le pare-feu autorise ou bloque des connexions selon des règles (ports, adresses, protocoles).",
-    "tags": ["placement-v1"]
+    "tags": [
+      "placement-v1"
+    ]
   },
   {
     "id": "pl-04-1",
     "difficulty": 4,
     "stem": "Que fait principalement le DNS ?",
     "choices": [
-      { "id": "a", "text": "Il chiffre les e-mails" },
-      { "id": "b", "text": "Il traduit un nom de domaine (ex. exemple.com) en adresse IP" },
-      { "id": "c", "text": "Il stocke les mots de passe" },
-      { "id": "d", "text": "Il bloque les ports réseau" }
+      {
+        "id": "a",
+        "text": "Il chiffre les e-mails"
+      },
+      {
+        "id": "b",
+        "text": "Il traduit un nom de domaine (ex. exemple.com) en adresse IP"
+      },
+      {
+        "id": "c",
+        "text": "Il stocke les mots de passe"
+      },
+      {
+        "id": "d",
+        "text": "Il bloque les ports réseau"
+      }
     ],
     "correct": "b",
     "explanation": "Le DNS est l'« annuaire » qui associe un nom lisible à l'adresse IP du serveur.",
-    "tags": ["placement-v1"]
+    "tags": [
+      "placement-v1"
+    ]
   },
   {
     "id": "pl-04-2",
     "difficulty": 4,
     "stem": "Quel port est habituellement utilisé par HTTPS ?",
     "choices": [
-      { "id": "a", "text": "21" },
-      { "id": "b", "text": "25" },
-      { "id": "c", "text": "443" },
-      { "id": "d", "text": "3389" }
+      {
+        "id": "a",
+        "text": "21"
+      },
+      {
+        "id": "b",
+        "text": "25"
+      },
+      {
+        "id": "c",
+        "text": "443"
+      },
+      {
+        "id": "d",
+        "text": "3389"
+      }
     ],
     "correct": "c",
     "explanation": "443 = HTTPS. Pour mémoire : 21 = FTP, 25 = SMTP, 3389 = RDP.",
-    "tags": ["placement-v1"]
+    "tags": [
+      "placement-v1"
+    ]
   },
   {
     "id": "pl-05-1",
     "difficulty": 5,
     "stem": "Qu'est-ce qu'un rançongiciel (ransomware) ?",
     "choices": [
-      { "id": "a", "text": "Un logiciel qui chiffre tes fichiers et réclame une rançon pour les rendre" },
-      { "id": "b", "text": "Un antivirus gratuit" },
-      { "id": "c", "text": "Un gestionnaire de mots de passe" },
-      { "id": "d", "text": "Un pare-feu matériel" }
+      {
+        "id": "a",
+        "text": "Un logiciel qui chiffre tes fichiers et réclame une rançon pour les rendre"
+      },
+      {
+        "id": "b",
+        "text": "Un antivirus gratuit"
+      },
+      {
+        "id": "c",
+        "text": "Un gestionnaire de mots de passe"
+      },
+      {
+        "id": "d",
+        "text": "Un pare-feu matériel"
+      }
     ],
     "correct": "a",
     "explanation": "Le ransomware rend les données inaccessibles (chiffrement) et exige un paiement.",
-    "tags": ["placement-v1"]
+    "tags": [
+      "placement-v1"
+    ]
   },
   {
     "id": "pl-05-2",
     "difficulty": 5,
     "stem": "À quoi sert principalement un VPN ?",
     "choices": [
-      { "id": "a", "text": "À augmenter la mémoire vive" },
-      { "id": "b", "text": "À créer un tunnel chiffré entre ton appareil et un réseau distant" },
-      { "id": "c", "text": "À supprimer les cookies" },
-      { "id": "d", "text": "À défragmenter le disque" }
+      {
+        "id": "a",
+        "text": "À augmenter la mémoire vive"
+      },
+      {
+        "id": "b",
+        "text": "À créer un tunnel chiffré entre ton appareil et un réseau distant"
+      },
+      {
+        "id": "c",
+        "text": "À supprimer les cookies"
+      },
+      {
+        "id": "d",
+        "text": "À défragmenter le disque"
+      }
     ],
     "correct": "b",
     "explanation": "Le VPN chiffre le trafic dans un tunnel jusqu'à un point de sortie distant.",
-    "tags": ["placement-v1"]
+    "tags": [
+      "placement-v1"
+    ]
   },
   {
     "id": "pl-06-1",
     "difficulty": 6,
     "stem": "Quelle affirmation décrit le chiffrement symétrique ?",
     "choices": [
-      { "id": "a", "text": "Il utilise deux clés distinctes, une publique et une privée" },
-      { "id": "b", "text": "La même clé sert à chiffrer et à déchiffrer" },
-      { "id": "c", "text": "Il ne nécessite aucune clé" },
-      { "id": "d", "text": "Seul le destinataire possède une clé" }
+      {
+        "id": "a",
+        "text": "Il utilise deux clés distinctes, une publique et une privée"
+      },
+      {
+        "id": "b",
+        "text": "La même clé sert à chiffrer et à déchiffrer"
+      },
+      {
+        "id": "c",
+        "text": "Il ne nécessite aucune clé"
+      },
+      {
+        "id": "d",
+        "text": "Seul le destinataire possède une clé"
+      }
     ],
     "correct": "b",
     "explanation": "Symétrique = une seule clé partagée (ex. AES). L'asymétrique utilise une paire publique/privée.",
-    "tags": ["placement-v1"]
+    "tags": [
+      "placement-v1"
+    ]
   },
   {
     "id": "pl-06-2",
     "difficulty": 6,
     "stem": "Quelle propriété caractérise une fonction de hachage cryptographique ?",
     "choices": [
-      { "id": "a", "text": "On retrouve facilement l'entrée à partir du condensat" },
-      { "id": "b", "text": "Elle est réversible avec la bonne clé" },
-      { "id": "c", "text": "Il est très difficile de trouver deux entrées ayant le même condensat" },
-      { "id": "d", "text": "Elle chiffre les données pour les déchiffrer ensuite" }
+      {
+        "id": "a",
+        "text": "On retrouve facilement l'entrée à partir du condensat"
+      },
+      {
+        "id": "b",
+        "text": "Elle est réversible avec la bonne clé"
+      },
+      {
+        "id": "c",
+        "text": "Il est très difficile de trouver deux entrées ayant le même condensat"
+      },
+      {
+        "id": "d",
+        "text": "Elle chiffre les données pour les déchiffrer ensuite"
+      }
     ],
     "correct": "c",
     "explanation": "Résistance aux collisions + sens unique : un hash n'est pas un chiffrement (non réversible).",
-    "tags": ["placement-v1"]
+    "tags": [
+      "placement-v1"
+    ]
   },
   {
     "id": "pl-07-1",
     "difficulty": 7,
     "stem": "Pourquoi ajoute-t-on un « sel » (salt) avant de hacher un mot de passe ?",
     "choices": [
-      { "id": "a", "text": "Pour accélérer le hachage" },
-      { "id": "b", "text": "Pour que deux mots de passe identiques donnent des condensats différents et contrer les rainbow tables" },
-      { "id": "c", "text": "Pour chiffrer le mot de passe de façon réversible" },
-      { "id": "d", "text": "Pour raccourcir le condensat" }
+      {
+        "id": "a",
+        "text": "Pour accélérer le hachage"
+      },
+      {
+        "id": "b",
+        "text": "Pour que deux mots de passe identiques donnent des condensats différents et contrer les rainbow tables"
+      },
+      {
+        "id": "c",
+        "text": "Pour chiffrer le mot de passe de façon réversible"
+      },
+      {
+        "id": "d",
+        "text": "Pour raccourcir le condensat"
+      }
     ],
     "correct": "b",
     "explanation": "Le sel unique par utilisateur casse les tables précalculées (rainbow tables).",
-    "tags": ["placement-v1"]
+    "tags": [
+      "placement-v1"
+    ]
   },
   {
     "id": "pl-07-2",
     "difficulty": 7,
     "stem": "Une injection SQL exploite surtout…",
     "choices": [
-      { "id": "a", "text": "un mot de passe trop faible" },
-      { "id": "b", "text": "des entrées utilisateur mal filtrées, interprétées comme du code SQL" },
-      { "id": "c", "text": "un câble réseau défectueux" },
-      { "id": "d", "text": "une mise à jour manquante du navigateur" }
+      {
+        "id": "a",
+        "text": "Un mot de passe trop faible"
+      },
+      {
+        "id": "b",
+        "text": "Des entrées utilisateur mal filtrées, interprétées comme du code SQL"
+      },
+      {
+        "id": "c",
+        "text": "Un câble réseau défectueux"
+      },
+      {
+        "id": "d",
+        "text": "Une mise à jour manquante du navigateur"
+      }
     ],
     "correct": "b",
     "explanation": "Sans requêtes paramétrées, une entrée peut modifier la requête SQL exécutée par la base.",
-    "tags": ["placement-v1"]
+    "tags": [
+      "placement-v1"
+    ]
   },
   {
     "id": "pl-08-1",
     "difficulty": 8,
     "stem": "Une attaque XSS (Cross-Site Scripting) consiste principalement à…",
     "choices": [
-      { "id": "a", "text": "injecter du JavaScript malveillant exécuté dans le navigateur d'autres utilisateurs" },
-      { "id": "b", "text": "surcharger un serveur de requêtes" },
-      { "id": "c", "text": "casser un algorithme de chiffrement" },
-      { "id": "d", "text": "deviner un mot de passe par force brute" }
+      {
+        "id": "a",
+        "text": "Injecter du JavaScript malveillant exécuté dans le navigateur d'autres utilisateurs"
+      },
+      {
+        "id": "b",
+        "text": "Surcharger un serveur de requêtes"
+      },
+      {
+        "id": "c",
+        "text": "Casser un algorithme de chiffrement"
+      },
+      {
+        "id": "d",
+        "text": "Deviner un mot de passe par force brute"
+      }
     ],
     "correct": "a",
     "explanation": "Le XSS vise le client : le script s'exécute dans le navigateur de la victime (vol de session, etc.).",
-    "tags": ["placement-v1"]
+    "tags": [
+      "placement-v1"
+    ]
   },
   {
     "id": "pl-08-2",
     "difficulty": 8,
     "stem": "Le principe du moindre privilège (least privilege) recommande de…",
     "choices": [
-      { "id": "a", "text": "donner les droits maximaux à chacun pour éviter les blocages" },
-      { "id": "b", "text": "n'accorder que les droits strictement nécessaires à une tâche" },
-      { "id": "c", "text": "désactiver les journaux d'audit" },
-      { "id": "d", "text": "partager un unique compte administrateur" }
+      {
+        "id": "a",
+        "text": "Donner les droits maximaux à chacun pour éviter les blocages"
+      },
+      {
+        "id": "b",
+        "text": "N'accorder que les droits strictement nécessaires à une tâche"
+      },
+      {
+        "id": "c",
+        "text": "Désactiver les journaux d'audit"
+      },
+      {
+        "id": "d",
+        "text": "Partager un unique compte administrateur"
+      }
     ],
     "correct": "b",
     "explanation": "Moins de droits = surface d'attaque et impact d'une compromission réduits.",
-    "tags": ["placement-v1"]
+    "tags": [
+      "placement-v1"
+    ]
   },
   {
     "id": "pl-09-1",
     "difficulty": 9,
     "stem": "Lors d'une connexion TLS, la cryptographie asymétrique sert surtout à…",
     "choices": [
-      { "id": "a", "text": "chiffrer toutes les données de la session" },
-      { "id": "b", "text": "échanger de façon sûre une clé de session symétrique et authentifier le serveur" },
-      { "id": "c", "text": "compresser les données" },
-      { "id": "d", "text": "authentifier l'utilisateur par mot de passe" }
+      {
+        "id": "a",
+        "text": "Chiffrer toutes les données de la session"
+      },
+      {
+        "id": "b",
+        "text": "Échanger de façon sûre une clé de session symétrique et authentifier le serveur"
+      },
+      {
+        "id": "c",
+        "text": "Compresser les données"
+      },
+      {
+        "id": "d",
+        "text": "Authentifier l'utilisateur par mot de passe"
+      }
     ],
     "correct": "b",
     "explanation": "L'asymétrique établit la confiance et négocie une clé ; le reste de la session utilise du symétrique (plus rapide).",
-    "tags": ["placement-v1"]
+    "tags": [
+      "placement-v1"
+    ]
   },
   {
     "id": "pl-09-2",
     "difficulty": 9,
     "stem": "Dans la triade CIA de la sécurité de l'information, le « I » désigne…",
     "choices": [
-      { "id": "a", "text": "Internet" },
-      { "id": "b", "text": "Intégrité : les données ne sont pas altérées de façon non autorisée" },
-      { "id": "c", "text": "Identification" },
-      { "id": "d", "text": "Isolation" }
+      {
+        "id": "a",
+        "text": "Internet"
+      },
+      {
+        "id": "b",
+        "text": "Intégrité : les données ne sont pas altérées de façon non autorisée"
+      },
+      {
+        "id": "c",
+        "text": "Identification"
+      },
+      {
+        "id": "d",
+        "text": "Isolation"
+      }
     ],
     "correct": "b",
     "explanation": "CIA = Confidentiality, Integrity, Availability (confidentialité, intégrité, disponibilité).",
-    "tags": ["placement-v1"]
+    "tags": [
+      "placement-v1"
+    ]
   },
   {
     "id": "pl-10-1",
     "difficulty": 10,
     "stem": "Dans un domaine Active Directory, l'authentification Kerberos repose principalement sur…",
     "choices": [
-      { "id": "a", "text": "l'envoi du mot de passe en clair à chaque accès" },
-      { "id": "b", "text": "des tickets délivrés par un KDC pour s'authentifier auprès des services" },
-      { "id": "c", "text": "uniquement des certificats X.509" },
-      { "id": "d", "text": "l'adresse MAC comme identité" }
+      {
+        "id": "a",
+        "text": "L'envoi du mot de passe en clair à chaque accès"
+      },
+      {
+        "id": "b",
+        "text": "Des tickets délivrés par un KDC pour s'authentifier auprès des services"
+      },
+      {
+        "id": "c",
+        "text": "Uniquement des certificats X.509"
+      },
+      {
+        "id": "d",
+        "text": "L'adresse MAC comme identité"
+      }
     ],
     "correct": "b",
     "explanation": "Le KDC (Key Distribution Center) émet des tickets (TGT puis TGS) ; le mot de passe ne circule pas à chaque accès.",
-    "tags": ["placement-v1"]
+    "tags": [
+      "placement-v1"
+    ]
   },
   {
     "id": "pl-10-2",
     "difficulty": 10,
     "stem": "Un dépassement de tampon (buffer overflow) exploite…",
     "choices": [
-      { "id": "a", "text": "un mot de passe réutilisé" },
-      { "id": "b", "text": "l'écriture de données au-delà de la mémoire allouée, pouvant détourner l'exécution" },
-      { "id": "c", "text": "un certificat expiré" },
-      { "id": "d", "text": "un port réseau ouvert" }
+      {
+        "id": "a",
+        "text": "Un mot de passe réutilisé"
+      },
+      {
+        "id": "b",
+        "text": "L'écriture de données au-delà de la mémoire allouée, pouvant détourner l'exécution"
+      },
+      {
+        "id": "c",
+        "text": "Un certificat expiré"
+      },
+      {
+        "id": "d",
+        "text": "Un port réseau ouvert"
+      }
     ],
     "correct": "b",
     "explanation": "Écrire hors des limites d'un tampon peut écraser des données de contrôle (ex. adresse de retour) et exécuter du code.",
-    "tags": ["placement-v1"]
+    "tags": [
+      "placement-v1"
+    ]
   },
   {
     "id": "pl-11-1",
     "difficulty": 11,
     "stem": "Quel est le rôle d'un SIEM ?",
     "choices": [
-      { "id": "a", "text": "Chiffrer les disques des postes" },
-      { "id": "b", "text": "Centraliser et corréler les journaux pour détecter et investiguer les incidents" },
-      { "id": "c", "text": "Remplacer le pare-feu" },
-      { "id": "d", "text": "Gérer les mots de passe des utilisateurs" }
+      {
+        "id": "a",
+        "text": "Chiffrer les disques des postes"
+      },
+      {
+        "id": "b",
+        "text": "Centraliser et corréler les journaux pour détecter et investiguer les incidents"
+      },
+      {
+        "id": "c",
+        "text": "Remplacer le pare-feu"
+      },
+      {
+        "id": "d",
+        "text": "Gérer les mots de passe des utilisateurs"
+      }
     ],
     "correct": "b",
     "explanation": "Le SIEM agrège les logs de multiples sources et alerte sur des schémas suspects.",
-    "tags": ["placement-v1"]
+    "tags": [
+      "placement-v1"
+    ]
   },
   {
     "id": "pl-11-2",
     "difficulty": 11,
     "stem": "Dans une PKI, quel est le rôle d'une autorité de certification (CA) ?",
     "choices": [
-      { "id": "a", "text": "Stocker les clés privées des utilisateurs" },
-      { "id": "b", "text": "Signer et attester l'authenticité des certificats (clés publiques)" },
-      { "id": "c", "text": "Chiffrer symétriquement tout le trafic" },
-      { "id": "d", "text": "Bloquer les ports réseau" }
+      {
+        "id": "a",
+        "text": "Stocker les clés privées des utilisateurs"
+      },
+      {
+        "id": "b",
+        "text": "Signer et attester l'authenticité des certificats (clés publiques)"
+      },
+      {
+        "id": "c",
+        "text": "Chiffrer symétriquement tout le trafic"
+      },
+      {
+        "id": "d",
+        "text": "Bloquer les ports réseau"
+      }
     ],
     "correct": "b",
     "explanation": "La CA garantit le lien entre une identité et sa clé publique via sa signature.",
-    "tags": ["placement-v1"]
+    "tags": [
+      "placement-v1"
+    ]
   },
   {
     "id": "pl-12-1",
     "difficulty": 12,
     "stem": "Le « certificate pinning » aide à se protéger contre…",
     "choices": [
-      { "id": "a", "text": "les pannes de courant" },
-      { "id": "b", "text": "une attaque de l'homme du milieu (MITM) présentant un faux certificat" },
-      { "id": "c", "text": "les fuites de mémoire" },
-      { "id": "d", "text": "le phishing par SMS" }
+      {
+        "id": "a",
+        "text": "Les pannes de courant"
+      },
+      {
+        "id": "b",
+        "text": "Une attaque de l'homme du milieu (MITM) présentant un faux certificat"
+      },
+      {
+        "id": "c",
+        "text": "Les fuites de mémoire"
+      },
+      {
+        "id": "d",
+        "text": "Le phishing par SMS"
+      }
     ],
     "correct": "b",
     "explanation": "En n'acceptant qu'un certificat/clé attendu, l'app rejette un certificat frauduleux même signé par une CA compromise.",
-    "tags": ["placement-v1"]
+    "tags": [
+      "placement-v1"
+    ]
   },
   {
     "id": "pl-12-2",
     "difficulty": 12,
     "stem": "Contre une attaque par dictionnaire hors ligne sur des empreintes de mots de passe, quelle mesure est la plus efficace ?",
     "choices": [
-      { "id": "a", "text": "Utiliser un hachage rapide comme MD5" },
-      { "id": "b", "text": "Utiliser un algorithme lent et salé conçu pour les mots de passe (bcrypt, scrypt, Argon2)" },
-      { "id": "c", "text": "Encoder les mots de passe en Base64" },
-      { "id": "d", "text": "Raccourcir les mots de passe" }
+      {
+        "id": "a",
+        "text": "Utiliser un hachage rapide comme MD5"
+      },
+      {
+        "id": "b",
+        "text": "Utiliser un algorithme lent et salé conçu pour les mots de passe (bcrypt, scrypt, Argon2)"
+      },
+      {
+        "id": "c",
+        "text": "Encoder les mots de passe en Base64"
+      },
+      {
+        "id": "d",
+        "text": "Raccourcir les mots de passe"
+      }
     ],
     "correct": "b",
     "explanation": "Le coût de calcul élevé (et le sel) rend le cassage massif hors ligne beaucoup plus lent.",
-    "tags": ["placement-v1"]
+    "tags": [
+      "placement-v1"
+    ]
   },
   {
     "id": "pl-13-1",
     "difficulty": 13,
     "stem": "L'attaque « pass-the-hash » consiste à…",
     "choices": [
-      { "id": "a", "text": "deviner le mot de passe en clair par force brute" },
-      { "id": "b", "text": "réutiliser l'empreinte (hash NTLM) d'un mot de passe pour s'authentifier sans le connaître" },
-      { "id": "c", "text": "casser le chiffrement TLS d'une session" },
-      { "id": "d", "text": "injecter du code SQL" }
+      {
+        "id": "a",
+        "text": "Deviner le mot de passe en clair par force brute"
+      },
+      {
+        "id": "b",
+        "text": "Réutiliser l'empreinte (hash NTLM) d'un mot de passe pour s'authentifier sans le connaître"
+      },
+      {
+        "id": "c",
+        "text": "Casser le chiffrement TLS d'une session"
+      },
+      {
+        "id": "d",
+        "text": "Injecter du code SQL"
+      }
     ],
     "correct": "b",
     "explanation": "Sous NTLM, le hash suffit à s'authentifier : voler le hash équivaut à voler le mot de passe.",
-    "tags": ["placement-v1"]
+    "tags": [
+      "placement-v1"
+    ]
   },
   {
     "id": "pl-13-2",
     "difficulty": 13,
     "stem": "Le « Kerberoasting » vise à…",
     "choices": [
-      { "id": "a", "text": "désactiver le KDC du domaine" },
-      { "id": "b", "text": "obtenir des tickets de service (TGS) pour casser hors ligne le mot de passe des comptes de service" },
-      { "id": "c", "text": "usurper une adresse IP" },
-      { "id": "d", "text": "chiffrer les fichiers d'un serveur" }
+      {
+        "id": "a",
+        "text": "Désactiver le KDC du domaine"
+      },
+      {
+        "id": "b",
+        "text": "Obtenir des tickets de service (TGS) pour casser hors ligne le mot de passe des comptes de service"
+      },
+      {
+        "id": "c",
+        "text": "Usurper une adresse IP"
+      },
+      {
+        "id": "d",
+        "text": "Chiffrer les fichiers d'un serveur"
+      }
     ],
     "correct": "b",
     "explanation": "Le TGS est chiffré avec le hash du compte de service : on le demande puis on le casse hors ligne.",
-    "tags": ["placement-v1"]
+    "tags": [
+      "placement-v1"
+    ]
   },
   {
     "id": "pl-14-1",
     "difficulty": 14,
     "stem": "En investigation numérique (forensics), selon l'ordre de volatilité, que collecter en priorité ?",
     "choices": [
-      { "id": "a", "text": "Les fichiers du disque dur" },
-      { "id": "b", "text": "La mémoire vive (RAM) et l'état réseau, plus volatils" },
-      { "id": "c", "text": "Les sauvegardes hors ligne" },
-      { "id": "d", "text": "Les journaux déjà archivés" }
+      {
+        "id": "a",
+        "text": "Les fichiers du disque dur"
+      },
+      {
+        "id": "b",
+        "text": "La mémoire vive (RAM) et l'état réseau, plus volatils"
+      },
+      {
+        "id": "c",
+        "text": "Les sauvegardes hors ligne"
+      },
+      {
+        "id": "d",
+        "text": "Les journaux déjà archivés"
+      }
     ],
     "correct": "b",
     "explanation": "On capture d'abord ce qui disparaît le plus vite (RAM, connexions) avant les données persistantes.",
-    "tags": ["placement-v1"]
+    "tags": [
+      "placement-v1"
+    ]
   },
   {
     "id": "pl-14-2",
     "difficulty": 14,
     "stem": "La technique « Return-Oriented Programming » (ROP) sert surtout à…",
     "choices": [
-      { "id": "a", "text": "accélérer l'exécution d'un programme" },
-      { "id": "b", "text": "contourner la protection DEP/NX en enchaînant des fragments de code déjà présents" },
-      { "id": "c", "text": "chiffrer la charge utile d'un malware" },
-      { "id": "d", "text": "scanner les ports d'une machine" }
+      {
+        "id": "a",
+        "text": "Accélérer l'exécution d'un programme"
+      },
+      {
+        "id": "b",
+        "text": "Contourner la protection DEP/NX en enchaînant des fragments de code déjà présents"
+      },
+      {
+        "id": "c",
+        "text": "Chiffrer la charge utile d'un malware"
+      },
+      {
+        "id": "d",
+        "text": "Scanner les ports d'une machine"
+      }
     ],
     "correct": "b",
     "explanation": "Faute de pouvoir exécuter du code injecté (DEP), ROP réutilise des « gadgets » existants pour construire l'exploit.",
-    "tags": ["placement-v1"]
+    "tags": [
+      "placement-v1"
+    ]
   },
   {
     "id": "pl-15-1",
     "difficulty": 15,
     "stem": "Une attaque par canal auxiliaire (side-channel) exploite…",
     "choices": [
-      { "id": "a", "text": "un mot de passe faible" },
-      { "id": "b", "text": "des fuites physiques (temps d'exécution, consommation, émissions) plutôt qu'une faille logique" },
-      { "id": "c", "text": "un port réseau ouvert" },
-      { "id": "d", "text": "un e-mail de phishing" }
+      {
+        "id": "a",
+        "text": "Un mot de passe faible"
+      },
+      {
+        "id": "b",
+        "text": "Des fuites physiques (temps d'exécution, consommation, émissions) plutôt qu'une faille logique"
+      },
+      {
+        "id": "c",
+        "text": "Un port réseau ouvert"
+      },
+      {
+        "id": "d",
+        "text": "Un e-mail de phishing"
+      }
     ],
     "correct": "b",
     "explanation": "On déduit un secret (ex. une clé) en mesurant le comportement physique du système, sans casser l'algorithme.",
-    "tags": ["placement-v1"]
+    "tags": [
+      "placement-v1"
+    ]
   },
   {
     "id": "pl-15-2",
     "difficulty": 15,
     "stem": "Une attaque « padding oracle » exploite…",
     "choices": [
-      { "id": "a", "text": "un système qui révèle si le remplissage (padding) d'un message déchiffré est valide, permettant de déchiffrer sans la clé" },
-      { "id": "b", "text": "un mot de passe par défaut non changé" },
-      { "id": "c", "text": "une injection XSS stockée" },
-      { "id": "d", "text": "un simple dépassement de tampon" }
+      {
+        "id": "a",
+        "text": "Un système qui révèle si le remplissage (padding) d'un message déchiffré est valide, permettant de déchiffrer sans la clé"
+      },
+      {
+        "id": "b",
+        "text": "Un mot de passe par défaut non changé"
+      },
+      {
+        "id": "c",
+        "text": "Une injection XSS stockée"
+      },
+      {
+        "id": "d",
+        "text": "Un simple dépassement de tampon"
+      }
     ],
     "correct": "a",
     "explanation": "En observant les réponses « padding valide/invalide » (ex. CBC), on reconstitue le clair octet par octet.",
-    "tags": ["placement-v1"]
+    "tags": [
+      "placement-v1"
+    ]
   }
 ]
