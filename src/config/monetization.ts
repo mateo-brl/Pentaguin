@@ -29,7 +29,9 @@ export type MonetizationConfig = {
 export const monetizationConfig: MonetizationConfig = {
   enabled: process.env.EXPO_PUBLIC_MONETIZATION !== 'off',
   free: {
-    domainIds: ['d1', 'd2'],
+    // Thèmes fondateurs entièrement gratuits (leçons + banque complète) : le
+    // gratuit doit rester réellement utile. Les autres thèmes = Pro.
+    domainIds: ['d-fond', 'd-net'],
     questionRatioPerDomain: 0.4,
     mockExamCount: 1,
   },

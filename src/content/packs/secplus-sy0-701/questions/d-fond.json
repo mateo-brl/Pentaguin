@@ -1,0 +1,290 @@
+[
+  {
+    "id": "q-fond-01",
+    "domainId": "d-fond",
+    "lessonIds": [
+      "l-fond-01"
+    ],
+    "type": "single",
+    "stem": "Qu'est-ce qui rend un mot de passe le plus difficile à casser ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Remplacer des lettres par des chiffres, comme dans P@ssw0rd"
+      },
+      {
+        "id": "b",
+        "text": "Le changer obligatoirement tous les mois"
+      },
+      {
+        "id": "c",
+        "text": "Le rendre long, imprévisible et unique à chaque site"
+      },
+      {
+        "id": "d",
+        "text": "Ajouter un point d'exclamation à la fin"
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "La résistance vient surtout de la longueur et de l'imprévisibilité, et l'unicité évite qu'une fuite ne compromette tous vos comptes.",
+    "difficulty": 1,
+    "level": 1,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-fond-02",
+    "domainId": "d-fond",
+    "lessonIds": [
+      "l-fond-02"
+    ],
+    "type": "single",
+    "stem": "Un e-mail de votre « banque » vous presse de cliquer un lien pour « éviter le blocage de votre compte ». Quel est le meilleur réflexe ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Ne pas cliquer le lien et se rendre soi-même sur le site officiel de la banque"
+      },
+      {
+        "id": "b",
+        "text": "Cliquer vite avant que le compte ne soit bloqué"
+      },
+      {
+        "id": "c",
+        "text": "Répondre à l'e-mail pour demander confirmation"
+      },
+      {
+        "id": "d",
+        "text": "Transférer l'e-mail à ses contacts pour les prévenir"
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "Passer par le site officiel que l'on tape soi-même neutralise le lien piégé, alors que cliquer ou répondre joue le jeu de l'attaquant.",
+    "difficulty": 1,
+    "level": 1,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-fond-03",
+    "domainId": "d-fond",
+    "lessonIds": [
+      "l-fond-03"
+    ],
+    "type": "single",
+    "stem": "Pourquoi la double authentification protège-t-elle même si votre mot de passe fuite ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Elle rend le mot de passe impossible à deviner"
+      },
+      {
+        "id": "b",
+        "text": "Elle chiffre votre connexion Internet"
+      },
+      {
+        "id": "c",
+        "text": "Elle remplace le mot de passe par une empreinte digitale"
+      },
+      {
+        "id": "d",
+        "text": "L'attaquant doit aussi fournir un second facteur qu'il ne possède pas"
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "Le second facteur (téléphone, clé, code temporaire) manque à l'attaquant, ce qui l'empêche de se connecter malgré le mot de passe volé.",
+    "difficulty": 1,
+    "level": 2,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-fond-04",
+    "domainId": "d-fond",
+    "lessonIds": [
+      "l-fond-04"
+    ],
+    "type": "single",
+    "stem": "Pourquoi faut-il installer les mises à jour de sécurité rapidement ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Pour obtenir de nouvelles couleurs d'interface"
+      },
+      {
+        "id": "b",
+        "text": "Parce qu'elles corrigent des failles connues que des attaquants exploitent activement"
+      },
+      {
+        "id": "c",
+        "text": "Parce qu'elles rendent toujours l'appareil plus rapide"
+      },
+      {
+        "id": "d",
+        "text": "Parce que sinon la garantie du matériel est annulée"
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "Un correctif rend la faille publique, et les appareils non mis à jour deviennent des cibles faciles pour un exploit déjà disponible.",
+    "difficulty": 1,
+    "level": 2,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-fond-05",
+    "domainId": "d-fond",
+    "lessonIds": [
+      "l-fond-05"
+    ],
+    "type": "single",
+    "stem": "Que dit la règle 3-2-1 des sauvegardes ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Utiliser 3 mots de passe, 2 appareils et 1 antivirus"
+      },
+      {
+        "id": "b",
+        "text": "Sauvegarder 3 fois par jour sur 2 clés USB"
+      },
+      {
+        "id": "c",
+        "text": "Trois copies des données, sur deux types de supports, dont une conservée hors site"
+      },
+      {
+        "id": "d",
+        "text": "Garder les données 3 ans sur 2 disques rangés dans 1 tiroir"
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "La règle vise la redondance et la dispersion : trois copies, deux supports distincts et une copie hors site pour survivre à un sinistre local.",
+    "difficulty": 1,
+    "level": 2,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-fond-06",
+    "domainId": "d-fond",
+    "lessonIds": [
+      "l-fond-06"
+    ],
+    "type": "single",
+    "stem": "Sur un Wi-Fi public, quel risque reste bien réel aujourd'hui ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Un faux point d'accès (evil twin) qui imite le réseau du lieu pour vous piéger"
+      },
+      {
+        "id": "b",
+        "text": "Le HTTPS cesse de chiffrer vos données dès qu'il y a du Wi-Fi"
+      },
+      {
+        "id": "c",
+        "text": "N'importe qui peut lire votre mot de passe bancaire même sur un site HTTPS"
+      },
+      {
+        "id": "d",
+        "text": "Le Wi-Fi public efface automatiquement vos fichiers"
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "HTTPS protège le contenu échangé, mais un faux point d'accès reste une menace concrète car il contrôle le réseau auquel vous vous connectez.",
+    "difficulty": 1,
+    "level": 3,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-fond-07",
+    "domainId": "d-fond",
+    "lessonIds": [
+      "l-fond-07"
+    ],
+    "type": "single",
+    "stem": "Que garantit vraiment le cadenas HTTPS ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Que le site est honnête et digne de confiance"
+      },
+      {
+        "id": "b",
+        "text": "Que le site ne contient aucun virus"
+      },
+      {
+        "id": "c",
+        "text": "Que les informations affichées par le site sont vraies"
+      },
+      {
+        "id": "d",
+        "text": "Que la connexion est chiffrée et que vous parlez bien au domaine affiché"
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "HTTPS assure le chiffrement du transport et l'identité du domaine, mais ne dit rien de l'honnêteté ou du sérieux de son propriétaire.",
+    "difficulty": 1,
+    "level": 3,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-fond-08",
+    "domainId": "d-fond",
+    "lessonIds": [
+      "l-fond-08"
+    ],
+    "type": "single",
+    "stem": "Pourquoi limiter les permissions accordées aux applications mobiles ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Pour que la batterie dure exactement deux fois plus longtemps"
+      },
+      {
+        "id": "b",
+        "text": "Pour appliquer le moindre privilège : une app n'accède qu'au strict nécessaire, ce qui réduit les risques en cas d'abus ou de faille"
+      },
+      {
+        "id": "c",
+        "text": "Parce que les permissions ralentissent le Wi-Fi"
+      },
+      {
+        "id": "d",
+        "text": "Parce que sans cela l'écran ne se verrouille plus"
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "Restreindre les accès applique le moindre privilège et limite les données exposées si l'application est malveillante ou compromise.",
+    "difficulty": 1,
+    "level": 4,
+    "tags": [
+      "lesson-v1"
+    ]
+  }
+]

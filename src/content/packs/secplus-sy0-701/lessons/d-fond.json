@@ -1,0 +1,382 @@
+[
+  {
+    "id": "l-fond-01",
+    "domainId": "d-fond",
+    "title": "Mots de passe forts et gestionnaire de mots de passe",
+    "order": 1,
+    "estMinutes": 5,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "Votre mot de passe est la première serrure de votre vie numérique. Un bon mot de passe n'a rien à voir avec des symboles compliqués : ce qui compte vraiment, c'est qu'il soit **long, imprévisible et unique** pour chaque compte."
+      },
+      {
+        "type": "text",
+        "md": "Pourquoi la longueur ? Un attaquant qui teste des milliards de combinaisons met beaucoup plus de temps sur une phrase de quatre mots que sur `P@ss1`. Pourquoi l'unicité ? Si un site est piraté, les attaquants récupèrent des identifiants et les rejouent automatiquement sur d'autres services : c'est le **credential stuffing** (rejeu d'identifiants volés). Un site sérieux ne conserve d'ailleurs jamais votre mot de passe en clair, mais son **hash** (une empreinte irréversible). Retenir des dizaines de mots de passe uniques est impossible de tête : c'est le rôle du **gestionnaire de mots de passe**, qui les génère, les chiffre et les remplit pour vous."
+      },
+      {
+        "type": "callout",
+        "variant": "tip",
+        "md": "Une **phrase de passe** de plusieurs mots sans lien logique (ex. `girafe-tunnel-orage-café`) est à la fois plus solide et plus facile à retenir qu'un mot court bourré de symboles."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Gestionnaire de mots de passe",
+            "def": "Application qui génère, stocke chiffrés et remplit automatiquement des mots de passe uniques, le tout protégé par un unique mot de passe maître."
+          },
+          {
+            "term": "Phrase de passe (passphrase)",
+            "def": "Mot de passe fait de plusieurs mots, donc long et difficile à casser mais facile à mémoriser."
+          },
+          {
+            "term": "Credential stuffing",
+            "def": "Attaque qui rejoue en masse des identifiants volés ailleurs pour ouvrir les comptes qui réutilisent le même mot de passe."
+          },
+          {
+            "term": "Hash",
+            "def": "Empreinte numérique irréversible d'une donnée ; les sites sérieux stockent le hash du mot de passe, jamais le mot de passe en clair."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-fond-01"
+      }
+    ],
+    "level": 1
+  },
+  {
+    "id": "l-fond-02",
+    "domainId": "d-fond",
+    "title": "Reconnaître le phishing (hameçonnage)",
+    "order": 2,
+    "estMinutes": 5,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "Le **phishing** (hameçonnage) est une tentative de vous faire cliquer, ouvrir une pièce jointe ou livrer un mot de passe en se faisant passer pour un tiers de confiance : votre banque, un livreur, un collègue, un service connu. C'est aujourd'hui la porte d'entrée la plus courante des attaques."
+      },
+      {
+        "type": "text",
+        "md": "Les signaux d'alerte se répètent : un **sentiment d'urgence** (« votre compte va être bloqué »), une adresse d'expéditeur bizarre, un lien dont le vrai domaine ne correspond pas au texte, des fautes ou une formule vague (« Cher client »), une demande inhabituelle d'informations ou de paiement. Avant de cliquer, survolez le lien pour voir l'adresse réelle, et vérifiez le **domaine** (le nom juste avant le premier `/` qui suit `https://`, par exemple `banque.fr`). En cas de doute, n'utilisez jamais le lien du message : allez sur le site officiel par vos propres moyens."
+      },
+      {
+        "type": "callout",
+        "variant": "warning",
+        "md": "L'urgence est une **technique de manipulation**, pas un hasard. Plus un message vous presse d'agir vite, plus il faut ralentir et vérifier par un autre canal (appeler le numéro officiel, ouvrir l'app soi-même)."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Phishing (hameçonnage)",
+            "def": "Message frauduleux imitant un tiers de confiance pour vous piéger : clic, pièce jointe ou vol d'identifiants."
+          },
+          {
+            "term": "Spear phishing",
+            "def": "Phishing ciblé et personnalisé visant une personne précise, avec des détails réalistes qui le rendent plus crédible."
+          },
+          {
+            "term": "Domaine",
+            "def": "Nom d'un site (ex. `exemple.com`) ; un domaine légèrement modifié est un signe classique d'arnaque."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-fond-02"
+      }
+    ],
+    "level": 1
+  },
+  {
+    "id": "l-fond-03",
+    "domainId": "d-fond",
+    "title": "La double authentification (2FA / MFA)",
+    "order": 3,
+    "estMinutes": 6,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "La **double authentification** ajoute une seconde preuve d'identité en plus du mot de passe. Même si votre mot de passe fuite, l'attaquant reste bloqué à la porte : il lui manque ce second élément. C'est l'une des protections les plus efficaces pour un effort minime."
+      },
+      {
+        "type": "text",
+        "md": "On parle de **facteurs**, regroupés en trois familles : ce que vous **savez** (mot de passe), ce que vous **possédez** (téléphone, clé de sécurité) et ce que vous **êtes** (empreinte, visage). Le **MFA** combine au moins deux familles différentes ; le **2FA** en est le cas à deux facteurs. Tous les seconds facteurs ne se valent pas : un code par SMS est mieux que rien, mais reste vulnérable au détournement de carte SIM. Une application d'authentification qui génère un code temporaire (**TOTP**) est plus sûre, et une clé de sécurité matérielle (FIDO2) résiste même au phishing."
+      },
+      {
+        "type": "callout",
+        "variant": "tip",
+        "md": "Quand c'est proposé, préférez une **application d'authentification** ou une **clé de sécurité** au code par SMS. Gardez précieusement vos codes de secours, hors ligne, pour ne pas vous verrouiller dehors."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "MFA (authentification multifacteur)",
+            "def": "Connexion exigeant au moins deux facteurs de familles différentes (savoir, posséder, être)."
+          },
+          {
+            "term": "2FA",
+            "def": "Cas particulier du MFA à exactement deux facteurs."
+          },
+          {
+            "term": "TOTP",
+            "def": "Code à usage unique valable quelques secondes, généré par une application d'authentification synchronisée dans le temps."
+          },
+          {
+            "term": "Facteur",
+            "def": "Élément qui prouve votre identité : quelque chose que vous savez, que vous possédez ou que vous êtes."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-fond-03"
+      }
+    ],
+    "level": 2
+  },
+  {
+    "id": "l-fond-04",
+    "domainId": "d-fond",
+    "title": "Mises à jour et correctifs (patches)",
+    "order": 4,
+    "estMinutes": 5,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "Un logiciel n'est jamais parfait : on y découvre régulièrement des **vulnérabilités** (failles). Les éditeurs publient alors un **patch**, un correctif qui bouche le trou. Installer les mises à jour rapidement, c'est fermer les portes avant que quelqu'un n'entre."
+      },
+      {
+        "type": "text",
+        "md": "Le point clé : dès qu'un correctif sort, la faille devient **publique**. Les attaquants savent désormais quoi viser et scannent Internet à la recherche d'appareils non mis à jour. La grande majorité des intrusions n'exploitent pas des failles secrètes mais des vulnérabilités **déjà corrigées** que les victimes n'ont pas installées. Une faille encore inconnue de l'éditeur, sans correctif disponible, s'appelle un **zero-day** : c'est plus rare et plus cher pour l'attaquant. Un logiciel en fin de vie, qui ne reçoit plus de patchs, reste vulnérable pour toujours."
+      },
+      {
+        "type": "callout",
+        "variant": "exam",
+        "md": "Retenez la logique : **faille connue + correctif disponible + système non mis à jour = la cible la plus facile**. Activez les mises à jour automatiques partout où c'est possible."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Patch (correctif)",
+            "def": "Mise à jour d'un logiciel qui corrige une faille ou un bug."
+          },
+          {
+            "term": "Vulnérabilité",
+            "def": "Faiblesse d'un logiciel qui peut être exploitée pour compromettre un système."
+          },
+          {
+            "term": "Zero-day",
+            "def": "Vulnérabilité encore inconnue de l'éditeur, donc sans correctif disponible au moment de son exploitation."
+          },
+          {
+            "term": "CVE",
+            "def": "Identifiant public standardisé attribué à une vulnérabilité connue, pour la référencer sans ambiguïté."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-fond-04"
+      }
+    ],
+    "level": 2
+  },
+  {
+    "id": "l-fond-05",
+    "domainId": "d-fond",
+    "title": "Sauvegardes et règle 3-2-1",
+    "order": 5,
+    "estMinutes": 5,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "Une **sauvegarde** est une copie de vos données que vous pouvez restaurer si l'original est perdu. Panne de disque, vol, effacement accidentel, ou **ransomware** (rançongiciel qui chiffre vos fichiers pour exiger une rançon) : sans copie, les données sont perdues pour de bon."
+      },
+      {
+        "type": "text",
+        "md": "La **règle 3-2-1** résume une bonne stratégie : **3** copies de vos données au total, sur **2** types de supports différents (ex. disque interne + disque externe), dont **1** conservée **hors site** (dans un autre lieu ou dans le cloud). Les supports différents évitent qu'une même panne ne détruise tout ; la copie hors site protège contre l'incendie, le vol ou une inondation. Idéalement, au moins une copie est **hors ligne** ou en écriture unique, car un ransomware ne peut chiffrer que ce qu'il peut atteindre."
+      },
+      {
+        "type": "callout",
+        "variant": "warning",
+        "md": "Une sauvegarde jamais testée n'est pas une sauvegarde. **Vérifiez régulièrement que vous savez restaurer** un fichier : beaucoup découvrent une copie corrompue ou vide le jour où ils en ont besoin."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Sauvegarde",
+            "def": "Copie de données conservée à part, destinée à restaurer les originaux en cas de perte."
+          },
+          {
+            "term": "Règle 3-2-1",
+            "def": "Trois copies, sur deux types de supports, dont une conservée hors site."
+          },
+          {
+            "term": "Ransomware (rançongiciel)",
+            "def": "Logiciel malveillant qui chiffre vos fichiers et réclame une rançon pour les rendre accessibles."
+          },
+          {
+            "term": "Hors site",
+            "def": "Copie stockée dans un lieu différent de l'original, à l'abri d'un même sinistre local."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-fond-05"
+      }
+    ],
+    "level": 2
+  },
+  {
+    "id": "l-fond-06",
+    "domainId": "d-fond",
+    "title": "Wi-Fi public et ses risques",
+    "order": 6,
+    "estMinutes": 6,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "Le Wi-Fi gratuit d'un café ou d'un aéroport est pratique, mais vous ne contrôlez ni le réseau ni qui y est connecté. Bonne nouvelle : grâce au chiffrement **HTTPS**, on ne peut plus lire aussi facilement le contenu de vos échanges avec les sites. Le vrai danger s'est déplacé ailleurs."
+      },
+      {
+        "type": "text",
+        "md": "Le risque le plus concret est le **point d'accès malveillant**, ou **evil twin** : un attaquant crée un faux réseau au nom crédible (« Cafe_Gratuit ») pour que vous vous y connectiez. Il peut alors vous rediriger vers de fausses pages de connexion, piéger un **portail captif** (la page d'accueil qui demande d'accepter les conditions) ou exploiter un appareil mal protégé. Même via HTTPS, certaines métadonnées restent visibles, comme les **noms de domaine** que vous visitez. Un **VPN** (réseau privé virtuel) crée un tunnel chiffré entre votre appareil et un serveur de confiance, masquant ces traces au réseau local."
+      },
+      {
+        "type": "callout",
+        "variant": "warning",
+        "md": "Vérifiez le **nom exact du réseau (SSID)** auprès du personnel, désactivez la connexion automatique aux Wi-Fi ouverts, et évitez les opérations sensibles si vous n'avez pas de VPN. Un cadenas HTTPS ne prouve pas que le réseau est honnête."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Point d'accès malveillant (evil twin)",
+            "def": "Faux réseau Wi-Fi imitant un réseau légitime pour intercepter ou piéger les appareils qui s'y connectent."
+          },
+          {
+            "term": "VPN (réseau privé virtuel)",
+            "def": "Tunnel chiffré entre votre appareil et un serveur de confiance, qui protège vos échanges du réseau local."
+          },
+          {
+            "term": "Portail captif",
+            "def": "Page d'accueil imposée par un Wi-Fi public avant l'accès à Internet, qui peut être imitée à des fins de piège."
+          },
+          {
+            "term": "SSID",
+            "def": "Nom public d'un réseau Wi-Fi, facile à copier par un attaquant pour créer un faux réseau crédible."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-fond-06"
+      }
+    ],
+    "level": 3
+  },
+  {
+    "id": "l-fond-07",
+    "domainId": "d-fond",
+    "title": "HTTPS et le cadenas : ce que ça garantit vraiment",
+    "order": 7,
+    "estMinutes": 6,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "Le petit **cadenas** du navigateur signale que la page utilise **HTTPS**, c'est-à-dire du HTTP protégé par **TLS**, la couche qui chiffre les échanges. C'est essentiel, mais beaucoup lui font dire bien plus qu'il ne dit réellement."
+      },
+      {
+        "type": "text",
+        "md": "Le cadenas garantit deux choses. D'abord, la **confidentialité et l'intégrité du transport** : ce qui circule entre vous et le site est chiffré et ne peut pas être lu ou modifié en route. Ensuite, l'**identité du domaine** : grâce à un **certificat** validé par une **autorité de certification**, vous parlez bien au domaine affiché dans la barre d'adresse, pas à un imposteur. Mais il ne dit **rien de l'honnêteté du propriétaire** du site. Un site de phishing peut très bien obtenir un certificat gratuit et afficher un cadenas parfaitement valide : le cadenas prouve « la connexion est privée », jamais « ce site est digne de confiance »."
+      },
+      {
+        "type": "callout",
+        "variant": "warning",
+        "md": "Le cadenas n'est **pas** un label de confiance. Vérifiez toujours **le domaine lui-même** : `paypa1.com` peut avoir un cadenas impeccable tout en étant une arnaque."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "HTTPS",
+            "def": "Version chiffrée du protocole web HTTP, protégée par TLS."
+          },
+          {
+            "term": "TLS",
+            "def": "Protocole qui chiffre la connexion et authentifie le domaine du serveur."
+          },
+          {
+            "term": "Certificat",
+            "def": "Preuve électronique liant un domaine à une clé de chiffrement, présentée par le site au navigateur."
+          },
+          {
+            "term": "Autorité de certification (CA)",
+            "def": "Organisme de confiance qui émet et signe les certificats attestant du domaine d'un site."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-fond-07"
+      }
+    ],
+    "level": 3
+  },
+  {
+    "id": "l-fond-08",
+    "domainId": "d-fond",
+    "title": "Verrouillage d'écran, permissions et confidentialité mobile",
+    "order": 8,
+    "estMinutes": 7,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "Votre téléphone concentre messages, photos, e-mails, banque et localisation : c'est la clé de votre vie numérique. Deux réflexes en protègent l'essentiel : un bon **verrouillage d'écran** et une gestion sérieuse des **permissions** accordées aux applications."
+      },
+      {
+        "type": "text",
+        "md": "Le verrouillage n'est pas qu'un rideau visuel. Sur un smartphone moderne, lorsqu'il est verrouillé, les données sont protégées par le **chiffrement au repos** : sans le code, un voleur ne peut pas les lire, même en démontant l'appareil. La biométrie (empreinte, visage) déverrouille commodément la clé, mais c'est votre **code** qui reste le socle de sécurité — choisissez-le long et activez le verrouillage automatique rapide. Côté applications, appliquez le **principe du moindre privilège** : une lampe torche n'a aucun besoin de vos contacts ni de votre position. Accordez les permissions au compte-gouttes, préférez « autoriser seulement pendant l'utilisation », et révisez régulièrement qui accède à la caméra, au micro ou à la localisation, y compris en arrière-plan."
+      },
+      {
+        "type": "callout",
+        "variant": "tip",
+        "md": "Faites le ménage : révoquez les permissions des applications que vous n'utilisez plus, et activez la **localisation à distance / effacement à distance** pour un téléphone perdu ou volé."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Verrouillage d'écran",
+            "def": "Protection par code, schéma ou biométrie qui empêche l'accès à l'appareil et déclenche le chiffrement au repos."
+          },
+          {
+            "term": "Chiffrement au repos",
+            "def": "Chiffrement des données stockées sur l'appareil, illisibles sans le code de déverrouillage."
+          },
+          {
+            "term": "Permission",
+            "def": "Autorisation qu'une application demande pour accéder à une ressource : contacts, caméra, micro, localisation…"
+          },
+          {
+            "term": "Principe du moindre privilège",
+            "def": "N'accorder que les accès strictement nécessaires, afin de limiter les dégâts en cas d'abus ou de faille."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-fond-08"
+      }
+    ],
+    "level": 4
+  }
+]
