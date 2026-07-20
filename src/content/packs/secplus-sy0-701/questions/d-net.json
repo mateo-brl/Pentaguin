@@ -1,0 +1,290 @@
+[
+  {
+    "id": "q-net-01",
+    "domainId": "d-net",
+    "lessonIds": [
+      "l-net-01"
+    ],
+    "type": "single",
+    "stem": "Parmi ces adresses, laquelle est une adresse IP privée (non routable sur Internet) ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "192.168.1.10"
+      },
+      {
+        "id": "b",
+        "text": "8.8.8.8"
+      },
+      {
+        "id": "c",
+        "text": "172.15.0.1"
+      },
+      {
+        "id": "d",
+        "text": "93.184.216.34"
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "192.168.0.0/16 fait partie des plages privées de la RFC 1918 ; 172.15.x est déjà public car le privé commence à 172.16, et les deux autres sont des adresses publiques.",
+    "difficulty": 1,
+    "level": 3,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-net-02",
+    "domainId": "d-net",
+    "lessonIds": [
+      "l-net-02"
+    ],
+    "type": "single",
+    "stem": "Quel est le rôle principal du DNS ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Chiffrer les communications entre le navigateur et le serveur"
+      },
+      {
+        "id": "b",
+        "text": "Attribuer automatiquement une adresse IP à un appareil qui rejoint le réseau"
+      },
+      {
+        "id": "c",
+        "text": "Traduire un nom de domaine comme exemple.com en adresse IP"
+      },
+      {
+        "id": "d",
+        "text": "Filtrer le trafic entrant selon des règles de sécurité"
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "Le DNS est l'annuaire d'Internet : il convertit un nom lisible en adresse IP. L'attribution automatique d'IP est le rôle du DHCP, et le filtrage celui du pare-feu.",
+    "difficulty": 1,
+    "level": 4,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-net-03",
+    "domainId": "d-net",
+    "lessonIds": [
+      "l-net-03"
+    ],
+    "type": "single",
+    "stem": "Quel port est utilisé par défaut pour HTTPS ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "80"
+      },
+      {
+        "id": "b",
+        "text": "443"
+      },
+      {
+        "id": "c",
+        "text": "22"
+      },
+      {
+        "id": "d",
+        "text": "3389"
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "HTTPS utilise le port 443 en TCP. Le port 80 sert au HTTP non chiffré, le 22 au SSH et le 3389 au RDP.",
+    "difficulty": 1,
+    "level": 4,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-net-04",
+    "domainId": "d-net",
+    "lessonIds": [
+      "l-net-04"
+    ],
+    "type": "single",
+    "stem": "Sur quels critères un pare-feu réseau classique décide-t-il d'autoriser ou de bloquer un paquet ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Le mot de passe de l'utilisateur qui envoie le paquet"
+      },
+      {
+        "id": "b",
+        "text": "La marque et le modèle de l'ordinateur émetteur"
+      },
+      {
+        "id": "c",
+        "text": "La vitesse de la connexion Internet"
+      },
+      {
+        "id": "d",
+        "text": "L'adresse IP source et destination, le port et le protocole"
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "Un pare-feu réseau filtre sur des critères réseau : adresses IP, ports et protocole. Il ne connaît ni les mots de passe, ni la marque de la machine.",
+    "difficulty": 1,
+    "level": 5,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-net-05",
+    "domainId": "d-net",
+    "lessonIds": [
+      "l-net-05"
+    ],
+    "type": "single",
+    "stem": "Comment TLS protège-t-il une connexion HTTPS ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Il garantit que le site web est digne de confiance et sans malware"
+      },
+      {
+        "id": "b",
+        "text": "Il chiffre uniquement le mot de passe, le reste passe en clair"
+      },
+      {
+        "id": "c",
+        "text": "Il authentifie le serveur, puis chiffre les échanges avec une clé de session symétrique"
+      },
+      {
+        "id": "d",
+        "text": "Il remplace l'adresse IP du serveur par un nom de domaine"
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "TLS authentifie d'abord le serveur via son certificat (asymétrique), puis négocie une clé de session symétrique qui chiffre l'ensemble des échanges. Le cadenas ne dit rien de l'honnêteté du site.",
+    "difficulty": 2,
+    "level": 6,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-net-06",
+    "domainId": "d-net",
+    "lessonIds": [
+      "l-net-06"
+    ],
+    "type": "single",
+    "stem": "Que garantit principalement un VPN lorsque tu es sur un Wi-Fi public ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "L'anonymat total et intraçable sur Internet"
+      },
+      {
+        "id": "b",
+        "text": "Un tunnel chiffré qui protège le trafic entre l'appareil et le serveur VPN"
+      },
+      {
+        "id": "c",
+        "text": "Une connexion Internet nettement plus rapide"
+      },
+      {
+        "id": "d",
+        "text": "La suppression automatique des publicités et des malwares"
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "Un VPN chiffre le trafic dans un tunnel jusqu'au serveur VPN, ce qui le protège des autres usagers du réseau. Il ne garantit ni anonymat total, ni vitesse, ni suppression des malwares.",
+    "difficulty": 2,
+    "level": 6,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-net-07",
+    "domainId": "d-net",
+    "lessonIds": [
+      "l-net-07"
+    ],
+    "type": "single",
+    "stem": "À quoi sert une DMZ (zone démilitarisée) dans une architecture réseau ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "À chiffrer automatiquement tout le trafic interne de l'entreprise"
+      },
+      {
+        "id": "b",
+        "text": "À attribuer les adresses IP aux postes du réseau local"
+      },
+      {
+        "id": "c",
+        "text": "À accélérer la résolution DNS des serveurs internes"
+      },
+      {
+        "id": "d",
+        "text": "À héberger les services exposés à Internet en les isolant du réseau interne"
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "La DMZ place les services accessibles depuis Internet dans une zone tampon isolée, si bien qu'une compromission n'atteint pas directement le réseau interne.",
+    "difficulty": 2,
+    "level": 9,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-net-08",
+    "domainId": "d-net",
+    "lessonIds": [
+      "l-net-08"
+    ],
+    "type": "single",
+    "stem": "Sur quel principe repose l'ARP spoofing ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Le protocole ARP n'authentifie pas ses réponses : l'attaquant peut associer sa propre adresse MAC à l'IP de la passerelle"
+      },
+      {
+        "id": "b",
+        "text": "Le protocole DNS renvoie une adresse IP erronée signée par un pirate"
+      },
+      {
+        "id": "c",
+        "text": "Le pare-feu ouvre par erreur le port 3389 vers Internet"
+      },
+      {
+        "id": "d",
+        "text": "Le certificat TLS du serveur a expiré et n'est plus valide"
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "ARP ne vérifie pas l'authenticité de ses réponses : l'attaquant annonce que son adresse MAC correspond à l'IP de la passerelle et détourne ainsi le trafic du réseau local vers lui.",
+    "difficulty": 3,
+    "level": 11,
+    "tags": [
+      "lesson-v1"
+    ]
+  }
+]

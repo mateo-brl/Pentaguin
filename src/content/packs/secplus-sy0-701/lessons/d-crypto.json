@@ -1,0 +1,466 @@
+[
+  {
+    "id": "l-crypto-01",
+    "domainId": "d-crypto",
+    "title": "Chiffrement symétrique vs asymétrique",
+    "order": 1,
+    "estMinutes": 6,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "**Chiffrer**, c'est transformer un message lisible en un message illisible pour toute personne qui ne possède pas la bonne **clé**. Le message d'origine s'appelle le **plaintext** (texte en clair) ; le résultat chiffré s'appelle le **ciphertext** (texte chiffré). La **clé** est le secret qui commande la transformation."
+      },
+      {
+        "type": "text",
+        "md": "Le **chiffrement symétrique** utilise **une seule clé partagée** : la même clé sert à chiffrer **et** à déchiffrer. L'algorithme de référence est **AES** (Advanced Encryption Standard). C'est très **rapide**, idéal pour de gros volumes de données. Son point faible : les deux parties doivent d'abord **partager la même clé secrète** sans qu'un tiers ne l'intercepte."
+      },
+      {
+        "type": "text",
+        "md": "Le **chiffrement asymétrique** utilise une **paire de clés** liées mathématiquement : une **clé publique** (que tout le monde peut connaître) et une **clé privée** (gardée secrète). Pour la confidentialité, on chiffre avec la clé **publique** du destinataire ; lui seul peut déchiffrer avec sa clé **privée**. Exemples : **RSA**, **ECC** (courbes elliptiques). Cela résout le problème de l'échange de clé, mais c'est **bien plus lent** que le symétrique."
+      },
+      {
+        "type": "text",
+        "md": "En pratique, on combine les deux : c'est le **chiffrement hybride**. On se sert de l'asymétrique (lent mais commode) uniquement pour **échanger une clé symétrique**, puis on chiffre toutes les données avec cette clé symétrique (rapide). C'est exactement ce que fait **HTTPS / TLS** à chaque connexion."
+      },
+      {
+        "type": "callout",
+        "variant": "tip",
+        "md": "Retenez la répartition des rôles : l'**asymétrique** sert surtout à **établir et authentifier** une clé partagée ; le **symétrique** fait le gros du travail sur les données. Symétrique = rapide, une clé partagée. Asymétrique = plus lent, mais résout l'échange de clé."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Plaintext",
+            "def": "Le message en clair, lisible, avant chiffrement."
+          },
+          {
+            "term": "Ciphertext",
+            "def": "Le message chiffré, illisible sans la bonne clé."
+          },
+          {
+            "term": "Chiffrement symétrique",
+            "def": "Une seule clé partagée sert à chiffrer et à déchiffrer (ex. AES) ; très rapide."
+          },
+          {
+            "term": "Chiffrement asymétrique",
+            "def": "Une paire clé publique / clé privée ; on chiffre avec l'une, on déchiffre avec l'autre (ex. RSA, ECC)."
+          },
+          {
+            "term": "Chiffrement hybride",
+            "def": "Asymétrique pour échanger une clé, puis symétrique pour les données (ex. TLS)."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-crypto-01"
+      }
+    ],
+    "level": 5
+  },
+  {
+    "id": "l-crypto-02",
+    "domainId": "d-crypto",
+    "title": "Fonctions de hachage et sel (salt)",
+    "order": 2,
+    "estMinutes": 6,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "Une **fonction de hachage** (hash function) prend une entrée de taille quelconque et produit une **empreinte** (hash) de **taille fixe** : par exemple 256 bits pour **SHA-256**. Elle est **déterministe** (la même entrée donne toujours la même empreinte) mais **à sens unique** : on ne peut pas retrouver l'entrée à partir de l'empreinte."
+      },
+      {
+        "type": "text",
+        "md": "Un hash n'est **pas un chiffrement** : il n'y a **aucune clé** et **aucun déchiffrement possible**. Les propriétés attendues d'une bonne fonction cryptographique :\n- **Résistance à la préimage** : à partir d'une empreinte, impossible de retrouver une entrée correspondante.\n- **Résistance aux collisions** : impossible en pratique de trouver deux entrées différentes ayant la même empreinte.\n- **Effet d'avalanche** : changer un seul bit de l'entrée bouleverse toute l'empreinte."
+      },
+      {
+        "type": "callout",
+        "variant": "warning",
+        "md": "Ne confondez jamais **hachage** et **chiffrement** : le hachage est irréversible et sans clé. Par ailleurs, **MD5** et **SHA-1** sont **obsolètes** — on sait fabriquer des collisions. Utilisez la famille **SHA-2** (SHA-256) ou **SHA-3**."
+      },
+      {
+        "type": "text",
+        "md": "Pour stocker des mots de passe, on n'enregistre jamais le mot de passe en clair : on stocke son empreinte. Mais une empreinte seule reste vulnérable aux **rainbow tables** (tables d'empreintes précalculées). La parade est le **salt** (sel) : une valeur **aléatoire et unique par mot de passe**, ajoutée avant le hachage. Le sel **n'est pas secret** — il est stocké à côté de l'empreinte. Il garantit que deux utilisateurs ayant le même mot de passe obtiennent des empreintes **différentes**, et rend les rainbow tables inutilisables. Attention : le sel seul ne suffit pas pour des mots de passe — il faut aussi une fonction **lente** (voir la leçon sur bcrypt, scrypt, Argon2)."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Fonction de hachage",
+            "def": "Fonction à sens unique produisant une empreinte de taille fixe, sans clé, non réversible."
+          },
+          {
+            "term": "Résistance à la préimage",
+            "def": "Impossibilité pratique de retrouver une entrée à partir de son empreinte."
+          },
+          {
+            "term": "Collision",
+            "def": "Deux entrées différentes produisant la même empreinte ; une bonne fonction rend cela infaisable."
+          },
+          {
+            "term": "Salt (sel)",
+            "def": "Valeur aléatoire unique ajoutée avant le hachage, stockée en clair, pour neutraliser les rainbow tables."
+          },
+          {
+            "term": "Rainbow table",
+            "def": "Table d'empreintes précalculées permettant de retrouver rapidement un mot de passe non salé."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-crypto-02"
+      }
+    ],
+    "level": 7
+  },
+  {
+    "id": "l-crypto-03",
+    "domainId": "d-crypto",
+    "title": "Le handshake TLS : établir une clé de session",
+    "order": 3,
+    "estMinutes": 7,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "**TLS** (Transport Layer Security, l'ancien SSL) est le protocole qui sécurise les communications sur Internet — c'est le **S** de **HTTPS**. Il apporte trois garanties : **confidentialité** (personne ne lit le trafic), **intégrité** (personne ne le modifie sans être détecté) et **authentification** (on parle bien au bon serveur)."
+      },
+      {
+        "type": "text",
+        "md": "Avant d'échanger des données, client et serveur exécutent un **handshake** (poignée de main). En version simplifiée :\n1. Le client envoie un **ClientHello** (versions et algorithmes supportés, aléa).\n2. Le serveur répond (**ServerHello**) et envoie son **certificat**, qui contient sa **clé publique** signée par une autorité de confiance.\n3. Les deux parties conviennent d'un **secret partagé**, puis en dérivent une **clé de session**."
+      },
+      {
+        "type": "text",
+        "md": "Le cœur de l'accord de clé moderne est **Diffie-Hellman** (souvent sur courbes elliptiques : **ECDHE**). Sa force : les deux parties calculent un **même secret partagé** en n'échangeant que des valeurs publiques — le secret n'est **jamais transmis** sur le réseau. Quand ces clés Diffie-Hellman sont **éphémères** (jetables à chaque session, le « E » de ECDHE), on obtient la **forward secrecy** : même si la clé privée du serveur fuit plus tard, les sessions passées restent illisibles."
+      },
+      {
+        "type": "text",
+        "md": "Une fois la **clé de session** établie, le handshake est terminé : **toutes les données** sont alors chiffrées en **symétrique** (par ex. **AES-GCM**), rapide. Autrement dit, l'**asymétrique** ne sert qu'à **authentifier le serveur et établir la clé** ; le **symétrique** fait ensuite tout le travail. Le certificat, lui, garantit qu'on établit bien cette clé avec le vrai serveur et non un imposteur (protection contre le **man-in-the-middle**)."
+      },
+      {
+        "type": "callout",
+        "variant": "tip",
+        "md": "Schéma à retenir : **asymétrique pour établir + authentifier**, **symétrique pour la session**. Et préférez des suites à clés **éphémères** (ECDHE) pour la **forward secrecy** : TLS 1.3 impose d'ailleurs ce type d'échange."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "TLS",
+            "def": "Protocole sécurisant les communications (le S de HTTPS) : confidentialité, intégrité, authentification."
+          },
+          {
+            "term": "Handshake",
+            "def": "Phase de négociation initiale où client et serveur s'authentifient et conviennent d'une clé."
+          },
+          {
+            "term": "Clé de session",
+            "def": "Clé symétrique temporaire dérivée pendant le handshake, utilisée pour chiffrer les données de la session."
+          },
+          {
+            "term": "Diffie-Hellman",
+            "def": "Méthode d'accord de clé où les deux parties calculent un secret commun sans jamais le transmettre."
+          },
+          {
+            "term": "Forward secrecy",
+            "def": "Propriété (via clés éphémères) : compromettre la clé privée n'expose pas les sessions passées."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-crypto-03"
+      }
+    ],
+    "level": 9
+  },
+  {
+    "id": "l-crypto-04",
+    "domainId": "d-crypto",
+    "title": "Signatures numériques et PKI",
+    "order": 4,
+    "estMinutes": 7,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "Une **signature numérique** prouve **qui** a produit un message et qu'il n'a **pas été modifié**. Le principe inverse celui du chiffrement de confidentialité : on **signe avec la clé privée** (que seul le signataire possède) et **tout le monde vérifie avec la clé publique** correspondante."
+      },
+      {
+        "type": "text",
+        "md": "En pratique, on ne signe pas le message entier mais son **empreinte** (hash) : on calcule le hash du message, puis on le signe avec la clé privée. Pour vérifier, le destinataire recalcule le hash du message reçu et contrôle la signature avec la clé publique. Une signature valide apporte :\n- **Authenticité** : le message vient bien du détenteur de la clé privée.\n- **Intégrité** : le message n'a pas été altéré.\n- **Non-répudiation** : le signataire ne peut pas nier avoir signé."
+      },
+      {
+        "type": "text",
+        "md": "Mais comment être sûr qu'une clé publique appartient bien à `ma-banque.fr` ? C'est le rôle de la **PKI** (Public Key Infrastructure) et des **autorités de certification** (CA, Certificate Authority). Une CA vérifie une identité puis émet un **certificat** qui **lie une identité à une clé publique**, le tout **signé par la CA**. Votre navigateur fait confiance à une liste de **CA racines** (le **trust store**). On obtient une **chaîne de confiance** : certificat du site → CA intermédiaire → CA racine de confiance."
+      },
+      {
+        "type": "text",
+        "md": "Un certificat a une **date d'expiration** et peut être **révoqué** avant terme (par exemple si la clé est compromise) via des mécanismes comme les **CRL** (listes de révocation) ou **OCSP**. Vérifier un certificat, c'est donc contrôler à la fois sa **signature** (chaîne jusqu'à une racine de confiance), sa **validité temporelle** et sa **non-révocation**."
+      },
+      {
+        "type": "callout",
+        "variant": "warning",
+        "md": "Toute la sécurité repose sur le secret de la **clé privée** : **la clé privée signe, la clé publique vérifie**. Si une clé privée fuit, un attaquant peut usurper l'identité correspondante — d'où l'importance de la révocation."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Signature numérique",
+            "def": "Preuve d'origine et d'intégrité : on signe l'empreinte avec la clé privée, on vérifie avec la clé publique."
+          },
+          {
+            "term": "Non-répudiation",
+            "def": "Le signataire ne peut pas nier être l'auteur de la signature."
+          },
+          {
+            "term": "Certificat",
+            "def": "Document liant une identité à une clé publique, signé par une autorité de certification."
+          },
+          {
+            "term": "Autorité de certification (CA)",
+            "def": "Tiers de confiance qui vérifie une identité et émet puis signe des certificats."
+          },
+          {
+            "term": "Chaîne de confiance",
+            "def": "Suite de certificats reliant un certificat à une CA racine de confiance."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-crypto-04"
+      }
+    ],
+    "level": 11
+  },
+  {
+    "id": "l-crypto-05",
+    "domainId": "d-crypto",
+    "title": "Fonctions de dérivation lentes : bcrypt, scrypt, Argon2",
+    "order": 5,
+    "estMinutes": 7,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "Les fonctions de hachage générales comme **SHA-256** sont conçues pour être **très rapides** — c'est parfait pour vérifier un fichier, mais **catastrophique pour les mots de passe**. Les mots de passe ont peu d'**entropie** (faible aléa), et un attaquant qui récupère la base peut tester des **milliards de candidats par seconde** sur des **GPU** ou des **ASIC**."
+      },
+      {
+        "type": "text",
+        "md": "La solution : une **KDF** (Key Derivation Function, fonction de dérivation de clé) **volontairement lente** et **paramétrable**, avec un **salt** intégré. On règle un **facteur de coût** (work factor) : assez lent pour freiner l'attaquant (des dizaines à des centaines de millisecondes par essai), assez rapide pour l'utilisateur légitime. On peut l'augmenter au fil des années à mesure que le matériel progresse."
+      },
+      {
+        "type": "text",
+        "md": "Les trois familles recommandées :\n- **bcrypt** : basé sur Blowfish, avec un **facteur de coût** ajustable ; solide et éprouvé (attention : il tronque au-delà d'environ 72 octets).\n- **scrypt** : **memory-hard**, c'est-à-dire qu'il exige beaucoup de **mémoire vive**, ce qui neutralise l'avantage des GPU/ASIC.\n- **Argon2** : lauréat de la **Password Hashing Competition** (2015), également **memory-hard** et le plus moderne ; la variante **Argon2id** est aujourd'hui le **choix par défaut recommandé**."
+      },
+      {
+        "type": "callout",
+        "variant": "exam",
+        "md": "À retenir : **jamais** de mot de passe stocké avec un simple **MD5 / SHA-1 / SHA-256**, même salé. Utilisez une KDF lente : **Argon2id** (recommandé), sinon **scrypt** ou **bcrypt**. **PBKDF2** dépanne mais n'est **pas memory-hard**."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "KDF",
+            "def": "Fonction de dérivation lente et paramétrable, avec sel, pour hacher les mots de passe de façon résistante."
+          },
+          {
+            "term": "Facteur de coût (work factor)",
+            "def": "Paramètre réglant la lenteur de la KDF ; on l'augmente avec le temps."
+          },
+          {
+            "term": "Memory-hard",
+            "def": "Propriété exigeant beaucoup de mémoire, neutralisant l'avantage des GPU/ASIC (scrypt, Argon2)."
+          },
+          {
+            "term": "bcrypt",
+            "def": "KDF de mots de passe à facteur de coût, éprouvée (tronque au-delà d'environ 72 octets)."
+          },
+          {
+            "term": "Argon2",
+            "def": "KDF moderne memory-hard, lauréate 2015 ; la variante Argon2id est recommandée par défaut."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-crypto-05"
+      }
+    ],
+    "level": 12
+  },
+  {
+    "id": "l-crypto-06",
+    "domainId": "d-crypto",
+    "title": "Modes de chiffrement par bloc : ECB, CBC, GCM et l'IV/nonce",
+    "order": 6,
+    "estMinutes": 8,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "Un **chiffrement par bloc** (block cipher) comme **AES** ne chiffre qu'un **bloc de taille fixe** à la fois (128 bits pour AES). Pour chiffrer un message plus long, on applique un **mode opératoire** (mode of operation) qui décrit comment enchaîner les blocs. Le choix du mode change tout : certains sont **dangereux**, d'autres apportent en prime l'**intégrité**."
+      },
+      {
+        "type": "text",
+        "md": "**ECB** (Electronic Codebook) chiffre chaque bloc **indépendamment** avec la même clé. Conséquence : **deux blocs de clair identiques donnent deux blocs chiffrés identiques**. Le chiffré **laisse fuir les motifs** du clair — l'exemple célèbre est l'image du « pingouin ECB », encore reconnaissable après chiffrement. **ECB ne doit jamais être utilisé** pour des données réelles."
+      },
+      {
+        "type": "text",
+        "md": "**CBC** (Cipher Block Chaining) corrige cela en **chaînant** : chaque bloc de clair est combiné par **XOR** avec le bloc **chiffré précédent** avant d'être chiffré. Le tout premier bloc utilise un **IV** (Initialization Vector), qui doit être **aléatoire et imprévisible**. CBC masque bien les motifs, **mais** il n'apporte **que la confidentialité** : **aucune intégrité, aucune authentification**. Un attaquant peut altérer le chiffré (bit-flipping) ou monter une attaque **padding oracle**."
+      },
+      {
+        "type": "text",
+        "md": "**GCM** (Galois/Counter Mode) est un mode de **chiffrement authentifié** (**AEAD** : Authenticated Encryption with Associated Data). Il combine un chiffrement en mode compteur avec un **tag d'authentification** : on obtient **confidentialité + intégrité + authenticité** en une seule opération. GCM utilise un **nonce** (number used once) qui doit être **unique** pour une clé donnée."
+      },
+      {
+        "type": "callout",
+        "variant": "warning",
+        "md": "**Réutiliser un nonce en GCM avec la même clé est catastrophique** : le keystream se répète (le XOR de deux clairs fuit) **et** cela peut permettre de retrouver la sous-clé d'authentification, donc de **forger** des messages. En GCM, un nonce = **une seule fois** par clé, sans exception."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Chiffrement par bloc",
+            "def": "Algorithme chiffrant des blocs de taille fixe (AES : 128 bits) ; un mode enchaîne les blocs."
+          },
+          {
+            "term": "ECB",
+            "def": "Mode où chaque bloc est chiffré indépendamment ; laisse fuir les motifs, à proscrire."
+          },
+          {
+            "term": "CBC",
+            "def": "Mode chaîné avec IV aléatoire ; confidentialité seule, sans intégrité."
+          },
+          {
+            "term": "GCM / AEAD",
+            "def": "Chiffrement authentifié : confidentialité + intégrité + authenticité, via un tag et un nonce."
+          },
+          {
+            "term": "IV / nonce",
+            "def": "Valeur d'initialisation : aléatoire et imprévisible pour CBC, unique par clé pour GCM."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-crypto-06"
+      }
+    ],
+    "level": 13
+  },
+  {
+    "id": "l-crypto-07",
+    "domainId": "d-crypto",
+    "title": "Attaque padding oracle (CBC)",
+    "order": 7,
+    "estMinutes": 8,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "Rappel sur **CBC** : au déchiffrement, un bloc de clair vaut `P_i = D_K(C_i) XOR C_{i-1}`, où `D_K` est le déchiffrement d'un bloc par la clé, `C_i` le bloc chiffré courant et `C_{i-1}` le précédent (l'IV pour le tout premier bloc). Comme le message doit remplir des blocs entiers, on complète le dernier bloc avec un **padding** (bourrage), typiquement **PKCS#7** : s'il manque `n` octets, on ajoute `n` octets valant tous `n`."
+      },
+      {
+        "type": "text",
+        "md": "Un **padding oracle** est **tout système qui révèle, directement ou indirectement, si le padding d'un message déchiffré est valide ou non**. Ce signal peut être explicite (un message d'erreur « padding invalide » distinct d'une autre erreur) ou implicite (une **différence de temps de réponse**). Ce simple bit d'information — padding valide ou non — suffit à tout casser."
+      },
+      {
+        "type": "text",
+        "md": "Le mécanisme : l'attaquant **modifie octet par octet le bloc précédent `C_{i-1}`** et soumet le résultat à l'oracle. En cherchant la valeur qui rend le padding valide, il déduit la **valeur intermédiaire** `D_K(C_i)`, puis, par un simple XOR, **le clair correspondant** — le tout **sans jamais connaître la clé**. En répétant sur chaque octet puis chaque bloc, il **déchiffre le message entier**. Attaques célèbres : **POODLE** et **Lucky Thirteen**."
+      },
+      {
+        "type": "callout",
+        "variant": "exam",
+        "md": "Défense : n'utilisez **pas** de CBC non authentifié. Préférez un **chiffrement authentifié** (**AEAD** comme **AES-GCM**), ou à défaut **Encrypt-then-MAC** (on vérifie un MAC **avant** de déchiffrer et de retirer le padding). Renvoyez une **erreur unique** et **à temps constant**, sans distinguer « padding invalide » d'une autre erreur."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Padding (PKCS#7)",
+            "def": "Bourrage complétant le dernier bloc ; en PKCS#7, n octets manquants valent tous n."
+          },
+          {
+            "term": "Padding oracle",
+            "def": "Système qui révèle si le padding déchiffré est valide, offrant à l'attaquant un bit exploitable."
+          },
+          {
+            "term": "Valeur intermédiaire",
+            "def": "Résultat D_K(C_i) du déchiffrement d'un bloc, avant le XOR ; sa découverte donne le clair."
+          },
+          {
+            "term": "AEAD",
+            "def": "Chiffrement authentifié qui rejette tout chiffré altéré, empêchant l'oracle (ex. AES-GCM)."
+          },
+          {
+            "term": "Encrypt-then-MAC",
+            "def": "On chiffre puis on calcule un MAC ; on vérifie le MAC avant de déchiffrer, ce qui coupe l'oracle."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-crypto-07"
+      }
+    ],
+    "level": 15
+  },
+  {
+    "id": "l-crypto-08",
+    "domainId": "d-crypto",
+    "title": "Attaques par canal auxiliaire (side-channel : timing, cache)",
+    "order": 8,
+    "estMinutes": 8,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "Une **attaque par canal auxiliaire** (side-channel attack) n'attaque pas les **mathématiques** de l'algorithme, mais son **implémentation** : elle exploite ce qui **fuit** pendant l'exécution — le **temps** de calcul, la **consommation électrique**, les **émanations électromagnétiques** ou le comportement du **cache** du processeur. L'algorithme peut être parfait sur le papier et rester vulnérable à cause du code ou du matériel qui l'exécute."
+      },
+      {
+        "type": "text",
+        "md": "Les **attaques par timing** exploitent le fait que le **temps d'exécution dépend d'un secret**. Exemple classique : comparer un MAC ou un mot de passe avec un `==` qui **s'arrête au premier octet différent**. Plus la comparaison dure longtemps, plus le préfixe deviné est correct — l'attaquant reconstitue le secret octet par octet. La parade est la **comparaison à temps constant** (constant-time), qui examine **tous** les octets quoi qu'il arrive."
+      },
+      {
+        "type": "text",
+        "md": "Les **attaques par cache** exploitent la **mémoire partagée** du processeur. Beaucoup d'implémentations d'AES utilisent des **tables de correspondance** (S-box) dont l'**adresse** consultée dépend de la clé. En observant quelles lignes de cache sont **chaudes** (accès rapide) ou **froides** (accès lent), un attaquant présent sur la même machine déduit de l'information sur la clé. Techniques connues : **Flush+Reload**, **Prime+Probe**."
+      },
+      {
+        "type": "callout",
+        "variant": "warning",
+        "md": "Règle d'or : **ne comparez jamais un secret (MAC, token, mot de passe haché) avec une comparaison qui s'arrête au premier écart**. Utilisez une **comparaison à temps constant**, évitez tout **branchement** ou **accès mémoire dépendant d'un secret**, et privilégiez les instructions matérielles dédiées (**AES-NI**), conçues pour être constant-time."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Canal auxiliaire (side-channel)",
+            "def": "Fuite d'information via l'implémentation (temps, cache, énergie, EM), pas via les mathématiques."
+          },
+          {
+            "term": "Attaque par timing",
+            "def": "Déduction d'un secret à partir des variations du temps d'exécution."
+          },
+          {
+            "term": "Attaque par cache",
+            "def": "Exploitation des accès mémoire partagés (ex. S-box d'AES) via Flush+Reload ou Prime+Probe."
+          },
+          {
+            "term": "Temps constant (constant-time)",
+            "def": "Code dont le temps et les accès mémoire ne dépendent pas des données secrètes."
+          },
+          {
+            "term": "AES-NI",
+            "def": "Instructions matérielles d'AES, rapides et conçues pour résister aux canaux auxiliaires."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-crypto-08"
+      }
+    ],
+    "level": 15
+  }
+]
