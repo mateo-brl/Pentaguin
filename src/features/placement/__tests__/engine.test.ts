@@ -86,6 +86,17 @@ describe('moteur de positionnement', () => {
     expect(a).toEqual(b);
   });
 
+  it('tolère un état hérité sans le champ levels (ne crash pas)', () => {
+    const bank = makeBank();
+    // État tel que produit par une ANCIENNE version du moteur (pas de `levels`).
+    const legacy = { currentLevel: 8, step: 2, askedIds: ['d8-0'], correctCount: 1 } as never;
+    const q = nextQuestion(bank, legacy, rng0)!;
+    expect(() => applyAnswer(legacy, q, true)).not.toThrow();
+    const next = applyAnswer(legacy, q, true);
+    expect(next.levels).toHaveLength(1);
+    expect(() => finalRank(legacy)).not.toThrow();
+  });
+
   it('descend plus fort qu’il ne monte (correction du biais de devinette)', () => {
     const bank = makeBank();
     const s0 = initPlacement();

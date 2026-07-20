@@ -25,7 +25,8 @@ function loadState(): PlacementState | null {
       parsed &&
       typeof parsed.currentLevel === 'number' &&
       typeof parsed.step === 'number' &&
-      Array.isArray(parsed.askedIds)
+      Array.isArray(parsed.askedIds) &&
+      Array.isArray(parsed.levels) // état d'une ancienne version du moteur → on repart de zéro
     ) {
       return parsed;
     }

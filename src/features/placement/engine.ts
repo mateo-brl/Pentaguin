@@ -93,8 +93,9 @@ export function applyAnswer(
   return {
     currentLevel,
     step: state.step + 1,
-    askedIds: [...state.askedIds, question.id],
-    levels: [...state.levels, currentLevel],
+    askedIds: [...(state.askedIds ?? []), question.id],
+    // `?? []` : tolère un état hérité d'une version antérieure sans `levels`.
+    levels: [...(state.levels ?? []), currentLevel],
     correctCount: state.correctCount + (correct ? 1 : 0),
   };
 }
@@ -104,7 +105,7 @@ export function applyAnswer(
  * convergence), arrondie. Repli sur le niveau courant si l'historique est vide.
  */
 export function finalRank(state: PlacementState): number {
-  const levels = state.levels;
+  const levels = state.levels ?? [];
   if (levels.length === 0) return clampRound(state.currentLevel);
   const tail = levels.slice(Math.floor(levels.length / 2));
   const mean = tail.reduce((sum, l) => sum + l, 0) / tail.length;
