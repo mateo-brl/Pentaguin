@@ -6,7 +6,7 @@ set -euo pipefail
 HOST=mateobrl
 APP_DIR=/opt/pentaguin-api
 
-rsync -az -e ssh backend/server.mjs backend/auth.mjs backend/privacy.html backend/deploy/backup.sh "$HOST:$APP_DIR/"
+rsync -az -e ssh backend/server.mjs backend/auth.mjs backend/privacy.html backend/deploy/backup.sh backend/admin.mjs "$HOST:$APP_DIR/"
 rsync -az -e ssh backend/deploy/pentaguin-api.service "$HOST:/etc/systemd/system/"
 rsync -az -e ssh backend/deploy/pentaguin-backup.service "$HOST:/etc/systemd/system/"
 rsync -az -e ssh backend/deploy/pentaguin-backup.timer "$HOST:/etc/systemd/system/"
