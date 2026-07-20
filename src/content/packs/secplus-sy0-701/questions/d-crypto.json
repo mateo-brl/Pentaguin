@@ -1,0 +1,290 @@
+[
+  {
+    "id": "q-crypto-01",
+    "domainId": "d-crypto",
+    "lessonIds": [
+      "l-crypto-01"
+    ],
+    "type": "single",
+    "stem": "Pourquoi utilise-t-on souvent un chiffrement hybride (symétrique + asymétrique) ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Parce que le chiffrement symétrique est incapable de chiffrer des données."
+      },
+      {
+        "id": "b",
+        "text": "Pour doubler automatiquement la taille des clés."
+      },
+      {
+        "id": "c",
+        "text": "Pour combiner l'échange de clé sûr de l'asymétrique et la rapidité du symétrique sur les données."
+      },
+      {
+        "id": "d",
+        "text": "Parce que l'asymétrique n'a besoin d'aucune clé."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "On réserve l'asymétrique (pratique mais lent) à l'échange sécurisé d'une clé, puis on chiffre les données avec cette clé symétrique, rapide.",
+    "difficulty": 1,
+    "level": 5,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-crypto-02",
+    "domainId": "d-crypto",
+    "lessonIds": [
+      "l-crypto-02"
+    ],
+    "type": "single",
+    "stem": "À quoi sert le sel (salt) lorsqu'on hache un mot de passe ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "À rendre le hachage réversible avec une clé."
+      },
+      {
+        "id": "b",
+        "text": "À rendre chaque empreinte unique et à neutraliser les rainbow tables, même si deux utilisateurs ont le même mot de passe."
+      },
+      {
+        "id": "c",
+        "text": "À chiffrer le mot de passe pour pouvoir le retrouver plus tard."
+      },
+      {
+        "id": "d",
+        "text": "À accélérer le calcul de l'empreinte."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "Le sel, aléatoire et unique, différencie deux empreintes de mots de passe identiques et rend les tables précalculées inutilisables.",
+    "difficulty": 2,
+    "level": 7,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-crypto-03",
+    "domainId": "d-crypto",
+    "lessonIds": [
+      "l-crypto-03"
+    ],
+    "type": "single",
+    "stem": "Quel rôle jouent le chiffrement asymétrique et symétrique dans une session TLS ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Seul le hachage est utilisé, il n'y a jamais de chiffrement."
+      },
+      {
+        "id": "b",
+        "text": "Le symétrique authentifie le serveur, l'asymétrique chiffre chaque octet de données."
+      },
+      {
+        "id": "c",
+        "text": "Tout le trafic est chiffré en asymétrique de bout en bout."
+      },
+      {
+        "id": "d",
+        "text": "L'asymétrique authentifie le serveur et aide à établir la clé de session, puis le symétrique chiffre les données."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "TLS s'appuie sur l'asymétrique pour authentifier et convenir d'une clé, puis chiffre le trafic avec un algorithme symétrique rapide comme AES-GCM.",
+    "difficulty": 2,
+    "level": 9,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-crypto-04",
+    "domainId": "d-crypto",
+    "lessonIds": [
+      "l-crypto-04"
+    ],
+    "type": "single",
+    "stem": "Comment produit-on et vérifie-t-on une signature numérique ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "On signe (l'empreinte du message) avec la clé privée ; on vérifie avec la clé publique."
+      },
+      {
+        "id": "b",
+        "text": "On signe avec la clé publique ; on vérifie avec la clé privée."
+      },
+      {
+        "id": "c",
+        "text": "On signe et on vérifie avec la même clé secrète partagée."
+      },
+      {
+        "id": "d",
+        "text": "On chiffre le message entier avec la clé publique du destinataire."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "La signature s'effectue avec la clé privée du signataire (sur l'empreinte du message) et se vérifie avec sa clé publique.",
+    "difficulty": 3,
+    "level": 11,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-crypto-05",
+    "domainId": "d-crypto",
+    "lessonIds": [
+      "l-crypto-05"
+    ],
+    "type": "single",
+    "stem": "Pourquoi ne faut-il pas stocker les mots de passe avec un simple SHA-256 ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Parce que SHA-256 est réversible et donc trop dangereux."
+      },
+      {
+        "id": "b",
+        "text": "Parce que SHA-256 produit des collisions de façon systématique."
+      },
+      {
+        "id": "c",
+        "text": "Parce que SHA-256 est trop rapide : un attaquant teste des milliards de candidats/seconde ; il faut une KDF lente et paramétrable (Argon2, bcrypt, scrypt)."
+      },
+      {
+        "id": "d",
+        "text": "Parce que SHA-256 est incapable de traiter du texte."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "SHA-256 est conçu pour la vitesse, ce qui facilite le cassage par force brute ; les mots de passe exigent une fonction délibérément lente et à mémoire coûteuse.",
+    "difficulty": 3,
+    "level": 12,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-crypto-06",
+    "domainId": "d-crypto",
+    "lessonIds": [
+      "l-crypto-06"
+    ],
+    "type": "single",
+    "stem": "Quelle affirmation sur les modes de chiffrement par bloc est correcte ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "ECB est le mode le plus sûr car chaque bloc est chiffré indépendamment."
+      },
+      {
+        "id": "b",
+        "text": "ECB laisse fuir les motifs (blocs identiques donnent chiffrés identiques), tandis que GCM fournit un chiffrement authentifié."
+      },
+      {
+        "id": "c",
+        "text": "CBC garantit à lui seul l'intégrité et l'authenticité des données."
+      },
+      {
+        "id": "d",
+        "text": "Réutiliser un nonce en GCM avec la même clé est sans conséquence."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "ECB reproduit les motifs du clair et n'offre aucune sécurité sérieuse, alors que GCM (AEAD) ajoute intégrité et authenticité au chiffrement.",
+    "difficulty": 3,
+    "level": 13,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-crypto-07",
+    "domainId": "d-crypto",
+    "lessonIds": [
+      "l-crypto-07"
+    ],
+    "type": "single",
+    "stem": "Sur quoi repose une attaque de type padding oracle (CBC) ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Sur la connaissance préalable de la clé de chiffrement."
+      },
+      {
+        "id": "b",
+        "text": "Sur la réutilisation d'un nonce en GCM."
+      },
+      {
+        "id": "c",
+        "text": "Sur une collision de la fonction de hachage."
+      },
+      {
+        "id": "d",
+        "text": "Sur un signal (erreur ou timing) révélant si le padding déchiffré est valide, permettant de récupérer le clair octet par octet sans la clé."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "L'attaquant manipule le bloc précédent et exploite l'information « padding valide / invalide » renvoyée par l'oracle pour reconstituer le clair, sans jamais posséder la clé.",
+    "difficulty": 3,
+    "level": 15,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-crypto-08",
+    "domainId": "d-crypto",
+    "lessonIds": [
+      "l-crypto-08"
+    ],
+    "type": "single",
+    "stem": "Qu'est-ce qu'une attaque par canal auxiliaire (side-channel) de type timing ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Une attaque qui casse mathématiquement l'algorithme AES."
+      },
+      {
+        "id": "b",
+        "text": "Une attaque qui devine la clé par force brute exhaustive."
+      },
+      {
+        "id": "c",
+        "text": "Une attaque qui déduit un secret à partir du temps d'exécution (ex. une comparaison qui s'arrête au premier octet différent)."
+      },
+      {
+        "id": "d",
+        "text": "Une attaque qui exploite une collision de la fonction de hachage."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "Le timing attaque l'implémentation : les variations de durée trahissent le secret, d'où l'usage de comparaisons à temps constant.",
+    "difficulty": 3,
+    "level": 15,
+    "tags": [
+      "lesson-v1"
+    ]
+  }
+]

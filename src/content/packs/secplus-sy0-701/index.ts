@@ -1,27 +1,45 @@
 import exams from './exams.json';
-import lessonsD1 from './lessons/d1.json';
-import lessonsD2 from './lessons/d2.json';
-import lessonsD3 from './lessons/d3.json';
-import lessonsD4 from './lessons/d4.json';
-import lessonsD5 from './lessons/d5.json';
+import lessonsCrypto from './lessons/d-crypto.json';
+import lessonsDefense from './lessons/d-defense.json';
+import lessonsFond from './lessons/d-fond.json';
+import lessonsNet from './lessons/d-net.json';
+import lessonsOffensive from './lessons/d-offensive.json';
+import lessonsSys from './lessons/d-sys.json';
+import lessonsThreats from './lessons/d-threats.json';
+import lessonsWeb from './lessons/d-web.json';
 import pack from './pack.json';
-import questionsD1 from './questions/d1.json';
-import questionsD2 from './questions/d2.json';
-import questionsD3 from './questions/d3.json';
-import questionsD4 from './questions/d4.json';
-import questionsD5 from './questions/d5.json';
+import questionsCrypto from './questions/d-crypto.json';
+import questionsDefense from './questions/d-defense.json';
+import questionsFond from './questions/d-fond.json';
+import questionsNet from './questions/d-net.json';
+import questionsOffensive from './questions/d-offensive.json';
+import questionsSys from './questions/d-sys.json';
+import questionsThreats from './questions/d-threats.json';
+import questionsWeb from './questions/d-web.json';
 
-// Chaque nouveau fichier de leçons/questions doit être importé puis ajouté
-// aux tableaux ci-dessous (workflow détaillé dans docs/AUTHORING.md).
+// Un fichier de leçons + un fichier de questions par thème (domaine). Le contenu
+// se remplit par vagues (voir docs/AUTHORING-LESSONS.md).
 export default {
   ...pack,
-  lessons: [...lessonsD1, ...lessonsD2, ...lessonsD3, ...lessonsD4, ...lessonsD5],
+  lessons: [
+    ...lessonsFond,
+    ...lessonsNet,
+    ...lessonsCrypto,
+    ...lessonsWeb,
+    ...lessonsSys,
+    ...lessonsThreats,
+    ...lessonsDefense,
+    ...lessonsOffensive,
+  ],
   questions: [
-    ...questionsD1,
-    ...questionsD2,
-    ...questionsD3,
-    ...questionsD4,
-    ...questionsD5,
+    ...questionsFond,
+    ...questionsNet,
+    ...questionsCrypto,
+    ...questionsWeb,
+    ...questionsSys,
+    ...questionsThreats,
+    ...questionsDefense,
+    ...questionsOffensive,
   ],
   exams,
 };
