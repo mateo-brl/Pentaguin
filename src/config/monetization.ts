@@ -15,6 +15,12 @@ export type MonetizationConfig = {
   free: {
     /** Domaines entièrement gratuits (leçons + banque de questions complète). */
     domainIds: string[];
+    /**
+     * « Eau à la bouche » : nombre de leçons gratuites au début de CHAQUE autre
+     * thème (les plus faciles, par niveau croissant) — un avant-goût de tout.
+     * Optionnel (défaut 0).
+     */
+    lessonsPerDomain?: number;
     /** Part de la banque de questions accessible gratuitement dans les autres domaines (0 à 1). */
     questionRatioPerDomain: number;
     /** Nombre d'examens blancs gratuits (les premiers, dans l'ordre du pack). */
@@ -29,9 +35,10 @@ export type MonetizationConfig = {
 export const monetizationConfig: MonetizationConfig = {
   enabled: process.env.EXPO_PUBLIC_MONETIZATION !== 'off',
   free: {
-    // Thèmes fondateurs entièrement gratuits (leçons + banque complète) : le
-    // gratuit doit rester réellement utile. Les autres thèmes = Pro.
+    // Thèmes fondateurs entièrement gratuits + un avant-goût (2 leçons) de
+    // chaque autre thème : l'utilisateur goûte à tout avant de passer Pro.
     domainIds: ['d-fond', 'd-net'],
+    lessonsPerDomain: 2,
     questionRatioPerDomain: 0.4,
     mockExamCount: 1,
   },

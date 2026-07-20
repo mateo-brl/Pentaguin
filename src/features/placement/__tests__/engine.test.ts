@@ -50,8 +50,8 @@ function run(
 }
 
 describe('moteur de positionnement', () => {
-  it('pose exactement 30 questions sans répétition', () => {
-    expect(PLACEMENT_TOTAL).toBe(30);
+  it('pose exactement PLACEMENT_TOTAL questions sans répétition', () => {
+    expect(PLACEMENT_TOTAL).toBe(20);
     const state = run(makeBank(), () => true);
     expect(state.step).toBe(PLACEMENT_TOTAL);
     expect(state.askedIds).toHaveLength(PLACEMENT_TOTAL);

@@ -13,11 +13,12 @@ import type { PlacementQuestion } from '@/content/placement';
  * (mesuré par simulation : biais quasi nul, erreur ~0,6 rang).
  */
 
-/** Pas de base appliqués après chaque réponse (30 questions au total). */
+/** Pas de base appliqués après chaque réponse (20 questions — assez court pour
+ *  ne pas lasser, assez long pour rester précis, cf. simulation). */
 export const PLACEMENT_STEPS = [
-  4, 3, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+  4, 3, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 ] as const;
-export const PLACEMENT_TOTAL = PLACEMENT_STEPS.length; // 30
+export const PLACEMENT_TOTAL = PLACEMENT_STEPS.length; // 20
 export const START_LEVEL = 8;
 /** Une mauvaise réponse descend ce multiple du pas (corrige le biais de devinette).
  *  Calé par simulation : 1,7 → biais quasi nul, erreur ~0,6 rang. */

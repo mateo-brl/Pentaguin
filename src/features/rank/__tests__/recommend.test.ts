@@ -22,18 +22,23 @@ const pack = {
 
 describe('recommendedLessons', () => {
   it('retient les leçons proches du rang, triées par proximité', () => {
-    const out = recommendedLessons(pack, 8, 1).map((l) => l.id);
+    const out = recommendedLessons(pack, 8).map((l) => l.id);
     expect(out).toEqual(['l8', 'l7', 'l9']); // |level-8| = 0,1,1
   });
 
   it('respecte la fenêtre (aucune leçon hors portée)', () => {
-    expect(recommendedLessons(pack, 8, 1).every((l) => Math.abs((l.level as number) - 8) <= 1)).toBe(
+    expect(recommendedLessons(pack, 8).every((l) => Math.abs((l.level as number) - 8) <= 1)).toBe(
       true,
     );
   });
 
   it('respecte la limite', () => {
-    expect(recommendedLessons(pack, 8, 20, 2)).toHaveLength(2);
+    expect(recommendedLessons(pack, 8, { window: 20, limit: 2 })).toHaveLength(2);
+  });
+
+  it('exclut les leçons déjà terminées', () => {
+    const out = recommendedLessons(pack, 8, { exclude: new Set(['l8']) }).map((l) => l.id);
+    expect(out).toEqual(['l7', 'l9']);
   });
 
   it('isRecommended vrai dans la fenêtre, faux au-delà', () => {

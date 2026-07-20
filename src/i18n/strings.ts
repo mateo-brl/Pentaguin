@@ -33,7 +33,7 @@ const fr = {
   placement: {
     title: 'Établis ton rang',
     intro:
-      'Douze questions, environ 5 minutes, pour situer ton niveau. Pas de piège : ça sert juste à t’orienter vers le bon contenu. Tu pourras le repasser quand tu veux.',
+      'Une vingtaine de questions, quelques minutes, pour situer ton niveau. Pas de piège : ça sert juste à t’orienter vers le bon contenu. Tu pourras le repasser quand tu veux.',
     start: 'Commencer',
     resume: 'Reprendre le test',
     question: 'Question',
@@ -341,7 +341,7 @@ const en: Strings = {
   placement: {
     title: 'Set your rank',
     intro:
-      'Twelve questions, about 5 minutes, to gauge your level. No tricks: it just guides you to the right content. You can retake it anytime.',
+      'About twenty questions, a few minutes, to gauge your level. No tricks: it just guides you to the right content. You can retake it anytime.',
     start: 'Start',
     resume: 'Resume test',
     question: 'Question',

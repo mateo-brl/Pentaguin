@@ -44,3 +44,36 @@ export function freeQuestionIds(questionIds: readonly string[], ratio: number): 
   const sorted = [...questionIds].sort();
   return new Set(sorted.slice(0, Math.ceil(sorted.length * clamped)));
 }
+
+export type FreeLessonInput = { id: string; domainId: string; level?: number; order: number };
+
+/**
+ * Leçons gratuites (« eau à la bouche ») : toutes celles des domaines gratuits,
+ * plus les N premières (par niveau puis ordre croissants) de chaque autre thème
+ * — un avant-goût de tout le contenu. Fonction pure.
+ */
+export function freeLessonIds(
+  lessons: readonly FreeLessonInput[],
+  config: MonetizationConfig,
+): Set<string> {
+  const free = new Set<string>();
+  const perDomain = new Map<string, FreeLessonInput[]>();
+  for (const lesson of lessons) {
+    if (config.free.domainIds.includes(lesson.domainId)) {
+      free.add(lesson.id);
+      continue;
+    }
+    const arr = perDomain.get(lesson.domainId) ?? [];
+    arr.push(lesson);
+    perDomain.set(lesson.domainId, arr);
+  }
+  const n = config.free.lessonsPerDomain ?? 0;
+  for (const arr of perDomain.values()) {
+    arr
+      .slice()
+      .sort((a, b) => (a.level ?? 99) - (b.level ?? 99) || a.order - b.order)
+      .slice(0, n)
+      .forEach((l) => free.add(l.id));
+  }
+  return free;
+}

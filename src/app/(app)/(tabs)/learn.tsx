@@ -1,5 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { Redirect, router } from 'expo-router';
+import { Redirect, router, useFocusEffect } from 'expo-router';
+import { useCallback, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -9,7 +10,8 @@ import { RankBadge } from '@/components/ui/rank-badge';
 import { Row, RowGroup, SquareBadge } from '@/components/ui/row';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 import { getDefaultPack, lessonsByDomain } from '@/content';
-import { isUnlockedNow, packEntitlement, useEntitlements } from '@/features/monetization';
+import { getCompletedLessonIds } from '@/db/repositories';
+import { isLessonUnlockedNow, useEntitlements } from '@/features/monetization';
 import { recommendedLessons } from '@/features/rank/recommend';
 import { useRank } from '@/features/rank/ranks';
 import { useHues } from '@/hooks/use-hues';
@@ -27,19 +29,18 @@ export default function LearnScreen() {
   const domains = [...pack.domains].sort((a, b) => a.order - b.order);
   const domainIndex = new Map(domains.map((d, i) => [d.id, i]));
 
+  const [completed, setCompleted] = useState<Set<string>>(new Set());
+  useFocusEffect(
+    useCallback(() => {
+      setCompleted(getCompletedLessonIds(pack.id));
+    }, []),
+  );
+
   // Positionnement obligatoire avant d'accéder au contenu.
   if (rank == null) return <Redirect href="/placement" />;
 
-  const recommended = recommendedLessons(pack, rank);
-
-  const openLesson = (lessonId: string, domainId: string) => {
-    const unlocked = isUnlockedNow(
-      { kind: 'lesson', domainId, entitlement: packEntitlement(pack.id) },
-      entitlements,
-    );
-    if (unlocked) router.push({ pathname: '/lesson/[id]', params: { id: lessonId } });
-    else router.push('/paywall');
-  };
+  // Recommandations à ton rang, en excluant ce que tu as déjà terminé.
+  const recommended = recommendedLessons(pack, rank, { exclude: completed });
 
   return (
     <ThemedView style={styles.container}>
@@ -76,10 +77,7 @@ export default function LearnScreen() {
                       const di = domainIndex.get(lesson.domainId) ?? 0;
                       const hue = hueFor(di);
                       const domain = domains[di];
-                      const unlocked = isUnlockedNow(
-                        { kind: 'lesson', domainId: lesson.domainId, entitlement: packEntitlement(pack.id) },
-                        entitlements,
-                      );
+                      const unlocked = isLessonUnlockedNow(lesson, entitlements);
                       return (
                         <Row
                           key={lesson.id}
@@ -97,7 +95,11 @@ export default function LearnScreen() {
                               <Ionicons name="lock-closed" size={15} color={theme.textSecondary} />
                             )
                           }
-                          onPress={() => openLesson(lesson.id, lesson.domainId)}
+                          onPress={() =>
+                            unlocked
+                              ? router.push({ pathname: '/lesson/[id]', params: { id: lesson.id } })
+                              : router.push('/paywall')
+                          }
                         />
                       );
                     })}
