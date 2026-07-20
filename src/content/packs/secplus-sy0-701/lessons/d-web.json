@@ -1,1 +1,374 @@
-[]
+[
+  {
+    "id": "l-web-01",
+    "domainId": "d-web",
+    "title": "Injection SQL et requêtes paramétrées",
+    "order": 1,
+    "estMinutes": 6,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "Une **injection SQL** (*SQL injection*, ou **SQLi**) survient quand une application insère une saisie utilisateur directement dans une requête envoyée à sa base de données. L'attaquant écrit alors du **SQL** (le langage d'interrogation des bases de données) dans un champ ordinaire — un login, une recherche — et détourne la requête pour lire, modifier ou supprimer des données qui ne le concernent pas."
+      },
+      {
+        "type": "text",
+        "md": "La cause profonde est la **concaténation** : on colle la saisie dans le texte de la requête. Par exemple `\"SELECT * FROM users WHERE login = '\" + saisie + \"'\"`. Si l'utilisateur tape `' OR '1'='1`, la condition devient toujours vraie et l'application peut renvoyer **tous** les comptes. Le problème : le moteur SQL ne distingue plus le **code** (la requête voulue) des **données** (ce qu'a tapé l'utilisateur)."
+      },
+      {
+        "type": "text",
+        "md": "La vraie correction est la **requête paramétrée** (*parameterized query* / *prepared statement*, requête préparée). On envoie d'abord au moteur la **structure** de la requête avec des emplacements réservés (`WHERE login = ?`), puis les **valeurs** séparément. Le moteur traite alors la saisie **toujours** comme une donnée, jamais comme du code exécutable — même si elle contient des apostrophes ou des mots-clés SQL. La faille disparaît par construction."
+      },
+      {
+        "type": "callout",
+        "variant": "warning",
+        "md": "Ne comptez pas sur le seul **échappement** (*escaping*) des caractères spéciaux : c'est fragile, dépendant du contexte et facile à contourner (encodages, types numériques, jeux de caractères). Les **requêtes paramétrées** — ou un ORM qui les utilise sous le capot — sont la défense de référence. L'échappement ne vient qu'en complément quand on ne peut vraiment pas paramétrer."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "SQL injection (SQLi)",
+            "def": "Injection de code SQL via une saisie utilisateur pour détourner une requête de base de données."
+          },
+          {
+            "term": "Parameterized query",
+            "def": "Requête où la structure et les valeurs sont envoyées séparément ; la saisie est toujours traitée comme une donnée."
+          },
+          {
+            "term": "Prepared statement",
+            "def": "Requête préparée à l'avance par le moteur, à laquelle on fournit ensuite les paramètres — mécanisme concret des requêtes paramétrées."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-web-01"
+      }
+    ],
+    "level": 6
+  },
+  {
+    "id": "l-web-02",
+    "domainId": "d-web",
+    "title": "XSS : réfléchi, stocké et DOM",
+    "order": 2,
+    "estMinutes": 6,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "Le **XSS** (*Cross-Site Scripting*) consiste à faire **exécuter du JavaScript** choisi par l'attaquant **dans le navigateur d'une victime**, dans le contexte d'un site de confiance. Concrètement, l'application affiche une donnée non filtrée qui contient du script (par ex. `<script>...</script>`), et le navigateur l'exécute comme s'il venait du site légitime. Le XSS n'est pas une prise de contrôle du serveur : c'est du **code qui tourne côté victime**."
+      },
+      {
+        "type": "text",
+        "md": "On distingue trois types. Le **XSS réfléchi** (*reflected*) : la charge est dans la requête (souvent l'URL) et **renvoyée immédiatement** dans la réponse — il faut piéger la victime pour qu'elle clique un lien. Le **XSS stocké** (*stored*) : la charge est **enregistrée** côté serveur (commentaire, profil) puis re-servie à **tous** les visiteurs — le plus dangereux. Le **XSS basé sur le DOM** (*DOM-based*) : la faille est dans le **JavaScript de la page**, qui écrit une donnée non fiable dans le **DOM** (la structure de la page en mémoire) ; le serveur ne voit parfois jamais la charge."
+      },
+      {
+        "type": "callout",
+        "variant": "warning",
+        "md": "Un XSS réussi permet de **voler le cookie de session**, d'agir à la place de l'utilisateur ou de capturer ses frappes. La parade principale est l'**encodage en sortie** (*output encoding*) adapté au contexte (HTML, attribut, JavaScript, URL), complété par une **CSP** et des cookies **HttpOnly**. Filtrer en entrée seul ne suffit pas."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Cross-Site Scripting (XSS)",
+            "def": "Exécution de JavaScript choisi par l'attaquant dans le navigateur de la victime, au nom d'un site de confiance."
+          },
+          {
+            "term": "Reflected XSS",
+            "def": "Charge présente dans la requête et renvoyée immédiatement dans la réponse ; nécessite de piéger la victime."
+          },
+          {
+            "term": "Stored XSS",
+            "def": "Charge enregistrée côté serveur puis re-servie à tous les visiteurs — le type le plus dangereux."
+          },
+          {
+            "term": "DOM-based XSS",
+            "def": "Faille dans le JavaScript côté client qui insère une donnée non fiable dans le DOM de la page."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-web-02"
+      }
+    ],
+    "level": 7
+  },
+  {
+    "id": "l-web-03",
+    "domainId": "d-web",
+    "title": "CSRF et tokens anti-CSRF",
+    "order": 3,
+    "estMinutes": 6,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "Le **CSRF** (*Cross-Site Request Forgery*, falsification de requête inter-sites) force le **navigateur d'une victime déjà authentifiée** à envoyer une requête non désirée vers un site où elle est connectée — par exemple changer son email ou effectuer un virement. L'attaquant héberge une page piégée (un formulaire, une image) qui déclenche la requête vers le site cible dès que la victime la visite."
+      },
+      {
+        "type": "text",
+        "md": "L'attaque repose sur un comportement normal du navigateur : il **joint automatiquement les cookies** (dont le cookie de **session**) à **toute** requête vers le domaine concerné. La requête forgée part donc **authentifiée**, sans que l'attaquant connaisse le mot de passe ni le cookie. Il ne peut d'ailleurs **pas lire la réponse** (la *Same-Origin Policy* l'en empêche) : le CSRF vise les actions qui **changent un état**, pas la lecture de données."
+      },
+      {
+        "type": "callout",
+        "variant": "tip",
+        "md": "Deux défenses se combinent. Le **token anti-CSRF** (*synchronizer token*) : une valeur secrète et imprévisible, liée à la session, exigée dans chaque formulaire sensible — l'attaquant ne peut pas la deviner. Et l'attribut de cookie **SameSite** (`Lax` ou `Strict`), qui empêche le navigateur d'envoyer le cookie de session sur les requêtes **cross-site**, coupant l'attaque à la racine."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Cross-Site Request Forgery (CSRF)",
+            "def": "Attaque forçant le navigateur d'une victime authentifiée à envoyer une requête non désirée vers un site de confiance."
+          },
+          {
+            "term": "Anti-CSRF token",
+            "def": "Valeur secrète et imprévisible, liée à la session, exigée dans les requêtes sensibles ; l'attaquant ne peut la fournir."
+          },
+          {
+            "term": "SameSite",
+            "def": "Attribut de cookie qui limite ou bloque l'envoi du cookie sur les requêtes cross-site (valeurs Strict, Lax, None)."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-web-03"
+      }
+    ],
+    "level": 8
+  },
+  {
+    "id": "l-web-04",
+    "domainId": "d-web",
+    "title": "Authentification, sessions et cookies",
+    "order": 4,
+    "estMinutes": 6,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "Après une connexion réussie, le serveur ne veut pas redemander le mot de passe à chaque page. Il ouvre une **session** : un identifiant de session (*session ID*) est déposé dans un **cookie** (un petit fichier renvoyé par le navigateur à chaque requête). Ce cookie prouve « je suis bien la personne qui s'est connectée ». Le voler ou le prédire revient à **usurper la session** — d'où l'importance de bien le protéger."
+      },
+      {
+        "type": "text",
+        "md": "Trois attributs durcissent le cookie de session. **HttpOnly** : le cookie devient **invisible pour le JavaScript** de la page (`document.cookie` ne le lit plus), ce qui bloque son vol via XSS. **Secure** : le cookie n'est **envoyé qu'en HTTPS**, jamais en clair. **SameSite** (`Strict`, `Lax` ou `None`) : contrôle l'envoi du cookie sur les requêtes **cross-site**, principale défense contre le CSRF. On combine idéalement les trois."
+      },
+      {
+        "type": "callout",
+        "variant": "exam",
+        "md": "Réflexe : associez chaque attribut à sa menace. **HttpOnly → XSS** (empêche le vol du cookie par script). **SameSite → CSRF** (empêche l'envoi cross-site). **Secure → interception réseau** (impose HTTPS). Un attribut ne remplace pas les autres : leurs rôles ne se recouvrent pas."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Session ID",
+            "def": "Identifiant de session déposé dans un cookie après connexion ; le voler équivaut à usurper le compte."
+          },
+          {
+            "term": "HttpOnly",
+            "def": "Attribut rendant le cookie inaccessible au JavaScript, ce qui limite son vol en cas de XSS."
+          },
+          {
+            "term": "Secure",
+            "def": "Attribut imposant l'envoi du cookie uniquement sur une connexion HTTPS."
+          },
+          {
+            "term": "SameSite",
+            "def": "Attribut contrôlant l'envoi du cookie sur les requêtes cross-site ; défense clé contre le CSRF."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-web-04"
+      }
+    ],
+    "level": 8
+  },
+  {
+    "id": "l-web-05",
+    "domainId": "d-web",
+    "title": "En-têtes de sécurité HTTP : CSP et HSTS",
+    "order": 5,
+    "estMinutes": 6,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "Un **en-tête de sécurité HTTP** (*security header*) est une instruction que le serveur ajoute à sa réponse pour demander au **navigateur** d'appliquer une protection. Le code de l'application n'est pas modifié : c'est le navigateur qui fait respecter la règle. Deux en-têtes sont incontournables : **CSP** et **HSTS**."
+      },
+      {
+        "type": "text",
+        "md": "La **CSP** (*Content-Security-Policy*, politique de sécurité du contenu) **restreint les sources** dont la page a le droit de charger scripts, styles ou images. Par exemple `script-src 'self'` n'autorise que les scripts du site lui-même et **bloque** les scripts externes et le JavaScript **inline** non prévu. C'est une défense **en profondeur contre le XSS** : même si une charge est injectée, le navigateur refuse de l'exécuter si elle sort des sources autorisées."
+      },
+      {
+        "type": "text",
+        "md": "La **HSTS** (*HTTP Strict Transport Security*) force le navigateur à **n'utiliser que HTTPS** pour toutes les visites suivantes du site, pendant une durée définie (`max-age`). Elle bloque la **rétrogradation** vers HTTP en clair et les attaques de type *SSL stripping*, où un attaquant réseau tente de rabattre la victime sur une connexion non chiffrée."
+      },
+      {
+        "type": "callout",
+        "variant": "tip",
+        "md": "Retenez la division du travail : **CSP limite les sources de script** (et réduit l'impact du XSS) ; **HSTS impose HTTPS** (et protège le transport). Elles ne se substituent pas aux corrections applicatives — ce sont des couches supplémentaires, pas la seule ligne de défense."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Content-Security-Policy (CSP)",
+            "def": "En-tête qui restreint les sources autorisées de scripts et ressources ; défense en profondeur contre le XSS."
+          },
+          {
+            "term": "HTTP Strict Transport Security (HSTS)",
+            "def": "En-tête forçant le navigateur à n'utiliser que HTTPS, bloquant la rétrogradation vers HTTP."
+          },
+          {
+            "term": "Security header",
+            "def": "Instruction envoyée par le serveur pour que le navigateur applique une protection côté client."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-web-05"
+      }
+    ],
+    "level": 9
+  },
+  {
+    "id": "l-web-06",
+    "domainId": "d-web",
+    "title": "OWASP Top 10 : panorama",
+    "order": 6,
+    "estMinutes": 6,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "L'**OWASP** (*Open Worldwide Application Security Project*) est une organisation à but non lucratif qui produit des ressources libres sur la sécurité applicative. Son document le plus connu est l'**OWASP Top 10** : un **classement des catégories de risques les plus critiques et répandues** pour les applications web, révisé périodiquement (tous les 3 à 4 ans environ). C'est un support de **sensibilisation et de priorisation**, pas une norme exhaustive ni une obligation légale."
+      },
+      {
+        "type": "text",
+        "md": "Dans l'**édition 2021**, le n°1 est le **Broken Access Control** (contrôle d'accès défaillant : un utilisateur accède à des données ou actions qui ne lui sont pas destinées). Suivent notamment les **Cryptographic Failures** (échecs cryptographiques), l'**Injection** — qui regroupe désormais la SQLi **et** le XSS —, l'**Insecure Design**, la **Security Misconfiguration**, les composants vulnérables, les échecs d'authentification, et, en n°10, le **SSRF** (*Server-Side Request Forgery*)."
+      },
+      {
+        "type": "callout",
+        "variant": "exam",
+        "md": "Points de repère utiles : le **Broken Access Control** est passé **n°1** en 2021 ; le **XSS** n'a plus sa propre catégorie et fait partie de l'**Injection** ; le **SSRF** a fait son entrée dans le Top 10. Souvenez-vous que le Top 10 est un **document d'awareness évolutif**, pas une checklist figée de conformité."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "OWASP",
+            "def": "Open Worldwide Application Security Project : organisation à but non lucratif produisant des ressources libres de sécurité applicative."
+          },
+          {
+            "term": "OWASP Top 10",
+            "def": "Classement, révisé périodiquement, des risques de sécurité les plus critiques des applications web ; document de sensibilisation."
+          },
+          {
+            "term": "Broken Access Control",
+            "def": "Contrôle d'accès défaillant permettant d'accéder à des données ou actions non autorisées ; n°1 de l'édition 2021."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-web-06"
+      }
+    ],
+    "level": 10
+  },
+  {
+    "id": "l-web-07",
+    "domainId": "d-web",
+    "title": "SSRF : Server-Side Request Forgery",
+    "order": 7,
+    "estMinutes": 7,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "Le **SSRF** (*Server-Side Request Forgery*, falsification de requête côté serveur) pousse le **serveur** à émettre lui-même une requête réseau vers une **destination choisie par l'attaquant**. La faille apparaît dès qu'une application va chercher une **URL fournie par l'utilisateur** : import d'une image « depuis une URL », webhook, génération de PDF depuis une page, aperçu de lien. L'attaquant remplace l'URL attendue par la sienne."
+      },
+      {
+        "type": "text",
+        "md": "L'intérêt pour l'attaquant : le serveur est **à l'intérieur** du réseau. Il peut donc atteindre des services **non exposés sur Internet** — panneaux d'administration internes, bases de données, `http://localhost`. Cible emblématique dans le cloud : l'**endpoint de métadonnées** `http://169.254.169.254/`, qui peut livrer des **identifiants temporaires** de l'instance et ouvrir la voie à une compromission bien plus large. Le serveur sert alors de **proxy** involontaire."
+      },
+      {
+        "type": "callout",
+        "variant": "warning",
+        "md": "Ne confondez pas SSRF et CSRF. Dans le **CSRF**, c'est le **navigateur de la victime** qui envoie la requête (en profitant de ses cookies). Dans le **SSRF**, c'est le **serveur** qui l'envoie, pour atteindre le réseau interne. Défenses : **allowlist** stricte des destinations, blocage des plages d'adresses internes (RFC 1918, loopback, lien-local), restriction des schémas d'URL, et pour le cloud, **IMDSv2**."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Server-Side Request Forgery (SSRF)",
+            "def": "Faille amenant le serveur à émettre une requête vers une destination contrôlée par l'attaquant."
+          },
+          {
+            "term": "Metadata endpoint",
+            "def": "Service cloud (souvent 169.254.169.254) exposant la config et parfois des identifiants de l'instance ; cible classique du SSRF."
+          },
+          {
+            "term": "Allowlist",
+            "def": "Liste blanche des seules destinations autorisées ; défense de référence contre le SSRF."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-web-07"
+      }
+    ],
+    "level": 12
+  },
+  {
+    "id": "l-web-08",
+    "domainId": "d-web",
+    "title": "Sécurité des API et JWT",
+    "order": 8,
+    "estMinutes": 7,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "Un **JWT** (*JSON Web Token*) est un jeton d'authentification très utilisé par les **API**. Il se compose de trois parties séparées par des points, encodées en **base64url** : un **header** (qui déclare l'algorithme via le champ `alg`), un **payload** (les *claims*, c'est-à-dire les affirmations : identifiant, rôle, expiration) et une **signature**. La signature garantit que le jeton n'a pas été modifié — à condition que le serveur la **vérifie correctement**. Point important : un JWT signé est **encodé**, pas **chiffré** ; son payload est lisible par quiconque."
+      },
+      {
+        "type": "text",
+        "md": "Premier piège réel : `alg:none`. Le standard prévoit un algorithme **« none »**, c'est-à-dire **aucune signature**. Si le serveur accepte un jeton dont le header indique `\"alg\":\"none\"`, un attaquant peut **forger** un token avec les claims de son choix (`\"role\":\"admin\"`) sans connaître aucune clé. La règle : **rejeter `none`** et imposer explicitement l'algorithme attendu."
+      },
+      {
+        "type": "text",
+        "md": "Deuxième piège : la **confusion RS256/HS256** (*algorithm confusion*). **RS256** est **asymétrique** : la **clé privée** signe, la **clé publique** (connue de tous) vérifie. **HS256** est **symétrique** et repose sur **HMAC** (un code d'authentification calculé avec une **clé secrète partagée**) : la **même clé secrète** signe et vérifie. Si le serveur laisse la librairie choisir l'algorithme d'après le header, l'attaquant bascule le header sur **HS256** et signe le token en utilisant la **clé publique** (qui est publique !) comme secret HMAC. Un serveur naïf vérifie alors avec cette même clé publique et **accepte le jeton forgé**."
+      },
+      {
+        "type": "callout",
+        "variant": "tip",
+        "md": "Défense côté serveur : **n'ayez jamais confiance dans le champ `alg` du token**. Fixez (*pin*) l'algorithme attendu dans le code de vérification, refusez `none`, et n'utilisez jamais la même librairie pour vérifier des algorithmes asymétriques et symétriques sans distinction. Côté API, complétez par un contrôle d'accès par objet (contre l'IDOR/BOLA) et une limitation de débit (*rate limiting*)."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "JSON Web Token (JWT)",
+            "def": "Jeton en trois parties (header, payload, signature) encodées en base64url ; signé mais non chiffré."
+          },
+          {
+            "term": "alg:none",
+            "def": "Algorithme « aucune signature » ; un serveur qui l'accepte laisse forger des jetons arbitraires."
+          },
+          {
+            "term": "Algorithm confusion (RS256/HS256)",
+            "def": "Attaque où l'attaquant signe en HS256 avec la clé publique RSA, exploitant un serveur qui fait confiance au champ alg."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-web-08"
+      }
+    ],
+    "level": 13
+  }
+]

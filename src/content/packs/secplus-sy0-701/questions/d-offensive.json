@@ -1,1 +1,290 @@
-[]
+[
+  {
+    "id": "q-offensive-01",
+    "domainId": "d-offensive",
+    "lessonIds": [
+      "l-offensive-01"
+    ],
+    "type": "single",
+    "stem": "Qu'est-ce qui rend un test d'intrusion légal ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Le fait de n'utiliser que des outils gratuits et open source"
+      },
+      {
+        "id": "b",
+        "text": "Le fait de ne pas causer de réels dégâts pendant le test"
+      },
+      {
+        "id": "c",
+        "text": "Une autorisation écrite du propriétaire du système, définissant le périmètre à tester"
+      },
+      {
+        "id": "d",
+        "text": "Le fait de prévenir la cible juste après avoir terminé le test"
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "Seule une autorisation écrite délimitant le périmètre rend la mission légale. Ni les outils employés, ni l'absence de dégâts, ni un avertissement a posteriori ne suffisent : sans mandat, l'accès reste une infraction (article 323-1 du Code pénal).",
+    "difficulty": 2,
+    "level": 9,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-offensive-02",
+    "domainId": "d-offensive",
+    "lessonIds": [
+      "l-offensive-02"
+    ],
+    "type": "single",
+    "stem": "Qu'est-ce qui caractérise la reconnaissance passive ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Elle scanne activement tous les ports ouverts de la cible"
+      },
+      {
+        "id": "b",
+        "text": "Elle collecte l'information sans interagir directement avec les systèmes de la cible"
+      },
+      {
+        "id": "c",
+        "text": "Elle exploite immédiatement les failles découvertes"
+      },
+      {
+        "id": "d",
+        "text": "Elle nécessite toujours un accès physique aux locaux de la cible"
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "La reconnaissance passive s'appuie sur des sources tierces et publiques, sans contact direct avec la cible : elle ne laisse donc pas de trace chez elle. Le scan de ports et l'exploitation relèvent au contraire d'une démarche active et détectable.",
+    "difficulty": 2,
+    "level": 9,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-offensive-03",
+    "domainId": "d-offensive",
+    "lessonIds": [
+      "l-offensive-03"
+    ],
+    "type": "single",
+    "stem": "Quelle est la différence entre le scan et l'énumération ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Le scan est légal, l'énumération est toujours illégale"
+      },
+      {
+        "id": "b",
+        "text": "Le scan chiffre le trafic, l'énumération le déchiffre"
+      },
+      {
+        "id": "c",
+        "text": "Le scan ne fonctionne qu'en local, l'énumération uniquement à distance"
+      },
+      {
+        "id": "d",
+        "text": "Le scan identifie les ports et services ouverts, l'énumération en extrait des informations détaillées (comptes, partages, versions)"
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "Le scan dresse la carte des ports et services accessibles ; l'énumération interroge ensuite ces services pour en tirer des détails exploitables (comptes, partages, versions). La légalité dépend de l'autorisation, pas de l'étape, et aucune des deux ne chiffre le trafic.",
+    "difficulty": 2,
+    "level": 10,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-offensive-04",
+    "domainId": "d-offensive",
+    "lessonIds": [
+      "l-offensive-04"
+    ],
+    "type": "single",
+    "stem": "Que vise un exploit ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Une vulnérabilité précise, dans un logiciel et une version donnés"
+      },
+      {
+        "id": "b",
+        "text": "N'importe quel système, quelle que soit sa configuration"
+      },
+      {
+        "id": "c",
+        "text": "Le pare-feu, qu'il désactive automatiquement en toutes circonstances"
+      },
+      {
+        "id": "d",
+        "text": "Le mot de passe de l'administrateur, qu'il devine par chance"
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "Un exploit est écrit pour une vulnérabilité bien déterminée, liée à un logiciel et une version. Il n'existe pas d'exploit universel : c'est précisément pourquoi corriger la faille (patch) le rend inopérant.",
+    "difficulty": 3,
+    "level": 11,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-offensive-05",
+    "domainId": "d-offensive",
+    "lessonIds": [
+      "l-offensive-05"
+    ],
+    "type": "single",
+    "stem": "Quelle est la meilleure défense contre le cassage hors ligne des mots de passe ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Bloquer le compte après trois tentatives échouées"
+      },
+      {
+        "id": "b",
+        "text": "Stocker les mots de passe en MD5 pour gagner en rapidité"
+      },
+      {
+        "id": "c",
+        "text": "Utiliser une fonction de dérivation lente (Argon2, bcrypt) avec un sel unique par mot de passe"
+      },
+      {
+        "id": "d",
+        "text": "Changer de mot de passe toutes les 24 heures"
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "Hors ligne, l'attaquant n'est soumis à aucune limite de tentatives : le blocage de compte est sans effet. La parade est de rendre chaque essai coûteux avec une KDF lente et d'ajouter un sel unique, qui neutralise les tables précalculées. MD5 non salé est au contraire une très mauvaise idée.",
+    "difficulty": 3,
+    "level": 12,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-offensive-06",
+    "domainId": "d-offensive",
+    "lessonIds": [
+      "l-offensive-06"
+    ],
+    "type": "single",
+    "stem": "En quoi consiste le pivoting (pivotement) ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Chiffrer les fichiers d'une machine pour demander une rançon"
+      },
+      {
+        "id": "b",
+        "text": "Deviner un mot de passe administrateur par force brute"
+      },
+      {
+        "id": "c",
+        "text": "Effacer les journaux d'une machine pour masquer sa présence"
+      },
+      {
+        "id": "d",
+        "text": "Utiliser une machine déjà compromise comme relais pour atteindre un autre segment du réseau"
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "Le pivoting consiste à rebondir depuis une machine conquise vers un segment réseau normalement inaccessible directement. C'est ce qui alimente le mouvement latéral ; la segmentation réseau est justement la parade principale.",
+    "difficulty": 3,
+    "level": 13,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-offensive-07",
+    "domainId": "d-offensive",
+    "lessonIds": [
+      "l-offensive-07"
+    ],
+    "type": "single",
+    "stem": "Qu'est-ce qu'un canal de command & control (C2) ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Une fonction de hachage utilisée pour stocker les mots de passe"
+      },
+      {
+        "id": "b",
+        "text": "Le canal par lequel l'attaquant pilote à distance les machines compromises"
+      },
+      {
+        "id": "c",
+        "text": "Le pare-feu qui contrôle le trafic entrant sur le réseau"
+      },
+      {
+        "id": "d",
+        "text": "Un protocole de chiffrement des e-mails entre deux serveurs"
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "Le C2 est l'infrastructure et le canal par lesquels l'attaquant envoie des ordres aux machines compromises et récupère des résultats. Il se déguise souvent en trafic HTTPS ou DNS légitime, d'où l'intérêt de surveiller le trafic sortant (egress).",
+    "difficulty": 3,
+    "level": 14,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-offensive-08",
+    "domainId": "d-offensive",
+    "lessonIds": [
+      "l-offensive-08"
+    ],
+    "type": "single",
+    "stem": "Que désigne une purple team ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Une équipe qui n'intervient qu'en cas de crise médiatique"
+      },
+      {
+        "id": "b",
+        "text": "Une équipe chargée uniquement de la conformité juridique"
+      },
+      {
+        "id": "c",
+        "text": "La collaboration entre l'équipe offensive (red) et l'équipe défensive (blue) pour améliorer la détection"
+      },
+      {
+        "id": "d",
+        "text": "Une équipe externe qui remplace à la fois le red et le blue team"
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "La purple team n'est pas une troisième équipe distincte mais la mise en collaboration du red (offensif) et du blue (défensif) : le rouge partage ses techniques, le bleu affine sa détection, pour une amélioration continue de la défense.",
+    "difficulty": 3,
+    "level": 14,
+    "tags": [
+      "lesson-v1"
+    ]
+  }
+]

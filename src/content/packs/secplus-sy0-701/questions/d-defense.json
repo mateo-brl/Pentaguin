@@ -1,1 +1,290 @@
-[]
+[
+  {
+    "id": "q-defense-01",
+    "domainId": "d-defense",
+    "lessonIds": [
+      "l-defense-01"
+    ],
+    "type": "single",
+    "stem": "Que décrit le principe de défense en profondeur ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Le remplacement de toutes les protections par un unique pare-feu très puissant."
+      },
+      {
+        "id": "b",
+        "text": "La superposition de plusieurs couches de sécurité variées et complémentaires."
+      },
+      {
+        "id": "c",
+        "text": "Le chiffrement systématique de l'ensemble des disques durs de l'entreprise."
+      },
+      {
+        "id": "d",
+        "text": "La sauvegarde quotidienne des données sur un site distant."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "La défense en profondeur multiplie des couches indépendantes et complémentaires : si l'une cède, les autres protègent encore le système.",
+    "difficulty": 2,
+    "level": 8,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-defense-02",
+    "domainId": "d-defense",
+    "lessonIds": [
+      "l-defense-02"
+    ],
+    "type": "single",
+    "stem": "Quel est le rôle principal d'un SIEM ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Bloquer en temps réel les paquets malveillants à la place du pare-feu."
+      },
+      {
+        "id": "b",
+        "text": "Chiffrer les communications entre les serveurs et les postes de travail."
+      },
+      {
+        "id": "c",
+        "text": "Centraliser et corréler les journaux de nombreuses sources pour alerter."
+      },
+      {
+        "id": "d",
+        "text": "Sauvegarder automatiquement les bases de données de production."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "Le SIEM agrège, normalise et corrèle les journaux pour lever des alertes ; il n'agit pas sur le trafic et ne remplace pas le pare-feu.",
+    "difficulty": 2,
+    "level": 8,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-defense-03",
+    "domainId": "d-defense",
+    "lessonIds": [
+      "l-defense-03"
+    ],
+    "type": "single",
+    "stem": "Quelle est la différence essentielle entre un IDS et un IPS ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "L'IDS détecte et alerte sans bloquer, tandis que l'IPS bloque le trafic en ligne."
+      },
+      {
+        "id": "b",
+        "text": "L'IDS chiffre le trafic, tandis que l'IPS le déchiffre pour l'analyser."
+      },
+      {
+        "id": "c",
+        "text": "L'IDS fonctionne uniquement sur les hôtes, et l'IPS uniquement sur le réseau."
+      },
+      {
+        "id": "d",
+        "text": "L'IDS est toujours matériel, tandis que l'IPS est toujours logiciel."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "L'IDS est passif : il observe et alerte. L'IPS est en ligne et peut bloquer activement le trafic malveillant.",
+    "difficulty": 2,
+    "level": 9,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-defense-04",
+    "domainId": "d-defense",
+    "lessonIds": [
+      "l-defense-04"
+    ],
+    "type": "single",
+    "stem": "Dans le cycle de réponse à incident, en quoi consiste la phase de confinement ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Rédiger le rapport final et améliorer les procédures de l'équipe."
+      },
+      {
+        "id": "b",
+        "text": "Supprimer définitivement le malware et les comptes créés par l'attaquant."
+      },
+      {
+        "id": "c",
+        "text": "Remettre les systèmes en production et les surveiller de près."
+      },
+      {
+        "id": "d",
+        "text": "Limiter la propagation de l'incident, par exemple en isolant les machines touchées."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "Le confinement vise à endiguer l'incident et à empêcher sa propagation, typiquement en isolant les systèmes atteints, avant l'éradication.",
+    "difficulty": 2,
+    "level": 10,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-defense-05",
+    "domainId": "d-defense",
+    "lessonIds": [
+      "l-defense-05"
+    ],
+    "type": "single",
+    "stem": "Selon l'ordre de volatilité, que doit-on collecter en priorité lors d'une investigation ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Les sauvegardes hors ligne stockées dans une autre salle."
+      },
+      {
+        "id": "b",
+        "text": "La mémoire vive (RAM), car elle disparaît à l'extinction de la machine."
+      },
+      {
+        "id": "c",
+        "text": "Le disque dur, car il contient le plus grand volume de données."
+      },
+      {
+        "id": "d",
+        "text": "Les journaux archivés depuis plusieurs mois."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "On collecte du plus volatil au moins volatil : la RAM s'efface à l'arrêt, on la capture donc avant le disque et les archives.",
+    "difficulty": 3,
+    "level": 12,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-defense-06",
+    "domainId": "d-defense",
+    "lessonIds": [
+      "l-defense-06"
+    ],
+    "type": "single",
+    "stem": "Qu'est-ce qui caractérise le threat hunting ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Attendre qu'une alerte automatique se déclenche avant d'enquêter."
+      },
+      {
+        "id": "b",
+        "text": "Bloquer automatiquement tout trafic provenant de pays étrangers."
+      },
+      {
+        "id": "c",
+        "text": "Rechercher de façon proactive des menaces déjà présentes et passées inaperçues."
+      },
+      {
+        "id": "d",
+        "text": "Installer un antivirus supplémentaire sur chaque poste de travail."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "Le threat hunting est proactif : l'analyste cherche activement des attaquants déjà infiltrés, sans attendre une alerte.",
+    "difficulty": 3,
+    "level": 13,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-defense-07",
+    "domainId": "d-defense",
+    "lessonIds": [
+      "l-defense-07"
+    ],
+    "type": "single",
+    "stem": "Quel est le rôle d'un SOAR par rapport à un SIEM ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Le SOAR orchestre les outils et automatise la réponse, là où le SIEM détecte et corrèle."
+      },
+      {
+        "id": "b",
+        "text": "Le SOAR remplace totalement le SIEM et le pare-feu dans le SOC."
+      },
+      {
+        "id": "c",
+        "text": "Le SOAR sert uniquement à stocker les journaux pour la conformité."
+      },
+      {
+        "id": "d",
+        "text": "Le SOAR chiffre les communications entre les analystes du SOC."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "Le SIEM détecte et corrèle les alertes ; le SOAR orchestre les outils et automatise la réponse. Les deux sont complémentaires.",
+    "difficulty": 3,
+    "level": 13,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-defense-08",
+    "domainId": "d-defense",
+    "lessonIds": [
+      "l-defense-08"
+    ],
+    "type": "single",
+    "stem": "Que représente le score CVSS d'une vulnérabilité ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "L'identifiant unique attribué à la vulnérabilité dans une base publique."
+      },
+      {
+        "id": "b",
+        "text": "La probabilité que la vulnérabilité soit exploitée dans les prochains jours."
+      },
+      {
+        "id": "c",
+        "text": "Le coût financier estimé de la correction de la vulnérabilité."
+      },
+      {
+        "id": "d",
+        "text": "Un score de gravité de 0 à 10, indépendant de la probabilité d'exploitation."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "Le CVSS mesure la gravité (0 à 10) d'une faille, pas sa probabilité d'exploitation, qu'estiment plutôt l'EPSS ou le catalogue KEV.",
+    "difficulty": 3,
+    "level": 14,
+    "tags": [
+      "lesson-v1"
+    ]
+  }
+]
