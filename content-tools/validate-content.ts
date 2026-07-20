@@ -2,7 +2,10 @@ import { validatePackIntegrity } from '../src/content/integrity';
 import { rawPacks } from '../src/content/packs';
 import placementRaw from '../src/content/placement/questions.json';
 import { placementBankSchema } from '../src/content/placement/schema';
+import practiceRaw from '../src/content/practice/exercises.json';
+import { practiceBankSchema } from '../src/content/practice/schema';
 import { contentPackSchema } from '../src/content/schema';
+import { validateExercise } from '../src/features/practice/logic';
 
 let failed = false;
 
@@ -71,6 +74,38 @@ if (!placement.success) {
     const max = Math.max(...counts);
     console.log(
       `✔ positionnement — ${placement.data.length} questions (difficultés 1-15 : ${min}-${max} par niveau)`,
+    );
+  }
+}
+
+// — Banque de pratique -------------------------------------------------------------
+const practice = practiceBankSchema.safeParse(practiceRaw);
+if (!practice.success) {
+  failed = true;
+  console.error('✖ pratique : schéma invalide');
+  for (const issue of practice.error.issues) {
+    console.error(`    ${issue.path.join('.') || '(racine)'} — ${issue.message}`);
+  }
+} else {
+  const seen = new Set<string>();
+  const errors: string[] = [];
+  for (const ex of practice.data) {
+    if (seen.has(ex.id)) errors.push(`exercice en double : ${ex.id}`);
+    seen.add(ex.id);
+    errors.push(...validateExercise(ex));
+  }
+  if (errors.length > 0) {
+    failed = true;
+    for (const error of errors) console.error(`  ✖ ${error}`);
+  } else {
+    const kinds = practice.data.reduce<Record<string, number>>((acc, e) => {
+      acc[e.kind] = (acc[e.kind] ?? 0) + 1;
+      return acc;
+    }, {});
+    console.log(
+      `✔ pratique — ${practice.data.length} exercices (${Object.entries(kinds)
+        .map(([k, n]) => `${k}:${n}`)
+        .join(' ')})`,
     );
   }
 }
