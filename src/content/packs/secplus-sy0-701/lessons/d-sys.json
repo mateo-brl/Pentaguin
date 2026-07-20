@@ -1,1 +1,454 @@
-[]
+[
+  {
+    "id": "l-sys-01",
+    "domainId": "d-sys",
+    "title": "Permissions de fichiers sous Linux (rwx)",
+    "order": 1,
+    "estMinutes": 6,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "Sous Linux, chaque fichier et chaque dossier appartient à un **utilisateur (user)** propriétaire et à un **groupe (group)**. Les droits d'accès sont organisés en **trois classes** : le propriétaire (**u**), le groupe (**g**) et **les autres (others, o)**, c'est-à-dire tout le reste du monde. À chacune de ces classes on attribue trois permissions : **lecture (read, r)**, **écriture (write, w)** et **exécution (execute, x)** — d'où le sigle **rwx**."
+      },
+      {
+        "type": "text",
+        "md": "La commande `ls -l` affiche ces droits sous la forme `-rwxr-xr--`. Le premier caractère indique le type (`-` pour un fichier, `d` pour un dossier). Viennent ensuite trois groupes de trois lettres : les droits du propriétaire, puis du groupe, puis des autres. Un tiret `-` à la place d'une lettre signifie « permission absente ». Ici : le propriétaire a `rwx`, le groupe `r-x`, les autres `r--`."
+      },
+      {
+        "type": "text",
+        "md": "Une notation plus compacte existe : la **notation octale**. On donne une valeur à chaque permission — `r`=4, `w`=2, `x`=1 — puis on additionne par classe. Ainsi `rwx`=7, `r-x`=5, `r--`=4. La commande **`chmod`** (change mode) modifie ces permissions : `chmod 755 script.sh` donne `rwxr-xr-x`, `chmod 644 note.txt` donne `rw-r--r--`. La commande **`chown`** change, elle, le propriétaire et le groupe."
+      },
+      {
+        "type": "callout",
+        "variant": "exam",
+        "md": "Piège classique : sur un **dossier**, le bit `x` ne veut pas dire « exécuter un programme ». Il autorise à **traverser** le dossier, c'est-à-dire y entrer et atteindre un fichier par son nom. Sans `x` sur un dossier, même avec `r`, vous ne pouvez pas accéder à son contenu ; avec `r` seul, vous pouvez lister les noms mais pas y descendre."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "rwx",
+            "def": "Les trois permissions de base : lecture (r), écriture (w) et exécution (x)."
+          },
+          {
+            "term": "Classes user / group / others",
+            "def": "Les droits sont définis séparément pour le propriétaire, le groupe, puis tous les autres."
+          },
+          {
+            "term": "chmod",
+            "def": "Commande qui modifie les permissions d'un fichier ou dossier (ex. chmod 644)."
+          },
+          {
+            "term": "Notation octale",
+            "def": "Écriture chiffrée des droits : r=4, w=2, x=1, additionnés par classe."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-sys-01"
+      }
+    ],
+    "level": 7
+  },
+  {
+    "id": "l-sys-02",
+    "domainId": "d-sys",
+    "title": "Comptes, privilèges et UAC sous Windows",
+    "order": 2,
+    "estMinutes": 6,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "Windows distingue deux grands types de comptes. Un **compte standard** permet d'utiliser la machine (bureautique, navigation) mais **pas** d'installer un logiciel pour tout le système, de modifier des réglages protégés ou de toucher aux fichiers des autres utilisateurs. Un **compte administrateur**, membre du groupe local **Administrators**, contrôle l'ensemble du système. Le bon réflexe est le **moindre privilège (least privilege)** : travailler au quotidien avec un compte standard."
+      },
+      {
+        "type": "text",
+        "md": "C'est là qu'intervient l'**UAC (User Account Control, contrôle de compte d'utilisateur)**. Même connecté avec un compte administrateur, votre session reçoit par défaut un **jeton filtré (filtered token)** aux droits standard : vos programmes s'exécutent avec des privilèges limités. Quand une action réclame les droits d'administrateur, l'UAC affiche une **demande d'élévation**. Techniquement, un compte admin possède un **jeton double (split token)** — un jeton complet et un jeton filtré — et l'élévation bascule vers le jeton complet. Cela limite les dégâts d'un malware lancé dans votre session normale."
+      },
+      {
+        "type": "text",
+        "md": "Point essentiel de nuance : Microsoft indique officiellement que **l'UAC est une commodité, pas une frontière de sécurité**. Des **contournements (UAC bypass)** connus existent — binaires qui s'auto-élèvent, détournement de DLL, etc. L'UAC relève le niveau et force un clic conscient, mais un code malveillant local déterminé peut parfois s'élever sans afficher d'invite. Ne comptez jamais sur l'UAC comme unique protection."
+      },
+      {
+        "type": "callout",
+        "variant": "warning",
+        "md": "**L'UAC n'est pas une frontière de sécurité absolue.** C'est un garde-fou qui force un consentement explicite et limite les élévations involontaires, mais des contournements existent. Combinez-le toujours avec un **compte standard** au quotidien et le principe du **moindre privilège**."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Compte standard",
+            "def": "Compte aux droits limités, sans contrôle sur l'ensemble du système."
+          },
+          {
+            "term": "Compte administrateur",
+            "def": "Membre du groupe Administrators ; contrôle total de la machine."
+          },
+          {
+            "term": "UAC (User Account Control)",
+            "def": "Mécanisme qui exécute par défaut avec des droits standard et demande une élévation pour les actions sensibles."
+          },
+          {
+            "term": "Split token (jeton double)",
+            "def": "Un compte admin possède deux jetons : un filtré (standard) et un complet (admin)."
+          },
+          {
+            "term": "Moindre privilège",
+            "def": "Principe consistant à n'accorder que les droits strictement nécessaires."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-sys-02"
+      }
+    ],
+    "level": 7
+  },
+  {
+    "id": "l-sys-03",
+    "domainId": "d-sys",
+    "title": "Active Directory et authentification Kerberos",
+    "order": 3,
+    "estMinutes": 7,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "**Active Directory (AD)** est l'annuaire de Microsoft : il centralise les **utilisateurs**, les **machines**, les **groupes** et leurs droits au sein d'un **domaine**. Les serveurs qui hébergent AD sont les **contrôleurs de domaine (Domain Controllers, DC)**. Au lieu d'un compte local sur chaque poste, un utilisateur dispose d'un **compte de domaine** unique, utilisable partout. Pour prouver son identité, AD s'appuie principalement sur le protocole **Kerberos**."
+      },
+      {
+        "type": "text",
+        "md": "Kerberos est un protocole d'authentification **par tickets**. L'acteur central est le **KDC (Key Distribution Center)**, exécuté sur chaque DC, qui comprend deux services : l'**AS (Authentication Service)** et le **TGS (Ticket Granting Service)**. Idée clé : **le mot de passe ne circule pas sur le réseau à chaque accès**. L'utilisateur s'authentifie une fois, reçoit des tickets, puis présente ces tickets."
+      },
+      {
+        "type": "text",
+        "md": "Le déroulé, en trois temps : 1) À l'ouverture de session, le client prouve à l'AS qu'il connaît le mot de passe (via une clé dérivée de celui-ci). L'AS renvoie un **TGT (Ticket Granting Ticket)**, un « ticket maître » valable un temps limité (environ 10 h par défaut) et chiffré avec le secret du compte spécial **krbtgt** — seul le KDC peut le lire. 2) Pour accéder à une ressource (un partage, un serveur), le client présente son TGT au TGS et demande un **ticket de service**. 3) Le client présente ce ticket de service à la ressource visée, qui le valide. L'utilisateur prouve ainsi qui il est **sans jamais renvoyer son mot de passe** à chaque serveur."
+      },
+      {
+        "type": "callout",
+        "variant": "exam",
+        "md": "Point clé d'examen : avec Kerberos, **le mot de passe ne circule pas à chaque accès**. L'utilisateur obtient un **TGT** (ticket maître) auprès du **KDC**, puis échange ce TGT contre des **tickets de service** pour chaque ressource. Ce sont des **tickets** qui voyagent sur le réseau, pas le mot de passe."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Active Directory (AD)",
+            "def": "Annuaire de Microsoft qui centralise utilisateurs, machines et droits au sein d'un domaine."
+          },
+          {
+            "term": "Contrôleur de domaine (DC)",
+            "def": "Serveur qui héberge Active Directory et authentifie les comptes du domaine."
+          },
+          {
+            "term": "KDC (Key Distribution Center)",
+            "def": "Service Kerberos, hébergé sur le DC, qui délivre les tickets ; il comprend l'AS et le TGS."
+          },
+          {
+            "term": "TGT (Ticket Granting Ticket)",
+            "def": "Ticket maître obtenu à l'ouverture de session ; il sert ensuite à demander des tickets de service."
+          },
+          {
+            "term": "TGS (Ticket Granting Service)",
+            "def": "Service du KDC qui échange un TGT valide contre un ticket de service pour une ressource précise."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-sys-03"
+      }
+    ],
+    "level": 10
+  },
+  {
+    "id": "l-sys-04",
+    "domainId": "d-sys",
+    "title": "Stratégies de groupe (GPO) et durcissement",
+    "order": 4,
+    "estMinutes": 6,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "Une **GPO (Group Policy Object, stratégie de groupe)** est un ensemble de règles de configuration qu'Active Directory pousse **automatiquement** vers les ordinateurs et les utilisateurs d'un domaine. Plutôt que de régler chaque machine à la main, un administrateur définit une politique une fois et AD l'applique à des milliers de postes. Le champ couvert est très large : politique de mots de passe, logiciels autorisés, services, pare-feu, verrouillage de session, etc."
+      },
+      {
+        "type": "text",
+        "md": "Les GPO sont **liées** à des conteneurs AD : le **site**, le **domaine** ou une **OU (Organizational Unit, unité d'organisation)**. Une machine applique les GPO de chaque niveau auquel elle appartient. L'ordre d'application est **Local → Site → Domaine → OU** (moyen mnémotechnique : LSDOU) ; par défaut, la politique appliquée **en dernier** (l'OU la plus proche de l'objet) **l'emporte** en cas de conflit. Les clients rafraîchissent la stratégie périodiquement (environ 90 min) ou à la demande avec `gpupdate`. Les fichiers résident dans **SYSVOL**, un partage répliqué sur tous les DC."
+      },
+      {
+        "type": "text",
+        "md": "Les GPO sont un outil central de **durcissement (hardening)** : imposer une politique de mots de passe et de verrouillage robuste, désactiver des protocoles vulnérables (SMBv1, LM/NTLMv1), restreindre l'appartenance au groupe administrateurs local, configurer le pare-feu, ou déployer **AppLocker** pour contrôler les programmes autorisés. Plutôt que de partir de zéro, les équipes appliquent une **baseline** reconnue (Microsoft Security Baseline, CIS Benchmark) puis l'adaptent."
+      },
+      {
+        "type": "callout",
+        "variant": "tip",
+        "md": "Pour durcir un parc, ne partez pas d'une page blanche : appliquez une **baseline** reconnue (Microsoft Security Baseline, CIS Benchmark) via GPO, puis testez-la sur un périmètre restreint (une **OU pilote**) avant de généraliser. Une GPO mal réglée peut casser la production aussi vite qu'elle protège."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "GPO (Group Policy Object)",
+            "def": "Ensemble de règles de configuration poussé automatiquement par AD aux machines et utilisateurs."
+          },
+          {
+            "term": "OU (Organizational Unit)",
+            "def": "Conteneur d'Active Directory qui regroupe des objets et auquel on peut lier une GPO."
+          },
+          {
+            "term": "SYSVOL",
+            "def": "Partage répliqué sur tous les contrôleurs de domaine où sont stockés les fichiers des GPO."
+          },
+          {
+            "term": "gpupdate",
+            "def": "Commande qui force le rafraîchissement immédiat des stratégies de groupe sur un poste."
+          },
+          {
+            "term": "Baseline de sécurité",
+            "def": "Modèle de configuration durci et reconnu (CIS, Microsoft) servant de point de départ."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-sys-04"
+      }
+    ],
+    "level": 10
+  },
+  {
+    "id": "l-sys-05",
+    "domainId": "d-sys",
+    "title": "Dépassement de tampon (buffer overflow) et protections",
+    "order": 5,
+    "estMinutes": 7,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "Un programme réserve des zones de mémoire appelées **tampons (buffers)** pour stocker des données, par exemple un texte saisi par l'utilisateur. Un **dépassement de tampon (buffer overflow)** survient quand le programme y écrit **plus de données que le tampon ne peut en contenir**, sans vérifier la taille. Le surplus déborde dans la **mémoire voisine** et **écrase** ce qui s'y trouvait."
+      },
+      {
+        "type": "text",
+        "md": "Pourquoi est-ce dangereux ? Sur la **pile (stack)**, juste à côté d'un tampon, se trouvent des **données de contrôle**, notamment l'**adresse de retour** (l'endroit où le processeur reprend l'exécution à la fin d'une fonction). En débordant, un attaquant peut **écraser cette adresse de retour** et **détourner le flux d'exécution** vers du code de son choix (historiquement, un **shellcode** injecté). En résumé : un buffer overflow **écrase des données de contrôle** et peut détourner le programme. La cause profonde : des fonctions non sûres et l'absence de vérification de bornes en C/C++ (`strcpy`, `gets`)."
+      },
+      {
+        "type": "text",
+        "md": "Les systèmes modernes empilent plusieurs protections. **DEP / NX (Data Execution Prevention / No-eXecute)** marque les pages de **données** (comme la pile) **non exécutables** : le processeur refuse d'y lancer du code, ce qui bloque le shellcode injecté classique. **ASLR (Address Space Layout Randomization)** **randomise les adresses** mémoire (pile, tas, bibliothèques) à chaque exécution, empêchant l'attaquant de prédire où sauter. Le **stack canary (canari de pile)** place une valeur secrète juste avant l'adresse de retour ; la fonction la vérifie avant de rendre la main et s'arrête si un débordement l'a modifiée."
+      },
+      {
+        "type": "text",
+        "md": "Ces mécanismes sont des **mitigations**, pas des remèdes définitifs. Les attaquants répliquent avec le **ROP (Return-Oriented Programming)** pour contourner DEP en réutilisant du code déjà exécutable, ou avec des **fuites d'information** pour vaincre l'ASLR. Combinées, ces protections augmentent fortement le coût d'une attaque, mais le vrai correctif reste le **code sûr** : vérification des bornes, fonctions sûres et langages à mémoire sûre (Rust, Go)."
+      },
+      {
+        "type": "callout",
+        "variant": "exam",
+        "md": "Associez chaque protection : **DEP/NX** empêche l'**exécution de code en zone de données** (pile, tas) ; **ASLR** **randomise les adresses** mémoire ; le **stack canary** détecte l'écrasement de la pile avant le retour de fonction. Le dépassement de tampon, lui, **écrase des données de contrôle** — au premier chef l'adresse de retour."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Tampon (buffer)",
+            "def": "Zone de mémoire réservée par un programme pour stocker temporairement des données."
+          },
+          {
+            "term": "Buffer overflow",
+            "def": "Écriture de plus de données que le tampon ne peut contenir, écrasant la mémoire voisine."
+          },
+          {
+            "term": "DEP / NX",
+            "def": "Protection qui rend les zones de données non exécutables pour bloquer le code injecté."
+          },
+          {
+            "term": "ASLR",
+            "def": "Randomisation des adresses mémoire à chaque exécution pour rendre les cibles imprévisibles."
+          },
+          {
+            "term": "Stack canary",
+            "def": "Valeur secrète placée avant l'adresse de retour pour détecter un débordement de pile."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-sys-05"
+      }
+    ],
+    "level": 10
+  },
+  {
+    "id": "l-sys-06",
+    "domainId": "d-sys",
+    "title": "Élévation de privilèges (privilege escalation)",
+    "order": 6,
+    "estMinutes": 6,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "L'**élévation de privilèges (privilege escalation)** consiste à passer de droits limités à des **droits supérieurs** sur un système — typiquement d'un utilisateur standard vers **root** (Linux) ou **SYSTEM / Administrator** (Windows). C'est une étape clé d'une intrusion : un attaquant atterrit rarement avec les pleins pouvoirs ; il arrive avec un compte modeste, puis **escalade** ses privilèges."
+      },
+      {
+        "type": "text",
+        "md": "On distingue deux formes. L'escalade **verticale** fait gagner **plus** de droits que son compte (utilisateur → admin/root) : c'est la « privesc » classique. L'escalade **horizontale** consiste à prendre le contrôle d'**un autre compte de même niveau** (par exemple un autre utilisateur) pour accéder à ses données ou étendre son emprise."
+      },
+      {
+        "type": "text",
+        "md": "Les leviers les plus fréquents relèvent d'une **mauvaise configuration** plutôt que d'une faille inédite. Côté **Linux** : un **binaire SUID** (qui s'exécute avec les droits de son propriétaire, souvent root), une règle **sudo** trop permissive (`sudo -l` pour la lister), un script modifiable exécuté par root (cron), ou des permissions trop larges sur un fichier sensible. Côté **Windows** : un service dont l'exécutable est modifiable par un compte standard, un **chemin de service non entre guillemets (unquoted service path)**, une usurpation de jeton (**token impersonation**), ou des identifiants stockés. Dans les deux cas : un noyau ou logiciel **non corrigé** visé par un exploit local connu."
+      },
+      {
+        "type": "callout",
+        "variant": "tip",
+        "md": "La plupart des élévations de privilèges exploitent une **mauvaise configuration**, pas une faille inédite. Réflexes défensifs : appliquer le **moindre privilège**, auditer les binaires **SUID** et les règles **sudo**, corriger les permissions de fichiers et **patcher** vite. Un simple `sudo -l` ou un binaire SUID oublié suffit souvent à passer root."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Élévation de privilèges",
+            "def": "Passage de droits limités à des droits supérieurs (root, SYSTEM) sur un système."
+          },
+          {
+            "term": "Escalade verticale",
+            "def": "Gain de privilèges plus élevés que ceux de son compte (utilisateur vers admin/root)."
+          },
+          {
+            "term": "Escalade horizontale",
+            "def": "Prise de contrôle d'un autre compte de même niveau de droits."
+          },
+          {
+            "term": "SUID (Linux)",
+            "def": "Bit spécial faisant exécuter un programme avec les droits de son propriétaire, souvent root."
+          },
+          {
+            "term": "sudo",
+            "def": "Mécanisme Linux qui autorise un utilisateur à lancer certaines commandes avec des droits élevés."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-sys-06"
+      }
+    ],
+    "level": 11
+  },
+  {
+    "id": "l-sys-07",
+    "domainId": "d-sys",
+    "title": "Journalisation et EDR : détecter sur l'endpoint",
+    "order": 7,
+    "estMinutes": 6,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "Pour détecter une attaque sur une machine — un **endpoint**, poste ou serveur — il faut d'abord des **traces**. La **journalisation (logging)** enregistre les événements : ouvertures de session, créations de processus, accès aux fichiers, modifications de services. Sous **Windows**, c'est le **journal d'événements (Event Log)** — par exemple l'événement **4624** (ouverture de session réussie) ou **4688** (création de processus) — enrichi par **Sysmon**. Sous **Linux**, ce sont **auditd** et **journald/syslog**. Sans journaux, une intrusion ne laisse aucune preuve exploitable."
+      },
+      {
+        "type": "text",
+        "md": "Les journaux disent **ce qui s'est passé**, mais les lire à la main sur tout un parc est impossible. Un **EDR (Endpoint Detection and Response)** est un **agent** installé sur chaque endpoint qui **collecte en continu de la télémétrie** (processus, connexions réseau, modifications de fichiers et de registre), **détecte des comportements** suspects, et peut **réagir** : tuer un processus, **isoler** la machine du réseau, annuler des changements."
+      },
+      {
+        "type": "text",
+        "md": "Différence avec un **antivirus** classique : l'antivirus traditionnel repose surtout sur des **signatures** de fichiers malveillants connus. L'EDR ajoute une détection **comportementale** (un document Word qui lance PowerShell, lequel contacte Internet, forme une chaîne suspecte même sans signature connue) et la capacité de **réponse**. La télémétrie est en général transmise à un **SIEM** pour être corrélée de façon centralisée sur tout le parc par le **SOC**."
+      },
+      {
+        "type": "callout",
+        "variant": "tip",
+        "md": "Retenez la complémentarité : les **logs** disent **ce qui s'est passé** (l'après-coup), tandis que l'**EDR** ajoute la **détection comportementale** en temps réel et la **réponse** (isoler la machine, tuer le processus). L'un ne remplace pas l'autre : centralisez les journaux (SIEM) **et** déployez un EDR."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Endpoint",
+            "def": "Machine terminale du réseau : poste de travail ou serveur, cible de surveillance."
+          },
+          {
+            "term": "Journalisation (logging)",
+            "def": "Enregistrement des événements système (connexions, processus, accès) pour analyse."
+          },
+          {
+            "term": "EDR (Endpoint Detection and Response)",
+            "def": "Agent qui collecte la télémétrie d'un endpoint, détecte les comportements suspects et peut réagir."
+          },
+          {
+            "term": "SIEM",
+            "def": "Système qui centralise et corrèle les journaux de tout un parc pour la détection."
+          },
+          {
+            "term": "Sysmon",
+            "def": "Outil Windows qui enrichit la journalisation avec des événements détaillés (processus, réseau)."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-sys-07"
+      }
+    ],
+    "level": 11
+  },
+  {
+    "id": "l-sys-08",
+    "domainId": "d-sys",
+    "title": "Pass-the-hash et mouvement latéral",
+    "order": 8,
+    "estMinutes": 7,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "Sous Windows et Active Directory, le protocole **NTLM** ne transmet jamais le mot de passe sur le réseau. Le système stocke et utilise à la place une **empreinte NTLM (hash NTLM)** dérivée du mot de passe. Lors d'une authentification NTLM, le serveur envoie un **défi (challenge)** et le client y répond en se servant de son empreinte NTLM (mécanisme défi-réponse). Conséquence : pour prouver qu'on est un utilisateur, il suffit de **détenir son empreinte NTLM** — le mot de passe en clair n'est pas nécessaire."
+      },
+      {
+        "type": "text",
+        "md": "Le **pass-the-hash (PtH)** exploite exactement cela : un attaquant qui a récupéré l'**empreinte NTLM** d'un utilisateur peut **s'authentifier en tant que cet utilisateur sans jamais connaître son mot de passe**. Il ne cherche pas à **casser** l'empreinte ; il la **rejoue** directement. Ces empreintes sont typiquement volées dans la mémoire du processus **LSASS** (outils comme Mimikatz) sur une machine déjà compromise, ou dans la base **SAM** locale."
+      },
+      {
+        "type": "text",
+        "md": "Le pass-the-hash est un moteur privilégié du **mouvement latéral (lateral movement)** : une fois une première machine compromise, l'attaquant **saute de poste en poste** pour atteindre sa cible (souvent un contrôleur de domaine ou un serveur sensible). Si un **compte administrateur local partage le même mot de passe** — donc la même empreinte — sur de nombreuses machines, une seule empreinte volée les déverrouille toutes. Les techniques s'appuient sur **SMB / PsExec, WMI, RDP, WinRM**."
+      },
+      {
+        "type": "text",
+        "md": "Les défenses : des mots de passe d'administrateur local **uniques** par machine (**LAPS**), le **moindre privilège** et le cloisonnement en niveaux (**tiering**) — ne jamais utiliser un compte d'administrateur du domaine sur un poste de travail —, la protection de **LSASS** (**Credential Guard**), la désactivation de NTLM au profit de Kerberos quand c'est possible, et la surveillance des connexions anormales (EDR/SIEM)."
+      },
+      {
+        "type": "callout",
+        "variant": "exam",
+        "md": "Point d'examen : **le pass-the-hash réutilise l'empreinte NTLM sans jamais connaître le mot de passe**. L'attaquant ne « casse » pas l'empreinte : il la **rejoue** telle quelle pour s'authentifier. C'est un moteur de **mouvement latéral**, redoutable surtout quand un compte admin local partage le même mot de passe (donc la même empreinte) sur plusieurs machines."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Empreinte NTLM (hash)",
+            "def": "Valeur dérivée du mot de passe, stockée et utilisée par Windows pour l'authentification NTLM."
+          },
+          {
+            "term": "Pass-the-hash (PtH)",
+            "def": "Réutilisation d'une empreinte NTLM volée pour s'authentifier sans connaître le mot de passe."
+          },
+          {
+            "term": "Mouvement latéral (lateral movement)",
+            "def": "Progression d'un attaquant de machine en machine à l'intérieur d'un réseau compromis."
+          },
+          {
+            "term": "LSASS",
+            "def": "Processus Windows qui gère les authentifications ; sa mémoire contient des secrets convoités."
+          },
+          {
+            "term": "LAPS",
+            "def": "Solution imposant un mot de passe d'administrateur local unique et géré par machine."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-sys-08"
+      }
+    ],
+    "level": 13
+  }
+]

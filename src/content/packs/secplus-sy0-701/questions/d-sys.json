@@ -1,1 +1,290 @@
-[]
+[
+  {
+    "id": "q-sys-01",
+    "domainId": "d-sys",
+    "lessonIds": [
+      "l-sys-01"
+    ],
+    "type": "single",
+    "stem": "Que signifie la commande `chmod 640 fichier` ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Le propriétaire peut lire et écrire, le groupe peut seulement lire, les autres n'ont aucun accès."
+      },
+      {
+        "id": "b",
+        "text": "Tout le monde peut lire, écrire et exécuter le fichier."
+      },
+      {
+        "id": "c",
+        "text": "Seuls les autres (others) ont accès au fichier."
+      },
+      {
+        "id": "d",
+        "text": "Le fichier devient exécutable, mais uniquement pour le groupe."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "En octal, 6 = rw- (4+2), 4 = r-- et 0 = --- ; les trois chiffres visent dans l'ordre le propriétaire, le groupe puis les autres.",
+    "difficulty": 2,
+    "level": 7,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-sys-02",
+    "domainId": "d-sys",
+    "lessonIds": [
+      "l-sys-02"
+    ],
+    "type": "single",
+    "stem": "Que faut-il retenir au sujet de l'UAC sous Windows ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "C'est une frontière de sécurité infranchissable qui bloque tout code malveillant."
+      },
+      {
+        "id": "b",
+        "text": "Il chiffre le disque dur de la machine."
+      },
+      {
+        "id": "c",
+        "text": "C'est un garde-fou utile qui force un consentement, mais pas une frontière de sécurité absolue."
+      },
+      {
+        "id": "d",
+        "text": "Il remplace complètement le besoin d'un antivirus."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "Microsoft présente l'UAC comme une commodité qui limite les élévations involontaires ; des contournements existent, il ne doit donc pas être l'unique défense.",
+    "difficulty": 2,
+    "level": 7,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-sys-03",
+    "domainId": "d-sys",
+    "lessonIds": [
+      "l-sys-03"
+    ],
+    "type": "single",
+    "stem": "Dans Kerberos, à quoi sert le TGT (Ticket Granting Ticket) ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Il contient le mot de passe en clair de l'utilisateur, renvoyé à chaque serveur."
+      },
+      {
+        "id": "b",
+        "text": "C'est le ticket maître obtenu au logon, ensuite échangé contre des tickets de service."
+      },
+      {
+        "id": "c",
+        "text": "C'est un antivirus intégré au contrôleur de domaine."
+      },
+      {
+        "id": "d",
+        "text": "Il chiffre les fichiers de l'utilisateur sur son disque dur."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "Le TGT est délivré une seule fois par le KDC après authentification ; il permet ensuite d'obtenir des tickets de service sans renvoyer le mot de passe.",
+    "difficulty": 2,
+    "level": 10,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-sys-04",
+    "domainId": "d-sys",
+    "lessonIds": [
+      "l-sys-04"
+    ],
+    "type": "single",
+    "stem": "En cas de conflit entre GPO, quelle politique l'emporte par défaut ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "La GPO liée au site, toujours prioritaire sur le reste."
+      },
+      {
+        "id": "b",
+        "text": "La plus ancienne GPO créée dans le domaine."
+      },
+      {
+        "id": "c",
+        "text": "La GPO locale de la machine, qui écrase toujours celles du domaine."
+      },
+      {
+        "id": "d",
+        "text": "Celle appliquée en dernier, soit l'OU la plus proche de l'objet (ordre Local-Site-Domaine-OU)."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "L'ordre d'application est Local, Site, Domaine puis OU ; la dernière appliquée, celle de l'OU la plus proche, écrase les précédentes en cas de conflit.",
+    "difficulty": 2,
+    "level": 10,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-sys-05",
+    "domainId": "d-sys",
+    "lessonIds": [
+      "l-sys-05"
+    ],
+    "type": "single",
+    "stem": "Quel est le rôle de la protection DEP / NX face à un buffer overflow ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Elle randomise les adresses mémoire à chaque exécution du programme."
+      },
+      {
+        "id": "b",
+        "text": "Elle marque les zones de données comme non exécutables, empêchant d'y lancer du code injecté."
+      },
+      {
+        "id": "c",
+        "text": "Elle place une valeur secrète avant l'adresse de retour pour détecter l'écrasement."
+      },
+      {
+        "id": "d",
+        "text": "Elle chiffre le contenu du tampon pour le rendre illisible."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "DEP/NX rend la pile et le tas non exécutables : le processeur refuse d'exécuter un shellcode déposé dans ces zones de données. La réponse a décrit l'ASLR et la c le stack canary.",
+    "difficulty": 2,
+    "level": 10,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-sys-06",
+    "domainId": "d-sys",
+    "lessonIds": [
+      "l-sys-06"
+    ],
+    "type": "single",
+    "stem": "Qu'est-ce qu'une élévation de privilèges verticale ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Passer de droits limités à des droits supérieurs, par exemple utilisateur vers root ou SYSTEM."
+      },
+      {
+        "id": "b",
+        "text": "Prendre le contrôle d'un autre compte ayant le même niveau de droits."
+      },
+      {
+        "id": "c",
+        "text": "Déplacer un fichier d'un dossier à un autre."
+      },
+      {
+        "id": "d",
+        "text": "Augmenter la fréquence du processeur pour aller plus vite."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "L'escalade verticale fait gagner davantage de privilèges (utilisateur vers admin/root) ; prendre un compte de même niveau serait une escalade horizontale.",
+    "difficulty": 3,
+    "level": 11,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-sys-07",
+    "domainId": "d-sys",
+    "lessonIds": [
+      "l-sys-07"
+    ],
+    "type": "single",
+    "stem": "Qu'est-ce qui distingue le mieux un EDR d'un antivirus classique par signatures ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "L'EDR ne fonctionne que hors ligne, sans aucun agent installé."
+      },
+      {
+        "id": "b",
+        "text": "L'antivirus classique isole automatiquement la machine du réseau."
+      },
+      {
+        "id": "c",
+        "text": "L'EDR se limite à comparer les fichiers à une base de signatures connues."
+      },
+      {
+        "id": "d",
+        "text": "L'EDR ajoute la détection comportementale et la capacité de réponse sur l'endpoint."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "Un EDR ne se contente pas des signatures : il analyse les comportements suspects et peut réagir (tuer un processus, isoler la machine), ce que l'antivirus classique ne fait pas.",
+    "difficulty": 3,
+    "level": 11,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-sys-08",
+    "domainId": "d-sys",
+    "lessonIds": [
+      "l-sys-08"
+    ],
+    "type": "single",
+    "stem": "Sur quoi repose une attaque pass-the-hash ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Sur le déchiffrement du mot de passe à partir de son empreinte NTLM."
+      },
+      {
+        "id": "b",
+        "text": "Sur le vol d'un ticket Kerberos TGT uniquement."
+      },
+      {
+        "id": "c",
+        "text": "Sur la réutilisation de l'empreinte NTLM pour s'authentifier sans connaître le mot de passe."
+      },
+      {
+        "id": "d",
+        "text": "Sur l'envoi du mot de passe en clair à chaque serveur."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "L'attaquant rejoue directement l'empreinte NTLM volée pour prouver son identité : il n'a besoin ni de retrouver le mot de passe en clair, ni de le déchiffrer.",
+    "difficulty": 3,
+    "level": 13,
+    "tags": [
+      "lesson-v1"
+    ]
+  }
+]
