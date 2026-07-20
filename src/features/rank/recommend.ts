@@ -27,7 +27,7 @@ export function recommendedLessons(
     .slice(0, limit);
 }
 
-/** Une leçon est-elle « à ton rang » (pour un badge de mise en avant) ? */
-export function isRecommended(lesson: Lesson, rank: number, window = 1): boolean {
-  return lesson.level != null && Math.abs(lesson.level - rank) <= window;
+/** Un contenu (leçon, exercice…) est-il « à ton rang » (badge de mise en avant) ? */
+export function isRecommended(item: { level?: number }, rank: number, window = 1): boolean {
+  return item.level != null && Math.abs(item.level - rank) <= window;
 }
