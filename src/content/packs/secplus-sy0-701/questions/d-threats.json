@@ -1,1 +1,290 @@
-[]
+[
+  {
+    "id": "q-threats-01",
+    "domainId": "d-threats",
+    "lessonIds": [
+      "l-threats-01"
+    ],
+    "type": "single",
+    "stem": "Qu'est-ce qui distingue fondamentalement un ver (worm) d'un virus ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Le ver chiffre les fichiers, alors que le virus les supprime."
+      },
+      {
+        "id": "b",
+        "text": "Le ver ne fonctionne que sur les serveurs, le virus que sur les PC."
+      },
+      {
+        "id": "c",
+        "text": "Le ver se propage seul via le réseau, sans hôte ni action de l'utilisateur."
+      },
+      {
+        "id": "d",
+        "text": "Le ver est toujours détecté par l'antivirus, contrairement au virus."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "Le ver est autonome : il exploite des failles réseau pour se répliquer sans hôte ni intervention humaine, là où le virus a besoin d'un fichier hôte exécuté par l'utilisateur.",
+    "difficulty": 1,
+    "level": 4,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-threats-02",
+    "domainId": "d-threats",
+    "lessonIds": [
+      "l-threats-02"
+    ],
+    "type": "single",
+    "stem": "Quelle est la défense la plus fiable pour récupérer ses données après un ransomware ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Disposer de sauvegardes hors ligne, isolées du réseau et régulièrement testées."
+      },
+      {
+        "id": "b",
+        "text": "Payer rapidement la rançon pour obtenir la clé."
+      },
+      {
+        "id": "c",
+        "text": "Installer un second antivirus après le chiffrement."
+      },
+      {
+        "id": "d",
+        "text": "Renommer les fichiers chiffrés pour les rendre lisibles."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "Des sauvegardes hors ligne et testées permettent de restaurer les données sans dépendre de l'attaquant ; le paiement n'offre aucune garantie et finance le crime.",
+    "difficulty": 1,
+    "level": 5,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-threats-03",
+    "domainId": "d-threats",
+    "lessonIds": [
+      "l-threats-03"
+    ],
+    "type": "single",
+    "stem": "Un inconnu laisse traîner des clés USB étiquetées « Salaires 2026 » dans le hall de l'entreprise, en espérant qu'un employé en branche une. De quelle technique s'agit-il ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Du pretexting."
+      },
+      {
+        "id": "b",
+        "text": "Du quid pro quo."
+      },
+      {
+        "id": "c",
+        "text": "Du chiffrement asymétrique."
+      },
+      {
+        "id": "d",
+        "text": "Du baiting."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "Le baiting repose sur un appât physique ou numérique attractif — ici une clé USB — que la victime utilise elle-même, ce qui déclenche l'infection.",
+    "difficulty": 1,
+    "level": 5,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-threats-04",
+    "domainId": "d-threats",
+    "lessonIds": [
+      "l-threats-04"
+    ],
+    "type": "single",
+    "stem": "Quel est le rôle du serveur de commande et contrôle (C2) dans un botnet ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Il chiffre les fichiers des victimes pour réclamer une rançon."
+      },
+      {
+        "id": "b",
+        "text": "Il envoie les ordres aux machines infectées et récupère leurs données."
+      },
+      {
+        "id": "c",
+        "text": "Il corrige automatiquement les failles des machines infectées."
+      },
+      {
+        "id": "d",
+        "text": "Il sert de sauvegarde hors ligne pour l'attaquant."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "Le C2 est le poste de pilotage du botnet : il transmet les instructions aux bots et centralise les informations qu'ils exfiltrent.",
+    "difficulty": 2,
+    "level": 7,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-threats-05",
+    "domainId": "d-threats",
+    "lessonIds": [
+      "l-threats-05"
+    ],
+    "type": "single",
+    "stem": "Qu'est-ce qui caractérise le mieux une APT (Advanced Persistent Threat) ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Un ransomware automatisé qui frappe des victimes au hasard."
+      },
+      {
+        "id": "b",
+        "text": "Un virus qui se supprime après une seule exécution."
+      },
+      {
+        "id": "c",
+        "text": "Un attaquant organisé qui vise une cible précise et y reste durablement et discrètement."
+      },
+      {
+        "id": "d",
+        "text": "Un logiciel légitime détourné par une simple erreur de configuration."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "Une APT est un adversaire déterminé et bien doté qui mène une opération ciblée dans la durée, en privilégiant la discrétion pour maintenir son accès.",
+    "difficulty": 2,
+    "level": 9,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-threats-06",
+    "domainId": "d-threats",
+    "lessonIds": [
+      "l-threats-06"
+    ],
+    "type": "single",
+    "stem": "Dans MITRE ATT&CK, quelle est la différence entre une tactique et une technique ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "La tactique est l'objectif visé (le pourquoi) ; la technique est la méthode employée (le comment)."
+      },
+      {
+        "id": "b",
+        "text": "La tactique concerne le réseau, la technique uniquement le poste de travail."
+      },
+      {
+        "id": "c",
+        "text": "La tactique est toujours automatisée, la technique toujours manuelle."
+      },
+      {
+        "id": "d",
+        "text": "La tactique sert en défense, la technique seulement en attaque."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "Une tactique décrit le but de l'attaquant à un moment donné (le pourquoi), tandis qu'une technique décrit la façon concrète d'atteindre ce but (le comment).",
+    "difficulty": 3,
+    "level": 11,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-threats-07",
+    "domainId": "d-threats",
+    "lessonIds": [
+      "l-threats-07"
+    ],
+    "type": "single",
+    "stem": "Parmi ces éléments, lequel est un exemple typique d'IOC (indicateur de compromission) ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "La politique de mots de passe de l'entreprise."
+      },
+      {
+        "id": "b",
+        "text": "Le budget annuel de l'équipe sécurité."
+      },
+      {
+        "id": "c",
+        "text": "Le nombre d'employés ayant suivi une formation."
+      },
+      {
+        "id": "d",
+        "text": "L'empreinte (hash) d'un fichier malveillant retrouvé sur un poste."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "Un IOC est une trace technique d'une compromission ; le hash d'un fichier malveillant en est un exemple classique, au même titre qu'une IP ou un domaine de C2.",
+    "difficulty": 3,
+    "level": 11,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-threats-08",
+    "domainId": "d-threats",
+    "lessonIds": [
+      "l-threats-08"
+    ],
+    "type": "single",
+    "stem": "Pourquoi un rootkit en mode noyau (kernel-mode) est-il particulièrement difficile à détecter ?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Parce qu'il ne fonctionne que si l'antivirus est désactivé manuellement."
+      },
+      {
+        "id": "b",
+        "text": "Parce qu'il s'exécute avec les privilèges du noyau et peut mentir au système et à l'antivirus."
+      },
+      {
+        "id": "c",
+        "text": "Parce qu'il chiffre les fichiers et affiche une note de rançon."
+      },
+      {
+        "id": "d",
+        "text": "Parce qu'il se supprime automatiquement à chaque redémarrage."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "En s'exécutant dans le noyau, le rootkit contrôle les fonctions mêmes que l'OS et l'antivirus utilisent pour s'inspecter, et peut donc masquer sa présence à ces outils.",
+    "difficulty": 3,
+    "level": 13,
+    "tags": [
+      "lesson-v1"
+    ]
+  }
+]
