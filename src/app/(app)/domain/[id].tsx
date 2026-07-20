@@ -10,6 +10,8 @@ import { Spacing } from '@/constants/theme';
 import { getDefaultPack, getDomain, lessonsByDomain } from '@/content';
 import { getCompletedLessonIds } from '@/db/repositories';
 import { isUnlockedNow, packEntitlement, useEntitlements } from '@/features/monetization';
+import { isRecommended } from '@/features/rank/recommend';
+import { useRank } from '@/features/rank/ranks';
 import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
 
@@ -22,6 +24,7 @@ export default function DomainScreen() {
   const t = useStrings();
   const theme = useTheme();
   const entitlements = useEntitlements();
+  const rank = useRank();
   const domain = id ? getDomain(pack, id) : undefined;
 
   const [completed, setCompleted] = useState<Set<string>>(new Set());
@@ -53,13 +56,18 @@ export default function DomainScreen() {
           <RowGroup>
             {lessons.map((lesson, index) => {
               const isDone = completed.has(lesson.id);
+              const reco = rank != null && unlocked && isRecommended(lesson, rank);
               return (
                 <Row
                   key={lesson.id}
                   first={index === 0}
                   dimmed={!unlocked}
                   title={lesson.title}
-                  subtitle={unlocked ? `${lesson.estMinutes} ${t.domain.minutes}` : t.lesson.locked}
+                  subtitle={
+                    unlocked
+                      ? `${lesson.estMinutes} ${t.domain.minutes}${reco ? ` · ${t.learn.forYourRank}` : ''}`
+                      : t.lesson.locked
+                  }
                   leading={
                     <SquareBadge
                       color={isDone ? theme.success : theme.textSecondary}

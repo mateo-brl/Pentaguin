@@ -100,6 +100,10 @@ const fr = {
     examWeight: 'de l’examen',
     tagline: 'Tes cours, adaptés à ton rang.',
     empty: 'Le contenu arrive bientôt. Établis d’abord ton rang pour être orienté.',
+    forYourRank: 'À ton rang',
+    forYourRankSub: 'Des leçons adaptées à ton niveau actuel.',
+    allThemes: 'Tous les thèmes',
+    lessonsCount: 'leçon(s)',
   },
   domain: {
     minutes: 'min',
@@ -404,6 +408,10 @@ const en: Strings = {
     examWeight: 'of the exam',
     tagline: 'Your lessons, tailored to your rank.',
     empty: 'Content is coming soon. Set your rank first to get guided.',
+    forYourRank: 'For your rank',
+    forYourRankSub: 'Lessons matched to your current level.',
+    allThemes: 'All themes',
+    lessonsCount: 'lesson(s)',
   },
   domain: {
     minutes: 'min',
