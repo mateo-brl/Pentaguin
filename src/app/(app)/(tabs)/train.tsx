@@ -21,6 +21,13 @@ export default function TrainScreen() {
 
   const items = [
     {
+      key: 'practice',
+      icon: 'flask' as const,
+      title: t.train.practice,
+      desc: t.train.practiceDesc,
+      href: '/practice' as const,
+    },
+    {
       key: 'quiz',
       icon: 'help' as const,
       title: t.train.quiz,
