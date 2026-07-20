@@ -9,7 +9,7 @@ import { Row, RowGroup, SquareBadge } from '@/components/ui/row';
 import { Spacing } from '@/constants/theme';
 import { getDefaultPack, getDomain, lessonsByDomain } from '@/content';
 import { getCompletedLessonIds } from '@/db/repositories';
-import { isUnlockedNow, packEntitlement, useEntitlements } from '@/features/monetization';
+import { isLessonUnlockedNow, useEntitlements } from '@/features/monetization';
 import { isRecommended } from '@/features/rank/recommend';
 import { useRank } from '@/features/rank/ranks';
 import { useTheme } from '@/hooks/use-theme';
@@ -39,10 +39,6 @@ export default function DomainScreen() {
   }
 
   const lessons = lessonsByDomain(pack, domain.id);
-  const unlocked = isUnlockedNow(
-    { kind: 'lesson', domainId: domain.id, entitlement: packEntitlement(pack.id) },
-    entitlements,
-  );
 
   return (
     <ThemedView style={styles.container}>
@@ -56,6 +52,7 @@ export default function DomainScreen() {
           <RowGroup>
             {lessons.map((lesson, index) => {
               const isDone = completed.has(lesson.id);
+              const unlocked = isLessonUnlockedNow(lesson, entitlements);
               const reco = rank != null && unlocked && isRecommended(lesson, rank);
               return (
                 <Row

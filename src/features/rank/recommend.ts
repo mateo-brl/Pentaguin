@@ -10,11 +10,14 @@ import type { ContentPack, Lesson } from '@/content';
 export function recommendedLessons(
   pack: ContentPack,
   rank: number,
-  window = 1,
-  limit = 8,
+  options: { window?: number; limit?: number; exclude?: ReadonlySet<string> } = {},
 ): Lesson[] {
+  const { window = 1, limit = 8, exclude } = options;
   return pack.lessons
-    .filter((l) => l.level != null && Math.abs(l.level - rank) <= window)
+    .filter(
+      (l) =>
+        l.level != null && Math.abs(l.level - rank) <= window && !(exclude && exclude.has(l.id)),
+    )
     .sort((a, b) => {
       const da = Math.abs((a.level as number) - rank);
       const db = Math.abs((b.level as number) - rank);
