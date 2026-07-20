@@ -1,0 +1,30 @@
+import type { ContentPack, Lesson } from '@/content';
+
+/**
+ * Sélectionne les leçons « à ton niveau » à partir du rang du joueur : celles
+ * dont le `level` est dans une fenêtre autour du rang (rang-1 → rang+1 par
+ * défaut), triées par proximité au rang puis par niveau croissant. C'est le
+ * cœur de l'orientation : après le test de positionnement, on met en avant ce
+ * qui correspond au niveau réel.
+ */
+export function recommendedLessons(
+  pack: ContentPack,
+  rank: number,
+  window = 1,
+  limit = 8,
+): Lesson[] {
+  return pack.lessons
+    .filter((l) => l.level != null && Math.abs(l.level - rank) <= window)
+    .sort((a, b) => {
+      const da = Math.abs((a.level as number) - rank);
+      const db = Math.abs((b.level as number) - rank);
+      if (da !== db) return da - db;
+      return (a.level as number) - (b.level as number);
+    })
+    .slice(0, limit);
+}
+
+/** Une leçon est-elle « à ton rang » (pour un badge de mise en avant) ? */
+export function isRecommended(lesson: Lesson, rank: number, window = 1): boolean {
+  return lesson.level != null && Math.abs(lesson.level - rank) <= window;
+}
