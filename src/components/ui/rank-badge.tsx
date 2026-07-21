@@ -4,7 +4,7 @@ import { SvgXml } from 'react-native-svg';
 
 import { penguinHeadSvg } from '@/components/mascot/penguin-art';
 import { ThemedText } from '@/components/themed-text';
-import { Radius, Spacing } from '@/constants/theme';
+import { Radius, Spacing } from '@/theme';
 import { rankById } from '@/features/rank/ranks';
 import { useTheme } from '@/hooks/use-theme';
 import { useStrings, type Strings } from '@/i18n/strings';
@@ -70,9 +70,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'flex-start',
-    gap: Spacing.one,
-    paddingHorizontal: Spacing.two,
-    paddingVertical: 5,
+    gap: Spacing.xs,
+    paddingHorizontal: Spacing.sm,
+    paddingVertical: Spacing.xs,
     borderRadius: Radius.pill,
   },
   crestInner: {

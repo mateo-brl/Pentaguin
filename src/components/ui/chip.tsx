@@ -1,4 +1,5 @@
 import { Pressable, StyleSheet } from 'react-native';
+import { Radius, Spacing } from '@/theme';
 
 import { ThemedText } from '@/components/themed-text';
 import { useTheme } from '@/hooks/use-theme';
@@ -31,10 +32,10 @@ export function Chip({ label, selected, onPress }: Props) {
 
 const styles = StyleSheet.create({
   chip: {
-    borderRadius: 999,
+    borderRadius: Radius.pill,
     borderWidth: 1,
-    paddingHorizontal: 16,
-    paddingVertical: 9,
+    paddingHorizontal: Spacing.base,
+    paddingVertical: Spacing.sm,
   },
   pressed: {
     opacity: 0.85,

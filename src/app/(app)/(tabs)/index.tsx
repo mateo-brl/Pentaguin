@@ -8,7 +8,7 @@ import { Penguin, StreakFlame } from '@/components/mascot/penguin';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { rankLabel } from '@/components/ui/rank-badge';
-import { BottomTabInset, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
+import { BottomTabInset, MaxContentWidth, Radius, Spacing, Stroke } from '@/theme';
 import { DEFAULT_PACK_ID, getDefaultPack, lessonsByDomain } from '@/content';
 import { getCompletedLessonIds, getKv, getTotalXp, localDateKey } from '@/db/repositories';
 import { useSession } from '@/features/account/session';
@@ -69,11 +69,6 @@ export default function HomeScreen() {
     router.push('/quiz/play');
   };
 
-  const stats: { label: string; value: string }[] = [
-    { label: t.home.statRank, value: rank != null ? rankLabel(rank, t) : '—' },
-    { label: t.home.statXp, value: String(totalXp) },
-    { label: t.home.statStreak, value: `${current} ${current > 1 ? t.home.days : t.home.day}` },
-  ];
 
   return (
     <ThemedView style={styles.container}>
@@ -135,23 +130,52 @@ export default function HomeScreen() {
             </Pressable>
           )}
 
-          {/* Triptyque de données — mono, comme le veut la direction. */}
-          <View style={[styles.stats, { borderColor: theme.border, backgroundColor: theme.backgroundElement }]}>
-            {stats.map((s, i) => (
+          {/* Hiérarchie assumée : le rang domine (c'est l'identité du joueur),
+              XP et série l'accompagnent en second plan. Pas trois cellules clonées. */}
+          <View style={styles.statsRow}>
+            <View
+              style={[
+                styles.statPrimary,
+                { backgroundColor: theme.accentSoft, borderColor: theme.accent },
+              ]}>
+              <ThemedText type="label" style={{ color: theme.accent }}>
+                {t.home.statRank}
+              </ThemedText>
+              <ThemedText
+                type="stat"
+                numberOfLines={1}
+                adjustsFontSizeToFit
+                style={[styles.statPrimaryValue, { color: theme.accent }]}>
+                {rank != null ? rankLabel(rank, t) : '—'}
+              </ThemedText>
+            </View>
+
+            <View style={styles.statsSecondary}>
               <View
-                key={s.label}
                 style={[
-                  styles.stat,
-                  i > 0 && { borderLeftWidth: StyleSheet.hairlineWidth, borderLeftColor: theme.border },
+                  styles.statSmall,
+                  { backgroundColor: theme.backgroundElement, borderColor: theme.border },
                 ]}>
                 <ThemedText type="label" themeColor="textSecondary">
-                  {s.label}
+                  {t.home.statXp}
                 </ThemedText>
-                <ThemedText type="mono" numberOfLines={1} style={styles.statValue}>
-                  {s.value}
+                <ThemedText type="mono" style={styles.statSmallValue}>
+                  {totalXp}
                 </ThemedText>
               </View>
-            ))}
+              <View
+                style={[
+                  styles.statSmall,
+                  { backgroundColor: theme.backgroundElement, borderColor: theme.border },
+                ]}>
+                <ThemedText type="label" themeColor="textSecondary">
+                  {t.home.statStreak}
+                </ThemedText>
+                <ThemedText type="mono" style={[styles.statSmallValue, { color: theme.streak }]}>
+                  {current}
+                </ThemedText>
+              </View>
+            </View>
           </View>
 
           {/* Défi du jour : le rendez-vous quotidien. */}
@@ -206,45 +230,58 @@ const styles = StyleSheet.create({
   container: { flex: 1, flexDirection: 'row', justifyContent: 'center' },
   safeArea: { flex: 1, maxWidth: MaxContentWidth },
   scroll: {
-    paddingHorizontal: Spacing.four,
-    paddingBottom: BottomTabInset + Spacing.three,
-    gap: Spacing.three,
+    paddingHorizontal: Spacing.lg,
+    paddingBottom: BottomTabInset + Spacing.base,
+    gap: Spacing.base,
   },
   topBar: {
-    paddingTop: Spacing.four,
+    paddingTop: Spacing.lg,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   wordmark: { fontSize: 13, letterSpacing: 3 },
-  streakChip: { flexDirection: 'row', alignItems: 'center', gap: Spacing.one },
-  hero: { flexDirection: 'row', alignItems: 'center', gap: Spacing.three },
-  heroText: { flex: 1, gap: Spacing.one },
+  streakChip: { flexDirection: 'row', alignItems: 'center', gap: Spacing.xs },
+  hero: { flexDirection: 'row', alignItems: 'center', gap: Spacing.base },
+  heroText: { flex: 1, gap: Spacing.xs },
   heroTitle: { fontSize: 26, lineHeight: 32 },
   resumeCard: {
-    borderRadius: Radius.large,
+    borderRadius: Radius.lg,
     borderWidth: 1,
-    padding: Spacing.three,
-    gap: Spacing.one,
+    padding: Spacing.base,
+    gap: Spacing.xs,
   },
   resumeHead: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  stats: {
-    flexDirection: 'row',
-    borderRadius: Radius.medium,
-    borderWidth: 1,
-    overflow: 'hidden',
+  statsRow: { flexDirection: 'row', gap: Spacing.sm },
+  statPrimary: {
+    flex: 1.6,
+    borderRadius: Radius.lg,
+    borderWidth: Stroke.hair,
+    padding: Spacing.base,
+    gap: Spacing.xs,
+    justifyContent: 'center',
   },
-  stat: { flex: 1, alignItems: 'center', gap: Spacing.one, paddingVertical: Spacing.three, paddingHorizontal: Spacing.one },
-  statValue: { fontSize: 15 },
+  statPrimaryValue: { fontSize: 26, lineHeight: 32 },
+  statsSecondary: { flex: 1, gap: Spacing.sm },
+  statSmall: {
+    flex: 1,
+    borderRadius: Radius.md,
+    borderWidth: Stroke.hair,
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.sm,
+    gap: Spacing.xs,
+    justifyContent: 'center',
+  },
+  statSmallValue: { fontSize: 17 },
   challengeTile: {
-    borderRadius: Radius.large,
-    padding: Spacing.three,
+    borderRadius: Radius.lg,
+    padding: Spacing.base,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: Spacing.three,
+    gap: Spacing.base,
   },
   pressed: { opacity: 0.9, transform: [{ scale: 0.99 }] },
-  challengeIcon: { width: 42, height: 42, borderRadius: 21, alignItems: 'center', justifyContent: 'center' },
-  challengeBody: { flex: 1, gap: 2 },
-  playPill: { paddingHorizontal: Spacing.three, paddingVertical: 8, borderRadius: Radius.pill },
+  challengeIcon: { width: 42, height: 42, borderRadius: Radius.pill, alignItems: 'center', justifyContent: 'center' },
+  challengeBody: { flex: 1, gap: Spacing.xs },
+  playPill: { paddingHorizontal: Spacing.base, paddingVertical: Spacing.sm, borderRadius: Radius.pill },
 });

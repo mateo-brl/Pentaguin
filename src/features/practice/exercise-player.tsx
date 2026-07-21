@@ -6,7 +6,7 @@ import { Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native
 import { ThemedText } from '@/components/themed-text';
 import { Button } from '@/components/ui/button';
 import { XP } from '@/config/gamification';
-import { FontFamily, Spacing } from '@/constants/theme';
+import { FontFamily, Radius, Spacing } from '@/theme';
 import type {
   AnalysisExercise,
   OrderExercise,
@@ -53,6 +53,7 @@ function Brief({ text }: { text: string }) {
 // — 1) Terminal ------------------------------------------------------------------
 function TerminalPlayer({ ex }: { ex: TerminalExercise }) {
   const t = useStrings();
+  const theme = useTheme();
   const [lines, setLines] = useState<{ text: string; kind: 'cmd' | 'out' | 'err' }[]>([]);
   const [stepIndex, setStepIndex] = useState(0);
   const [input, setInput] = useState('');
@@ -88,20 +89,20 @@ function TerminalPlayer({ ex }: { ex: TerminalExercise }) {
             key={i}
             style={[
               styles.termText,
-              { color: l.kind === 'err' ? '#FF6B6B' : l.kind === 'out' ? '#7FE9C6' : '#EAF0FB' },
+              { color: l.kind === 'err' ? theme.danger : l.kind === 'out' ? theme.success : theme.text },
             ]}>
             {l.text}
           </ThemedText>
         ))}
         {!done && (
           <View style={styles.termInputRow}>
-            <ThemedText style={[styles.termText, { color: '#2DE0A6' }]}>{ex.shell} </ThemedText>
+            <ThemedText style={[styles.termText, { color: theme.accent }]}>{ex.shell} </ThemedText>
             <TextInput
               value={input}
               onChangeText={setInput}
               onSubmitEditing={submit}
               placeholder={t.practice.typeCommand}
-              placeholderTextColor="#6E7C94"
+              placeholderTextColor={theme.textDisabled}
               autoCapitalize="none"
               autoCorrect={false}
               style={[styles.termText, styles.termInput]}
@@ -114,7 +115,7 @@ function TerminalPlayer({ ex }: { ex: TerminalExercise }) {
       {done ? (
         <>
           <View style={styles.successBox}>
-            <Ionicons name="checkmark-circle" size={20} color="#16A34A" />
+            <Ionicons name="checkmark-circle" size={20} color={theme.success} />
             <ThemedText type="small" style={styles.successText}>{ex.success}</ThemedText>
           </View>
           <Button label={t.practice.finish} onPress={() => router.back()} />
@@ -349,58 +350,58 @@ function ScenarioPlayer({ ex }: { ex: ScenarioExercise }) {
 }
 
 const styles = StyleSheet.create({
-  content: { padding: Spacing.four, gap: Spacing.three },
+  content: { padding: Spacing.lg, gap: Spacing.base },
   brief: {},
   instruction: { fontSize: 15 },
   flex: { flex: 1 },
   terminal: {
-    backgroundColor: '#05080F',
-    borderRadius: 14,
-    padding: Spacing.three,
-    gap: 4,
+    
+    borderRadius: Radius.md,
+    padding: Spacing.base,
+    gap: Spacing.xs,
     minHeight: 160,
   },
   termText: { fontFamily: FontFamily.mono, fontSize: 12.5, lineHeight: 18 },
   termInputRow: { flexDirection: 'row', alignItems: 'center' },
-  termInput: { flex: 1, color: '#EAF0FB', padding: 0 },
+  termInput: { flex: 1,  padding: 0 },
   successBox: {
     flexDirection: 'row',
-    gap: Spacing.two,
+    gap: Spacing.sm,
     alignItems: 'flex-start',
-    backgroundColor: '#0E2A2C',
-    borderRadius: 14,
-    padding: Spacing.three,
+    
+    borderRadius: Radius.md,
+    padding: Spacing.base,
   },
-  successText: { flex: 1, color: '#EAF0FB' },
-  artifact: { borderRadius: 12, overflow: 'hidden', gap: 1 },
-  artifactLine: { paddingHorizontal: Spacing.two, paddingVertical: 8 },
-  feedback: { borderRadius: 12, padding: Spacing.three, gap: Spacing.one },
-  seq: { gap: Spacing.two },
+  successText: { flex: 1 },
+  artifact: { borderRadius: Radius.sm, overflow: 'hidden' },
+  artifactLine: { paddingHorizontal: Spacing.sm, paddingVertical: Spacing.sm },
+  feedback: { borderRadius: Radius.sm, padding: Spacing.base, gap: Spacing.xs },
+  seq: { gap: Spacing.sm },
   seqItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: Spacing.two,
+    gap: Spacing.sm,
     borderWidth: 1.5,
-    borderRadius: 12,
-    padding: Spacing.two,
+    borderRadius: Radius.sm,
+    padding: Spacing.sm,
   },
-  pool: { gap: Spacing.two },
+  pool: { gap: Spacing.sm },
   poolItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: Spacing.two,
+    gap: Spacing.sm,
     borderWidth: 1,
-    borderRadius: 12,
-    padding: Spacing.two,
+    borderRadius: Radius.sm,
+    padding: Spacing.sm,
   },
   outcomePill: {
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'flex-start',
-    gap: Spacing.one,
-    paddingHorizontal: Spacing.two,
-    paddingVertical: 6,
-    borderRadius: 999,
+    gap: Spacing.xs,
+    paddingHorizontal: Spacing.sm,
+    paddingVertical: Spacing.sm,
+    borderRadius: Radius.pill,
   },
   nodeText: { fontFamily: FontFamily.medium, lineHeight: 24 },
 });

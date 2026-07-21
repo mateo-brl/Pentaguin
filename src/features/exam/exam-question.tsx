@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
-import { FontFamily, Spacing } from '@/constants/theme';
+import { FontFamily, Radius, Spacing } from '@/theme';
 import type { Question } from '@/content';
 import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
@@ -58,23 +58,23 @@ export function ExamQuestion({ question, selected, onToggle }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    gap: Spacing.three,
+    gap: Spacing.base,
   },
   stem: {
     fontFamily: FontFamily.medium,
   },
   choices: {
-    gap: Spacing.two,
+    gap: Spacing.sm,
   },
   choice: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: Spacing.three,
-    borderRadius: 16,
+    gap: Spacing.base,
+    borderRadius: Radius.md,
     borderWidth: 2,
     borderBottomWidth: 4,
-    paddingHorizontal: Spacing.three,
-    paddingVertical: 13,
+    paddingHorizontal: Spacing.base,
+    paddingVertical: Spacing.md,
   },
   pressed: {
     opacity: 0.85,

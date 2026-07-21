@@ -2,7 +2,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { MarkdownText } from '@/components/markdown-text';
 import { ThemedText } from '@/components/themed-text';
-import { Spacing } from '@/constants/theme';
+import { Radius, Spacing } from '@/theme';
 import type { ContentPack, LessonBlock } from '@/content';
 import { QuestionCard, type QuestionCardResult } from '@/features/quiz/question-card';
 import { useTheme } from '@/hooks/use-theme';
@@ -87,23 +87,23 @@ export function LessonBlockView({ block, pack, onQuickcheckAnswered }: Props) {
 const styles = StyleSheet.create({
   callout: {
     borderLeftWidth: 3,
-    borderRadius: 12,
-    padding: Spacing.three,
-    gap: Spacing.two,
+    borderRadius: Radius.sm,
+    padding: Spacing.base,
+    gap: Spacing.sm,
   },
   keyterms: {
     borderWidth: 1,
-    borderRadius: 12,
+    borderRadius: Radius.sm,
   },
   keytermRow: {
-    padding: Spacing.three,
-    gap: Spacing.half,
+    padding: Spacing.base,
+    gap: Spacing.xs,
   },
   term: {
     fontSize: 14,
   },
   quickcheck: {
-    gap: Spacing.two,
-    marginTop: Spacing.two,
+    gap: Spacing.sm,
+    marginTop: Spacing.sm,
   },
 });

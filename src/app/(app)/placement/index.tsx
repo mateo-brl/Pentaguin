@@ -7,7 +7,7 @@ import { Penguin } from '@/components/mascot/penguin';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
-import { Spacing } from '@/constants/theme';
+import { Spacing } from '@/theme';
 import { usePlacementSession } from '@/features/placement/session';
 import { useStrings } from '@/i18n/strings';
 
@@ -49,14 +49,14 @@ const styles = StyleSheet.create({
   },
   safe: {
     flex: 1,
-    padding: Spacing.four,
+    padding: Spacing.lg,
     justifyContent: 'space-between',
   },
   content: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: Spacing.three,
+    gap: Spacing.base,
   },
   title: {
     textAlign: 'center',

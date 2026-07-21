@@ -5,7 +5,7 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
 import { ProgressBar } from '@/components/ui/progress-bar';
-import { Spacing } from '@/constants/theme';
+import { Spacing } from '@/theme';
 import { QuestionCard } from '@/features/quiz/question-card';
 import { useQuizSession } from '@/features/quiz/session';
 import { useStrings } from '@/i18n/strings';
@@ -57,13 +57,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    padding: Spacing.four,
-    gap: Spacing.three,
+    padding: Spacing.lg,
+    gap: Spacing.base,
   },
   progressRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: Spacing.three,
+    gap: Spacing.base,
   },
   progressTrack: {
     flex: 1,

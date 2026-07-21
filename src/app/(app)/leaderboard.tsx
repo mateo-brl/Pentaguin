@@ -10,7 +10,7 @@ import { Chip } from '@/components/ui/chip';
 import { Input } from '@/components/ui/input';
 import { rankLabel } from '@/components/ui/rank-badge';
 import { Row, RowGroup, SquareBadge } from '@/components/ui/row';
-import { Spacing } from '@/constants/theme';
+import { Spacing } from '@/theme';
 import { parseAvatar } from '@/features/account/avatar';
 import { getRank } from '@/features/rank/ranks';
 import { getDailyActivity } from '@/db/repositories';
@@ -181,30 +181,30 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   optIn: {
-    padding: Spacing.four,
-    gap: Spacing.three,
+    padding: Spacing.lg,
+    gap: Spacing.base,
   },
   periods: {
     flexDirection: 'row',
-    gap: Spacing.two,
-    padding: Spacing.four,
-    paddingBottom: Spacing.two,
+    gap: Spacing.sm,
+    padding: Spacing.lg,
+    paddingBottom: Spacing.sm,
   },
   message: {
-    padding: Spacing.four,
+    padding: Spacing.lg,
     textAlign: 'center',
   },
   loading: {
-    padding: Spacing.five,
+    padding: Spacing.xl,
   },
   list: {
-    padding: Spacing.four,
-    paddingTop: Spacing.two,
+    padding: Spacing.lg,
+    paddingTop: Spacing.sm,
   },
   rank: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: Spacing.two,
+    gap: Spacing.sm,
   },
 });
 

@@ -45,20 +45,7 @@
       "expo-sqlite",
       "expo-asset",
       "expo-secure-store",
-      "expo-web-browser",
-      [
-        "expo-font",
-        {
-          "fonts": [
-            "./assets/fonts/SpaceGrotesk-Regular.ttf",
-            "./assets/fonts/SpaceGrotesk-Medium.ttf",
-            "./assets/fonts/SpaceGrotesk-SemiBold.ttf",
-            "./assets/fonts/SpaceGrotesk-Bold.ttf",
-            "./assets/fonts/JetBrainsMono-Regular.ttf",
-            "./assets/fonts/JetBrainsMono-Bold.ttf"
-          ]
-        }
-      ]
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,

@@ -6,7 +6,7 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
 import { XP } from '@/config/gamification';
-import { Spacing } from '@/constants/theme';
+import { Radius, Spacing } from '@/theme';
 import { getDefaultPack } from '@/content';
 import {
   addDailyXp,
@@ -95,27 +95,27 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: Spacing.three,
-    padding: Spacing.four,
+    gap: Spacing.base,
+    padding: Spacing.lg,
   },
   lockedTitle: {
     textAlign: 'center',
   },
   content: {
-    padding: Spacing.four,
-    gap: Spacing.three,
+    padding: Spacing.lg,
+    gap: Spacing.base,
   },
   meta: {
     fontSize: 13,
   },
   done: {
-    borderRadius: 14,
+    borderRadius: Radius.md,
     height: 52,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: Spacing.two,
+    marginTop: Spacing.sm,
   },
   doneButton: {
-    marginTop: Spacing.two,
+    marginTop: Spacing.sm,
   },
 });

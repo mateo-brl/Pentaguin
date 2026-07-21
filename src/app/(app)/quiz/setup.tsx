@@ -6,7 +6,7 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
 import { Chip } from '@/components/ui/chip';
-import { Spacing } from '@/constants/theme';
+import { Spacing } from '@/theme';
 import { getDefaultPack } from '@/content';
 import { useEntitlements } from '@/features/monetization';
 import { pickQuestions } from '@/features/quiz/logic';
@@ -86,18 +86,18 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    padding: Spacing.four,
-    gap: Spacing.two,
+    padding: Spacing.lg,
+    gap: Spacing.sm,
   },
   section: {
-    marginTop: Spacing.three,
+    marginTop: Spacing.base,
   },
   chips: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: Spacing.two,
+    gap: Spacing.sm,
   },
   availability: {
-    marginVertical: Spacing.two,
+    marginVertical: Spacing.sm,
   },
 });

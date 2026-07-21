@@ -4,7 +4,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
-import { Spacing } from '@/constants/theme';
+import { Radius, Spacing } from '@/theme';
 import { getDefaultPack } from '@/content';
 import { buildExamQuestions } from '@/features/exam/build';
 import { useExamSession } from '@/features/exam/session';
@@ -76,19 +76,19 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    padding: Spacing.four,
-    gap: Spacing.three,
+    padding: Spacing.lg,
+    gap: Spacing.base,
   },
   summary: {
     flexDirection: 'row',
-    gap: Spacing.two,
+    gap: Spacing.sm,
   },
   summaryTile: {
     flex: 1,
-    borderRadius: 24,
+    borderRadius: Radius.lg,
     alignItems: 'center',
-    padding: Spacing.four,
-    gap: Spacing.one,
+    padding: Spacing.lg,
+    gap: Spacing.xs,
   },
   summaryValue: {
     fontSize: 36,
@@ -98,6 +98,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
   start: {
-    marginTop: Spacing.two,
+    marginTop: Spacing.sm,
   },
 });

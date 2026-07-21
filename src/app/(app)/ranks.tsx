@@ -5,7 +5,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { RankCrest, rankLabel } from '@/components/ui/rank-badge';
-import { MaxContentWidth, Radius, Spacing } from '@/constants/theme';
+import { MaxContentWidth, Radius, Spacing } from '@/theme';
 import { getTotalXp } from '@/db/repositories';
 import { MAX_RANK, RANKS, useRank } from '@/features/rank/ranks';
 import { useTheme } from '@/hooks/use-theme';
@@ -100,8 +100,8 @@ export default function RanksScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   content: {
-    padding: Spacing.four,
-    gap: Spacing.three,
+    padding: Spacing.lg,
+    gap: Spacing.base,
     maxWidth: MaxContentWidth,
     alignSelf: 'center',
     width: '100%',
@@ -109,30 +109,30 @@ const styles = StyleSheet.create({
   hero: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: Spacing.three,
-    borderRadius: Radius.large,
+    gap: Spacing.base,
+    borderRadius: Radius.lg,
     borderWidth: 1,
-    padding: Spacing.three,
+    padding: Spacing.base,
   },
-  heroText: { flex: 1, gap: Spacing.one },
+  heroText: { flex: 1, gap: Spacing.xs },
   xpTile: {
-    borderRadius: Radius.medium,
-    padding: Spacing.three,
-    gap: Spacing.one,
+    borderRadius: Radius.md,
+    padding: Spacing.base,
+    gap: Spacing.xs,
   },
-  sectionLabel: { marginTop: Spacing.two },
+  sectionLabel: { marginTop: Spacing.sm },
   ladder: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: Spacing.two,
+    gap: Spacing.sm,
     justifyContent: 'space-between',
   },
   ladderItem: {
     width: '18%',
     alignItems: 'center',
-    gap: Spacing.one,
-    paddingVertical: Spacing.two,
-    borderRadius: Radius.medium,
+    gap: Spacing.xs,
+    paddingVertical: Spacing.sm,
+    borderRadius: Radius.md,
     borderWidth: 1.5,
     borderColor: 'transparent',
   },

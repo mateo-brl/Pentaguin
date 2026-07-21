@@ -8,7 +8,7 @@ import { ThemedView } from '@/components/themed-view';
 import { Avatar } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Spacing } from '@/constants/theme';
+import { Radius, Spacing } from '@/theme';
 import { deleteAccount } from '@/features/account/api';
 import {
   AVATAR_COLORS,
@@ -199,38 +199,38 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    padding: Spacing.four,
-    gap: Spacing.four,
+    padding: Spacing.lg,
+    gap: Spacing.lg,
   },
   hero: {
     alignItems: 'center',
-    gap: Spacing.one,
+    gap: Spacing.xs,
   },
   field: {
-    gap: Spacing.two,
+    gap: Spacing.sm,
   },
   iconGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: Spacing.two,
+    gap: Spacing.sm,
   },
   iconChoice: {
     width: 48,
     height: 48,
-    borderRadius: 14,
+    borderRadius: Radius.md,
     borderWidth: StyleSheet.hairlineWidth,
     alignItems: 'center',
     justifyContent: 'center',
   },
   colorRow: {
     flexDirection: 'row',
-    gap: Spacing.two,
-    marginTop: Spacing.one,
+    gap: Spacing.sm,
+    marginTop: Spacing.xs,
   },
   colorSwatch: {
     width: 36,
     height: 36,
-    borderRadius: 18,
+    borderRadius: Radius.lg,
     borderColor: 'transparent',
   },
 });

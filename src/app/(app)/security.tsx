@@ -7,7 +7,7 @@ import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Spacing } from '@/constants/theme';
+import { Spacing } from '@/theme';
 import {
   ApiError,
   changePassword,
@@ -314,11 +314,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    padding: Spacing.four,
-    gap: Spacing.four,
+    padding: Spacing.lg,
+    gap: Spacing.lg,
   },
   section: {
-    gap: Spacing.two,
+    gap: Spacing.sm,
   },
   statusRow: {
     flexDirection: 'row',
