@@ -1,6 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { FontFamily } from '@/constants/theme';
 import { useHues } from '@/hooks/use-hues';
 
 import { initials, ioniconFor, type AvatarSpec } from '@/features/account/avatar';
@@ -26,7 +27,7 @@ export function Avatar({ spec, pseudo, size = 44 }: Props) {
       {icon ? (
         <Ionicons name={icon as keyof typeof Ionicons.glyphMap} size={size * 0.5} color={hue.base} />
       ) : (
-        <Text style={{ color: hue.base, fontSize: size * 0.38, fontWeight: '700' }}>
+        <Text style={{ color: hue.base, fontSize: size * 0.38, fontFamily: FontFamily.bold }}>
           {initials(pseudo)}
         </Text>
       )}

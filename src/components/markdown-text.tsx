@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
-import { Spacing } from '@/constants/theme';
+import { FontFamily, Spacing } from '@/constants/theme';
 
 /**
  * Rendu du sous-ensemble markdown autorisé dans le contenu (docs/AUTHORING.md) :
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   bold: {
-    fontWeight: '700',
+    fontFamily: FontFamily.bold,
   },
   italic: {
     fontStyle: 'italic',
