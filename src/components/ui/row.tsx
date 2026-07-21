@@ -30,9 +30,24 @@ type RowProps = {
   /** Pas de séparateur au-dessus (première ligne du groupe). */
   first?: boolean;
   dimmed?: boolean;
+  /**
+   * Tronque le SOUS-TITRE sur une seule ligne (ellipsis). Réservé aux champs
+   * longs non structurés type e-mail — jamais pour un titre ou une méta
+   * structurée (durée, niveau), qui doivent rester lisibles en entier.
+   */
+  truncateSubtitle?: boolean;
 };
 
-export function Row({ title, subtitle, leading, trailing, onPress, first, dimmed }: RowProps) {
+export function Row({
+  title,
+  subtitle,
+  leading,
+  trailing,
+  onPress,
+  first,
+  dimmed,
+  truncateSubtitle,
+}: RowProps) {
   const theme = useTheme();
   const content = (
     <View
@@ -43,15 +58,16 @@ export function Row({ title, subtitle, leading, trailing, onPress, first, dimmed
       ]}>
       {leading}
       <View style={styles.body}>
-        <ThemedText type="smallBold" style={styles.title} numberOfLines={1}>
+        {/* Titre : jusqu'à 2 lignes (retour à la ligne, pas de coupe en plein mot). */}
+        <ThemedText type="smallBold" style={styles.title} numberOfLines={2}>
           {title}
         </ThemedText>
         {subtitle !== undefined && (
           <ThemedText
             type="small"
             themeColor="textSecondary"
-            numberOfLines={1}
-            ellipsizeMode="tail">
+            numberOfLines={truncateSubtitle ? 1 : undefined}
+            ellipsizeMode={truncateSubtitle ? 'tail' : undefined}>
             {subtitle}
           </ThemedText>
         )}

@@ -73,6 +73,7 @@ export default function ProfileScreen() {
               leading={<Avatar spec={avatar} pseudo={pseudo} size={56} />}
               title={pseudo}
               subtitle={identity}
+              truncateSubtitle
               trailing={rank != null ? <RankBadge rankId={rank} compact /> : undefined}
             />
           </RowGroup>
