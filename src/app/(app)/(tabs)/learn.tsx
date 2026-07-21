@@ -1,15 +1,15 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Redirect, router, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { RankBadge } from '@/components/ui/rank-badge';
+import { rankLabel } from '@/components/ui/rank-badge';
 import { Row, RowGroup, SquareBadge } from '@/components/ui/row';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-import { DEFAULT_PACK_ID, getDefaultPack, lessonsByDomain } from '@/content';
+import { BottomTabInset, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
+import { DEFAULT_PACK_ID, getDefaultPack, lessonsByDomain, type Lesson } from '@/content';
 import { getCompletedLessonIds } from '@/db/repositories';
 import { isLessonUnlockedNow, useEntitlements } from '@/features/monetization';
 import { recommendedLessons } from '@/features/rank/recommend';
@@ -18,6 +18,14 @@ import { useHues } from '@/hooks/use-hues';
 import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
 
+/** Accroche d'une leçon : première phrase de son premier bloc de texte. */
+function lessonTeaser(lesson: Lesson): string | null {
+  const block = lesson.blocks.find((b) => b.type === 'text');
+  if (!block || block.type !== 'text') return null;
+  const plain = block.md.replace(/\*\*/g, '').replace(/`/g, '').replace(/\s+/g, ' ').trim();
+  const sentence = plain.split(/(?<=[.!?])\s/)[0] ?? plain;
+  return sentence.length > 120 ? `${sentence.slice(0, 117)}…` : sentence;
+}
 
 export default function LearnScreen() {
   const pack = getDefaultPack();
@@ -39,13 +47,22 @@ export default function LearnScreen() {
   // Positionnement obligatoire avant d'accéder au contenu.
   if (rank == null) return <Redirect href="/placement" />;
 
-  // Recommandations à ton rang, en excluant ce que tu as déjà terminé.
-  const recommended = recommendedLessons(pack, rank, { exclude: completed });
+  const recommended = recommendedLessons(pack, rank, { exclude: completed, limit: 4 });
+  const [hero, ...rest] = recommended;
+  const heroDomain = hero ? domains[domainIndex.get(hero.domainId) ?? 0] : undefined;
+  const heroHue = hueFor(hero ? (domainIndex.get(hero.domainId) ?? 0) : 0);
+  const heroUnlocked = hero ? isLessonUnlockedNow(hero, entitlements) : false;
+  const teaser = hero ? lessonTeaser(hero) : null;
+
+  const openLesson = (lesson: Lesson, unlocked: boolean) =>
+    unlocked
+      ? router.push({ pathname: '/lesson/[id]', params: { id: lesson.id } })
+      : router.push('/paywall');
 
   return (
     <ThemedView style={styles.container}>
       <SafeAreaView style={styles.safeArea}>
-        <ScrollView contentContainerStyle={styles.content}>
+        <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
           <View style={styles.header}>
             <ThemedText type="title" style={styles.title}>
               {t.tabs.learn}
@@ -55,85 +72,127 @@ export default function LearnScreen() {
             </ThemedText>
           </View>
 
-          {domains.length === 0 ? (
-            <ThemedText type="small" themeColor="textSecondary" style={styles.empty}>
-              {t.learn.empty}
-            </ThemedText>
-          ) : (
+          {hero && heroDomain ? (
             <>
-              {recommended.length > 0 && (
-                <View style={styles.section}>
-                  <View style={styles.sectionHead}>
-                    <ThemedText type="smallBold" style={styles.sectionTitle}>
-                      {t.learn.forYourRank}
-                    </ThemedText>
-                    <RankBadge rankId={rank} compact />
-                  </View>
-                  <ThemedText type="small" themeColor="textSecondary" style={styles.sectionSub}>
-                    {t.learn.forYourRankSub}
+              {/* Carte héros : la leçon à faire maintenant, mise en scène. */}
+              <Pressable
+                onPress={() => openLesson(hero, heroUnlocked)}
+                style={({ pressed }) => [
+                  styles.heroCard,
+                  { borderColor: heroHue.base, backgroundColor: theme.backgroundElement },
+                  pressed && styles.pressed,
+                ]}>
+                <View style={styles.heroTop}>
+                  <ThemedText type="label" style={{ color: heroHue.base }}>
+                    {t.learn.forYourRank} · {rankLabel(rank, t)}
                   </ThemedText>
-                  <RowGroup>
-                    {recommended.map((lesson, index) => {
-                      const di = domainIndex.get(lesson.domainId) ?? 0;
-                      const hue = hueFor(di);
-                      const domain = domains[di];
-                      const unlocked = isLessonUnlockedNow(lesson, entitlements);
-                      return (
-                        <Row
-                          key={lesson.id}
-                          first={index === 0}
-                          dimmed={!unlocked}
-                          title={lesson.title}
-                          subtitle={`${domain?.title ?? ''} · ${lesson.estMinutes} ${t.domain.minutes}`}
-                          leading={
-                            <SquareBadge color={hue.base} background={hue.soft}>
-                              <Ionicons name="sparkles" size={17} color={hue.base} />
-                            </SquareBadge>
-                          }
-                          trailing={
-                            unlocked ? undefined : (
-                              <Ionicons name="lock-closed" size={15} color={theme.textSecondary} />
-                            )
-                          }
-                          onPress={() =>
-                            unlocked
-                              ? router.push({ pathname: '/lesson/[id]', params: { id: lesson.id } })
-                              : router.push('/paywall')
-                          }
-                        />
-                      );
-                    })}
-                  </RowGroup>
+                  {!heroUnlocked && (
+                    <Ionicons name="lock-closed" size={14} color={theme.textSecondary} />
+                  )}
                 </View>
-              )}
 
-              <ThemedText type="smallBold" style={styles.sectionTitle}>
-                {t.learn.allThemes}
-              </ThemedText>
-              <RowGroup>
-                {domains.map((domain, index) => {
-                  const hue = hueFor(index);
-                  const lessonCount = lessonsByDomain(pack, domain.id).length;
-                  return (
-                    <Row
-                      key={domain.id}
-                      first={index === 0}
-                      title={domain.title}
-                      subtitle={`${lessonCount} ${t.learn.lessonsCount}`}
-                      leading={
-                        <SquareBadge color={hue.base} background={hue.soft}>
-                          {domain.code}
-                        </SquareBadge>
-                      }
-                      onPress={() =>
-                        router.push({ pathname: '/domain/[id]', params: { id: domain.id } })
-                      }
-                    />
-                  );
-                })}
-              </RowGroup>
+                <ThemedText type="label" themeColor="textSecondary">
+                  {heroDomain.title} · {t.learn.levelShort}
+                  {hero.level}
+                </ThemedText>
+                <ThemedText type="subtitle">{hero.title}</ThemedText>
+                {teaser && (
+                  <ThemedText type="small" themeColor="textSecondary">
+                    {teaser}
+                  </ThemedText>
+                )}
+
+                <View style={styles.heroFoot}>
+                  <ThemedText type="label" themeColor="textSecondary">
+                    {hero.estMinutes} {t.domain.minutes}
+                  </ThemedText>
+                  <View style={[styles.startPill, { backgroundColor: heroHue.base }]}>
+                    <ThemedText type="smallBold" style={{ color: theme.background }}>
+                      {t.learn.start} →
+                    </ThemedText>
+                  </View>
+                </View>
+              </Pressable>
+
+              {/* Les suivantes, en liste compacte. */}
+              {rest.length > 0 && (
+                <RowGroup>
+                  {rest.map((lesson, index) => {
+                    const di = domainIndex.get(lesson.domainId) ?? 0;
+                    const hue = hueFor(di);
+                    const unlocked = isLessonUnlockedNow(lesson, entitlements);
+                    return (
+                      <Row
+                        key={lesson.id}
+                        first={index === 0}
+                        dimmed={!unlocked}
+                        title={lesson.title}
+                        subtitle={`${domains[di]?.title ?? ''} · ${t.learn.levelShort}${lesson.level} · ${lesson.estMinutes} ${t.domain.minutes}`}
+                        leading={
+                          <SquareBadge color={hue.base} background={hue.soft}>
+                            {domains[di]?.code.replace('.0', '') ?? ''}
+                          </SquareBadge>
+                        }
+                        trailing={
+                          unlocked ? undefined : (
+                            <Ionicons name="lock-closed" size={15} color={theme.textSecondary} />
+                          )
+                        }
+                        onPress={() => openLesson(lesson, unlocked)}
+                      />
+                    );
+                  })}
+                </RowGroup>
+              )}
             </>
+          ) : (
+            <View style={[styles.caughtUp, { borderColor: theme.border }]}>
+              <ThemedText type="smallBold">{t.home.allCaughtUp}</ThemedText>
+              <ThemedText type="small" themeColor="textSecondary">
+                {t.home.allCaughtUpDesc}
+              </ThemedText>
+            </View>
           )}
+
+          <ThemedText type="label" themeColor="textSecondary" style={styles.sectionLabel}>
+            {t.learn.allThemes}
+          </ThemedText>
+          <RowGroup>
+            {domains.map((domain, index) => {
+              const hue = hueFor(index);
+              const lessons = lessonsByDomain(pack, domain.id);
+              const done = lessons.filter((l) => completed.has(l.id)).length;
+              const unlockedCount = lessons.filter((l) => isLessonUnlockedNow(l, entitlements)).length;
+              const isPro = unlockedCount < lessons.length;
+              return (
+                <Row
+                  key={domain.id}
+                  first={index === 0}
+                  title={domain.title}
+                  subtitle={`${lessons.length} ${t.learn.lessonsCount}`}
+                  leading={
+                    <SquareBadge color={hue.base} background={hue.soft}>
+                      {domain.code.replace('.0', '')}
+                    </SquareBadge>
+                  }
+                  trailing={
+                    isPro ? (
+                      <View style={[styles.proChip, { backgroundColor: theme.accentSoft }]}>
+                        <ThemedText type="label" style={{ color: theme.accent }}>
+                          Pro
+                        </ThemedText>
+                      </View>
+                    ) : (
+                      <ThemedText type="mono" themeColor="textSecondary" style={styles.progress}>
+                        {done}/{lessons.length}
+                      </ThemedText>
+                    )
+                  }
+                  onPress={() => router.push({ pathname: '/domain/[id]', params: { id: domain.id } })}
+                />
+              );
+            })}
+          </RowGroup>
         </ScrollView>
       </SafeAreaView>
     </ThemedView>
@@ -141,45 +200,32 @@ export default function LearnScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  safeArea: {
-    flex: 1,
-    maxWidth: MaxContentWidth,
-  },
+  container: { flex: 1, flexDirection: 'row', justifyContent: 'center' },
+  safeArea: { flex: 1, maxWidth: MaxContentWidth },
   content: {
     paddingHorizontal: Spacing.four,
     paddingBottom: BottomTabInset + Spacing.three,
     gap: Spacing.three,
   },
-  header: {
-    paddingTop: Spacing.five,
-    paddingBottom: Spacing.one,
-    gap: Spacing.one,
-  },
-  section: {
+  header: { paddingTop: Spacing.five, paddingBottom: Spacing.one, gap: Spacing.one },
+  title: { fontSize: 28, lineHeight: 34 },
+  heroCard: {
+    borderRadius: Radius.large,
+    borderWidth: 1.5,
+    padding: Spacing.three,
     gap: Spacing.two,
   },
-  sectionHead: {
+  heroTop: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  heroFoot: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    marginTop: Spacing.one,
   },
-  sectionTitle: {
-    fontSize: 15,
-  },
-  sectionSub: {
-    marginTop: -Spacing.one,
-  },
-  title: {
-    fontSize: 28,
-    lineHeight: 34,
-  },
-  empty: {
-    paddingVertical: Spacing.four,
-    textAlign: 'center',
-  },
+  startPill: { paddingHorizontal: Spacing.three, paddingVertical: 9, borderRadius: Radius.pill },
+  pressed: { opacity: 0.9, transform: [{ scale: 0.995 }] },
+  caughtUp: { borderRadius: Radius.medium, borderWidth: 1, padding: Spacing.three, gap: Spacing.one },
+  sectionLabel: { marginTop: Spacing.two },
+  proChip: { paddingHorizontal: Spacing.two, paddingVertical: 4, borderRadius: Radius.pill },
+  progress: { fontSize: 13 },
 });

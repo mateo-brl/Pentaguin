@@ -68,13 +68,23 @@ export default function PlacementResultScreen() {
           </ThemedText>
         </View>
 
-        <Button label={t.placement.resultCta} onPress={() => router.replace('/learn')} />
+        <View style={styles.ctas}>
+          <Button label={t.placement.resultCta} onPress={() => router.replace('/learn')} />
+          <Button
+            label={t.ranksScreen.seeAll}
+            variant="ghost"
+            onPress={() => router.push('/ranks')}
+          />
+        </View>
       </SafeAreaView>
     </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
+  ctas: {
+    gap: Spacing.two,
+  },
   container: {
     flex: 1,
   },
