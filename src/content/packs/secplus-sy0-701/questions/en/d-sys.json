@@ -1,0 +1,290 @@
+[
+  {
+    "id": "q-sys-01",
+    "domainId": "d-sys",
+    "lessonIds": [
+      "l-sys-01"
+    ],
+    "type": "single",
+    "stem": "What does the command `chmod 640 file` do?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The owner can read and write, the group can only read, and others have no access."
+      },
+      {
+        "id": "b",
+        "text": "Everyone can read, write and execute the file."
+      },
+      {
+        "id": "c",
+        "text": "Only others have access to the file."
+      },
+      {
+        "id": "d",
+        "text": "The file becomes executable, but only for the group."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "In octal, 6 = rw- (4+2), 4 = r-- and 0 = ---; the three digits apply, in order, to the owner, the group and then others.",
+    "difficulty": 2,
+    "level": 7,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-sys-02",
+    "domainId": "d-sys",
+    "lessonIds": [
+      "l-sys-02"
+    ],
+    "type": "single",
+    "stem": "What is the key thing to remember about UAC on Windows?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "It is an impassable security boundary that blocks all malicious code."
+      },
+      {
+        "id": "b",
+        "text": "It encrypts the machine's hard drive."
+      },
+      {
+        "id": "c",
+        "text": "It is a useful safeguard that forces consent, but not an absolute security boundary."
+      },
+      {
+        "id": "d",
+        "text": "It completely removes the need for an antivirus."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "Microsoft presents UAC as a convenience that limits unintentional elevations; bypasses exist, so it must not be your only defense.",
+    "difficulty": 2,
+    "level": 7,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-sys-03",
+    "domainId": "d-sys",
+    "lessonIds": [
+      "l-sys-03"
+    ],
+    "type": "single",
+    "stem": "In Kerberos, what is the TGT (Ticket Granting Ticket) used for?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "It contains the user's cleartext password, resent to every server."
+      },
+      {
+        "id": "b",
+        "text": "It is the master ticket obtained at logon, later exchanged for service tickets."
+      },
+      {
+        "id": "c",
+        "text": "It is an antivirus built into the domain controller."
+      },
+      {
+        "id": "d",
+        "text": "It encrypts the user's files on their hard drive."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "The TGT is issued once by the KDC after authentication; it is then used to obtain service tickets without resending the password.",
+    "difficulty": 2,
+    "level": 10,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-sys-04",
+    "domainId": "d-sys",
+    "lessonIds": [
+      "l-sys-04"
+    ],
+    "type": "single",
+    "stem": "When GPOs conflict, which policy wins by default?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The GPO linked to the site, which always takes precedence over the rest."
+      },
+      {
+        "id": "b",
+        "text": "The oldest GPO created in the domain."
+      },
+      {
+        "id": "c",
+        "text": "The machine's local GPO, which always overrides those from the domain."
+      },
+      {
+        "id": "d",
+        "text": "The one applied last, that is the OU closest to the object (Local-Site-Domain-OU order)."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "The order of application is Local, Site, Domain and then OU; the last one applied, from the closest OU, overrides the previous ones in case of conflict.",
+    "difficulty": 2,
+    "level": 10,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-sys-05",
+    "domainId": "d-sys",
+    "lessonIds": [
+      "l-sys-05"
+    ],
+    "type": "single",
+    "stem": "What role does DEP / NX play against a buffer overflow?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "It randomizes memory addresses every time the program runs."
+      },
+      {
+        "id": "b",
+        "text": "It marks data areas as non-executable, preventing injected code from running there."
+      },
+      {
+        "id": "c",
+        "text": "It places a secret value before the return address to detect overwriting."
+      },
+      {
+        "id": "d",
+        "text": "It encrypts the contents of the buffer to make it unreadable."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "DEP/NX makes the stack and the heap non-executable: the processor refuses to run shellcode placed in these data areas. Answer a describes ASLR and answer c the stack canary.",
+    "difficulty": 2,
+    "level": 10,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-sys-06",
+    "domainId": "d-sys",
+    "lessonIds": [
+      "l-sys-06"
+    ],
+    "type": "single",
+    "stem": "What is vertical privilege escalation?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Moving from limited rights to higher rights, for example from user to root or SYSTEM."
+      },
+      {
+        "id": "b",
+        "text": "Taking control of another account that has the same level of rights."
+      },
+      {
+        "id": "c",
+        "text": "Moving a file from one folder to another."
+      },
+      {
+        "id": "d",
+        "text": "Raising the processor's clock speed to run faster."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "Vertical escalation gains higher privileges (user to admin/root); taking over an account at the same level would be horizontal escalation.",
+    "difficulty": 3,
+    "level": 11,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-sys-07",
+    "domainId": "d-sys",
+    "lessonIds": [
+      "l-sys-07"
+    ],
+    "type": "single",
+    "stem": "What best distinguishes an EDR from a classic signature-based antivirus?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "An EDR only works offline, with no agent installed."
+      },
+      {
+        "id": "b",
+        "text": "A classic antivirus automatically isolates the machine from the network."
+      },
+      {
+        "id": "c",
+        "text": "An EDR merely compares files against a database of known signatures."
+      },
+      {
+        "id": "d",
+        "text": "An EDR adds behavioral detection and response capability on the endpoint."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "An EDR does not stop at signatures: it analyzes suspicious behavior and can respond (kill a process, isolate the machine), which a classic antivirus does not do.",
+    "difficulty": 3,
+    "level": 11,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-sys-08",
+    "domainId": "d-sys",
+    "lessonIds": [
+      "l-sys-08"
+    ],
+    "type": "single",
+    "stem": "What does a pass-the-hash attack rely on?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Decrypting the password from its NTLM hash."
+      },
+      {
+        "id": "b",
+        "text": "Stealing a Kerberos TGT and nothing else."
+      },
+      {
+        "id": "c",
+        "text": "Reusing the NTLM hash to authenticate without knowing the password."
+      },
+      {
+        "id": "d",
+        "text": "Sending the cleartext password to every server."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "The attacker replays the stolen NTLM hash directly to prove their identity: they need neither to recover the cleartext password nor to decrypt it.",
+    "difficulty": 3,
+    "level": 13,
+    "tags": [
+      "lesson-v1"
+    ]
+  }
+]

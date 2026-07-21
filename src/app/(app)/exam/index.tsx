@@ -11,9 +11,9 @@ import { isUnlockedNow, packEntitlement, useEntitlements } from '@/features/mone
 import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
 
-const pack = getDefaultPack();
 
 export default function ExamListScreen() {
+  const pack = getDefaultPack();
   const t = useStrings();
   const theme = useTheme();
   const entitlements = useEntitlements();

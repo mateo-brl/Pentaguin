@@ -1,0 +1,382 @@
+[
+  {
+    "id": "l-fond-01",
+    "domainId": "d-fond",
+    "title": "Strong passwords and password managers",
+    "order": 1,
+    "estMinutes": 5,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "Your password is the first lock on your digital life. A good password has nothing to do with fancy symbols: what really matters is that it be **long, unpredictable and unique** to every account."
+      },
+      {
+        "type": "text",
+        "md": "Why length? An attacker churning through billions of combinations needs far longer to break a four-word phrase than `P@ss1`. Why uniqueness? When one site gets breached, attackers harvest the credentials and automatically replay them against other services: that is **credential stuffing**. A serious site never stores your password in the clear anyway, only its **hash** (an irreversible fingerprint). Remembering dozens of unique passwords is impossible: that is exactly what a **password manager** is for, generating them, encrypting them and filling them in for you."
+      },
+      {
+        "type": "callout",
+        "variant": "tip",
+        "md": "A **passphrase** made of several unrelated words (e.g. `giraffe-tunnel-storm-coffee`) is both stronger and easier to remember than a short word stuffed with symbols."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Password manager",
+            "def": "App that generates, stores encrypted and auto-fills unique passwords, all protected by a single master password."
+          },
+          {
+            "term": "Passphrase",
+            "def": "A password made of several words, so it is long and hard to crack yet easy to memorize."
+          },
+          {
+            "term": "Credential stuffing",
+            "def": "Attack that replays credentials stolen elsewhere at scale, opening any account that reuses the same password."
+          },
+          {
+            "term": "Hash",
+            "def": "An irreversible digital fingerprint of a piece of data; serious sites store the hash of your password, never the password itself."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-fond-01"
+      }
+    ],
+    "level": 1
+  },
+  {
+    "id": "l-fond-02",
+    "domainId": "d-fond",
+    "title": "Recognizing phishing",
+    "order": 2,
+    "estMinutes": 5,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "**Phishing** is an attempt to make you click, open an attachment or hand over a password by impersonating someone you trust: your bank, a delivery company, a colleague, a well-known service. It is now the most common way into an attack."
+      },
+      {
+        "type": "text",
+        "md": "The warning signs come up again and again: a **sense of urgency** (“your account is about to be suspended”), an odd sender address, a link whose real domain does not match the text shown, typos or a vague greeting (“Dear customer”), an unusual request for information or payment. Before clicking, hover over the link to reveal the real address, and check the **domain** (the name just before the first `/` that follows `https://`, for example `mybank.com`). When in doubt, never use the link in the message: go to the official site under your own steam."
+      },
+      {
+        "type": "callout",
+        "variant": "warning",
+        "md": "Urgency is a **manipulation technique**, not a coincidence. The harder a message pushes you to act fast, the more you should slow down and verify through another channel (call the official number, open the app yourself)."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Phishing",
+            "def": "Fraudulent message imitating a trusted party to trap you: a click, an attachment or stolen credentials."
+          },
+          {
+            "term": "Spear phishing",
+            "def": "Targeted, personalized phishing aimed at one specific person, with realistic details that make it far more believable."
+          },
+          {
+            "term": "Domain",
+            "def": "The name of a site (e.g. `example.com`); a slightly altered domain is a classic sign of a scam."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-fond-02"
+      }
+    ],
+    "level": 1
+  },
+  {
+    "id": "l-fond-03",
+    "domainId": "d-fond",
+    "title": "Two-factor authentication (2FA / MFA)",
+    "order": 3,
+    "estMinutes": 6,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "**Two-factor authentication** adds a second proof of identity on top of the password. Even if your password leaks, the attacker is still stuck at the door: they are missing that second element. It is one of the most effective protections you can get for so little effort."
+      },
+      {
+        "type": "text",
+        "md": "These proofs are called **factors**, and they fall into three families: something you **know** (a password), something you **have** (a phone, a security key) and something you **are** (fingerprint, face). **MFA** combines at least two different families; **2FA** is simply the two-factor case. Not all second factors are equal: an SMS code is better than nothing, but it remains vulnerable to SIM swapping. An authenticator app that generates a temporary code (**TOTP**) is safer, and a hardware security key (FIDO2) resists even phishing."
+      },
+      {
+        "type": "callout",
+        "variant": "tip",
+        "md": "Whenever it is offered, choose an **authenticator app** or a **security key** over SMS codes. Keep your backup codes somewhere safe and offline so you never lock yourself out."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "MFA (multi-factor authentication)",
+            "def": "Sign-in that requires at least two factors from different families (know, have, are)."
+          },
+          {
+            "term": "2FA",
+            "def": "The special case of MFA using exactly two factors."
+          },
+          {
+            "term": "TOTP",
+            "def": "One-time code valid for a few seconds, generated by a time-synchronized authenticator app."
+          },
+          {
+            "term": "Factor",
+            "def": "Something that proves your identity: something you know, something you have or something you are."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-fond-03"
+      }
+    ],
+    "level": 2
+  },
+  {
+    "id": "l-fond-04",
+    "domainId": "d-fond",
+    "title": "Updates and patches",
+    "order": 4,
+    "estMinutes": 5,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "No software is ever perfect: **vulnerabilities** (flaws) are found in it all the time. Vendors then release a **patch**, a fix that plugs the hole. Installing updates quickly means closing the doors before anyone walks in."
+      },
+      {
+        "type": "text",
+        "md": "Here is the key point: the moment a fix ships, the flaw becomes **public**. Attackers now know exactly what to aim at, and they scan the Internet looking for devices that have not been updated. The vast majority of intrusions do not exploit secret flaws but vulnerabilities that are **already fixed** and that the victims simply never installed. A flaw still unknown to the vendor, with no fix available, is called a **zero-day**: rarer, and far more expensive for the attacker. End-of-life software, which no longer receives patches, stays vulnerable forever."
+      },
+      {
+        "type": "callout",
+        "variant": "exam",
+        "md": "Remember the logic: **known flaw + available patch + system not updated = the easiest target there is**. Turn on automatic updates everywhere you can."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Patch",
+            "def": "A software update that fixes a security flaw or a bug."
+          },
+          {
+            "term": "Vulnerability",
+            "def": "A weakness in software that can be exploited to compromise a system."
+          },
+          {
+            "term": "Zero-day",
+            "def": "A vulnerability still unknown to the vendor, and therefore with no fix available at the time it is exploited."
+          },
+          {
+            "term": "CVE",
+            "def": "Standardized public identifier assigned to a known vulnerability, so it can be referenced unambiguously."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-fond-04"
+      }
+    ],
+    "level": 2
+  },
+  {
+    "id": "l-fond-05",
+    "domainId": "d-fond",
+    "title": "Backups and the 3-2-1 rule",
+    "order": 5,
+    "estMinutes": 5,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "A **backup** is a copy of your data that you can restore if the original is lost. Drive failure, theft, accidental deletion, or **ransomware** (malware that encrypts your files to demand a ransom): with no copy, the data is gone for good."
+      },
+      {
+        "type": "text",
+        "md": "The **3-2-1 rule** sums up a sound strategy: **3** copies of your data in total, on **2** different types of media (e.g. internal drive + external drive), with **1** of them kept **off-site** (in another location or in the cloud). Different media keep a single failure from destroying everything; the off-site copy protects against fire, theft or flooding. Ideally at least one copy is **offline** or write-once, because ransomware can only encrypt what it can reach."
+      },
+      {
+        "type": "callout",
+        "variant": "warning",
+        "md": "A backup you have never tested is not a backup. **Check regularly that you know how to restore** a file: plenty of people discover a corrupted or empty copy on the very day they need it."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Backup",
+            "def": "Copy of data kept separately, meant to restore the originals if they are lost."
+          },
+          {
+            "term": "3-2-1 rule",
+            "def": "Three copies, on two types of media, one of them kept off-site."
+          },
+          {
+            "term": "Ransomware",
+            "def": "Malicious software that encrypts your files and demands a ransom to make them accessible again."
+          },
+          {
+            "term": "Off-site",
+            "def": "Copy stored in a different location from the original, out of reach of the same local disaster."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-fond-05"
+      }
+    ],
+    "level": 2
+  },
+  {
+    "id": "l-fond-06",
+    "domainId": "d-fond",
+    "title": "Public Wi-Fi and its risks",
+    "order": 6,
+    "estMinutes": 6,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "The free Wi-Fi in a café or an airport is convenient, but you control neither the network nor who else is connected to it. The good news: thanks to **HTTPS** encryption, the content of your exchanges with websites can no longer be read so easily. The real danger has moved elsewhere."
+      },
+      {
+        "type": "text",
+        "md": "The most concrete risk is the **rogue access point**, or **evil twin**: an attacker sets up a fake network with a believable name (“Free_Cafe_WiFi”) so that you connect to it. They can then redirect you to fake login pages, rig a **captive portal** (the landing page that asks you to accept the terms) or attack a poorly protected device. Even over HTTPS, some metadata stays visible, such as the **domain names** you visit. A **VPN** (virtual private network) creates an encrypted tunnel between your device and a trusted server, hiding those traces from the local network."
+      },
+      {
+        "type": "callout",
+        "variant": "warning",
+        "md": "Check the **exact network name (SSID)** with the staff, turn off auto-connect to open Wi-Fi networks, and avoid sensitive operations if you have no VPN. An HTTPS padlock is no proof that the network is honest."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Rogue access point (evil twin)",
+            "def": "Fake Wi-Fi network imitating a legitimate one to intercept or trap the devices that connect to it."
+          },
+          {
+            "term": "VPN (virtual private network)",
+            "def": "Encrypted tunnel between your device and a trusted server, which shields your traffic from the local network."
+          },
+          {
+            "term": "Captive portal",
+            "def": "Landing page a public Wi-Fi forces you through before granting Internet access, which can be imitated to set a trap."
+          },
+          {
+            "term": "SSID",
+            "def": "Public name of a Wi-Fi network, easy for an attacker to copy in order to create a believable fake."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-fond-06"
+      }
+    ],
+    "level": 3
+  },
+  {
+    "id": "l-fond-07",
+    "domainId": "d-fond",
+    "title": "HTTPS and the padlock: what it really guarantees",
+    "order": 7,
+    "estMinutes": 6,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "The little **padlock** in the browser tells you the page is using **HTTPS**, that is, HTTP protected by **TLS**, the layer that encrypts the traffic. That matters, but many people read far more into it than it actually says."
+      },
+      {
+        "type": "text",
+        "md": "The padlock guarantees two things. First, the **confidentiality and integrity of the transport**: what travels between you and the site is encrypted and cannot be read or altered along the way. Second, the **identity of the domain**: thanks to a **certificate** validated by a **certificate authority**, you really are talking to the domain shown in the address bar, not to an impostor. But it says **nothing about the honesty of the site's owner**. A phishing site can perfectly well obtain a free certificate and display a flawlessly valid padlock: the padlock proves “this connection is private”, never “this site is trustworthy”."
+      },
+      {
+        "type": "callout",
+        "variant": "warning",
+        "md": "The padlock is **not** a trust badge. Always check **the domain itself**: `paypa1.com` can have a spotless padlock and still be a scam."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "HTTPS",
+            "def": "Encrypted version of the HTTP web protocol, protected by TLS."
+          },
+          {
+            "term": "TLS",
+            "def": "Protocol that encrypts the connection and authenticates the server's domain."
+          },
+          {
+            "term": "Certificate",
+            "def": "Electronic proof binding a domain to an encryption key, presented by the site to the browser."
+          },
+          {
+            "term": "Certificate authority (CA)",
+            "def": "Trusted organization that issues and signs the certificates vouching for a site's domain."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-fond-07"
+      }
+    ],
+    "level": 3
+  },
+  {
+    "id": "l-fond-08",
+    "domainId": "d-fond",
+    "title": "Screen lock, permissions and mobile privacy",
+    "order": 8,
+    "estMinutes": 7,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "Your phone holds your messages, photos, email, banking and location all in one place: it is the key to your digital life. Two habits protect most of it: a solid **screen lock** and serious management of the **permissions** you grant to apps."
+      },
+      {
+        "type": "text",
+        "md": "The lock screen is more than a visual curtain. On a modern smartphone, while it is locked the data is protected by **encryption at rest**: without the passcode, a thief cannot read it, even by taking the device apart. Biometrics (fingerprint, face) conveniently unlock the key, but your **passcode** remains the foundation of that security — make it long and set the screen to lock quickly on its own. On the app side, apply the **principle of least privilege**: a flashlight has no need whatsoever for your contacts or your location. Grant permissions sparingly, prefer “allow only while using the app”, and review regularly what has access to the camera, the microphone or your location, including in the background."
+      },
+      {
+        "type": "callout",
+        "variant": "tip",
+        "md": "Do some housekeeping: revoke the permissions of apps you no longer use, and turn on **remote locate / remote wipe** in case the phone is lost or stolen."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Screen lock",
+            "def": "Passcode, pattern or biometric protection that blocks access to the device and brings encryption at rest into play."
+          },
+          {
+            "term": "Encryption at rest",
+            "def": "Encryption of the data stored on the device, unreadable without the unlock code."
+          },
+          {
+            "term": "Permission",
+            "def": "Access an app asks for in order to reach a resource: contacts, camera, microphone, location…"
+          },
+          {
+            "term": "Principle of least privilege",
+            "def": "Granting only the access strictly required, so as to limit the damage in case of abuse or a flaw."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-fond-08"
+      }
+    ],
+    "level": 4
+  }
+]

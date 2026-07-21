@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { purchasesConfig } from '@/config/monetization';
 import { Spacing } from '@/constants/theme';
-import { getDefaultPack } from '@/content';
+import { DEFAULT_PACK_ID, getDefaultPack } from '@/content';
 import {
   activeProvider,
   packEntitlement,
@@ -20,8 +20,8 @@ import {
 import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
 
-const pack = getDefaultPack();
-const productId = purchasesConfig.iosProductByPack[pack.id];
+// Stable au niveau module : l'identifiant du pack est le même dans toutes les langues.
+const productId = purchasesConfig.iosProductByPack[DEFAULT_PACK_ID];
 
 function isUserCancellation(error: unknown): boolean {
   return (
@@ -37,6 +37,7 @@ function isUserCancellation(error: unknown): boolean {
  * fermeture en un geste, pas d'urgence, restore toujours visible (exigence Apple).
  */
 export default function PaywallScreen() {
+  const pack = getDefaultPack();
   const t = useStrings();
   const theme = useTheme();
   const insets = useSafeAreaInsets();
