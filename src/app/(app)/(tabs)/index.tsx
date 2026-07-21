@@ -130,10 +130,12 @@ export default function HomeScreen() {
           {/* Hiérarchie assumée : le rang domine (c'est l'identité du joueur),
               XP et série l'accompagnent en second plan. Pas trois cellules clonées. */}
           <View style={styles.statsRow}>
+            {/* Contenant neutre (le Défi reste le seul gros foyer ambre) ; on
+                garde seulement le texte du rang en ambre comme accent d'identité. */}
             <View
               style={[
                 styles.statPrimary,
-                { backgroundColor: theme.accentSoft, borderColor: theme.accent },
+                { backgroundColor: theme.backgroundElement, borderColor: theme.border },
               ]}>
               <ThemedText type="label" style={{ color: theme.accent }}>
                 {t.home.statRank}
