@@ -117,7 +117,8 @@ const fr = {
     allThemes: 'Les 8 thèmes',
     levelShort: 'niv. ',
     start: 'Commencer',
-    lessonsCount: 'leçon(s)',
+    lessonsSingular: 'leçon',
+    lessonsPlural: 'leçons',
   },
   domain: {
     minutes: 'min',
@@ -471,7 +472,8 @@ const en: Strings = {
     allThemes: 'The 8 themes',
     levelShort: 'lvl ',
     start: 'Start',
-    lessonsCount: 'lesson(s)',
+    lessonsSingular: 'lesson',
+    lessonsPlural: 'lessons',
   },
   domain: {
     minutes: 'min',

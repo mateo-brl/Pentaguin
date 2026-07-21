@@ -30,16 +30,22 @@ export const Stroke = stroke;
 export const Duration = duration;
 
 /**
- * Polices. Chargées à l'exécution (expo-font `useFonts`) : elles voyagent donc
- * comme des assets d'EAS Update, ce qui les rend modifiables **en OTA** sans
- * rebuild natif. Les styles nomment la FACE exacte — iOS ignore `fontWeight`
- * avec une police personnalisée et fabriquerait un faux gras.
+ * Polices — source unique. Aucun composant ne cite une police en dur : on passe
+ * toujours par `FontFamily`, donc changer la fonte d'UI se fait ICI en une ligne.
+ *
+ * UI (titres + texte) : **Hanken Grotesk**, un grotesque humaniste au dessin
+ * caractérisé (et pas un tell « template »). Mono technique : **JetBrains Mono**,
+ * réservée au faux terminal et aux rares labels « données ».
+ *
+ * Chargées à l'exécution (`useFonts`) : elles voyagent comme des assets d'EAS
+ * Update → modifiables **en OTA** sans rebuild. Les styles nomment la FACE
+ * exacte (iOS ignore `fontWeight` avec une police perso et ferait un faux gras).
  */
 export const FontFamily = {
-  regular: 'SpaceGrotesk-Regular',
-  medium: 'SpaceGrotesk-Medium',
-  semibold: 'SpaceGrotesk-SemiBold',
-  bold: 'SpaceGrotesk-Bold',
+  regular: 'HankenGrotesk-Regular',
+  medium: 'HankenGrotesk-Medium',
+  semibold: 'HankenGrotesk-SemiBold',
+  bold: 'HankenGrotesk-Bold',
   mono: 'JetBrainsMono-Regular',
   monoBold: 'JetBrainsMono-Bold',
 } as const;

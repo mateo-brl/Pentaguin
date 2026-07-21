@@ -43,11 +43,15 @@ export function Row({ title, subtitle, leading, trailing, onPress, first, dimmed
       ]}>
       {leading}
       <View style={styles.body}>
-        <ThemedText type="smallBold" style={styles.title}>
+        <ThemedText type="smallBold" style={styles.title} numberOfLines={1}>
           {title}
         </ThemedText>
         {subtitle !== undefined && (
-          <ThemedText type="small" themeColor="textSecondary">
+          <ThemedText
+            type="small"
+            themeColor="textSecondary"
+            numberOfLines={1}
+            ellipsizeMode="tail">
             {subtitle}
           </ThemedText>
         )}
@@ -78,9 +82,10 @@ export function SquareBadge({
   background: string;
   children: ReactNode;
 }) {
+  const isText = typeof children === 'string' || typeof children === 'number';
   return (
     <View style={[styles.badge, { backgroundColor: background }]}>
-      {typeof children === 'string' ? (
+      {isText ? (
         <ThemedText type="smallBold" style={{ color, fontSize: 15 }}>
           {children}
         </ThemedText>

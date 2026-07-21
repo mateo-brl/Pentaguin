@@ -5,7 +5,7 @@ import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { penguinHeadSvg } from '@/components/mascot/penguin-art';
+import { penguinAvatarSvg } from '@/components/mascot/penguin-art';
 import { SvgXml } from 'react-native-svg';
 
 import { Avatar } from '@/components/ui/avatar';
@@ -183,7 +183,7 @@ function AvatarIconChoice({
         selected && { borderColor: theme.accent, borderWidth: 2 },
       ]}>
       {icon === 'penguin' ? (
-        <SvgXml xml={penguinHeadSvg} width={26} height={26} />
+        <SvgXml xml={penguinAvatarSvg} width={34} height={34} />
       ) : ionicon ? (
         <Ionicons
           name={ionicon as keyof typeof Ionicons.glyphMap}

@@ -104,12 +104,18 @@ dans le chaud — **l'Empereur porte l'or du manchot**.
 
 ## Typographie
 
-Deux familles, **aucune Inter / Poppins / Roboto** :
+Deux familles, **aucune Inter / Poppins / Roboto / Space Grotesk** (cette
+dernière retirée : trop « template ») :
 
-- **Space Grotesk** — UI et titres. Grotesque géométrique avec du caractère.
-  Faces : Regular, Medium, SemiBold, Bold.
-- **JetBrains Mono** — réservée à la **donnée** : codes, XP, chrono, rangs,
-  commandes, et les étiquettes de section en capitales espacées (signature).
+- **Hanken Grotesk** — TOUTE l'UI : titres **et** texte. Grotesque humaniste au
+  dessin caractérisé, très lisible, accents français complets. Faces : Regular,
+  Medium, SemiBold, Bold. Les **étiquettes de section** (capitales espacées)
+  sont en Hanken SemiBold, plus en mono.
+- **JetBrains Mono** — **uniquement** la touche technique : faux terminal,
+  chiffres de données (XP, série, rang), spans de code. Jamais l'UI générale.
+
+**Une seule source** : `FontFamily` dans `theme/index.ts`. Aucun composant ne
+cite une police en dur → changer la fonte d'UI se fait **en une ligne** ici.
 
 **Chargement runtime** (`useFonts` dans `src/app/_layout.tsx`) : les `.ttf`
 voyagent comme assets d'EAS Update, donc **modifiables en OTA sans rebuild

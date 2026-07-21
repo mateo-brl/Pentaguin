@@ -182,6 +182,20 @@ export const flameSvg =
   '<path d="M35 84 q-22 -24 0 -56 q9 16 17 9 q15 22 -3 50 q-9 8 -14 -2 z" fill="#FFB23E"/>' +
   '<path d="M35 76 q-11 -14 0 -32 q11 15 0 32 z" fill="#FF6B6B"/></svg>';
 
+/**
+ * Buste du manchot pour les AVATARS : cadré pour remplir un cercle (viewBox
+ * serré, pas de marge morte comme l'ancienne « tête »).
+ */
+export const penguinAvatarSvg =
+  '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">' +
+  '<path d="M50 9 C29 9 21 30 21 53 C21 79 34 93 50 93 C66 93 79 79 79 53 C79 30 71 9 50 9 Z" fill="#2E3A54"/>' +
+  '<ellipse cx="50" cy="61" rx="20" ry="27" fill="#F2ECDD"/>' +
+  '<path d="M50 35 C39 35 32 46 31 57 C42 51 58 51 69 57 C68 46 61 35 50 35 Z" fill="#F7E6BC"/>' +
+  '<ellipse cx="41" cy="41" rx="6" ry="7.6" fill="#fff"/><circle cx="42" cy="42" r="3.3" fill="#1A2233"/><circle cx="40.6" cy="39.5" r="1.3" fill="#fff"/>' +
+  '<ellipse cx="59" cy="41" rx="6" ry="7.6" fill="#fff"/><circle cx="58" cy="42" r="3.3" fill="#1A2233"/><circle cx="56.6" cy="39.5" r="1.3" fill="#fff"/>' +
+  '<path d="M44 48 L50 45 L56 48 L50 56 Z" fill="#39435A"/><path d="M47 52 L53 52 L50 56 Z" fill="#E8845C"/>' +
+  '</svg>';
+
 /** Tête stylisée pour l'écusson hexagonal des rangs (habillage 3b). */
 export const penguinHeadSvg =
   '<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"><g transform="translate(60,66)">' +

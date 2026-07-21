@@ -79,12 +79,12 @@ const styles = StyleSheet.create({
     lineHeight: 26,
     letterSpacing: -0.5,
   },
-  /** Étiquette de section : mono en capitales espacées — signature de la refonte. */
+  /** Étiquette de section : Hanken en capitales espacées (UI, pas « données »). */
   label: {
-    fontFamily: FontFamily.mono,
+    fontFamily: FontFamily.semibold,
     fontSize: 11,
     lineHeight: 16,
-    letterSpacing: 1.5,
+    letterSpacing: 1.2,
     textTransform: 'uppercase',
   },
   /** Signature « terminal » : codes, méta, rangs. */
