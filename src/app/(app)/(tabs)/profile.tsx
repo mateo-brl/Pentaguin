@@ -56,6 +56,13 @@ export default function ProfileScreen() {
 
   const links = [
     {
+      key: 'ranks',
+      icon: 'trending-up' as const,
+      title: t.ranksScreen.title,
+      href: '/ranks' as const,
+      hue: hueFor(2),
+    },
+    {
       key: 'leaderboard',
       icon: 'podium' as const,
       title: t.profile.leaderboard,
