@@ -3,7 +3,7 @@
     "name": "Pentaguin",
     "slug": "pentaguin",
     "owner": "matal",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "pentaguin",
@@ -42,7 +42,20 @@
       "expo-sqlite",
       "expo-asset",
       "expo-secure-store",
-      "expo-web-browser"
+      "expo-web-browser",
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/SpaceGrotesk-Regular.ttf",
+            "./assets/fonts/SpaceGrotesk-Medium.ttf",
+            "./assets/fonts/SpaceGrotesk-SemiBold.ttf",
+            "./assets/fonts/SpaceGrotesk-Bold.ttf",
+            "./assets/fonts/JetBrainsMono-Regular.ttf",
+            "./assets/fonts/JetBrainsMono-Bold.ttf"
+          ]
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,

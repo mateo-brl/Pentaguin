@@ -13,40 +13,41 @@ import { Platform } from 'react-native';
 export const Colors = {
   light: {
     text: '#0B1626',
-    background: '#F6F8FB',
+    background: '#F5F8FC',
     backgroundElement: '#FFFFFF',
-    backgroundSelected: '#EAF0F7',
-    border: '#E3E9F2',
+    backgroundSelected: '#E9EFF8',
+    border: '#DFE7F2',
     textSecondary: '#5B6B80',
-    accent: '#0F9D8F',
-    accentSoft: '#DDF5F1',
-    accentDark: '#0B7568',
+    accent: '#0BA97C',
+    accentSoft: '#D9F7EC',
+    accentDark: '#088562',
     onAccent: '#FFFFFF',
-    success: '#16A34A',
-    successSoft: '#DCFCE7',
-    danger: '#E11D48',
-    dangerSoft: '#FDE7EB',
-    dangerDark: '#B31848',
-    streak: '#D97706',
-    streakSoft: '#FCEFD8',
+    success: '#17A35C',
+    successSoft: '#DCF7E7',
+    danger: '#E2474C',
+    dangerSoft: '#FCE5E6',
+    dangerDark: '#B8363B',
+    streak: '#D98315',
+    streakSoft: '#FCEFDA',
   },
+  /** Palette de la refonte (dark first) — « encre bleutée » + menthe phosphore. */
   dark: {
-    text: '#EAF0FA',
-    background: '#0B1220',
-    backgroundElement: '#131C2E',
-    backgroundSelected: '#1C2940',
-    border: '#24334E',
-    textSecondary: '#93A1B8',
-    accent: '#2DD4BF',
+    text: '#EAF0FB',
+    background: '#0A0F1C',
+    backgroundElement: '#121A2E',
+    backgroundSelected: '#1A2440',
+    border: '#29344F',
+    textSecondary: '#8695AE',
+    accent: '#2DE0A6',
     accentSoft: '#0E2A2C',
-    accentDark: '#179C8B',
-    onAccent: '#04211D',
-    success: '#4ADE80',
+    accentDark: '#17A87A',
+    onAccent: '#05231A',
+    success: '#59E38B',
     successSoft: '#10321F',
-    danger: '#FB7185',
-    dangerSoft: '#371824',
-    dangerDark: '#D14D66',
-    streak: '#FBBF24',
+    danger: '#FF6B6B',
+    dangerSoft: '#3A1B1F',
+    dangerDark: '#C9494C',
+    streak: '#FFB23E',
     streakSoft: '#33270D',
   },
 } as const;
@@ -58,47 +59,56 @@ export const Colors = {
  */
 export const Hues = {
   light: [
-    { base: '#0F9D8F', soft: '#DDF5F1' }, // menthe
-    { base: '#6D5AE6', soft: '#EAE6FC' }, // violet
-    { base: '#D97706', soft: '#FCEFD8' }, // ambre
+    { base: '#0BA97C', soft: '#D9F7EC' }, // menthe
+    { base: '#6D4DE6', soft: '#EAE4FC' }, // violet
+    { base: '#D98315', soft: '#FCEFDA' }, // ambre
     { base: '#2E7CE6', soft: '#E1EDFC' }, // bleu
     { base: '#DB2777', soft: '#FBE3EF' }, // rose
   ],
+  /** Cycle de la refonte : menthe → violet → ambre → bleu → rose. */
   dark: [
-    { base: '#2DD4BF', soft: '#0E2A2C' },
-    { base: '#A78BFA', soft: '#231D3E' },
-    { base: '#FBBF24', soft: '#33270D' },
-    { base: '#60A5FA', soft: '#12233D' },
+    { base: '#2DE0A6', soft: '#0E2A2C' },
+    { base: '#A98BFA', soft: '#231D3E' },
+    { base: '#FFB23E', soft: '#33270D' },
+    { base: '#5AA7F5', soft: '#12233D' },
     { base: '#F472B6', soft: '#3A1229' },
   ],
 } as const;
 
 export type ThemeColor = keyof typeof Colors.light & keyof typeof Colors.dark;
 
-export const Fonts = Platform.select({
-  ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
-    sans: 'system-ui',
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
-    serif: 'ui-serif',
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
-    rounded: 'ui-rounded',
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
-    mono: 'ui-monospace',
-  },
-  default: {
-    sans: 'normal',
-    serif: 'serif',
-    rounded: 'normal',
-    mono: 'monospace',
-  },
-  web: {
-    sans: 'var(--font-display)',
-    serif: 'var(--font-serif)',
-    rounded: 'var(--font-rounded)',
-    mono: 'var(--font-mono)',
-  },
-});
+/**
+ * Deux familles, embarquées dans le binaire (plugin expo-font) et référencées
+ * par leur nom PostScript — c'est ce qu'iOS attend. Space Grotesk porte l'UI et
+ * les titres (géométrique, du caractère) ; JetBrains Mono porte la DONNÉE
+ * (codes, XP, chrono, rangs, commandes). Ce contraste est la signature typo.
+ */
+export const FontFamily = {
+  regular: 'SpaceGrotesk-Regular',
+  medium: 'SpaceGrotesk-Medium',
+  semibold: 'SpaceGrotesk-SemiBold',
+  bold: 'SpaceGrotesk-Bold',
+  mono: 'JetBrainsMono-Regular',
+  monoBold: 'JetBrainsMono-Bold',
+} as const;
+
+export const Fonts = {
+  sans: FontFamily.regular,
+  serif: Platform.select({ ios: 'ui-serif', default: 'serif' }),
+  rounded: FontFamily.regular,
+  mono: FontFamily.mono,
+};
+
+/**
+ * Rayons de la refonte. Bordures d'abord, ombres rares : une surface se
+ * distingue par son trait, pas par une ombre portée.
+ */
+export const Radius = {
+  small: 8,
+  medium: 16,
+  large: 20,
+  pill: 999,
+} as const;
 
 export const Spacing = {
   half: 2,
