@@ -32,7 +32,7 @@ const LEAGUES: { league: League; color: string; tiers: (string | null)[] }[] = [
   { league: 'gold', color: '#D4A017', tiers: ['III', 'II', 'I'] },
   { league: 'platinum', color: '#4FB8A8', tiers: ['III', 'II', 'I'] },
   { league: 'diamond', color: '#5AA7F5', tiers: [null] },
-  { league: 'master', color: '#A78BFA', tiers: [null] },
+  { league: 'master', color: '#A98BFA', tiers: [null] },
   { league: 'emperor', color: '#F0B429', tiers: [null] },
 ];
 

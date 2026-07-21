@@ -1,13 +1,14 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { Redirect, router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { Penguin } from '@/components/mascot/penguin';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
-import { rankLabel } from '@/components/ui/rank-badge';
+import { RankCrest, rankLabel } from '@/components/ui/rank-badge';
+import { Duration, Motion } from '@/constants/motion';
 import { Spacing } from '@/constants/theme';
 import { successFeedback } from '@/features/haptics/haptics';
 import { usePlacementSession } from '@/features/placement/session';
@@ -23,9 +24,20 @@ export default function PlacementResultScreen() {
   useEffect(() => {
     if (resultRank == null) return;
     successFeedback();
+    // Moment « célébration » de la direction de motion : 480 ms, léger dépassement.
     Animated.parallel([
-      Animated.spring(scale, { toValue: 1, friction: 5, useNativeDriver: true }),
-      Animated.timing(opacity, { toValue: 1, duration: 300, useNativeDriver: true }),
+      Animated.timing(scale, {
+        toValue: 1,
+        duration: Duration.celebration,
+        easing: Motion.reward,
+        useNativeDriver: true,
+      }),
+      Animated.timing(opacity, {
+        toValue: 1,
+        duration: Duration.ui,
+        easing: Motion.standard,
+        useNativeDriver: true,
+      }),
     ]).start();
   }, [resultRank, scale, opacity]);
 
@@ -41,10 +53,11 @@ export default function PlacementResultScreen() {
             {t.placement.resultTitle}
           </ThemedText>
 
+          {/* Le manchot célèbre la montée de rang : c'est LE moment généreux. */}
+          <Penguin state="rankup" size={132} animation="pop" />
+
           <Animated.View style={{ opacity, transform: [{ scale }], alignItems: 'center', gap: Spacing.two }}>
-            <View style={[styles.medal, { backgroundColor: rank.color + '22' }]}>
-              <Ionicons name="medal" size={64} color={rank.color} />
-            </View>
+            <RankCrest rankId={resultRank} size={104} />
             <ThemedText type="title" style={{ color: rank.color }}>
               {rankLabel(resultRank, t)}
             </ThemedText>

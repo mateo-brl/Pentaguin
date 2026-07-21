@@ -4,6 +4,7 @@ import { useCallback, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { StreakFlame } from '@/components/mascot/penguin';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
@@ -67,6 +68,7 @@ export default function HomeScreen() {
         {/* Bloc streak : aplat plein, gros chiffre — l'élément central de l'accueil */}
         <View style={[styles.streakTile, { backgroundColor: theme.streakSoft }]}>
           <View style={styles.streakMain}>
+            {current > 0 && <StreakFlame size={30} />}
             <ThemedText type="stat" themeColor="streak" style={styles.streakNumber}>
               {current}
             </ThemedText>
