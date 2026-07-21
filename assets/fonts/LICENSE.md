@@ -1,7 +1,7 @@
 # Polices embarquées
 
-- **Space Grotesk** — © Florian Karsten. SIL Open Font License 1.1.
-  https://fonts.google.com/specimen/Space+Grotesk
+- **Hanken Grotesk** — © Alfredo Marco Pradil. SIL Open Font License 1.1.
+  https://fonts.google.com/specimen/Hanken+Grotesk
 - **JetBrains Mono** — © JetBrains s.r.o. SIL Open Font License 1.1.
   https://fonts.google.com/specimen/JetBrains+Mono
 

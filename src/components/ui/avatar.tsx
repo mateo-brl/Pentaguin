@@ -2,7 +2,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { StyleSheet, Text, View } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 
-import { penguinHeadSvg } from '@/components/mascot/penguin-art';
+import { penguinAvatarSvg } from '@/components/mascot/penguin-art';
 import { FontFamily } from '@/theme';
 import { useHues } from '@/hooks/use-hues';
 
@@ -27,7 +27,7 @@ export function Avatar({ spec, pseudo, size = 44 }: Props) {
         { width: size, height: size, borderRadius: size / 2, backgroundColor: hue.soft },
       ]}>
       {spec.icon === 'penguin' ? (
-        <SvgXml xml={penguinHeadSvg} width={size * 0.72} height={size * 0.72} />
+        <SvgXml xml={penguinAvatarSvg} width={size} height={size} />
       ) : icon ? (
         <Ionicons name={icon as keyof typeof Ionicons.glyphMap} size={size * 0.5} color={hue.base} />
       ) : (
@@ -41,6 +41,7 @@ export function Avatar({ spec, pseudo, size = 44 }: Props) {
 
 const styles = StyleSheet.create({
   circle: {
+    overflow: 'hidden',
     alignItems: 'center',
     justifyContent: 'center',
   },

@@ -63,10 +63,10 @@ export default function RootLayout() {
   // qu'elles ne sont pas prêtes (le splash natif reste affiché) — sinon un
   // premier rendu en police système « flasherait ».
   const [fontsLoaded] = useFonts({
-    'SpaceGrotesk-Regular': require('../../assets/fonts/SpaceGrotesk-Regular.ttf'),
-    'SpaceGrotesk-Medium': require('../../assets/fonts/SpaceGrotesk-Medium.ttf'),
-    'SpaceGrotesk-SemiBold': require('../../assets/fonts/SpaceGrotesk-SemiBold.ttf'),
-    'SpaceGrotesk-Bold': require('../../assets/fonts/SpaceGrotesk-Bold.ttf'),
+    'HankenGrotesk-Regular': require('../../assets/fonts/HankenGrotesk-Regular.ttf'),
+    'HankenGrotesk-Medium': require('../../assets/fonts/HankenGrotesk-Medium.ttf'),
+    'HankenGrotesk-SemiBold': require('../../assets/fonts/HankenGrotesk-SemiBold.ttf'),
+    'HankenGrotesk-Bold': require('../../assets/fonts/HankenGrotesk-Bold.ttf'),
     'JetBrainsMono-Regular': require('../../assets/fonts/JetBrainsMono-Regular.ttf'),
     'JetBrainsMono-Bold': require('../../assets/fonts/JetBrainsMono-Bold.ttf'),
   });

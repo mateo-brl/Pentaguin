@@ -104,8 +104,10 @@ export default function LearnScreen() {
                   <ThemedText type="label" themeColor="textSecondary">
                     {hero.estMinutes} {t.domain.minutes}
                   </ThemedText>
-                  <View style={[styles.startPill, { backgroundColor: heroHue.base }]}>
-                    <ThemedText type="smallBold" style={{ color: theme.background }}>
+                  {/* CTA principal : TOUJOURS ambre. Le bleu de domaine ne colore
+                      qu'une identité (bordure/pastille), jamais un bouton d'action. */}
+                  <View style={[styles.startPill, { backgroundColor: theme.accent }]}>
+                    <ThemedText type="smallBold" style={{ color: theme.onAccent }}>
                       {t.learn.start} →
                     </ThemedText>
                   </View>
@@ -167,7 +169,7 @@ export default function LearnScreen() {
                   key={domain.id}
                   first={index === 0}
                   title={domain.title}
-                  subtitle={`${lessons.length} ${t.learn.lessonsCount}`}
+                  subtitle={`${lessons.length} ${lessons.length > 1 ? t.learn.lessonsPlural : t.learn.lessonsSingular}`}
                   leading={
                     <SquareBadge color={hue.base} background={hue.soft}>
                       {domain.code.replace('.0', '')}
