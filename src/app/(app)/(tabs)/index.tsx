@@ -1,26 +1,30 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { StreakFlame } from '@/components/mascot/penguin';
+import { Penguin, StreakFlame } from '@/components/mascot/penguin';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { Button } from '@/components/ui/button';
-import { RankBadge } from '@/components/ui/rank-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-import { getDefaultPack } from '@/content';
-import { getKv, localDateKey } from '@/db/repositories';
-import { DAILY_CHALLENGE_KV_KEY, dailyChallengeQuestions } from '@/features/gamification/daily-challenge';
+import { rankLabel } from '@/components/ui/rank-badge';
+import { BottomTabInset, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
+import { DEFAULT_PACK_ID, getDefaultPack, lessonsByDomain } from '@/content';
+import { getCompletedLessonIds, getKv, getTotalXp, localDateKey } from '@/db/repositories';
+import { useSession } from '@/features/account/session';
+import {
+  DAILY_CHALLENGE_KV_KEY,
+  dailyChallengeQuestions,
+} from '@/features/gamification/daily-challenge';
 import { useStreak } from '@/features/gamification/use-streak';
-import { useEntitlements } from '@/features/monetization';
+import { getPseudo } from '@/features/leaderboard/identity';
+import { isLessonUnlockedNow, useEntitlements } from '@/features/monetization';
 import { useQuizSession } from '@/features/quiz/session';
+import { recommendedLessons } from '@/features/rank/recommend';
 import { useRank } from '@/features/rank/ranks';
 import { useHues } from '@/hooks/use-hues';
 import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
-
 
 export default function HomeScreen() {
   const pack = getDefaultPack();
@@ -29,11 +33,16 @@ export default function HomeScreen() {
   const { hueFor } = useHues();
   const entitlements = useEntitlements();
   const rank = useRank();
-  const { current, longest } = useStreak();
+  const { current } = useStreak();
+  const { me } = useSession();
 
+  const [completed, setCompleted] = useState<Set<string>>(new Set());
+  const [totalXp, setTotalXp] = useState(0);
   const [challengeDoneDate, setChallengeDoneDate] = useState<string | null>(null);
   useFocusEffect(
     useCallback(() => {
+      setCompleted(getCompletedLessonIds(DEFAULT_PACK_ID));
+      setTotalXp(getTotalXp());
       setChallengeDoneDate(getKv(DAILY_CHALLENGE_KV_KEY));
     }, []),
   );
@@ -44,154 +53,198 @@ export default function HomeScreen() {
   const challengeQuestions = dailyChallengeQuestions(pack, entitlements, today);
   const hasChallenge = challengeQuestions.length > 0;
 
+  const pseudo = me?.pseudo ?? getPseudo() ?? '';
+  const greeting = pseudo ? t.home.greeting.replace('{name}', pseudo) : t.home.greetingFallback;
+
+  // « Reprendre » : la prochaine leçon de ton rang que tu n'as pas finie.
+  const next = rank != null ? recommendedLessons(pack, rank, { exclude: completed, limit: 1 })[0] : undefined;
+  const nextDomain = next ? pack.domains.find((d) => d.id === next.domainId) : undefined;
+  const domainLessons = nextDomain ? lessonsByDomain(pack, nextDomain.id) : [];
+  const doneInDomain = domainLessons.filter((l) => completed.has(l.id)).length;
+  const nextUnlocked = next ? isLessonUnlockedNow(next, entitlements) : false;
+
   const startChallenge = () => {
     if (challengeQuestions.length === 0) return;
     useQuizSession.getState().start(pack.id, challengeQuestions, { challengeDate: today });
     router.push('/quiz/play');
   };
 
+  const stats: { label: string; value: string }[] = [
+    { label: t.home.statRank, value: rank != null ? rankLabel(rank, t) : '—' },
+    { label: t.home.statXp, value: String(totalXp) },
+    { label: t.home.statStreak, value: `${current} ${current > 1 ? t.home.days : t.home.day}` },
+  ];
+
   return (
     <ThemedView style={styles.container}>
       <SafeAreaView style={styles.safeArea}>
-        <View style={styles.header}>
-          <ThemedText type="title">Pentaguin</ThemedText>
-          <ThemedText type="small" themeColor="textSecondary">
-            {t.home.tagline}
-          </ThemedText>
-          {rank != null && (
-            <View style={styles.rank}>
-              <RankBadge rankId={rank} />
-            </View>
-          )}
-        </View>
-
-        {/* Bloc streak : aplat plein, gros chiffre — l'élément central de l'accueil */}
-        <View style={[styles.streakTile, { backgroundColor: theme.streakSoft }]}>
-          <View style={styles.streakMain}>
-            {current > 0 && <StreakFlame size={30} />}
-            <ThemedText type="stat" themeColor="streak" style={styles.streakNumber}>
-              {current}
+        <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+          {/* Bandeau : signature typographique à gauche, série à droite. */}
+          <View style={styles.topBar}>
+            <ThemedText type="label" style={styles.wordmark}>
+              Pentaguin
             </ThemedText>
-            <ThemedText type="smallBold" themeColor="streak" style={styles.streakUnit}>
-              {current > 1 ? t.home.days : t.home.day} · {t.home.streakLabel.toLowerCase()}
-            </ThemedText>
-          </View>
-          {longest > 0 && (
-            <ThemedText type="small" themeColor="textSecondary">
-              {t.home.streakRecord} · {longest}
-            </ThemedText>
-          )}
-        </View>
-
-        {/* Défi du jour : aplat teinté, tactile. Masqué tant qu'aucune question
-            n'est disponible (base sans contenu) pour ne pas offrir un tap mort. */}
-        {hasChallenge && (
-        <Pressable
-          disabled={challengeDone}
-          onPress={startChallenge}
-          style={({ pressed }) => [
-            styles.challengeTile,
-            { backgroundColor: challengeDone ? theme.successSoft : challengeHue.soft },
-            pressed && !challengeDone && styles.pressed,
-          ]}>
-          <View
-            style={[
-              styles.challengeIcon,
-              { backgroundColor: challengeDone ? theme.success : challengeHue.base },
-            ]}>
-            <Ionicons
-              name={challengeDone ? 'checkmark' : 'flash'}
-              size={20}
-              color={challengeDone ? theme.successSoft : challengeHue.soft}
-            />
-          </View>
-          <View style={styles.challengeBody}>
-            <ThemedText
-              type="smallBold"
-              style={{ color: challengeDone ? theme.success : challengeHue.base, fontSize: 15 }}>
-              {challengeDone ? t.home.challengeDone : t.home.dailyChallenge}
-            </ThemedText>
-            {!challengeDone && (
-              <ThemedText type="small" themeColor="textSecondary">
-                {t.home.challengeDesc}
-              </ThemedText>
+            {current > 0 && (
+              <View style={styles.streakChip}>
+                <StreakFlame size={20} />
+                <ThemedText type="mono" style={{ color: theme.streak, fontSize: 15 }}>
+                  {current}
+                </ThemedText>
+              </View>
             )}
           </View>
-          {!challengeDone && (
-            <Ionicons name="arrow-forward" size={20} color={challengeHue.base} />
+
+          {/* Hero : le manchot accueille, le ton est direct et personnel. */}
+          <View style={styles.hero}>
+            <Penguin state="correct" size={104} animation="float" />
+            <View style={styles.heroText}>
+              <ThemedText type="title" style={styles.heroTitle}>
+                {greeting}
+              </ThemedText>
+              <ThemedText type="small" themeColor="textSecondary">
+                {t.home.ready}
+              </ThemedText>
+            </View>
+          </View>
+
+          {/* Reprendre : l'action n°1 de l'écran. */}
+          {next && nextDomain && (
+            <Pressable
+              onPress={() =>
+                nextUnlocked
+                  ? router.push({ pathname: '/lesson/[id]', params: { id: next.id } })
+                  : router.push('/paywall')
+              }
+              style={({ pressed }) => [
+                styles.resumeCard,
+                { backgroundColor: theme.backgroundElement, borderColor: theme.border },
+                pressed && styles.pressed,
+              ]}>
+              <View style={styles.resumeHead}>
+                <ThemedText type="label" style={{ color: theme.accent }}>
+                  ▸ {t.home.resume}
+                </ThemedText>
+                <ThemedText type="label" themeColor="textSecondary">
+                  {t.home.step} {Math.min(doneInDomain + 1, domainLessons.length)}/{domainLessons.length}
+                </ThemedText>
+              </View>
+              <ThemedText type="subtitle">{next.title}</ThemedText>
+              <ThemedText type="label" themeColor="textSecondary">
+                {nextDomain.title} · {next.estMinutes} {t.domain.minutes}
+              </ThemedText>
+            </Pressable>
           )}
-        </Pressable>
-        )}
 
-        <View style={styles.spacer} />
+          {/* Triptyque de données — mono, comme le veut la direction. */}
+          <View style={[styles.stats, { borderColor: theme.border, backgroundColor: theme.backgroundElement }]}>
+            {stats.map((s, i) => (
+              <View
+                key={s.label}
+                style={[
+                  styles.stat,
+                  i > 0 && { borderLeftWidth: StyleSheet.hairlineWidth, borderLeftColor: theme.border },
+                ]}>
+                <ThemedText type="label" themeColor="textSecondary">
+                  {s.label}
+                </ThemedText>
+                <ThemedText type="mono" numberOfLines={1} style={styles.statValue}>
+                  {s.value}
+                </ThemedText>
+              </View>
+            ))}
+          </View>
 
-        <Button label={t.home.continueCta} onPress={() => router.navigate('/learn')} />
+          {/* Défi du jour : le rendez-vous quotidien. */}
+          {hasChallenge && (
+            <Pressable
+              disabled={challengeDone}
+              onPress={startChallenge}
+              style={({ pressed }) => [
+                styles.challengeTile,
+                { backgroundColor: challengeDone ? theme.successSoft : challengeHue.soft },
+                pressed && !challengeDone && styles.pressed,
+              ]}>
+              <View
+                style={[
+                  styles.challengeIcon,
+                  { backgroundColor: challengeDone ? theme.success : challengeHue.base },
+                ]}>
+                <Ionicons
+                  name={challengeDone ? 'checkmark' : 'flash'}
+                  size={20}
+                  color={challengeDone ? theme.successSoft : challengeHue.soft}
+                />
+              </View>
+              <View style={styles.challengeBody}>
+                <ThemedText
+                  type="smallBold"
+                  style={{ color: challengeDone ? theme.success : challengeHue.base, fontSize: 15 }}>
+                  {challengeDone ? t.home.challengeDone : t.home.dailyChallenge}
+                </ThemedText>
+                {!challengeDone && (
+                  <ThemedText type="small" themeColor="textSecondary">
+                    {t.home.challengeReward}
+                  </ThemedText>
+                )}
+              </View>
+              {!challengeDone && (
+                <View style={[styles.playPill, { backgroundColor: challengeHue.base }]}>
+                  <ThemedText type="smallBold" style={{ color: theme.background }}>
+                    {t.home.play}
+                  </ThemedText>
+                </View>
+              )}
+            </Pressable>
+          )}
+        </ScrollView>
       </SafeAreaView>
     </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  safeArea: {
-    flex: 1,
-    maxWidth: MaxContentWidth,
+  container: { flex: 1, flexDirection: 'row', justifyContent: 'center' },
+  safeArea: { flex: 1, maxWidth: MaxContentWidth },
+  scroll: {
     paddingHorizontal: Spacing.four,
     paddingBottom: BottomTabInset + Spacing.three,
     gap: Spacing.three,
   },
-  header: {
-    paddingTop: Spacing.five,
-    paddingBottom: Spacing.two,
+  topBar: {
+    paddingTop: Spacing.four,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  wordmark: { fontSize: 13, letterSpacing: 3 },
+  streakChip: { flexDirection: 'row', alignItems: 'center', gap: Spacing.one },
+  hero: { flexDirection: 'row', alignItems: 'center', gap: Spacing.three },
+  heroText: { flex: 1, gap: Spacing.one },
+  heroTitle: { fontSize: 26, lineHeight: 32 },
+  resumeCard: {
+    borderRadius: Radius.large,
+    borderWidth: 1,
+    padding: Spacing.three,
     gap: Spacing.one,
   },
-  rank: {
-    marginTop: Spacing.two,
-  },
-  streakTile: {
-    borderRadius: 24,
-    padding: Spacing.four,
-    gap: Spacing.two,
-  },
-  streakMain: {
+  resumeHead: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  stats: {
     flexDirection: 'row',
-    alignItems: 'baseline',
-    gap: Spacing.two,
+    borderRadius: Radius.medium,
+    borderWidth: 1,
+    overflow: 'hidden',
   },
-  streakNumber: {
-    fontSize: 64,
-    lineHeight: 70,
-  },
-  streakUnit: {
-    fontSize: 15,
-  },
+  stat: { flex: 1, alignItems: 'center', gap: Spacing.one, paddingVertical: Spacing.three, paddingHorizontal: Spacing.one },
+  statValue: { fontSize: 15 },
   challengeTile: {
-    borderRadius: 24,
+    borderRadius: Radius.large,
     padding: Spacing.three,
     flexDirection: 'row',
     alignItems: 'center',
     gap: Spacing.three,
   },
-  pressed: {
-    opacity: 0.85,
-    transform: [{ scale: 0.99 }],
-  },
-  challengeIcon: {
-    width: 42,
-    height: 42,
-    borderRadius: 21,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  challengeBody: {
-    flex: 1,
-    gap: 2,
-  },
-  spacer: {
-    flex: 1,
-  },
+  pressed: { opacity: 0.9, transform: [{ scale: 0.99 }] },
+  challengeIcon: { width: 42, height: 42, borderRadius: 21, alignItems: 'center', justifyContent: 'center' },
+  challengeBody: { flex: 1, gap: 2 },
+  playPill: { paddingHorizontal: Spacing.three, paddingVertical: 8, borderRadius: Radius.pill },
 });
