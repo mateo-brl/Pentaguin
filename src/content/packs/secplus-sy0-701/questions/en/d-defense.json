@@ -1,0 +1,290 @@
+[
+  {
+    "id": "q-defense-01",
+    "domainId": "d-defense",
+    "lessonIds": [
+      "l-defense-01"
+    ],
+    "type": "single",
+    "stem": "What does the principle of defense in depth describe?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Replacing every protection with a single, very powerful firewall."
+      },
+      {
+        "id": "b",
+        "text": "Layering several varied and complementary levels of security."
+      },
+      {
+        "id": "c",
+        "text": "Systematically encrypting every hard drive in the company."
+      },
+      {
+        "id": "d",
+        "text": "Backing up data to a remote site every day."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "Defense in depth multiplies independent, complementary layers: if one gives way, the others still protect the system.",
+    "difficulty": 2,
+    "level": 8,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-defense-02",
+    "domainId": "d-defense",
+    "lessonIds": [
+      "l-defense-02"
+    ],
+    "type": "single",
+    "stem": "What is the main role of a SIEM?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Blocking malicious packets in real time in place of the firewall."
+      },
+      {
+        "id": "b",
+        "text": "Encrypting communications between the servers and the workstations."
+      },
+      {
+        "id": "c",
+        "text": "Centralizing and correlating logs from many sources in order to raise alerts."
+      },
+      {
+        "id": "d",
+        "text": "Automatically backing up the production databases."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "A SIEM aggregates, normalizes and correlates logs in order to raise alerts; it does not act on traffic and does not replace the firewall.",
+    "difficulty": 2,
+    "level": 8,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-defense-03",
+    "domainId": "d-defense",
+    "lessonIds": [
+      "l-defense-03"
+    ],
+    "type": "single",
+    "stem": "What is the essential difference between an IDS and an IPS?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The IDS detects and alerts without blocking, while the IPS blocks traffic inline."
+      },
+      {
+        "id": "b",
+        "text": "The IDS encrypts traffic, while the IPS decrypts it for analysis."
+      },
+      {
+        "id": "c",
+        "text": "The IDS works only on hosts, and the IPS only on the network."
+      },
+      {
+        "id": "d",
+        "text": "The IDS is always hardware, while the IPS is always software."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "The IDS is passive: it observes and alerts. The IPS sits inline and can actively block malicious traffic.",
+    "difficulty": 2,
+    "level": 9,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-defense-04",
+    "domainId": "d-defense",
+    "lessonIds": [
+      "l-defense-04"
+    ],
+    "type": "single",
+    "stem": "In the incident response cycle, what does the containment phase consist of?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Writing the final report and improving the team's procedures."
+      },
+      {
+        "id": "b",
+        "text": "Permanently removing the malware and the accounts created by the attacker."
+      },
+      {
+        "id": "c",
+        "text": "Bringing the systems back into production and monitoring them closely."
+      },
+      {
+        "id": "d",
+        "text": "Limiting the spread of the incident, for example by isolating the affected machines."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "Containment aims to stem the incident and stop it from spreading, typically by isolating the affected systems, before eradication.",
+    "difficulty": 2,
+    "level": 10,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-defense-05",
+    "domainId": "d-defense",
+    "lessonIds": [
+      "l-defense-05"
+    ],
+    "type": "single",
+    "stem": "According to the order of volatility, what should be collected first during an investigation?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The offline backups stored in another room."
+      },
+      {
+        "id": "b",
+        "text": "Memory (RAM), because it disappears when the machine is powered off."
+      },
+      {
+        "id": "c",
+        "text": "The hard drive, because it holds the largest volume of data."
+      },
+      {
+        "id": "d",
+        "text": "The logs archived several months ago."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "You collect from the most volatile to the least volatile: RAM is wiped at shutdown, so it is captured before the disk and the archives.",
+    "difficulty": 3,
+    "level": 12,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-defense-06",
+    "domainId": "d-defense",
+    "lessonIds": [
+      "l-defense-06"
+    ],
+    "type": "single",
+    "stem": "What characterizes threat hunting?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Waiting for an automated alert to fire before investigating."
+      },
+      {
+        "id": "b",
+        "text": "Automatically blocking all traffic coming from foreign countries."
+      },
+      {
+        "id": "c",
+        "text": "Proactively searching for threats already present that have gone unnoticed."
+      },
+      {
+        "id": "d",
+        "text": "Installing an additional antivirus on every workstation."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "Threat hunting is proactive: the analyst actively looks for attackers who are already inside, without waiting for an alert.",
+    "difficulty": 3,
+    "level": 13,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-defense-07",
+    "domainId": "d-defense",
+    "lessonIds": [
+      "l-defense-07"
+    ],
+    "type": "single",
+    "stem": "What is the role of a SOAR compared with a SIEM?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The SOAR orchestrates the tools and automates the response, where the SIEM detects and correlates."
+      },
+      {
+        "id": "b",
+        "text": "The SOAR completely replaces the SIEM and the firewall in the SOC."
+      },
+      {
+        "id": "c",
+        "text": "The SOAR is used only to store logs for compliance."
+      },
+      {
+        "id": "d",
+        "text": "The SOAR encrypts the communications between the SOC analysts."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "The SIEM detects and correlates alerts; the SOAR orchestrates the tools and automates the response. The two are complementary.",
+    "difficulty": 3,
+    "level": 13,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-defense-08",
+    "domainId": "d-defense",
+    "lessonIds": [
+      "l-defense-08"
+    ],
+    "type": "single",
+    "stem": "What does the CVSS score of a vulnerability represent?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The unique identifier assigned to the vulnerability in a public database."
+      },
+      {
+        "id": "b",
+        "text": "The probability that the vulnerability will be exploited in the coming days."
+      },
+      {
+        "id": "c",
+        "text": "The estimated financial cost of fixing the vulnerability."
+      },
+      {
+        "id": "d",
+        "text": "A severity score from 0 to 10, independent of the probability of exploitation."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "CVSS measures the severity (0 to 10) of a flaw, not its probability of exploitation, which EPSS or the KEV catalog estimate instead.",
+    "difficulty": 3,
+    "level": 14,
+    "tags": [
+      "lesson-v1"
+    ]
+  }
+]

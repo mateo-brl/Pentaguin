@@ -1,0 +1,434 @@
+[
+  {
+    "id": "l-defense-01",
+    "domainId": "d-defense",
+    "title": "Defense in Depth and the CIA Triad",
+    "order": 1,
+    "estMinutes": 6,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "**Defense in depth** means stacking **several independent layers of security** instead of betting everything on a single protection. The idea: no barrier is perfect, so if one layer is breached, the ones behind it keep protecting. The classic image is the medieval castle: a moat, then ramparts, then guards, then the keep. An attacker has to get through all of it, which raises the effort required and the odds of being spotted."
+      },
+      {
+        "type": "text",
+        "md": "In practice, those layers combine controls of different kinds:\n\n- **Physical**: badges, locks, video surveillance.\n- **Technical**: firewalls, encryption, authentication, antivirus.\n- **Administrative**: policies, training, procedures.\n\nThey are also classified by role: **preventive** (stop it), **detective** (spot it) and **corrective** (fix it). Multiplying the layers limits the **blast radius** of any single weakness."
+      },
+      {
+        "type": "text",
+        "md": "Why go to all this trouble? To protect three fundamental properties, summed up by the **CIA triad**:\n\n- **Confidentiality**: only authorized people can access the information.\n- **Integrity**: data is not altered or tampered with without authorization.\n- **Availability**: information and services stay reachable when they are needed.\n\nEvery security measure aims to strengthen at least one of these three pillars."
+      },
+      {
+        "type": "callout",
+        "variant": "exam",
+        "md": "Defense in depth is **not** a stack of identical firewalls, and it is not one \"really tough\" device either. It is the **layering of varied, complementary controls**, so that no single failure compromises the entire system."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Defense in depth",
+            "def": "Stacking several independent layers of security so that one breached layer does not expose the whole system."
+          },
+          {
+            "term": "Confidentiality",
+            "def": "Property guaranteeing that only authorized people can access the information."
+          },
+          {
+            "term": "Integrity",
+            "def": "Property guaranteeing that data is not modified or tampered with without authorization."
+          },
+          {
+            "term": "Availability",
+            "def": "Property guaranteeing that information and services stay accessible when they are needed."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-defense-01"
+      }
+    ],
+    "level": 8
+  },
+  {
+    "id": "l-defense-02",
+    "domainId": "d-defense",
+    "title": "SIEM: Centralizing and Correlating Logs",
+    "order": 2,
+    "estMinutes": 6,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "A **SIEM** (Security Information and Event Management) is the central platform of a **SOC** (Security Operations Center, the team that monitors security around the clock). Its job: **collect, centralize and correlate the logs** produced by a multitude of sources — firewalls, servers, workstations, applications, antivirus — in order to surface suspicious activity that no single source would reveal on its own."
+      },
+      {
+        "type": "text",
+        "md": "A SIEM works through several stages:\n\n1. **Collection** of logs from every source.\n2. **Normalization**: turning heterogeneous formats into one common format.\n3. **Correlation**: linking events from different sources according to rules. For example, *a hundred failed logins followed by a success, then access to a sensitive file* fires a single, meaningful **alert**.\n4. **Presentation**: dashboards, alerts, and log **retention** for investigations and compliance."
+      },
+      {
+        "type": "callout",
+        "variant": "warning",
+        "md": "A SIEM **does not act** on traffic: it **aggregates and alerts**, it blocks nothing by itself. So it does **not replace** the firewall, the antivirus or the EDR — it watches them and connects the dots between what they produce."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "SIEM",
+            "def": "Platform that centralizes and correlates logs from many sources in order to detect threats and raise alerts."
+          },
+          {
+            "term": "Log",
+            "def": "Timestamped record of an event produced by a device or an application."
+          },
+          {
+            "term": "Correlation",
+            "def": "Linking events from different sources to reveal an attack scenario."
+          },
+          {
+            "term": "Normalization",
+            "def": "Converting logs of varied formats into one common, usable format."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-defense-02"
+      }
+    ],
+    "level": 8
+  },
+  {
+    "id": "l-defense-03",
+    "domainId": "d-defense",
+    "title": "IDS vs IPS: Detect or Block",
+    "order": 3,
+    "estMinutes": 6,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "An **IDS** (Intrusion Detection System) **monitors traffic or system activity and raises an alert** when it spots something suspicious. It is **passive**: it only observes and reports. It is usually deployed **out-of-band**, on a **copy** of the traffic (through a SPAN mirror port or a network TAP); that way it does not slow the network down, and it cannot stop an attack on its own."
+      },
+      {
+        "type": "text",
+        "md": "An **IPS** (Intrusion Prevention System) goes further: placed **inline**, directly in the traffic path, it can **block, drop or tear down** a malicious connection in real time. That is the key difference: an IDS **detects and alerts**, an IPS **detects and acts** by cutting the flow off."
+      },
+      {
+        "type": "text",
+        "md": "Both rely on the same detection methods:\n\n- **Signature-based**: comparing against a database of known attack patterns. Accurate, but blind to brand-new threats.\n- **Anomaly-based**: detecting deviations from a baseline of normal behavior. It catches the unknown, but produces more **false positives**.\n\nA further distinction is between **NIDS** (on the network) and **HIDS** (on a host)."
+      },
+      {
+        "type": "callout",
+        "variant": "exam",
+        "md": "Remember: **IDS = detects and alerts** (passive, out-of-band); **IPS = blocks inline** (active, in the traffic path). Because the IPS sits in the traffic path, a **false positive** can cut off **legitimate** traffic — hence the importance of careful tuning."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "IDS",
+            "def": "Passive system that detects suspicious activity and raises an alert, without blocking traffic."
+          },
+          {
+            "term": "IPS",
+            "def": "System placed inline that detects and blocks malicious traffic in real time."
+          },
+          {
+            "term": "Inline",
+            "def": "Positioned directly in the traffic path, which makes blocking possible, as opposed to out-of-band."
+          },
+          {
+            "term": "Signature-based detection",
+            "def": "Comparing traffic against a database of already known attack patterns."
+          },
+          {
+            "term": "Anomaly-based detection",
+            "def": "Spotting deviations from a baseline of behavior considered normal."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-defense-03"
+      }
+    ],
+    "level": 9
+  },
+  {
+    "id": "l-defense-04",
+    "domainId": "d-defense",
+    "title": "The Incident Response Cycle",
+    "order": 4,
+    "estMinutes": 7,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "**Incident response** is the organized process that follows the discovery of a security incident. The **SANS** model breaks it into **six phases**: preparation, identification, containment, eradication, recovery, then lessons learned. Following them in order prevents panic and the mistakes that destroy evidence."
+      },
+      {
+        "type": "text",
+        "md": "The first phases:\n\n- **Preparation**: putting tools, procedures and a team in place **before** the incident. The only phase that happens in peacetime.\n- **Identification**: detecting and confirming that this really is an incident, and assessing its scope (which systems, which data).\n- **Containment**: **limiting the spread**, for instance by isolating the affected machines from the network, without breaking everything or destroying evidence."
+      },
+      {
+        "type": "text",
+        "md": "Then come:\n\n- **Eradication**: **removing the cause** — malware, accounts created by the attacker, the exploited vulnerability.\n- **Recovery**: bringing systems back into production **cleanly** and **monitoring** them to make sure the threat does not come back.\n- **Lessons learned**: a **post-incident** meeting and report to understand what happened and **improve** preparation. The loop closes."
+      },
+      {
+        "type": "callout",
+        "variant": "tip",
+        "md": "**Contain before you eradicate**: first stop the spread (isolate), and only then remove the cause. And throughout the incident, **preserve the evidence** — it is valuable for the analysis and for any legal follow-up."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Incident response",
+            "def": "Structured, phased process for handling a security incident, from detection to after-action review."
+          },
+          {
+            "term": "Containment",
+            "def": "Phase aimed at limiting the spread of the incident, usually by isolating the affected systems."
+          },
+          {
+            "term": "Eradication",
+            "def": "Phase that removes the cause of the incident (malware, accounts, vulnerability)."
+          },
+          {
+            "term": "Recovery",
+            "def": "Phase that returns systems cleanly to production, with heightened monitoring."
+          },
+          {
+            "term": "Lessons learned",
+            "def": "Post-incident review meant to understand the event and improve preparation."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-defense-04"
+      }
+    ],
+    "level": 10
+  },
+  {
+    "id": "l-defense-05",
+    "domainId": "d-defense",
+    "title": "Forensics: Order of Volatility and Evidence Integrity",
+    "order": 5,
+    "estMinutes": 7,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "**Digital forensics** is the craft of **collecting, preserving and analyzing digital evidence** rigorously, so that it stays **reliable** and, if needed, **admissible** in court. One fundamental rule guides collection: the **order of volatility**, formalized in **RFC 3227**."
+      },
+      {
+        "type": "text",
+        "md": "**Volatile** data disappears fast; **persistent** data stays. So you collect **from the most volatile to the least volatile**, before anything is lost:\n\n1. CPU registers and **caches**.\n2. **Memory (RAM)** — gone the moment the machine is powered off.\n3. Network state (connections, tables) and running processes.\n4. **Hard drive** (files, file systems).\n5. Archived logs and offline **backups**.\n\nIn other words: **capture RAM before disk**, because it evaporates when the machine goes down."
+      },
+      {
+        "type": "text",
+        "md": "To guarantee **evidence integrity**, you **never work on the original**. You make a **bit-for-bit copy** (an image), ideally through a **write blocker** so that nothing is altered. You compute a **hash** (for example **SHA-256**) before and after: if the two hashes match, the copy is intact. Finally, the **chain of custody** records who handled the evidence, when and how."
+      },
+      {
+        "type": "callout",
+        "variant": "warning",
+        "md": "**Shutting down or rebooting** a machine destroys volatile memory (RAM, active connections): that evidence becomes **unrecoverable**. Capture the RAM **before** any power-off, then work on a **hash-verified copy**, never on the original."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Digital forensics",
+            "def": "Rigorous collection and analysis of digital evidence, preserved so that it stays reliable and admissible."
+          },
+          {
+            "term": "Order of volatility",
+            "def": "Principle of collecting from the most volatile to the least volatile: RAM before disk."
+          },
+          {
+            "term": "Hash",
+            "def": "Value computed over a piece of data (e.g. SHA-256) that lets you verify it has not changed."
+          },
+          {
+            "term": "Write blocker",
+            "def": "Device that prevents any modification of a storage medium while it is copied or analyzed."
+          },
+          {
+            "term": "Chain of custody",
+            "def": "Documented trail of everyone who handled a piece of evidence, guaranteeing its integrity."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-defense-05"
+      }
+    ],
+    "level": 12
+  },
+  {
+    "id": "l-defense-06",
+    "domainId": "d-defense",
+    "title": "Proactive Threat Hunting",
+    "order": 6,
+    "estMinutes": 6,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "**Threat hunting** is a **proactive** practice: instead of waiting for an alert to fire, the analyst **goes looking** for attackers **already inside** the environment who slipped past automated detection. The mindset is **\"assume breach\"** — assume a compromise has already happened — and then try to prove it or rule it out."
+      },
+      {
+        "type": "text",
+        "md": "A hunt is **hypothesis-driven**. A typical approach:\n\n1. **Form a hypothesis**, often from **threat intelligence** and the **TTPs** (Tactics, Techniques and Procedures) catalogued in **MITRE ATT&CK**. For example: *is an attacker using PowerShell to move laterally?*\n2. **Search** the data: logs, **EDR** telemetry, network traffic.\n3. **Confirm or disprove** it, then turn any finding into a **new automated detection rule**."
+      },
+      {
+        "type": "text",
+        "md": "It is worth separating **IoCs** (Indicators of Compromise) — fixed artifacts such as an IP address or the hash of a malicious file — from **behaviors** (IoAs, Indicators of Attack), which are much harder to disguise. Hunting leans heavily on behavior, because an attacker can swap tools easily but changes **method** far less readily."
+      },
+      {
+        "type": "callout",
+        "variant": "tip",
+        "md": "Threat hunting **complements** automated detection, it does not replace it. It starts from the assumption that an intruder **may already be there**: it is an active search, not a passive wait for an alert."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Threat hunting",
+            "def": "Proactive search for threats already present that have evaded automated detection."
+          },
+          {
+            "term": "Assume breach",
+            "def": "Mindset that assumes a compromise has already occurred and goes looking for it actively."
+          },
+          {
+            "term": "MITRE ATT&CK",
+            "def": "Public knowledge base cataloguing the tactics and techniques used by attackers."
+          },
+          {
+            "term": "IoC",
+            "def": "Indicator of Compromise: a concrete artifact left by an attack (IP address, file hash...)."
+          },
+          {
+            "term": "TTP",
+            "def": "Tactics, techniques and procedures describing the way an attacker operates."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-defense-06"
+      }
+    ],
+    "level": 13
+  },
+  {
+    "id": "l-defense-07",
+    "domainId": "d-defense",
+    "title": "SOAR and Response Automation",
+    "order": 7,
+    "estMinutes": 6,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "**SOAR** (Security Orchestration, Automation and Response) is about **automating and coordinating** incident response. It answers a very real SOC problem: **alert overload** and the slowness of repetitive manual steps. Three building blocks in the acronym: **orchestration** (wiring the tools together), **automation** (running actions without human input) and **response** (handling incidents)."
+      },
+      {
+        "type": "text",
+        "md": "The heart of SOAR is the **playbook**: a **predefined sequence of actions** triggered automatically for a given type of incident. For example, when a phishing alert comes in: enrich the alert (URL reputation), **isolate** the affected workstation, **disable** the account involved, open a ticket. **Orchestration** makes the firewall, the EDR, the directory and the SIEM talk to each other through their **APIs**, with no manual copy-pasting from one console to the next."
+      },
+      {
+        "type": "text",
+        "md": "Do not confuse SOAR with SIEM: the **SIEM detects and correlates** (it spots and alerts); the **SOAR orchestrates and acts** (it reacts and automates). They are **complementary**: the SIEM raises the alert, the SOAR runs the playbook. The measurable benefit: a sharply reduced **MTTR** (Mean Time To Respond)."
+      },
+      {
+        "type": "callout",
+        "variant": "tip",
+        "md": "Automating does not mean handing everything over to the machines. For **high-impact** actions (taking down a critical service, deleting data), you keep a **human in the loop** who approves before execution."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "SOAR",
+            "def": "Platform that orchestrates security tools and automates incident response through playbooks."
+          },
+          {
+            "term": "Orchestration",
+            "def": "Coordination of several security tools with one another, usually through their APIs."
+          },
+          {
+            "term": "Playbook",
+            "def": "Predefined sequence of actions run automatically for a given type of incident."
+          },
+          {
+            "term": "MTTR",
+            "def": "Mean Time To Respond: the average time taken to react to an incident, which SOAR aims to reduce."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-defense-07"
+      }
+    ],
+    "level": 13
+  },
+  {
+    "id": "l-defense-08",
+    "domainId": "d-defense",
+    "title": "Vulnerability Management and CVSS Scoring",
+    "order": 8,
+    "estMinutes": 7,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "**Vulnerability management** is a **continuous cycle**, not a one-off task:\n\n1. **Discovery**: scanning the estate for flaws (with tools such as Nessus or OpenVAS).\n2. **Assessment and prioritization**: not all flaws are equal, so you rank them.\n3. **Remediation**: fixing them (patching) or mitigating them (workaround, restricted access).\n4. **Verification**: rescanning to confirm the fix.\n\nA **credentialed** scan (run with valid logins) sees far more flaws than a **non-credentialed** scan, which is limited to the outside view."
+      },
+      {
+        "type": "text",
+        "md": "To prioritize, you rely on **CVSS** (Common Vulnerability Scoring System), which gives a flaw a **severity score from 0 to 10**. The usual bands: **0** none, **0.1–3.9** low, **4.0–6.9** medium, **7.0–8.9** high, **9.0–10** critical. Do not confuse it with a **CVE** (Common Vulnerabilities and Exposures), which is only the unique **identifier** of a vulnerability (e.g. CVE-2021-44228)."
+      },
+      {
+        "type": "text",
+        "md": "A crucial point that is often misunderstood: CVSS measures **potential severity** (how bad it would be if the flaw were exploited), **not the likelihood** that it actually will be. To estimate that likelihood, you turn to other tools: **EPSS** (Exploit Prediction Scoring System), which gives a probability of exploitation, and the **KEV** (Known Exploited Vulnerabilities) catalog of flaws under active exploitation. Sound prioritization **combines** severity (CVSS) with likelihood (EPSS/KEV)."
+      },
+      {
+        "type": "callout",
+        "variant": "exam",
+        "md": "Classic trap: **CVSS is a severity score (0 to 10), not a probability of exploitation**. A flaw with a CVSS of 9 is not necessarily exploited in the wild — **EPSS** and the **KEV** catalog are what tell you about likelihood and real-world exploitation."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Vulnerability management",
+            "def": "Continuous cycle of discovering, prioritizing, remediating and verifying flaws."
+          },
+          {
+            "term": "CVSS",
+            "def": "System that gives a vulnerability a severity score from 0 to 10, not a probability."
+          },
+          {
+            "term": "CVE",
+            "def": "Unique, standardized identifier of a publicly known vulnerability (e.g. CVE-2021-44228)."
+          },
+          {
+            "term": "Credentialed scan",
+            "def": "Scan run with valid credentials, giving a fuller, inside view of the flaws present."
+          },
+          {
+            "term": "EPSS",
+            "def": "System that estimates the probability of a vulnerability being exploited, complementing CVSS."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-defense-08"
+      }
+    ],
+    "level": 14
+  }
+]

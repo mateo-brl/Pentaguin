@@ -12,7 +12,7 @@ import { ProgressBar } from '@/components/ui/progress-bar';
 import { RankBadge } from '@/components/ui/rank-badge';
 import { Row, RowGroup, SquareBadge } from '@/components/ui/row';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-import { getDefaultPack, lessonsByDomain } from '@/content';
+import { DEFAULT_PACK_ID, getDefaultPack, lessonsByDomain } from '@/content';
 import { getCompletedLessonIds, getTotalXp } from '@/db/repositories';
 import { parseAvatar } from '@/features/account/avatar';
 import { useSession } from '@/features/account/session';
@@ -24,10 +24,9 @@ import { useHues } from '@/hooks/use-hues';
 import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
 
-const pack = getDefaultPack();
-const domains = [...pack.domains].sort((a, b) => a.order - b.order);
-
 export default function ProfileScreen() {
+  const pack = getDefaultPack();
+  const domains = [...pack.domains].sort((a, b) => a.order - b.order);
   const t = useStrings();
   const theme = useTheme();
   const { hueFor } = useHues();
@@ -41,7 +40,7 @@ export default function ProfileScreen() {
   useFocusEffect(
     useCallback(() => {
       setTotalXp(getTotalXp());
-      setCompleted(getCompletedLessonIds(pack.id));
+      setCompleted(getCompletedLessonIds(DEFAULT_PACK_ID));
     }, []),
   );
 

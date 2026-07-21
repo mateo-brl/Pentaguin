@@ -9,7 +9,7 @@ import { ThemedView } from '@/components/themed-view';
 import { RankBadge } from '@/components/ui/rank-badge';
 import { Row, RowGroup, SquareBadge } from '@/components/ui/row';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-import { getDefaultPack, lessonsByDomain } from '@/content';
+import { DEFAULT_PACK_ID, getDefaultPack, lessonsByDomain } from '@/content';
 import { getCompletedLessonIds } from '@/db/repositories';
 import { isLessonUnlockedNow, useEntitlements } from '@/features/monetization';
 import { recommendedLessons } from '@/features/rank/recommend';
@@ -18,9 +18,9 @@ import { useHues } from '@/hooks/use-hues';
 import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
 
-const pack = getDefaultPack();
 
 export default function LearnScreen() {
+  const pack = getDefaultPack();
   const t = useStrings();
   const theme = useTheme();
   const { hueFor } = useHues();
@@ -32,7 +32,7 @@ export default function LearnScreen() {
   const [completed, setCompleted] = useState<Set<string>>(new Set());
   useFocusEffect(
     useCallback(() => {
-      setCompleted(getCompletedLessonIds(pack.id));
+      setCompleted(getCompletedLessonIds(DEFAULT_PACK_ID));
     }, []),
   );
 

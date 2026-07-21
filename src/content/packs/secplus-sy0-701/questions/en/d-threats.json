@@ -1,0 +1,290 @@
+[
+  {
+    "id": "q-threats-01",
+    "domainId": "d-threats",
+    "lessonIds": [
+      "l-threats-01"
+    ],
+    "type": "single",
+    "stem": "What is the fundamental difference between a worm and a virus?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The worm encrypts files, whereas the virus deletes them."
+      },
+      {
+        "id": "b",
+        "text": "The worm only runs on servers, and the virus only on PCs."
+      },
+      {
+        "id": "c",
+        "text": "The worm spreads on its own over the network, with no host and no user action."
+      },
+      {
+        "id": "d",
+        "text": "The worm is always caught by antivirus software, unlike the virus."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "A worm is self-contained: it exploits network vulnerabilities to replicate with no host and no human intervention, whereas a virus needs a host file that the user executes.",
+    "difficulty": 1,
+    "level": 4,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-threats-02",
+    "domainId": "d-threats",
+    "lessonIds": [
+      "l-threats-02"
+    ],
+    "type": "single",
+    "stem": "What is the most reliable defense for recovering your data after a ransomware attack?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Having offline backups, isolated from the network and tested regularly."
+      },
+      {
+        "id": "b",
+        "text": "Paying the ransom quickly to obtain the key."
+      },
+      {
+        "id": "c",
+        "text": "Installing a second antivirus after the encryption."
+      },
+      {
+        "id": "d",
+        "text": "Renaming the encrypted files to make them readable again."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "Offline backups that are tested regularly let you restore the data without depending on the attacker; paying offers no guarantee and funds crime.",
+    "difficulty": 1,
+    "level": 5,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-threats-03",
+    "domainId": "d-threats",
+    "lessonIds": [
+      "l-threats-03"
+    ],
+    "type": "single",
+    "stem": "A stranger leaves USB drives labeled “Payroll 2026” lying around in the company lobby, hoping an employee will plug one in. Which technique is this?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Pretexting."
+      },
+      {
+        "id": "b",
+        "text": "Quid pro quo."
+      },
+      {
+        "id": "c",
+        "text": "Asymmetric encryption."
+      },
+      {
+        "id": "d",
+        "text": "Baiting."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "Baiting relies on an attractive physical or digital lure — here a USB drive — that the victim uses on their own, which triggers the infection.",
+    "difficulty": 1,
+    "level": 5,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-threats-04",
+    "domainId": "d-threats",
+    "lessonIds": [
+      "l-threats-04"
+    ],
+    "type": "single",
+    "stem": "What is the role of the command and control (C2) server in a botnet?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "It encrypts the victims' files in order to demand a ransom."
+      },
+      {
+        "id": "b",
+        "text": "It sends orders to the infected machines and collects their data."
+      },
+      {
+        "id": "c",
+        "text": "It automatically patches the vulnerabilities on the infected machines."
+      },
+      {
+        "id": "d",
+        "text": "It acts as an offline backup for the attacker."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "The C2 is the botnet's cockpit: it passes instructions to the bots and centralizes the information they exfiltrate.",
+    "difficulty": 2,
+    "level": 7,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-threats-05",
+    "domainId": "d-threats",
+    "lessonIds": [
+      "l-threats-05"
+    ],
+    "type": "single",
+    "stem": "Which of the following best characterizes an APT (Advanced Persistent Threat)?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Automated ransomware that hits victims at random."
+      },
+      {
+        "id": "b",
+        "text": "A virus that deletes itself after a single execution."
+      },
+      {
+        "id": "c",
+        "text": "An organized attacker that goes after a specific target and stays inside for a long time, unnoticed."
+      },
+      {
+        "id": "d",
+        "text": "Legitimate software subverted by a simple configuration error."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "An APT is a determined, well-resourced adversary running a targeted operation over the long term, favoring stealth in order to keep its access.",
+    "difficulty": 2,
+    "level": 9,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-threats-06",
+    "domainId": "d-threats",
+    "lessonIds": [
+      "l-threats-06"
+    ],
+    "type": "single",
+    "stem": "In MITRE ATT&CK, what is the difference between a tactic and a technique?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The tactic is the objective being pursued (the why); the technique is the method used (the how)."
+      },
+      {
+        "id": "b",
+        "text": "The tactic concerns the network, the technique only the workstation."
+      },
+      {
+        "id": "c",
+        "text": "The tactic is always automated, the technique always manual."
+      },
+      {
+        "id": "d",
+        "text": "The tactic is used in defense, the technique only in attack."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "A tactic describes the attacker's goal at a given moment (the why), while a technique describes the concrete way of reaching that goal (the how).",
+    "difficulty": 3,
+    "level": 11,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-threats-07",
+    "domainId": "d-threats",
+    "lessonIds": [
+      "l-threats-07"
+    ],
+    "type": "single",
+    "stem": "Which of the following is a typical example of an IOC (indicator of compromise)?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The company's password policy."
+      },
+      {
+        "id": "b",
+        "text": "The security team's annual budget."
+      },
+      {
+        "id": "c",
+        "text": "The number of employees who have completed training."
+      },
+      {
+        "id": "d",
+        "text": "The hash of a malicious file found on a workstation."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "An IOC is a technical trace of a compromise; the hash of a malicious file is a classic example, just like a C2 IP address or domain.",
+    "difficulty": 3,
+    "level": 11,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-threats-08",
+    "domainId": "d-threats",
+    "lessonIds": [
+      "l-threats-08"
+    ],
+    "type": "single",
+    "stem": "Why is a kernel-mode rootkit particularly hard to detect?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Because it only works if the antivirus has been disabled manually."
+      },
+      {
+        "id": "b",
+        "text": "Because it runs with kernel privileges and can lie to the system and to the antivirus."
+      },
+      {
+        "id": "c",
+        "text": "Because it encrypts files and displays a ransom note."
+      },
+      {
+        "id": "d",
+        "text": "Because it deletes itself automatically at every reboot."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "By running inside the kernel, the rootkit controls the very functions the OS and the antivirus rely on to inspect the system, so it can hide its presence from those tools.",
+    "difficulty": 3,
+    "level": 13,
+    "tags": [
+      "lesson-v1"
+    ]
+  }
+]

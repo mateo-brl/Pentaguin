@@ -7,24 +7,24 @@ import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Spacing } from '@/constants/theme';
-import { getDefaultPack } from '@/content';
+import { DEFAULT_PACK_ID, getDefaultPack } from '@/content';
 import { getWrongQuestionIds } from '@/db/repositories';
 import { useEntitlements } from '@/features/monetization';
 import { playableQuestions } from '@/features/quiz/select';
 import { useQuizSession } from '@/features/quiz/session';
 import { useStrings } from '@/i18n/strings';
 
-const pack = getDefaultPack();
 const REPLAY_MAX = 20;
 
 export default function MistakesScreen() {
+  const pack = getDefaultPack();
   const t = useStrings();
   const entitlements = useEntitlements();
   const [wrongIds, setWrongIds] = useState<string[]>([]);
 
   useFocusEffect(
     useCallback(() => {
-      setWrongIds(getWrongQuestionIds(pack.id));
+      setWrongIds(getWrongQuestionIds(DEFAULT_PACK_ID));
     }, []),
   );
 

@@ -1,0 +1,290 @@
+[
+  {
+    "id": "q-offensive-01",
+    "domainId": "d-offensive",
+    "lessonIds": [
+      "l-offensive-01"
+    ],
+    "type": "single",
+    "stem": "What makes a penetration test legal?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Using only free and open source tools"
+      },
+      {
+        "id": "b",
+        "text": "Causing no real damage during the test"
+      },
+      {
+        "id": "c",
+        "text": "A written authorization from the system's owner, defining the scope to be tested"
+      },
+      {
+        "id": "d",
+        "text": "Notifying the target right after the test is finished"
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "Only a written authorization defining the scope makes the engagement legal. Neither the tools used, nor the absence of damage, nor a warning after the fact is enough: without a signed mandate, the access remains a criminal offense (Article 323-1 of the French Criminal Code).",
+    "difficulty": 2,
+    "level": 9,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-offensive-02",
+    "domainId": "d-offensive",
+    "lessonIds": [
+      "l-offensive-02"
+    ],
+    "type": "single",
+    "stem": "What characterizes passive reconnaissance?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "It actively scans all of the target's open ports"
+      },
+      {
+        "id": "b",
+        "text": "It gathers information without interacting directly with the target's systems"
+      },
+      {
+        "id": "c",
+        "text": "It immediately exploits the flaws it discovers"
+      },
+      {
+        "id": "d",
+        "text": "It always requires physical access to the target's premises"
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "Passive reconnaissance relies on third-party, public sources, with no direct contact with the target: it therefore leaves no trace on the target's side. Port scanning and exploitation, by contrast, are active and detectable.",
+    "difficulty": 2,
+    "level": 9,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-offensive-03",
+    "domainId": "d-offensive",
+    "lessonIds": [
+      "l-offensive-03"
+    ],
+    "type": "single",
+    "stem": "What is the difference between scanning and enumeration?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Scanning is legal, enumeration is always illegal"
+      },
+      {
+        "id": "b",
+        "text": "Scanning encrypts traffic, enumeration decrypts it"
+      },
+      {
+        "id": "c",
+        "text": "Scanning only works locally, enumeration only remotely"
+      },
+      {
+        "id": "d",
+        "text": "Scanning identifies open ports and services, enumeration extracts detailed information from them (accounts, shares, versions)"
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "Scanning maps out the reachable ports and services; enumeration then queries those services to pull out usable details (accounts, shares, versions). Legality depends on the authorization, not on the step, and neither one encrypts traffic.",
+    "difficulty": 2,
+    "level": 10,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-offensive-04",
+    "domainId": "d-offensive",
+    "lessonIds": [
+      "l-offensive-04"
+    ],
+    "type": "single",
+    "stem": "What does an exploit target?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "One specific vulnerability, in a given piece of software and a given version"
+      },
+      {
+        "id": "b",
+        "text": "Any system at all, whatever its configuration"
+      },
+      {
+        "id": "c",
+        "text": "The firewall, which it automatically disables in every circumstance"
+      },
+      {
+        "id": "d",
+        "text": "The administrator's password, which it guesses by luck"
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "An exploit is written for one well-defined vulnerability, tied to a piece of software and a version. There is no universal exploit: that is precisely why patching the flaw renders it useless.",
+    "difficulty": 3,
+    "level": 11,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-offensive-05",
+    "domainId": "d-offensive",
+    "lessonIds": [
+      "l-offensive-05"
+    ],
+    "type": "single",
+    "stem": "What is the best defense against offline password cracking?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Locking the account after three failed attempts"
+      },
+      {
+        "id": "b",
+        "text": "Storing passwords as MD5 for the sake of speed"
+      },
+      {
+        "id": "c",
+        "text": "Using a slow key derivation function (Argon2, bcrypt) with a unique salt per password"
+      },
+      {
+        "id": "d",
+        "text": "Changing the password every 24 hours"
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "Offline, the attacker faces no limit on attempts: account lockout has no effect. The answer is to make each attempt expensive with a slow KDF and to add a unique salt, which neutralizes precomputed tables. Unsalted MD5, by contrast, is a very bad idea.",
+    "difficulty": 3,
+    "level": 12,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-offensive-06",
+    "domainId": "d-offensive",
+    "lessonIds": [
+      "l-offensive-06"
+    ],
+    "type": "single",
+    "stem": "What does pivoting consist of?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Encrypting a machine's files in order to demand a ransom"
+      },
+      {
+        "id": "b",
+        "text": "Guessing an administrator password by brute force"
+      },
+      {
+        "id": "c",
+        "text": "Wiping a machine's logs to hide one's presence"
+      },
+      {
+        "id": "d",
+        "text": "Using an already compromised machine as a relay to reach another network segment"
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "Pivoting means bouncing from a machine you have taken over into a network segment that is normally unreachable directly. It is what fuels lateral movement, and network segmentation is precisely the main countermeasure.",
+    "difficulty": 3,
+    "level": 13,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-offensive-07",
+    "domainId": "d-offensive",
+    "lessonIds": [
+      "l-offensive-07"
+    ],
+    "type": "single",
+    "stem": "What is a command & control (C2) channel?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "A hash function used to store passwords"
+      },
+      {
+        "id": "b",
+        "text": "The channel through which the attacker remotely drives the compromised machines"
+      },
+      {
+        "id": "c",
+        "text": "The firewall that controls inbound traffic on the network"
+      },
+      {
+        "id": "d",
+        "text": "An encryption protocol for email between two servers"
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "C2 is the infrastructure and the channel through which the attacker sends orders to compromised machines and retrieves results. It often disguises itself as legitimate HTTPS or DNS traffic, which is why monitoring outbound (egress) traffic matters.",
+    "difficulty": 3,
+    "level": 14,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-offensive-08",
+    "domainId": "d-offensive",
+    "lessonIds": [
+      "l-offensive-08"
+    ],
+    "type": "single",
+    "stem": "What is a purple team?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "A team that steps in only during a media crisis"
+      },
+      {
+        "id": "b",
+        "text": "A team responsible solely for legal compliance"
+      },
+      {
+        "id": "c",
+        "text": "The collaboration between the offensive (red) and defensive (blue) teams to improve detection"
+      },
+      {
+        "id": "d",
+        "text": "An external team that replaces both the red and the blue team"
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "A purple team is not a distinct third team but the red (offensive) and blue (defensive) teams working together: red shares its techniques, blue sharpens its detection, for a continuous improvement of the defense.",
+    "difficulty": 3,
+    "level": 14,
+    "tags": [
+      "lesson-v1"
+    ]
+  }
+]

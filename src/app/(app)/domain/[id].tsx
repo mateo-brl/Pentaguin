@@ -7,7 +7,7 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Row, RowGroup, SquareBadge } from '@/components/ui/row';
 import { Spacing } from '@/constants/theme';
-import { getDefaultPack, getDomain, lessonsByDomain } from '@/content';
+import { DEFAULT_PACK_ID, getDefaultPack, getDomain, lessonsByDomain } from '@/content';
 import { getCompletedLessonIds } from '@/db/repositories';
 import { isLessonUnlockedNow, useEntitlements } from '@/features/monetization';
 import { isRecommended } from '@/features/rank/recommend';
@@ -15,11 +15,9 @@ import { useRank } from '@/features/rank/ranks';
 import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
 
-// Constant (parse mis en cache) : hissé au niveau module pour que le React
-// Compiler puisse préserver la mémoïsation du callback de focus ci-dessous.
-const pack = getDefaultPack();
 
 export default function DomainScreen() {
+  const pack = getDefaultPack();
   const { id } = useLocalSearchParams<{ id: string }>();
   const t = useStrings();
   const theme = useTheme();
@@ -30,7 +28,7 @@ export default function DomainScreen() {
   const [completed, setCompleted] = useState<Set<string>>(new Set());
   useFocusEffect(
     useCallback(() => {
-      setCompleted(getCompletedLessonIds(pack.id));
+      setCompleted(getCompletedLessonIds(DEFAULT_PACK_ID));
     }, []),
   );
 

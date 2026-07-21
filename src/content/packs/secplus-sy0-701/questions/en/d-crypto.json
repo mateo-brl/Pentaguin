@@ -1,0 +1,290 @@
+[
+  {
+    "id": "q-crypto-01",
+    "domainId": "d-crypto",
+    "lessonIds": [
+      "l-crypto-01"
+    ],
+    "type": "single",
+    "stem": "Why is hybrid encryption (symmetric + asymmetric) so often used?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Because symmetric encryption is incapable of encrypting data."
+      },
+      {
+        "id": "b",
+        "text": "To automatically double the key size."
+      },
+      {
+        "id": "c",
+        "text": "To combine the secure key exchange of asymmetric crypto with the speed of symmetric crypto on the data."
+      },
+      {
+        "id": "d",
+        "text": "Because asymmetric crypto needs no key at all."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "Asymmetric crypto (convenient but slow) is reserved for securely exchanging a key, then the data is encrypted with that fast symmetric key.",
+    "difficulty": 1,
+    "level": 5,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-crypto-02",
+    "domainId": "d-crypto",
+    "lessonIds": [
+      "l-crypto-02"
+    ],
+    "type": "single",
+    "stem": "What is the purpose of a salt when hashing a password?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "To make the hash reversible with a key."
+      },
+      {
+        "id": "b",
+        "text": "To make every digest unique and defeat rainbow tables, even when two users have the same password."
+      },
+      {
+        "id": "c",
+        "text": "To encrypt the password so it can be recovered later."
+      },
+      {
+        "id": "d",
+        "text": "To speed up computing the digest."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "A random, unique salt makes the digests of identical passwords differ and renders precomputed tables useless.",
+    "difficulty": 2,
+    "level": 7,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-crypto-03",
+    "domainId": "d-crypto",
+    "lessonIds": [
+      "l-crypto-03"
+    ],
+    "type": "single",
+    "stem": "What roles do asymmetric and symmetric encryption play in a TLS session?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Only hashing is used; there is never any encryption."
+      },
+      {
+        "id": "b",
+        "text": "Symmetric crypto authenticates the server, and asymmetric crypto encrypts every byte of data."
+      },
+      {
+        "id": "c",
+        "text": "All the traffic is encrypted end to end with asymmetric crypto."
+      },
+      {
+        "id": "d",
+        "text": "Asymmetric crypto authenticates the server and helps establish the session key, then symmetric crypto encrypts the data."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "TLS relies on asymmetric crypto to authenticate and agree on a key, then encrypts the traffic with a fast symmetric algorithm such as AES-GCM.",
+    "difficulty": 2,
+    "level": 9,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-crypto-04",
+    "domainId": "d-crypto",
+    "lessonIds": [
+      "l-crypto-04"
+    ],
+    "type": "single",
+    "stem": "How is a digital signature produced and verified?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "You sign (the digest of the message) with the private key; you verify with the public key."
+      },
+      {
+        "id": "b",
+        "text": "You sign with the public key; you verify with the private key."
+      },
+      {
+        "id": "c",
+        "text": "You sign and verify with the same shared secret key."
+      },
+      {
+        "id": "d",
+        "text": "You encrypt the entire message with the recipient’s public key."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "Signing is done with the signer’s private key (over the digest of the message) and verified with their public key.",
+    "difficulty": 3,
+    "level": 11,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-crypto-05",
+    "domainId": "d-crypto",
+    "lessonIds": [
+      "l-crypto-05"
+    ],
+    "type": "single",
+    "stem": "Why should passwords not be stored with plain SHA-256?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Because SHA-256 is reversible and therefore far too dangerous."
+      },
+      {
+        "id": "b",
+        "text": "Because SHA-256 produces collisions systematically."
+      },
+      {
+        "id": "c",
+        "text": "Because SHA-256 is too fast: an attacker tests billions of candidates per second; you need a slow, tunable KDF (Argon2, bcrypt, scrypt)."
+      },
+      {
+        "id": "d",
+        "text": "Because SHA-256 is incapable of processing text."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "SHA-256 is built for speed, which makes brute-force cracking easy; passwords require a deliberately slow and memory-hungry function.",
+    "difficulty": 3,
+    "level": 12,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-crypto-06",
+    "domainId": "d-crypto",
+    "lessonIds": [
+      "l-crypto-06"
+    ],
+    "type": "single",
+    "stem": "Which statement about block cipher modes is correct?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "ECB is the most secure mode because each block is encrypted independently."
+      },
+      {
+        "id": "b",
+        "text": "ECB leaks patterns (identical blocks give identical ciphertext), whereas GCM provides authenticated encryption."
+      },
+      {
+        "id": "c",
+        "text": "CBC on its own guarantees the integrity and authenticity of the data."
+      },
+      {
+        "id": "d",
+        "text": "Reusing a nonce in GCM with the same key has no consequences."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "ECB reproduces the patterns of the plaintext and offers no serious security, whereas GCM (AEAD) adds integrity and authenticity to the encryption.",
+    "difficulty": 3,
+    "level": 13,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-crypto-07",
+    "domainId": "d-crypto",
+    "lessonIds": [
+      "l-crypto-07"
+    ],
+    "type": "single",
+    "stem": "What does a padding oracle attack (CBC) rely on?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "On knowing the encryption key beforehand."
+      },
+      {
+        "id": "b",
+        "text": "On reusing a nonce in GCM."
+      },
+      {
+        "id": "c",
+        "text": "On a collision in the hash function."
+      },
+      {
+        "id": "d",
+        "text": "On a signal (an error or a timing difference) revealing whether the decrypted padding is valid, which allows the plaintext to be recovered byte by byte without the key."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "The attacker manipulates the previous block and exploits the “padding valid / invalid” information returned by the oracle to reconstruct the plaintext, without ever holding the key.",
+    "difficulty": 3,
+    "level": 15,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-crypto-08",
+    "domainId": "d-crypto",
+    "lessonIds": [
+      "l-crypto-08"
+    ],
+    "type": "single",
+    "stem": "What is a timing side-channel attack?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "An attack that mathematically breaks the AES algorithm."
+      },
+      {
+        "id": "b",
+        "text": "An attack that guesses the key by exhaustive brute force."
+      },
+      {
+        "id": "c",
+        "text": "An attack that deduces a secret from the execution time (e.g. a comparison that stops at the first differing byte)."
+      },
+      {
+        "id": "d",
+        "text": "An attack that exploits a collision in the hash function."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "Timing attacks target the implementation: variations in duration give the secret away, hence the use of constant-time comparisons.",
+    "difficulty": 3,
+    "level": 15,
+    "tags": [
+      "lesson-v1"
+    ]
+  }
+]
