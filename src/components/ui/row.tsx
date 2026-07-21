@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
-import { Spacing } from '@/constants/theme';
+import { Radius, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
 /** Conteneur de liste groupée : une seule surface, séparateurs fins. */
@@ -93,7 +93,8 @@ export function SquareBadge({
 
 const styles = StyleSheet.create({
   group: {
-    borderRadius: 20,
+    // Refonte : une seule surface bordée + séparateurs fins (rayon 16).
+    borderRadius: Radius.medium,
     borderWidth: 1,
     overflow: 'hidden',
   },

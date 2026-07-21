@@ -42,33 +42,33 @@ export class ErrorBoundary extends Component<Props, State> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0B1220',
+    backgroundColor: '#0A0F1C',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 32,
     gap: 12,
   },
   title: {
-    color: '#EAF0FA',
+    color: '#EAF0FB',
     fontSize: 20,
     fontWeight: '700',
     textAlign: 'center',
   },
   body: {
-    color: '#93A1B8',
+    color: '#8695AE',
     fontSize: 15,
     lineHeight: 22,
     textAlign: 'center',
     marginBottom: 12,
   },
   button: {
-    backgroundColor: '#2DD4BF',
+    backgroundColor: '#2DE0A6',
     paddingHorizontal: 28,
     paddingVertical: 14,
     borderRadius: 16,
   },
   buttonText: {
-    color: '#04201C',
+    color: '#05231A',
     fontSize: 15,
     fontWeight: '700',
   },

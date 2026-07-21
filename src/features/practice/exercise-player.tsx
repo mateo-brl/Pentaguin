@@ -6,7 +6,7 @@ import { Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native
 import { ThemedText } from '@/components/themed-text';
 import { Button } from '@/components/ui/button';
 import { XP } from '@/config/gamification';
-import { Spacing } from '@/constants/theme';
+import { FontFamily, Spacing } from '@/constants/theme';
 import type {
   AnalysisExercise,
   OrderExercise,
@@ -88,20 +88,20 @@ function TerminalPlayer({ ex }: { ex: TerminalExercise }) {
             key={i}
             style={[
               styles.termText,
-              { color: l.kind === 'err' ? '#FB7185' : l.kind === 'out' ? '#9FE7D6' : '#EAF0FA' },
+              { color: l.kind === 'err' ? '#FF6B6B' : l.kind === 'out' ? '#7FE9C6' : '#EAF0FB' },
             ]}>
             {l.text}
           </ThemedText>
         ))}
         {!done && (
           <View style={styles.termInputRow}>
-            <ThemedText style={[styles.termText, { color: '#2DD4BF' }]}>{ex.shell} </ThemedText>
+            <ThemedText style={[styles.termText, { color: '#2DE0A6' }]}>{ex.shell} </ThemedText>
             <TextInput
               value={input}
               onChangeText={setInput}
               onSubmitEditing={submit}
               placeholder={t.practice.typeCommand}
-              placeholderTextColor="#5A6B82"
+              placeholderTextColor="#6E7C94"
               autoCapitalize="none"
               autoCorrect={false}
               style={[styles.termText, styles.termInput]}
@@ -354,24 +354,24 @@ const styles = StyleSheet.create({
   instruction: { fontSize: 15 },
   flex: { flex: 1 },
   terminal: {
-    backgroundColor: '#0B1220',
+    backgroundColor: '#05080F',
     borderRadius: 14,
     padding: Spacing.three,
     gap: 4,
     minHeight: 160,
   },
-  termText: { fontFamily: 'ui-monospace', fontSize: 12.5, lineHeight: 18 },
+  termText: { fontFamily: FontFamily.mono, fontSize: 12.5, lineHeight: 18 },
   termInputRow: { flexDirection: 'row', alignItems: 'center' },
-  termInput: { flex: 1, color: '#EAF0FA', padding: 0 },
+  termInput: { flex: 1, color: '#EAF0FB', padding: 0 },
   successBox: {
     flexDirection: 'row',
     gap: Spacing.two,
     alignItems: 'flex-start',
-    backgroundColor: '#10321F',
+    backgroundColor: '#0E2A2C',
     borderRadius: 14,
     padding: Spacing.three,
   },
-  successText: { flex: 1, color: '#DCFCE7' },
+  successText: { flex: 1, color: '#EAF0FB' },
   artifact: { borderRadius: 12, overflow: 'hidden', gap: 1 },
   artifactLine: { paddingHorizontal: Spacing.two, paddingVertical: 8 },
   feedback: { borderRadius: 12, padding: Spacing.three, gap: Spacing.one },
@@ -402,5 +402,5 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     borderRadius: 999,
   },
-  nodeText: { fontWeight: 500, lineHeight: 24 },
+  nodeText: { fontFamily: FontFamily.medium, lineHeight: 24 },
 });

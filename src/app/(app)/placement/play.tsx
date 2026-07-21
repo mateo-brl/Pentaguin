@@ -6,7 +6,7 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
 import { ProgressBar } from '@/components/ui/progress-bar';
-import { Spacing } from '@/constants/theme';
+import { FontFamily, Spacing } from '@/constants/theme';
 import type { PlacementQuestion } from '@/content/placement';
 import { usePlacementSession } from '@/features/placement/session';
 import { useTheme } from '@/hooks/use-theme';
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     gap: Spacing.three,
   },
   stem: {
-    fontWeight: 500,
+    fontFamily: FontFamily.medium,
   },
   choices: {
     gap: Spacing.two,

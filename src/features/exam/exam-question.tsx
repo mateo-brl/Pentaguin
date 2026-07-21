@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
-import { Spacing } from '@/constants/theme';
+import { FontFamily, Spacing } from '@/constants/theme';
 import type { Question } from '@/content';
 import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     gap: Spacing.three,
   },
   stem: {
-    fontWeight: 500,
+    fontFamily: FontFamily.medium,
   },
   choices: {
     gap: Spacing.two,
