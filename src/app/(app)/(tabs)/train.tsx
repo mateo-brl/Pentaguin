@@ -6,14 +6,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Row, RowGroup, SquareBadge } from '@/components/ui/row';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/theme';
+import { BottomTabInset, MaxContentWidth, Spacing, domainColor } from '@/theme';
 import { useRank } from '@/features/rank/ranks';
-import { useHues } from '@/hooks/use-hues';
 import { useStrings } from '@/i18n/strings';
 
 export default function TrainScreen() {
   const t = useStrings();
-  const { hueFor } = useHues();
   const rank = useRank();
 
   // Positionnement obligatoire avant de s'entraîner.
@@ -60,7 +58,7 @@ export default function TrainScreen() {
         </View>
         <RowGroup>
           {items.map((item, index) => {
-            const hue = hueFor(index + 1);
+            const hue = domainColor(index);
             return (
               <Row
                 key={item.key}

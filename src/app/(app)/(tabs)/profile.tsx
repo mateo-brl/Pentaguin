@@ -5,13 +5,14 @@ import { useCallback, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { StreakFlame } from '@/components/mascot/penguin';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Avatar } from '@/components/ui/avatar';
 import { ProgressBar } from '@/components/ui/progress-bar';
 import { RankBadge } from '@/components/ui/rank-badge';
 import { Row, RowGroup, SquareBadge } from '@/components/ui/row';
-import { BottomTabInset, MaxContentWidth, Radius, Spacing } from '@/theme';
+import { BottomTabInset, domainColor, MaxContentWidth, Radius, Spacing, Stroke } from '@/theme';
 import { DEFAULT_PACK_ID, getDefaultPack, lessonsByDomain } from '@/content';
 import { getCompletedLessonIds, getTotalXp } from '@/db/repositories';
 import { parseAvatar } from '@/features/account/avatar';
@@ -20,7 +21,6 @@ import { usePlacementSession } from '@/features/placement/session';
 import { useRank } from '@/features/rank/ranks';
 import { useStreak } from '@/features/gamification/use-streak';
 import { getPseudo } from '@/features/leaderboard/identity';
-import { useHues } from '@/hooks/use-hues';
 import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
 
@@ -29,7 +29,6 @@ export default function ProfileScreen() {
   const domains = [...pack.domains].sort((a, b) => a.order - b.order);
   const t = useStrings();
   const theme = useTheme();
-  const { hueFor } = useHues();
   const { me } = useSession();
   const rank = useRank();
   const version = Constants.expoConfig?.version ?? '0.0.0';
@@ -55,41 +54,11 @@ export default function ProfileScreen() {
         : t.account.emailAccount);
 
   const links = [
-    {
-      key: 'ranks',
-      icon: 'trending-up' as const,
-      title: t.ranksScreen.title,
-      href: '/ranks' as const,
-      hue: hueFor(2),
-    },
-    {
-      key: 'leaderboard',
-      icon: 'podium' as const,
-      title: t.profile.leaderboard,
-      href: '/leaderboard' as const,
-      hue: hueFor(3),
-    },
-    {
-      key: 'account',
-      icon: 'person' as const,
-      title: t.profile.account,
-      href: '/account' as const,
-      hue: hueFor(1),
-    },
-    {
-      key: 'security',
-      icon: 'lock-closed' as const,
-      title: t.profile.security,
-      href: '/security' as const,
-      hue: hueFor(0),
-    },
-    {
-      key: 'settings',
-      icon: 'settings-outline' as const,
-      title: t.settings.title,
-      href: '/settings' as const,
-      hue: hueFor(2),
-    },
+    { key: 'ranks', icon: 'trending-up' as const, title: t.ranksScreen.title, href: '/ranks' as const },
+    { key: 'leaderboard', icon: 'podium' as const, title: t.profile.leaderboard, href: '/leaderboard' as const },
+    { key: 'account', icon: 'person' as const, title: t.profile.account, href: '/account' as const },
+    { key: 'security', icon: 'lock-closed' as const, title: t.profile.security, href: '/security' as const },
+    { key: 'settings', icon: 'settings-outline' as const, title: t.settings.title, href: '/settings' as const },
   ];
 
   return (
@@ -108,22 +77,26 @@ export default function ProfileScreen() {
             />
           </RowGroup>
 
+          {/* XP domine (tuile large ambrée), le record de série l'accompagne. */}
           <View style={styles.statsRow}>
-            <View style={[styles.statTile, { backgroundColor: theme.accentSoft }]}>
-              <ThemedText type="stat" themeColor="accent" style={styles.statValue}>
-                {totalXp}
-              </ThemedText>
-              <ThemedText type="smallBold" themeColor="accent">
+            <View style={[styles.statPrimary, { backgroundColor: theme.accentSoft, borderColor: theme.accent }]}>
+              <ThemedText type="label" style={{ color: theme.accent }}>
                 {t.profile.xpTotal}
               </ThemedText>
-            </View>
-            <View style={[styles.statTile, { backgroundColor: theme.streakSoft }]}>
-              <ThemedText type="stat" themeColor="streak" style={styles.statValue}>
-                {longest}
+              <ThemedText type="stat" style={{ color: theme.accent }}>
+                {totalXp}
               </ThemedText>
-              <ThemedText type="smallBold" themeColor="streak">
+            </View>
+            <View style={[styles.statSecondary, { backgroundColor: theme.backgroundElement, borderColor: theme.border }]}>
+              <ThemedText type="label" themeColor="textSecondary">
                 {t.profile.bestStreak}
               </ThemedText>
+              <View style={styles.streakRow}>
+                <StreakFlame size={22} />
+                <ThemedText type="mono" style={{ color: theme.streak, fontSize: 22 }}>
+                  {longest}
+                </ThemedText>
+              </View>
             </View>
           </View>
 
@@ -135,7 +108,7 @@ export default function ProfileScreen() {
           {domains.length > 0 && (
           <RowGroup>
             {domains.map((domain, index) => {
-              const hue = hueFor(index);
+              const hue = domainColor(index);
               const lessons = lessonsByDomain(pack, domain.id);
               const done = lessons.filter((lesson) => completed.has(lesson.id)).length;
               return (
@@ -149,7 +122,7 @@ export default function ProfileScreen() {
                     },
                   ]}>
                   <SquareBadge color={hue.base} background={hue.soft}>
-                    {domain.code}
+                    {domain.code.replace('.0', '')}
                   </SquareBadge>
                   <View style={styles.progressBody}>
                     <View style={styles.progressHeader}>
@@ -179,8 +152,8 @@ export default function ProfileScreen() {
                 first={index === 0}
                 title={item.title}
                 leading={
-                  <SquareBadge color={item.hue.base} background={item.hue.soft}>
-                    <Ionicons name={item.icon} size={19} color={item.hue.base} />
+                  <SquareBadge color={theme.textSecondary} background={theme.backgroundSelected}>
+                    <Ionicons name={item.icon} size={19} color={theme.textSecondary} />
                   </SquareBadge>
                 }
                 onPress={() => router.push(item.href)}
@@ -194,8 +167,8 @@ export default function ProfileScreen() {
                 first
                 title={t.placement.retake}
                 leading={
-                  <SquareBadge color={hueFor(2).base} background={hueFor(2).soft}>
-                    <Ionicons name="medal" size={19} color={hueFor(2).base} />
+                  <SquareBadge color={theme.accent} background={theme.accentSoft}>
+                    <Ionicons name="refresh" size={19} color={theme.accent} />
                   </SquareBadge>
                 }
                 onPress={() => {
@@ -267,20 +240,26 @@ const styles = StyleSheet.create({
   progressTitle: {
     flex: 1,
   },
+  statPrimary: {
+    flex: 1.5,
+    borderRadius: Radius.lg,
+    borderWidth: Stroke.hair,
+    padding: Spacing.base,
+    gap: Spacing.xs,
+    justifyContent: 'center',
+  },
+  statSecondary: {
+    flex: 1,
+    borderRadius: Radius.lg,
+    borderWidth: Stroke.hair,
+    padding: Spacing.base,
+    gap: Spacing.sm,
+    justifyContent: 'center',
+  },
+  streakRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
   statsRow: {
     flexDirection: 'row',
     gap: Spacing.sm,
-  },
-  statTile: {
-    flex: 1,
-    borderRadius: Radius.lg,
-    alignItems: 'center',
-    padding: Spacing.lg,
-    gap: Spacing.xs,
-  },
-  statValue: {
-    fontSize: 36,
-    lineHeight: 42,
   },
   footer: {
     marginTop: 'auto',

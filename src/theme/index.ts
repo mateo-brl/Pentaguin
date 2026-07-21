@@ -10,7 +10,7 @@ import '@/global.css';
 
 import { duration, radius, space, stroke } from './primitives';
 
-export { Colors, Hues, type ThemeColor } from './semantic';
+export { Colors, domainColor, Hues, type ThemeColor } from './semantic';
 export {
   BottomTabInset,
   button,

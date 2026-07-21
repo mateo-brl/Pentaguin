@@ -8,13 +8,12 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { rankLabel } from '@/components/ui/rank-badge';
 import { Row, RowGroup, SquareBadge } from '@/components/ui/row';
-import { BottomTabInset, MaxContentWidth, Radius, Spacing } from '@/theme';
+import { BottomTabInset, domainColor, MaxContentWidth, Radius, Spacing } from '@/theme';
 import { DEFAULT_PACK_ID, getDefaultPack, lessonsByDomain, type Lesson } from '@/content';
 import { getCompletedLessonIds } from '@/db/repositories';
 import { isLessonUnlockedNow, useEntitlements } from '@/features/monetization';
 import { recommendedLessons } from '@/features/rank/recommend';
 import { useRank } from '@/features/rank/ranks';
-import { useHues } from '@/hooks/use-hues';
 import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
 
@@ -31,7 +30,6 @@ export default function LearnScreen() {
   const pack = getDefaultPack();
   const t = useStrings();
   const theme = useTheme();
-  const { hueFor } = useHues();
   const rank = useRank();
   const entitlements = useEntitlements();
   const domains = [...pack.domains].sort((a, b) => a.order - b.order);
@@ -50,7 +48,7 @@ export default function LearnScreen() {
   const recommended = recommendedLessons(pack, rank, { exclude: completed, limit: 4 });
   const [hero, ...rest] = recommended;
   const heroDomain = hero ? domains[domainIndex.get(hero.domainId) ?? 0] : undefined;
-  const heroHue = hueFor(hero ? (domainIndex.get(hero.domainId) ?? 0) : 0);
+  const heroHue = domainColor(hero ? (domainIndex.get(hero.domainId) ?? 0) : 0);
   const heroUnlocked = hero ? isLessonUnlockedNow(hero, entitlements) : false;
   const teaser = hero ? lessonTeaser(hero) : null;
 
@@ -119,7 +117,7 @@ export default function LearnScreen() {
                 <RowGroup>
                   {rest.map((lesson, index) => {
                     const di = domainIndex.get(lesson.domainId) ?? 0;
-                    const hue = hueFor(di);
+                    const hue = domainColor(di);
                     const unlocked = isLessonUnlockedNow(lesson, entitlements);
                     return (
                       <Row
@@ -130,7 +128,7 @@ export default function LearnScreen() {
                         subtitle={`${domains[di]?.title ?? ''} · ${t.learn.levelShort}${lesson.level} · ${lesson.estMinutes} ${t.domain.minutes}`}
                         leading={
                           <SquareBadge color={hue.base} background={hue.soft}>
-                            {domains[di]?.code.replace('.0', '') ?? ''}
+                            {lesson.level}
                           </SquareBadge>
                         }
                         trailing={
@@ -159,7 +157,7 @@ export default function LearnScreen() {
           </ThemedText>
           <RowGroup>
             {domains.map((domain, index) => {
-              const hue = hueFor(index);
+              const hue = domainColor(index);
               const lessons = lessonsByDomain(pack, domain.id);
               const done = lessons.filter((l) => completed.has(l.id)).length;
               const unlockedCount = lessons.filter((l) => isLessonUnlockedNow(l, entitlements)).length;

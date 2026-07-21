@@ -40,7 +40,7 @@ export default function DomainScreen() {
 
   return (
     <ThemedView style={styles.container}>
-      <Stack.Screen options={{ headerShown: true, title: `${domain.code} · ${domain.title}` }} />
+      <Stack.Screen options={{ headerShown: true, title: `${domain.code.replace('.0', '')} · ${domain.title}` }} />
       {lessons.length === 0 ? (
         <ThemedText type="small" themeColor="textSecondary" style={styles.empty}>
           {t.domain.empty}
@@ -60,7 +60,7 @@ export default function DomainScreen() {
                   title={lesson.title}
                   subtitle={
                     unlocked
-                      ? `${lesson.estMinutes} ${t.domain.minutes}${reco ? ` · ${t.learn.forYourRank}` : ''}`
+                      ? `${t.learn.levelShort}${lesson.level} · ${lesson.estMinutes} ${t.domain.minutes}${reco ? ` · ${t.learn.forYourRank}` : ''}`
                       : t.lesson.locked
                   }
                   leading={

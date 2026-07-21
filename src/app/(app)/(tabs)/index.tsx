@@ -22,7 +22,6 @@ import { isLessonUnlockedNow, useEntitlements } from '@/features/monetization';
 import { useQuizSession } from '@/features/quiz/session';
 import { recommendedLessons } from '@/features/rank/recommend';
 import { useRank } from '@/features/rank/ranks';
-import { useHues } from '@/hooks/use-hues';
 import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
 
@@ -30,7 +29,6 @@ export default function HomeScreen() {
   const pack = getDefaultPack();
   const t = useStrings();
   const theme = useTheme();
-  const { hueFor } = useHues();
   const entitlements = useEntitlements();
   const rank = useRank();
   const { current } = useStreak();
@@ -49,7 +47,6 @@ export default function HomeScreen() {
 
   const today = localDateKey();
   const challengeDone = challengeDoneDate === today;
-  const challengeHue = hueFor(1); // violet
   const challengeQuestions = dailyChallengeQuestions(pack, entitlements, today);
   const hasChallenge = challengeQuestions.length > 0;
 
@@ -185,24 +182,24 @@ export default function HomeScreen() {
               onPress={startChallenge}
               style={({ pressed }) => [
                 styles.challengeTile,
-                { backgroundColor: challengeDone ? theme.successSoft : challengeHue.soft },
+                { backgroundColor: challengeDone ? theme.successSoft : theme.accentSoft },
                 pressed && !challengeDone && styles.pressed,
               ]}>
               <View
                 style={[
                   styles.challengeIcon,
-                  { backgroundColor: challengeDone ? theme.success : challengeHue.base },
+                  { backgroundColor: challengeDone ? theme.success : theme.accent },
                 ]}>
                 <Ionicons
                   name={challengeDone ? 'checkmark' : 'flash'}
                   size={20}
-                  color={challengeDone ? theme.successSoft : challengeHue.soft}
+                  color={challengeDone ? theme.successSoft : theme.onAccent}
                 />
               </View>
               <View style={styles.challengeBody}>
                 <ThemedText
                   type="smallBold"
-                  style={{ color: challengeDone ? theme.success : challengeHue.base, fontSize: 15 }}>
+                  style={{ color: challengeDone ? theme.success : theme.accent, fontSize: 15 }}>
                   {challengeDone ? t.home.challengeDone : t.home.dailyChallenge}
                 </ThemedText>
                 {!challengeDone && (
@@ -212,8 +209,8 @@ export default function HomeScreen() {
                 )}
               </View>
               {!challengeDone && (
-                <View style={[styles.playPill, { backgroundColor: challengeHue.base }]}>
-                  <ThemedText type="smallBold" style={{ color: theme.background }}>
+                <View style={[styles.playPill, { backgroundColor: theme.accent }]}>
+                  <ThemedText type="smallBold" style={{ color: theme.onAccent }}>
                     {t.home.play}
                   </ThemedText>
                 </View>

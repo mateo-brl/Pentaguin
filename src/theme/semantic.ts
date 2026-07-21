@@ -75,16 +75,17 @@ export const Colors = {
 export type ThemeColor = keyof typeof Colors.dark & keyof typeof Colors.light;
 
 /**
- * Teintes par thème (les 8 domaines), cycle stable par index. Sans violet, et
- * choisies pour ne pas être confondues avec l'accent ambre ni le succès menthe.
+ * Petites teintes décoratives (usages ponctuels : avatars). Volontairement
+ * restreintes, sans violet. Pour les 8 DOMAINES, on n'utilise PAS ceci mais la
+ * rampe cohérente `domainColor` ci-dessous.
  */
 export const Hues = {
   dark: [
-    { base: '#5AA7F5', soft: '#12233D' }, // bleu glacier
-    { base: '#7FC8E8', soft: '#102733' }, // cyan doux
-    { base: '#E08A3C', soft: '#2E1E0C' }, // orange brûlé
-    { base: '#8E9AAB', soft: '#1A2233' }, // acier
-    { base: '#D98C9A', soft: '#301A20' }, // rose poudré
+    { base: '#5AA7F5', soft: '#12233D' },
+    { base: '#7FC8E8', soft: '#102733' },
+    { base: '#E08A3C', soft: '#2E1E0C' },
+    { base: '#8E9AAB', soft: '#1A2233' },
+    { base: '#D98C9A', soft: '#301A20' },
   ],
   light: [
     { base: '#2E7CE6', soft: '#E1EDFC' },
@@ -94,3 +95,26 @@ export const Hues = {
     { base: '#C05F72', soft: '#FAE4E8' },
   ],
 } as const;
+
+/**
+ * Rampe des 8 domaines — UNE seule famille froide (bleu → acier glacier),
+ * dégradé maîtrisé, jamais un arc-en-ciel. Aucune de ces teintes n'entre en
+ * concurrence avec l'accent ambre (action) ni la menthe (succès). Le fond de
+ * pastille est la même teinte très diluée : les badges se lisent comme un
+ * système, pas comme huit couleurs qui se battent.
+ */
+const DOMAIN_RAMP = [
+  '#4C74AD',
+  '#4881AC',
+  '#458DAB',
+  '#4A98A9',
+  '#579FA6',
+  '#69A8AE',
+  '#7EB1BC',
+  '#93BCC9',
+] as const;
+
+export function domainColor(index: number): { base: string; soft: string } {
+  const base = DOMAIN_RAMP[((index % DOMAIN_RAMP.length) + DOMAIN_RAMP.length) % DOMAIN_RAMP.length];
+  return { base, soft: `${base}22` }; // fond = même teinte à ~13 %
+}

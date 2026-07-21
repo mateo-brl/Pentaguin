@@ -210,14 +210,14 @@ const isPseudo = (value) => typeof value === 'string' && /^[\p{L}\p{N} _.-]{3,20
 // Avatar = « <icône>.<teinte> » (ex. shield.3). Icône dans la liste blanche,
 // teinte 0-4 (miroir du barème de teintes de l'app). Rendu 100 % côté client.
 const AVATAR_ICONS = new Set([
+  'penguin',
   'initials',
-  'shield',
   'terminal',
   'bug',
   'fingerprint',
-  'lock',
   'flash',
   'rocket',
+  'shield',
 ]);
 const isAvatar = (value) => {
   if (typeof value !== 'string') return false;

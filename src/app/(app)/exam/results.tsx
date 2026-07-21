@@ -115,7 +115,7 @@ export default function ExamResultsScreen() {
                 <View style={styles.domainHeader}>
                   <ThemedText type="small" style={styles.domainTitle}>
                     <ThemedText type="mono" themeColor="accent" style={styles.domainCode}>
-                      {domain.code}
+                      {domain.code.replace('.0', '')}
                     </ThemedText>
                     {'  '}
                     {domain.title}
