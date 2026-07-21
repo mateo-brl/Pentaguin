@@ -8,17 +8,17 @@ import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
 import { Radius, Spacing } from '@/theme';
 import { completeOnboarding } from '@/features/settings/first-run';
-import { useHues } from '@/hooks/use-hues';
+import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
 
 export default function OnboardingScreen() {
   const t = useStrings();
-  const { hueFor } = useHues();
+  const theme = useTheme();
 
   const bullets = [
-    { icon: 'book' as const, text: t.onboarding.bullet1, hue: hueFor(0) },
-    { icon: 'timer' as const, text: t.onboarding.bullet2, hue: hueFor(3) },
-    { icon: 'trophy' as const, text: t.onboarding.bullet3, hue: hueFor(2) },
+    { icon: 'book' as const, text: t.onboarding.bullet1 },
+    { icon: 'timer' as const, text: t.onboarding.bullet2 },
+    { icon: 'trophy' as const, text: t.onboarding.bullet3 },
   ];
 
   return (
@@ -38,8 +38,8 @@ export default function OnboardingScreen() {
           <View style={styles.bullets}>
             {bullets.map((bullet) => (
               <View key={bullet.icon} style={styles.bullet}>
-                <View style={[styles.badge, { backgroundColor: bullet.hue.soft }]}>
-                  <Ionicons name={bullet.icon} size={22} color={bullet.hue.base} />
+                <View style={[styles.badge, { backgroundColor: theme.accentSoft }]}>
+                  <Ionicons name={bullet.icon} size={22} color={theme.accent} />
                 </View>
                 <ThemedText type="small" style={styles.bulletText}>
                   {bullet.text}

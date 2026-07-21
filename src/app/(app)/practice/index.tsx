@@ -5,11 +5,10 @@ import { ScrollView, StyleSheet } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Row, RowGroup, SquareBadge } from '@/components/ui/row';
-import { Spacing } from '@/theme';
+import { Spacing, domainColor } from '@/theme';
 import { getPracticeExercises, type PracticeExercise } from '@/content/practice';
 import { isRecommended } from '@/features/rank/recommend';
 import { useRank } from '@/features/rank/ranks';
-import { useHues } from '@/hooks/use-hues';
 import { useStrings } from '@/i18n/strings';
 
 const ICONS: Record<PracticeExercise['kind'], keyof typeof Ionicons.glyphMap> = {
@@ -21,7 +20,6 @@ const ICONS: Record<PracticeExercise['kind'], keyof typeof Ionicons.glyphMap> = 
 
 export default function PracticeListScreen() {
   const t = useStrings();
-  const { hueFor } = useHues();
   const rank = useRank();
   const exercises = getPracticeExercises();
 
@@ -41,7 +39,7 @@ export default function PracticeListScreen() {
         </ThemedText>
         <RowGroup>
           {exercises.map((ex, index) => {
-            const hue = hueFor(index);
+            const hue = domainColor(index);
             const reco = rank != null && isRecommended(ex, rank);
             return (
               <Row

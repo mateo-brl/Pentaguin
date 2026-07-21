@@ -5,14 +5,14 @@
  * validation serveur (backend/server.mjs : AVATAR_ICONS, teinte 0-4).
  */
 export const AVATAR_ICONS = [
+  'penguin',
   'initials',
-  'shield',
   'terminal',
   'bug',
   'fingerprint',
-  'lock',
   'flash',
   'rocket',
+  'shield',
 ] as const;
 
 export type AvatarIcon = (typeof AVATAR_ICONS)[number];
@@ -22,19 +22,18 @@ export const AVATAR_COLORS = 5;
 
 export type AvatarSpec = { icon: AvatarIcon; color: number };
 
-const IONICON: Record<Exclude<AvatarIcon, 'initials'>, string> = {
+const IONICON: Partial<Record<AvatarIcon, string>> = {
   shield: 'shield',
   terminal: 'terminal',
   bug: 'bug',
   fingerprint: 'finger-print',
-  lock: 'lock-closed',
   flash: 'flash',
   rocket: 'rocket',
 };
 
-/** Nom Ionicons de l'icône, ou null si l'avatar affiche des initiales. */
+/** Nom Ionicons, ou null pour les rendus spéciaux (initiales, manchot). */
 export function ioniconFor(icon: AvatarIcon): string | null {
-  return icon === 'initials' ? null : IONICON[icon];
+  return IONICON[icon] ?? null;
 }
 
 export function serializeAvatar(spec: AvatarSpec): string {
@@ -49,7 +48,7 @@ function hashString(value: string): number {
 
 /** Avatar par défaut déterministe, dérivé du pseudo (avant tout choix explicite). */
 export function defaultAvatar(pseudo: string): AvatarSpec {
-  return { icon: 'initials', color: hashString(pseudo || 'P') % AVATAR_COLORS };
+  return { icon: 'penguin', color: hashString(pseudo || 'P') % AVATAR_COLORS };
 }
 
 export function parseAvatar(value: string | null | undefined, pseudo: string): AvatarSpec {
