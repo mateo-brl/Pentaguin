@@ -95,9 +95,11 @@ la prépa certif est **un levier, pas la seule voie**.
   verrouillage anti-brute-force.
 - **Freemium** : 2 thèmes gratuits + avant-goût de chaque thème = **28 leçons/64
   gratuites** ; **Pentaguin Pro** = **achat unique** (RevenueCat) pour le reste.
-- **Bilingue FR/EN** : choix de la langue **au premier lancement**, modifiable à
-  tout moment dans Réglages (l'UI est traduite ; le contenu pédagogique est
-  actuellement rédigé en français).
+- **Entièrement bilingue FR/EN** : choix de la langue **au premier lancement**,
+  modifiable à tout moment dans Réglages. L'interface **ET tout le contenu**
+  (64 leçons, 450 questions de positionnement, 32 exercices) existent dans les
+  deux langues, avec les mêmes identifiants — changer de langue ne fait perdre ni
+  la progression ni le rang.
 
 **Ce qui reste (priorités) :**
 - **Rétention** (priorité produit n°1, cf. stratégie) : renforcer séries, rappels,
