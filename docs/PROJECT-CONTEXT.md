@@ -31,7 +31,40 @@ répond à ça avec trois idées fortes :
 
 **Public :** étudiants, personnes qui préparent une certif (ex. CompTIA Security+),
 passionnés — du niveau zéro à l'expert. **Langue :** contenu en **français**, la
-terminologie technique en **anglais** (c'est la langue du métier).
+terminologie technique en **anglais** (c'est la langue du métier). L'app est
+bilingue FR/EN (langue choisie au premier lancement, modifiable dans Réglages).
+
+## Stratégie — analyse marché (juillet 2026)
+
+À garder en tête pour tout conseil produit/business :
+
+1. **Notre marché réel.** Les chiffres spectaculaires du « marché cyber gamifié »
+   (croissance ~52 %, ~51 Md$) concernent la **sensibilisation en entreprise**
+   (B2B, type KnowBe4) — **ce n'est PAS notre marché**. Le nôtre, ce sont les
+   **apprenants individuels** : voisins directs de TryHackMe / Hack The Box / apps
+   de prépa certif. Marché **plus petit et déjà occupé**.
+2. **Différenciation principale = le FRANCOPHONE.** L'anglais est un océan rouge
+   (App Store saturé, TryHackMe/HTB écrasent tout). Le **français est un désert** :
+   quasi personne en app mobile gamifiée offline. Les concurrents FR sont soit de
+   l'e-learning institutionnel austère (SecNumacademie/ANSSI), soit des formations
+   CPF longues et chères. **C'est notre seul terrain avec un avantage de départ →
+   viser le francophone d'abord**, du débutant à l'expert.
+3. **Monétisation mixte, pas mono-certif.** La majorité des apps solo gagnent peu.
+   Plusieurs leviers complémentaires : **abonnement Pro** pour l'app complète
+   (la rétention est le nerf de la guerre) + des **« parcours certif »** (Security+
+   et autres) vendus comme packs à forte valeur perçue et décision d'achat rapide.
+   ⚠️ **L'achat unique actuel plafonne le revenu par client → à repenser.**
+   Toujours dans l'esprit **monétisation douce** (1 proposition max, rien de forcé).
+4. **La RÉTENTION est la priorité produit n°1.** C'est le point faible structurel
+   des apps « apprendre pour le plaisir ». Séries, rangs, classement, sessions
+   courtes, rappels : à soigner **autant que le contenu**.
+5. **Atout à exploiter : le contenu est de la DONNÉE** (JSON/Zod) → élargir
+   thèmes, niveaux et **langues** coûte peu. Le vrai goulot **n'est pas le code**
+   mais la **DÉCOUVRABILITÉ** (SEO App Store, communautés cyber FR, Reddit,
+   Discord, YouTube) : à traiter avec autant d'énergie que le produit.
+
+La vision reste **large** (« Duolingo de la cyber », débutant → expert, 8 thèmes) :
+la prépa certif est **un levier, pas la seule voie**.
 
 ## Qui je suis / mon contexte de dev (non déductible du code)
 
@@ -62,13 +95,22 @@ terminologie technique en **anglais** (c'est la langue du métier).
   verrouillage anti-brute-force.
 - **Freemium** : 2 thèmes gratuits + avant-goût de chaque thème = **28 leçons/64
   gratuites** ; **Pentaguin Pro** = **achat unique** (RevenueCat) pour le reste.
+- **Bilingue FR/EN** : choix de la langue **au premier lancement**, modifiable à
+  tout moment dans Réglages (l'UI est traduite ; le contenu pédagogique est
+  actuellement rédigé en français).
 
 **Ce qui reste (priorités) :**
+- **Rétention** (priorité produit n°1, cf. stratégie) : renforcer séries, rappels,
+  sessions courtes, boucles de retour.
+- **Découvrabilité / go-to-market francophone** : SEO App Store FR, communautés
+  cyber francophones (Reddit, Discord, YouTube) — le vrai goulot.
+- **Repenser le modèle de revenus** : abonnement + parcours certif plutôt que le
+  seul achat unique (décision business à prendre).
 - **Relecture humaine** du contenu généré (tags `lesson-v1`, `placement-v1`,
-  `practice-v1`) — le contenu a été rédigé par des agents IA puis relu par d'autres
-  agents, mais pas encore par moi.
+  `practice-v1`) — rédigé par des agents IA puis relu par d'autres agents, mais
+  pas encore par moi.
 - **Finitions App Store** pour la sortie publique : questionnaire « App Privacy »,
-  captures d'écran, description.
+  captures d'écran, description (à optimiser pour le SEO FR).
 - **Google Sign-In** (repoussé, attend un identifiant client Google).
 - Examens blancs complets + extension du contenu ; orientation par rang à affiner.
 

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { activeProvider } from '@/features/monetization';
 import { SessionProvider, useSession } from '@/features/account/session';
 import { useHasSeenOnboarding } from '@/features/settings/first-run';
+import { useHasChosenLocale } from '@/features/settings/locale-choice';
 import { initThemeMode } from '@/features/settings/theme-mode';
 import { ErrorBoundary } from '@/features/telemetry/error-boundary';
 import { installErrorReporter } from '@/features/telemetry/report';
@@ -18,9 +19,12 @@ import { initLocale } from '@/i18n/strings';
 function RootNavigator() {
   const { status } = useSession();
   const onboardingSeen = useHasSeenOnboarding();
+  const localeChosen = useHasChosenLocale();
 
   // status 'loading' : le splash natif reste affiché (voir SessionProvider).
   if (status === 'loading') return null;
+
+  const signedOut = status === 'signedOut';
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
@@ -30,10 +34,14 @@ function RootNavigator() {
       <Stack.Protected guard={status === 'needsPseudo'}>
         <Stack.Screen name="choose-pseudo" />
       </Stack.Protected>
-      <Stack.Protected guard={status === 'signedOut' && !onboardingSeen}>
+      {/* Tout premier écran de l'app : la langue, avant même l'onboarding. */}
+      <Stack.Protected guard={signedOut && !localeChosen}>
+        <Stack.Screen name="choose-language" />
+      </Stack.Protected>
+      <Stack.Protected guard={signedOut && localeChosen && !onboardingSeen}>
         <Stack.Screen name="onboarding" />
       </Stack.Protected>
-      <Stack.Protected guard={status === 'signedOut' && onboardingSeen}>
+      <Stack.Protected guard={signedOut && localeChosen && onboardingSeen}>
         <Stack.Screen name="sign-in" />
       </Stack.Protected>
     </Stack>
