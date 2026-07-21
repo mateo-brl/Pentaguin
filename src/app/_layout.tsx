@@ -1,3 +1,4 @@
+import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import { useEffect, useState } from 'react';
 
@@ -57,9 +58,24 @@ export default function RootLayout() {
     return true;
   });
 
+  // Polices chargées à l'EXÉCUTION : elles voyagent comme des assets d'EAS
+  // Update, donc modifiables en OTA sans rebuild natif. On ne rend rien tant
+  // qu'elles ne sont pas prêtes (le splash natif reste affiché) — sinon un
+  // premier rendu en police système « flasherait ».
+  const [fontsLoaded] = useFonts({
+    'SpaceGrotesk-Regular': require('../../assets/fonts/SpaceGrotesk-Regular.ttf'),
+    'SpaceGrotesk-Medium': require('../../assets/fonts/SpaceGrotesk-Medium.ttf'),
+    'SpaceGrotesk-SemiBold': require('../../assets/fonts/SpaceGrotesk-SemiBold.ttf'),
+    'SpaceGrotesk-Bold': require('../../assets/fonts/SpaceGrotesk-Bold.ttf'),
+    'JetBrainsMono-Regular': require('../../assets/fonts/JetBrainsMono-Regular.ttf'),
+    'JetBrainsMono-Bold': require('../../assets/fonts/JetBrainsMono-Bold.ttf'),
+  });
+
   useEffect(() => {
     void activeProvider.init();
   }, []);
+
+  if (!fontsLoaded) return null;
 
   return (
     <ErrorBoundary>

@@ -11,7 +11,7 @@ import { Avatar } from '@/components/ui/avatar';
 import { ProgressBar } from '@/components/ui/progress-bar';
 import { RankBadge } from '@/components/ui/rank-badge';
 import { Row, RowGroup, SquareBadge } from '@/components/ui/row';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+import { BottomTabInset, MaxContentWidth, Radius, Spacing } from '@/theme';
 import { DEFAULT_PACK_ID, getDefaultPack, lessonsByDomain } from '@/content';
 import { getCompletedLessonIds, getTotalXp } from '@/db/repositories';
 import { parseAvatar } from '@/features/account/avatar';
@@ -231,52 +231,52 @@ const styles = StyleSheet.create({
     maxWidth: MaxContentWidth,
   },
   scroll: {
-    paddingHorizontal: Spacing.four,
-    paddingTop: Spacing.four,
-    paddingBottom: BottomTabInset + Spacing.three,
-    gap: Spacing.three,
+    paddingHorizontal: Spacing.lg,
+    paddingTop: Spacing.lg,
+    paddingBottom: BottomTabInset + Spacing.base,
+    gap: Spacing.base,
   },
   heroGroup: {
-    marginBottom: Spacing.one,
+    marginBottom: Spacing.xs,
   },
   sectionTitle: {
     fontSize: 15,
-    marginTop: Spacing.one,
-    marginBottom: -Spacing.one,
+    marginTop: Spacing.xs,
+    marginBottom: -Spacing.xs,
   },
   linksGroup: {
-    marginTop: Spacing.one,
+    marginTop: Spacing.xs,
   },
   progressRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: Spacing.three,
-    paddingHorizontal: Spacing.three,
-    paddingVertical: 12,
+    gap: Spacing.base,
+    paddingHorizontal: Spacing.base,
+    paddingVertical: Spacing.md,
   },
   progressBody: {
     flex: 1,
-    gap: 7,
+    gap: Spacing.sm,
   },
   progressHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    gap: Spacing.two,
+    gap: Spacing.sm,
   },
   progressTitle: {
     flex: 1,
   },
   statsRow: {
     flexDirection: 'row',
-    gap: Spacing.two,
+    gap: Spacing.sm,
   },
   statTile: {
     flex: 1,
-    borderRadius: 24,
+    borderRadius: Radius.lg,
     alignItems: 'center',
-    padding: Spacing.four,
-    gap: Spacing.one,
+    padding: Spacing.lg,
+    gap: Spacing.xs,
   },
   statValue: {
     fontSize: 36,
@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     marginTop: 'auto',
-    gap: Spacing.one,
+    gap: Spacing.xs,
   },
   disclaimer: {
     fontSize: 12,

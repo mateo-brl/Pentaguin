@@ -1,7 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { FontFamily } from '@/constants/theme';
+import { FontFamily } from '@/theme';
 import { useHues } from '@/hooks/use-hues';
 
 import { initials, ioniconFor, type AvatarSpec } from '@/features/account/avatar';

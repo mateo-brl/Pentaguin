@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { Button } from '@/components/ui/button';
-import { FontFamily, Spacing } from '@/constants/theme';
+import { FontFamily, Radius, Spacing } from '@/theme';
 import type { Question } from '@/content';
 import { errorFeedback, successFeedback } from '@/features/haptics/haptics';
 import { useTheme } from '@/hooks/use-theme';
@@ -121,23 +121,23 @@ export function QuestionCard({ question, onAnswered }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    gap: Spacing.three,
+    gap: Spacing.base,
   },
   stem: {
     fontFamily: FontFamily.medium,
   },
   choices: {
-    gap: Spacing.two,
+    gap: Spacing.sm,
   },
   choice: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: Spacing.three,
-    borderRadius: 16,
+    gap: Spacing.base,
+    borderRadius: Radius.md,
     borderWidth: 2,
     borderBottomWidth: 4,
-    paddingHorizontal: Spacing.three,
-    paddingVertical: 13,
+    paddingHorizontal: Spacing.base,
+    paddingVertical: Spacing.md,
   },
   pressed: {
     opacity: 0.85,
@@ -150,8 +150,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   feedback: {
-    borderRadius: 12,
-    padding: Spacing.three,
-    gap: Spacing.one,
+    borderRadius: Radius.sm,
+    padding: Spacing.base,
+    gap: Spacing.xs,
   },
 });

@@ -6,7 +6,7 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
 import { ProgressBar } from '@/components/ui/progress-bar';
-import { FontFamily, Spacing } from '@/constants/theme';
+import { FontFamily, Radius, Spacing } from '@/theme';
 import type { PlacementQuestion } from '@/content/placement';
 import { usePlacementSession } from '@/features/placement/session';
 import { useTheme } from '@/hooks/use-theme';
@@ -103,13 +103,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    padding: Spacing.four,
-    gap: Spacing.three,
+    padding: Spacing.lg,
+    gap: Spacing.base,
   },
   progressRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: Spacing.three,
+    gap: Spacing.base,
   },
   progressTrack: {
     flex: 1,
@@ -118,23 +118,23 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
   card: {
-    gap: Spacing.three,
+    gap: Spacing.base,
   },
   stem: {
     fontFamily: FontFamily.medium,
   },
   choices: {
-    gap: Spacing.two,
+    gap: Spacing.sm,
   },
   choice: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: Spacing.three,
-    borderRadius: 16,
+    gap: Spacing.base,
+    borderRadius: Radius.md,
     borderWidth: 2,
     borderBottomWidth: 4,
-    paddingHorizontal: Spacing.three,
-    paddingVertical: 13,
+    paddingHorizontal: Spacing.base,
+    paddingVertical: Spacing.md,
   },
   pressed: {
     opacity: 0.85,

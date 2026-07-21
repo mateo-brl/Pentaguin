@@ -1,4 +1,5 @@
 import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
+import { Radius, Spacing } from '@/theme';
 
 import { ThemedText } from '@/components/themed-text';
 import { tapFeedback } from '@/features/haptics/haptics';
@@ -92,17 +93,17 @@ const styles = StyleSheet.create({
     right: 0,
     top: EDGE,
     bottom: 0,
-    borderRadius: 16,
+    borderRadius: Radius.md,
   },
   face: {
     position: 'absolute',
     left: 0,
     right: 0,
     height: FACE,
-    borderRadius: 16,
+    borderRadius: Radius.md,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: Spacing.lg,
   },
   ghost: {
     height: 44,

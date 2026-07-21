@@ -5,7 +5,7 @@ import { ScrollView, StyleSheet } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Row, RowGroup, SquareBadge } from '@/components/ui/row';
-import { Spacing } from '@/constants/theme';
+import { Spacing } from '@/theme';
 import { getPracticeExercises, type PracticeExercise } from '@/content/practice';
 import { isRecommended } from '@/features/rank/recommend';
 import { useRank } from '@/features/rank/ranks';
@@ -66,5 +66,5 @@ export default function PracticeListScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  content: { padding: Spacing.four, gap: Spacing.three },
+  content: { padding: Spacing.lg, gap: Spacing.base },
 });

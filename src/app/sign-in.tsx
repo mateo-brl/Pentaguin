@@ -8,7 +8,7 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Spacing } from '@/constants/theme';
+import { Spacing } from '@/theme';
 import {
   ApiError,
   isMfaChallenge,
@@ -443,18 +443,18 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    padding: Spacing.four,
-    gap: Spacing.three,
+    padding: Spacing.lg,
+    gap: Spacing.base,
     flexGrow: 1,
     justifyContent: 'center',
   },
   header: {
-    gap: Spacing.one,
-    marginBottom: Spacing.two,
+    gap: Spacing.xs,
+    marginBottom: Spacing.sm,
   },
   divider: {
     alignItems: 'center',
-    paddingVertical: Spacing.one,
+    paddingVertical: Spacing.xs,
   },
   appleButton: {
     height: 52,

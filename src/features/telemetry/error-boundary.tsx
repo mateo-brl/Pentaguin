@@ -1,5 +1,7 @@
+import { palette } from '@/theme/primitives';
 import { Component, type ReactNode } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Radius, Spacing } from '@/theme';
 
 import { getStrings } from '@/i18n/strings';
 
@@ -42,33 +44,33 @@ export class ErrorBoundary extends Component<Props, State> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0A0F1C',
+    backgroundColor: palette.ink800,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 32,
-    gap: 12,
+    padding: Spacing.xl,
+    gap: Spacing.md,
   },
   title: {
-    color: '#EAF0FB',
+    color: palette.glacier100,
     fontSize: 20,
     fontWeight: '700',
     textAlign: 'center',
   },
   body: {
-    color: '#8695AE',
+    color: palette.glacier300,
     fontSize: 15,
     lineHeight: 22,
     textAlign: 'center',
-    marginBottom: 12,
+    marginBottom: Spacing.md,
   },
   button: {
-    backgroundColor: '#2DE0A6',
-    paddingHorizontal: 28,
-    paddingVertical: 14,
-    borderRadius: 16,
+    backgroundColor: palette.amber500,
+    paddingHorizontal: Spacing.xl,
+    paddingVertical: Spacing.md,
+    borderRadius: Radius.md,
   },
   buttonText: {
-    color: '#05231A',
+    color: palette.onAmber,
     fontSize: 15,
     fontWeight: '700',
   },

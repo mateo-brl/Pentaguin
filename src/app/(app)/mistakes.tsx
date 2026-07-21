@@ -6,7 +6,7 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Spacing } from '@/constants/theme';
+import { Spacing } from '@/theme';
 import { DEFAULT_PACK_ID, getDefaultPack } from '@/content';
 import { getWrongQuestionIds } from '@/db/repositories';
 import { useEntitlements } from '@/features/monetization';
@@ -75,15 +75,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   empty: {
-    padding: Spacing.four,
+    padding: Spacing.lg,
     textAlign: 'center',
   },
   list: {
-    padding: Spacing.four,
-    gap: Spacing.two,
+    padding: Spacing.lg,
+    gap: Spacing.sm,
   },
   header: {
-    gap: Spacing.three,
-    marginBottom: Spacing.two,
+    gap: Spacing.base,
+    marginBottom: Spacing.sm,
   },
 });

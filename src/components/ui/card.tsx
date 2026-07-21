@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
-import { Spacing } from '@/constants/theme';
+import { Radius, Spacing } from '@/theme';
 import { useTheme } from '@/hooks/use-theme';
 
 type Props = {
@@ -44,10 +44,10 @@ export function Card({ children, onPress, disabled, selected, background, style 
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 20,
+    borderRadius: Radius.lg,
     borderWidth: 1,
-    padding: Spacing.three,
-    gap: Spacing.one,
+    padding: Spacing.base,
+    gap: Spacing.xs,
   },
   pressed: {
     opacity: 0.85,

@@ -10,6 +10,7 @@ import {
 } from 'react';
 import { Animated, Pressable, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Radius, Spacing } from '@/theme';
 
 import { ThemedText } from '@/components/themed-text';
 import { useTheme } from '@/hooks/use-theme';
@@ -98,7 +99,7 @@ function ToastView({
       style={[styles.wrap, { top: insets.top + 8, opacity, transform: [{ translateY }] }]}>
       <Pressable
         onPress={onPress}
-        style={[styles.toast, { backgroundColor: theme.backgroundElement, borderColor: theme.border }]}>
+        style={[styles.toast, { shadowColor: theme.shadow }, { backgroundColor: theme.backgroundElement, borderColor: theme.border }]}>
         <Ionicons name={icon} size={20} color={accent} />
         <ThemedText type="smallBold" style={styles.text}>
           {toast.message}
@@ -119,13 +120,13 @@ const styles = StyleSheet.create({
   toast: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    gap: Spacing.md,
     maxWidth: 480,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderRadius: 14,
+    paddingHorizontal: Spacing.base,
+    paddingVertical: Spacing.md,
+    borderRadius: Radius.md,
     borderWidth: StyleSheet.hairlineWidth,
-    shadowColor: '#000',
+    
     shadowOpacity: 0.15,
     shadowRadius: 12,
     shadowOffset: { width: 0, height: 4 },

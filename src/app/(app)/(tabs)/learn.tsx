@@ -8,7 +8,7 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { rankLabel } from '@/components/ui/rank-badge';
 import { Row, RowGroup, SquareBadge } from '@/components/ui/row';
-import { BottomTabInset, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
+import { BottomTabInset, MaxContentWidth, Radius, Spacing } from '@/theme';
 import { DEFAULT_PACK_ID, getDefaultPack, lessonsByDomain, type Lesson } from '@/content';
 import { getCompletedLessonIds } from '@/db/repositories';
 import { isLessonUnlockedNow, useEntitlements } from '@/features/monetization';
@@ -203,29 +203,29 @@ const styles = StyleSheet.create({
   container: { flex: 1, flexDirection: 'row', justifyContent: 'center' },
   safeArea: { flex: 1, maxWidth: MaxContentWidth },
   content: {
-    paddingHorizontal: Spacing.four,
-    paddingBottom: BottomTabInset + Spacing.three,
-    gap: Spacing.three,
+    paddingHorizontal: Spacing.lg,
+    paddingBottom: BottomTabInset + Spacing.base,
+    gap: Spacing.base,
   },
-  header: { paddingTop: Spacing.five, paddingBottom: Spacing.one, gap: Spacing.one },
+  header: { paddingTop: Spacing.xl, paddingBottom: Spacing.xs, gap: Spacing.xs },
   title: { fontSize: 28, lineHeight: 34 },
   heroCard: {
-    borderRadius: Radius.large,
+    borderRadius: Radius.lg,
     borderWidth: 1.5,
-    padding: Spacing.three,
-    gap: Spacing.two,
+    padding: Spacing.base,
+    gap: Spacing.sm,
   },
   heroTop: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   heroFoot: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: Spacing.one,
+    marginTop: Spacing.xs,
   },
-  startPill: { paddingHorizontal: Spacing.three, paddingVertical: 9, borderRadius: Radius.pill },
+  startPill: { paddingHorizontal: Spacing.base, paddingVertical: Spacing.sm, borderRadius: Radius.pill },
   pressed: { opacity: 0.9, transform: [{ scale: 0.995 }] },
-  caughtUp: { borderRadius: Radius.medium, borderWidth: 1, padding: Spacing.three, gap: Spacing.one },
-  sectionLabel: { marginTop: Spacing.two },
-  proChip: { paddingHorizontal: Spacing.two, paddingVertical: 4, borderRadius: Radius.pill },
+  caughtUp: { borderRadius: Radius.md, borderWidth: 1, padding: Spacing.base, gap: Spacing.xs },
+  sectionLabel: { marginTop: Spacing.sm },
+  proChip: { paddingHorizontal: Spacing.sm, paddingVertical: Spacing.xs, borderRadius: Radius.pill },
   progress: { fontSize: 13 },
 });

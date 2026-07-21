@@ -7,7 +7,7 @@ import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ProgressBar } from '@/components/ui/progress-bar';
-import { Spacing } from '@/constants/theme';
+import { Spacing } from '@/theme';
 import { DEFAULT_PACK_ID, getDefaultPack } from '@/content';
 import { getCompletedLessonIds } from '@/db/repositories';
 import { useExamSession } from '@/features/exam/session';
@@ -178,27 +178,27 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    padding: Spacing.four,
-    gap: Spacing.three,
+    padding: Spacing.lg,
+    gap: Spacing.base,
   },
   hero: {
     alignItems: 'center',
-    gap: Spacing.two,
-    paddingVertical: Spacing.five,
+    gap: Spacing.sm,
+    paddingVertical: Spacing.xl,
   },
   domains: {
     padding: 0,
     gap: 0,
   },
   domainRow: {
-    padding: Spacing.three,
-    gap: Spacing.two,
+    padding: Spacing.base,
+    gap: Spacing.sm,
   },
   domainHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    gap: Spacing.two,
+    gap: Spacing.sm,
   },
   domainTitle: {
     flex: 1,

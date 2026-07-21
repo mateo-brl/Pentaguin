@@ -9,7 +9,7 @@ import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
 import { RankCrest, rankLabel } from '@/components/ui/rank-badge';
 import { Duration, Motion } from '@/constants/motion';
-import { Spacing } from '@/constants/theme';
+import { Radius, Spacing } from '@/theme';
 import { successFeedback } from '@/features/haptics/haptics';
 import { usePlacementSession } from '@/features/placement/session';
 import { rankById } from '@/features/rank/ranks';
@@ -56,7 +56,7 @@ export default function PlacementResultScreen() {
           {/* Le manchot célèbre la montée de rang : c'est LE moment généreux. */}
           <Penguin state="rankup" size={132} animation="pop" />
 
-          <Animated.View style={{ opacity, transform: [{ scale }], alignItems: 'center', gap: Spacing.two }}>
+          <Animated.View style={{ opacity, transform: [{ scale }], alignItems: 'center', gap: Spacing.sm }}>
             <RankCrest rankId={resultRank} size={104} />
             <ThemedText type="title" style={{ color: rank.color }}>
               {rankLabel(resultRank, t)}
@@ -83,26 +83,26 @@ export default function PlacementResultScreen() {
 
 const styles = StyleSheet.create({
   ctas: {
-    gap: Spacing.two,
+    gap: Spacing.sm,
   },
   container: {
     flex: 1,
   },
   safe: {
     flex: 1,
-    padding: Spacing.four,
+    padding: Spacing.lg,
     justifyContent: 'space-between',
   },
   content: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: Spacing.four,
+    gap: Spacing.lg,
   },
   medal: {
     width: 128,
     height: 128,
-    borderRadius: 64,
+    borderRadius: Radius.pill,
     alignItems: 'center',
     justifyContent: 'center',
   },
