@@ -20,9 +20,9 @@ import { useHues } from '@/hooks/use-hues';
 import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
 
-const pack = getDefaultPack();
 
 export default function HomeScreen() {
+  const pack = getDefaultPack();
   const t = useStrings();
   const theme = useTheme();
   const { hueFor } = useHues();

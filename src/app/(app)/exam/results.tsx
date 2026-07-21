@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ProgressBar } from '@/components/ui/progress-bar';
 import { Spacing } from '@/constants/theme';
-import { getDefaultPack } from '@/content';
+import { DEFAULT_PACK_ID, getDefaultPack } from '@/content';
 import { getCompletedLessonIds } from '@/db/repositories';
 import { useExamSession } from '@/features/exam/session';
 import { maybeProposeStreakReminder } from '@/features/gamification/reminders';
@@ -23,9 +23,9 @@ import { isAnswerCorrect, scorePct } from '@/features/quiz/logic';
 import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
 
-const pack = getDefaultPack();
 
 export default function ExamResultsScreen() {
+  const pack = getDefaultPack();
   const t = useStrings();
   const theme = useTheme();
   const { questions, selections, finished } = useExamSession();
@@ -41,7 +41,7 @@ export default function ExamResultsScreen() {
       const entitlements = await activeProvider.getEntitlements();
       // Moment clé : fin d'un examen ET l'utilisateur a déjà exploré le gratuit
       // (≥ UPSELL_MIN_LESSONS leçons). Jamais « dès l'inscription ».
-      const completedLessons = getCompletedLessonIds(pack.id).size;
+      const completedLessons = getCompletedLessonIds(DEFAULT_PACK_ID).size;
       if (
         mounted &&
         canShowSpontaneousUpsell(getUpsellShownCount(), entitlements) &&

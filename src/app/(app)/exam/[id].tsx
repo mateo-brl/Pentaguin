@@ -13,9 +13,9 @@ import { playableQuestions } from '@/features/quiz/select';
 import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
 
-const pack = getDefaultPack();
 
 export default function ExamBriefScreen() {
+  const pack = getDefaultPack();
   const { id } = useLocalSearchParams<{ id: string }>();
   const t = useStrings();
   const theme = useTheme();

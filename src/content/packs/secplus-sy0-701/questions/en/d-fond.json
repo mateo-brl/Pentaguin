@@ -1,0 +1,290 @@
+[
+  {
+    "id": "q-fond-01",
+    "domainId": "d-fond",
+    "lessonIds": [
+      "l-fond-01"
+    ],
+    "type": "single",
+    "stem": "What makes a password hardest to crack?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Replacing letters with digits, as in P@ssw0rd"
+      },
+      {
+        "id": "b",
+        "text": "Being forced to change it every month"
+      },
+      {
+        "id": "c",
+        "text": "Making it long, unpredictable and unique to every site"
+      },
+      {
+        "id": "d",
+        "text": "Adding an exclamation mark at the end"
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "Strength comes above all from length and unpredictability, and uniqueness keeps a single leak from compromising all of your accounts.",
+    "difficulty": 1,
+    "level": 1,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-fond-02",
+    "domainId": "d-fond",
+    "lessonIds": [
+      "l-fond-02"
+    ],
+    "type": "single",
+    "stem": "An email from your “bank” urges you to click a link to “avoid having your account suspended”. What is the best reflex?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Do not click the link and go to the bank's official site yourself"
+      },
+      {
+        "id": "b",
+        "text": "Click quickly, before the account gets suspended"
+      },
+      {
+        "id": "c",
+        "text": "Reply to the email to ask for confirmation"
+      },
+      {
+        "id": "d",
+        "text": "Forward the email to your contacts to warn them"
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "Going through the official site you type in yourself neutralizes the booby-trapped link, whereas clicking or replying plays right into the attacker's hands.",
+    "difficulty": 1,
+    "level": 1,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-fond-03",
+    "domainId": "d-fond",
+    "lessonIds": [
+      "l-fond-03"
+    ],
+    "type": "single",
+    "stem": "Why does two-factor authentication protect you even if your password leaks?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "It makes the password impossible to guess"
+      },
+      {
+        "id": "b",
+        "text": "It encrypts your Internet connection"
+      },
+      {
+        "id": "c",
+        "text": "It replaces the password with a fingerprint"
+      },
+      {
+        "id": "d",
+        "text": "The attacker must also supply a second factor that they do not have"
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "The second factor (phone, key, temporary code) is exactly what the attacker lacks, which stops them from signing in despite the stolen password.",
+    "difficulty": 1,
+    "level": 2,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-fond-04",
+    "domainId": "d-fond",
+    "lessonIds": [
+      "l-fond-04"
+    ],
+    "type": "single",
+    "stem": "Why should security updates be installed quickly?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "To get new interface colors"
+      },
+      {
+        "id": "b",
+        "text": "Because they fix known flaws that attackers are actively exploiting"
+      },
+      {
+        "id": "c",
+        "text": "Because they always make the device faster"
+      },
+      {
+        "id": "d",
+        "text": "Because otherwise the hardware warranty is voided"
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "A patch makes the flaw public, and devices that have not been updated become easy targets for an exploit that is already available.",
+    "difficulty": 1,
+    "level": 2,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-fond-05",
+    "domainId": "d-fond",
+    "lessonIds": [
+      "l-fond-05"
+    ],
+    "type": "single",
+    "stem": "What does the 3-2-1 backup rule say?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Use 3 passwords, 2 devices and 1 antivirus"
+      },
+      {
+        "id": "b",
+        "text": "Back up 3 times a day onto 2 USB sticks"
+      },
+      {
+        "id": "c",
+        "text": "Three copies of the data, on two types of media, one of them kept off-site"
+      },
+      {
+        "id": "d",
+        "text": "Keep the data for 3 years on 2 drives stored in 1 drawer"
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "The rule aims at redundancy and dispersion: three copies, two distinct types of media and one off-site copy to survive a local disaster.",
+    "difficulty": 1,
+    "level": 2,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-fond-06",
+    "domainId": "d-fond",
+    "lessonIds": [
+      "l-fond-06"
+    ],
+    "type": "single",
+    "stem": "On public Wi-Fi, which risk is still very real today?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "A fake access point (evil twin) that imitates the venue's network to trap you"
+      },
+      {
+        "id": "b",
+        "text": "HTTPS stops encrypting your data as soon as Wi-Fi is involved"
+      },
+      {
+        "id": "c",
+        "text": "Anyone can read your banking password, even on an HTTPS site"
+      },
+      {
+        "id": "d",
+        "text": "Public Wi-Fi automatically deletes your files"
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "HTTPS protects the content you exchange, but a fake access point remains a concrete threat because it controls the network you connect to.",
+    "difficulty": 1,
+    "level": 3,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-fond-07",
+    "domainId": "d-fond",
+    "lessonIds": [
+      "l-fond-07"
+    ],
+    "type": "single",
+    "stem": "What does the HTTPS padlock really guarantee?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "That the site is honest and trustworthy"
+      },
+      {
+        "id": "b",
+        "text": "That the site contains no viruses"
+      },
+      {
+        "id": "c",
+        "text": "That the information the site displays is true"
+      },
+      {
+        "id": "d",
+        "text": "That the connection is encrypted and that you really are talking to the domain shown"
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "HTTPS provides transport encryption and domain identity, but says nothing about how honest or reputable the owner is.",
+    "difficulty": 1,
+    "level": 3,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-fond-08",
+    "domainId": "d-fond",
+    "lessonIds": [
+      "l-fond-08"
+    ],
+    "type": "single",
+    "stem": "Why limit the permissions granted to mobile apps?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "So the battery lasts exactly twice as long"
+      },
+      {
+        "id": "b",
+        "text": "To apply least privilege: an app only reaches what it strictly needs, which reduces the risk in case of abuse or a flaw"
+      },
+      {
+        "id": "c",
+        "text": "Because permissions slow down the Wi-Fi"
+      },
+      {
+        "id": "d",
+        "text": "Because otherwise the screen no longer locks"
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "Restricting access applies least privilege and limits the data exposed if the app turns out to be malicious or compromised.",
+    "difficulty": 1,
+    "level": 4,
+    "tags": [
+      "lesson-v1"
+    ]
+  }
+]

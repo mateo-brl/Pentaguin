@@ -1,13 +1,18 @@
 import { validatePackIntegrity } from '../src/content/integrity';
-import { rawPacks } from '../src/content/packs';
+import { rawPacksByLocale } from '../src/content/packs';
+import placementEnRaw from '../src/content/placement/questions.en.json';
 import placementRaw from '../src/content/placement/questions.json';
 import { placementBankSchema } from '../src/content/placement/schema';
+import practiceEnRaw from '../src/content/practice/exercises.en.json';
 import practiceRaw from '../src/content/practice/exercises.json';
 import { practiceBankSchema } from '../src/content/practice/schema';
 import { contentPackSchema } from '../src/content/schema';
 import { validateExercise } from '../src/features/practice/logic';
 
 let failed = false;
+
+// Les deux langues sont validées : une traduction cassée doit faire échouer la CI.
+const rawPacks = [...rawPacksByLocale.fr, ...rawPacksByLocale.en];
 
 for (const raw of rawPacks) {
   const label =
@@ -40,10 +45,14 @@ for (const raw of rawPacks) {
 }
 
 // — Banque de positionnement -------------------------------------------------------
-const placement = placementBankSchema.safeParse(placementRaw);
+for (const [locale, source] of [
+  ['fr', placementRaw],
+  ['en', placementEnRaw],
+] as const) {
+const placement = placementBankSchema.safeParse(source);
 if (!placement.success) {
   failed = true;
-  console.error('✖ positionnement : schéma invalide');
+  console.error(`✖ positionnement (${locale}) : schéma invalide`);
   for (const issue of placement.error.issues) {
     console.error(`    ${issue.path.join('.') || '(racine)'} — ${issue.message}`);
   }
@@ -73,16 +82,21 @@ if (!placement.success) {
     const min = Math.min(...counts);
     const max = Math.max(...counts);
     console.log(
-      `✔ positionnement — ${placement.data.length} questions (difficultés 1-15 : ${min}-${max} par niveau)`,
+      `✔ positionnement (${locale}) — ${placement.data.length} questions (difficultés 1-15 : ${min}-${max} par niveau)`,
     );
   }
 }
+}
 
 // — Banque de pratique -------------------------------------------------------------
-const practice = practiceBankSchema.safeParse(practiceRaw);
+for (const [locale, source] of [
+  ['fr', practiceRaw],
+  ['en', practiceEnRaw],
+] as const) {
+const practice = practiceBankSchema.safeParse(source);
 if (!practice.success) {
   failed = true;
-  console.error('✖ pratique : schéma invalide');
+  console.error(`✖ pratique (${locale}) : schéma invalide`);
   for (const issue of practice.error.issues) {
     console.error(`    ${issue.path.join('.') || '(racine)'} — ${issue.message}`);
   }
@@ -103,11 +117,12 @@ if (!practice.success) {
       return acc;
     }, {});
     console.log(
-      `✔ pratique — ${practice.data.length} exercices (${Object.entries(kinds)
+      `✔ pratique (${locale}) — ${practice.data.length} exercices (${Object.entries(kinds)
         .map(([k, n]) => `${k}:${n}`)
         .join(' ')})`,
     );
   }
+}
 }
 
 process.exit(failed ? 1 : 0);

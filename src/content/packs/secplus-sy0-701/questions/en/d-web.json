@@ -1,0 +1,290 @@
+[
+  {
+    "id": "q-web-01",
+    "domainId": "d-web",
+    "lessonIds": [
+      "l-web-01"
+    ],
+    "type": "single",
+    "stem": "A login page builds its query like this: \"SELECT * FROM users WHERE login = '\" + input + \"'\". Which measure actually eliminates the risk of SQL injection?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Limiting the input field to 20 characters."
+      },
+      {
+        "id": "b",
+        "text": "Using a parameterized query that sends the query structure and the values separately."
+      },
+      {
+        "id": "c",
+        "text": "Hiding the SQL error messages returned to the user."
+      },
+      {
+        "id": "d",
+        "text": "Renaming the users table to make it less predictable."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "A parameterized query separates SQL code from data: the input is always treated as a value, never as executable code. Capping the length, hiding errors or renaming a table makes the attack harder but does not fix the flaw.",
+    "difficulty": 2,
+    "level": 6,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-web-02",
+    "domainId": "d-web",
+    "lessonIds": [
+      "l-web-02"
+    ],
+    "type": "single",
+    "stem": "An attacker posts a comment containing a <script> tag; it is saved in the database and re-displayed to every visitor to the page. Which type of XSS is this?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Reflected XSS."
+      },
+      {
+        "id": "b",
+        "text": "DOM-based XSS."
+      },
+      {
+        "id": "c",
+        "text": "Stored XSS."
+      },
+      {
+        "id": "d",
+        "text": "Second-order SQL injection."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "The malicious code is saved on the server and then served back to every visitor: that is stored XSS, the most dangerous kind because it hits each victim automatically. Reflected XSS echoes the payload in the immediate response, DOM-based XSS lives in the browser's JavaScript, and this is not a SQL injection.",
+    "difficulty": 2,
+    "level": 7,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-web-03",
+    "domainId": "d-web",
+    "lessonIds": [
+      "l-web-03"
+    ],
+    "type": "single",
+    "stem": "Why can a CSRF attack succeed even when the attacker does not know the victim's password?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The victim's browser automatically attaches its session cookie to the request sent to the target site."
+      },
+      {
+        "id": "b",
+        "text": "The attacker reads the server's response thanks to JavaScript injected into the target site."
+      },
+      {
+        "id": "c",
+        "text": "The server encrypts the session cookie with a public key that everyone knows."
+      },
+      {
+        "id": "d",
+        "text": "The victim's password is stored in cleartext inside the cookie."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "CSRF exploits the fact that the browser automatically sends cookies (including the session cookie) with every request to that domain: the authenticated action goes out without the attacker supplying any credentials. The attacker cannot read the response either, because of the Same-Origin Policy.",
+    "difficulty": 2,
+    "level": 8,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-web-04",
+    "domainId": "d-web",
+    "lessonIds": [
+      "l-web-04"
+    ],
+    "type": "single",
+    "stem": "Which cookie attribute prevents the page's JavaScript (document.cookie, for example) from reading the session cookie, thereby limiting its theft via XSS?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Secure"
+      },
+      {
+        "id": "b",
+        "text": "SameSite=Strict"
+      },
+      {
+        "id": "c",
+        "text": "Domain"
+      },
+      {
+        "id": "d",
+        "text": "HttpOnly"
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "The HttpOnly attribute makes the cookie inaccessible to the page's JavaScript, which prevents its exfiltration in the event of XSS. Secure forces the cookie to be sent over HTTPS only, SameSite limits cross-site sending (anti-CSRF), and Domain merely sets the cookie's scope.",
+    "difficulty": 2,
+    "level": 8,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-web-05",
+    "domainId": "d-web",
+    "lessonIds": [
+      "l-web-05"
+    ],
+    "type": "single",
+    "stem": "What does the header Content-Security-Policy: script-src 'self' mainly do?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "It forces the browser to use HTTPS only on subsequent visits."
+      },
+      {
+        "id": "b",
+        "text": "It restricts the allowed sources of scripts, blocking external scripts and unexpected inline JavaScript."
+      },
+      {
+        "id": "c",
+        "text": "It encrypts the page content on the server before sending it."
+      },
+      {
+        "id": "d",
+        "text": "It prevents the session cookie from being sent on cross-site requests."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "CSP limits the sources scripts can be loaded from, which sharply reduces the impact of XSS. Forcing HTTPS is the job of HSTS, and limiting cross-site sending of the cookie is the job of the SameSite attribute.",
+    "difficulty": 2,
+    "level": 9,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-web-06",
+    "domainId": "d-web",
+    "lessonIds": [
+      "l-web-06"
+    ],
+    "type": "single",
+    "stem": "Which description of the OWASP Top 10 is the most accurate?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "A mandatory legal standard imposed on all web applications."
+      },
+      {
+        "id": "b",
+        "text": "A web application firewall distributed free of charge by OWASP."
+      },
+      {
+        "id": "c",
+        "text": "An awareness document that ranks the most critical security risks of web applications."
+      },
+      {
+        "id": "d",
+        "text": "A programming language designed to be secure by default."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "The OWASP Top 10 is an awareness document, revised periodically, that lists the most widespread and critical categories of risk (in the 2021 edition, number one is Broken Access Control). It is neither a legal obligation, nor a piece of software, nor a language.",
+    "difficulty": 2,
+    "level": 10,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-web-07",
+    "domainId": "d-web",
+    "lessonIds": [
+      "l-web-07"
+    ],
+    "type": "single",
+    "stem": "In an SSRF attack, who issues the network request to the target chosen by the attacker?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The vulnerable server itself, often to reach internal services that are unreachable from outside."
+      },
+      {
+        "id": "b",
+        "text": "The victim's browser, without their knowledge, using their cookies."
+      },
+      {
+        "id": "c",
+        "text": "The public DNS resolver, on the server's behalf."
+      },
+      {
+        "id": "d",
+        "text": "The perimeter firewall, which relays the request automatically."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "SSRF pushes the server into issuing the request itself to a destination controlled by the attacker, for example an internal service or the cloud metadata endpoint (169.254.169.254). That is what sets it apart from CSRF, where it is the victim's browser that sends the request.",
+    "difficulty": 3,
+    "level": 12,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-web-08",
+    "domainId": "d-web",
+    "lessonIds": [
+      "l-web-08"
+    ],
+    "type": "single",
+    "stem": "Why is a server that accepts a JWT whose header says \"alg\":\"none\" vulnerable?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The token becomes too long and overflows the server's memory."
+      },
+      {
+        "id": "b",
+        "text": "Encryption of the payload is disabled, exposing data that was previously secret."
+      },
+      {
+        "id": "c",
+        "text": "The server has to recompute an expensive RS256 signature on every request."
+      },
+      {
+        "id": "d",
+        "text": "There is no signature left to verify: anyone can forge a token with the claims of their choice, for example declaring themselves an administrator."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "alg:none means “no signature”: if the server accepts it, an attacker can craft an arbitrary token (role=admin, for example) without knowing any key. The server must require the expected algorithm and reject none. A signed JWT is not encrypted anyway: its payload is merely base64url-encoded.",
+    "difficulty": 3,
+    "level": 13,
+    "tags": [
+      "lesson-v1"
+    ]
+  }
+]

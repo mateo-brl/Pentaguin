@@ -1,0 +1,434 @@
+[
+  {
+    "id": "l-threats-01",
+    "domainId": "d-threats",
+    "title": "Malware families: virus, worm, Trojan, spyware, rootkit",
+    "order": 1,
+    "estMinutes": 5,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "**Malware** (short for *malicious software*) is any program built to do harm: steal data, damage a system, or take control of it. Malware is sorted into **families** according to how it spreads and how it behaves. One caveat: these families are not mutually exclusive — a single piece of malware can combine several behaviors."
+      },
+      {
+        "type": "text",
+        "md": "Two families look alike but differ on one key point, propagation:\n\n- **Virus**: it **attaches itself to a host file or program**. To replicate, it needs the user to run that host (open an attachment, launch an application). Without human action, it stays dormant.\n- **Worm**: it **spreads on its own**, from machine to machine, by exploiting network vulnerabilities. It needs neither a host nor user action, which lets it spread extremely fast."
+      },
+      {
+        "type": "text",
+        "md": "The other families are defined by their goal rather than by how they replicate:\n\n- **Trojan** (Trojan horse): it **disguises itself** as legitimate software to trick the user; it does not replicate on its own.\n- **Spyware**: it **quietly collects** information (keystrokes, browsing history, credentials).\n- **Rootkit**: it **hides its presence** and maintains lasting privileged access to the machine."
+      },
+      {
+        "type": "callout",
+        "variant": "warning",
+        "md": "A Trojan is **not** a virus: unlike a virus, it does not replicate. Its weapon is **deception**, not automatic propagation."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Malware",
+            "def": "Malicious software built to harm, steal from, or take control of a system."
+          },
+          {
+            "term": "Virus",
+            "def": "Malware that attaches itself to a host file and needs the user to run it in order to replicate."
+          },
+          {
+            "term": "Worm",
+            "def": "Self-contained malware that spreads across the network on its own, with no host and no user action."
+          },
+          {
+            "term": "Trojan (Trojan horse)",
+            "def": "Malware disguised as legitimate software to trick the user; it does not replicate on its own."
+          },
+          {
+            "term": "Spyware",
+            "def": "Software that quietly collects information about its victim."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-threats-01"
+      }
+    ],
+    "level": 4
+  },
+  {
+    "id": "l-threats-02",
+    "domainId": "d-threats",
+    "title": "Ransomware: how it works and how to defend against it",
+    "order": 2,
+    "estMinutes": 5,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "**Ransomware** is malware that **encrypts** the victim's files, making them unreadable, then demands a **ransom** (often in cryptocurrency) in exchange for the decryption key. It is now one of the costliest threats organizations face."
+      },
+      {
+        "type": "text",
+        "md": "A typical attack unfolds like this:\n\n1. **Infection**: the attacker gets in, often through a phishing email, poorly protected **RDP** (Remote Desktop Protocol) access, or an unpatched vulnerability.\n2. **Propagation**: they move laterally to reach as many machines as possible.\n3. **Encryption**: the files are encrypted and a **ransom note** appears.\n4. **Extortion**: payment is demanded. Many groups practice **double extortion**: they exfiltrate the data before encrypting it, then threaten to publish it."
+      },
+      {
+        "type": "text",
+        "md": "The best defense is **resilience**, not payment. Paying guarantees neither the recovery of your files nor the deletion of the stolen data, and it funds crime. The defensive pillars: **offline backups** that are tested regularly and isolated from the network, fast **patching** of vulnerabilities, **MFA** authentication, and network segmentation."
+      },
+      {
+        "type": "callout",
+        "variant": "warning",
+        "md": "A backup that stays permanently connected can be encrypted along with everything else. Only an **offline backup** (disconnected, off-site, or immutable) survives ransomware."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Ransomware",
+            "def": "Malware that encrypts the victim's files and demands a ransom for the decryption key."
+          },
+          {
+            "term": "Encryption",
+            "def": "Turning data into a format that is unreadable without the key; this is ransomware's leverage."
+          },
+          {
+            "term": "Double extortion",
+            "def": "Technique where the attacker exfiltrates the data before encrypting it, then threatens to publish it."
+          },
+          {
+            "term": "Offline backup",
+            "def": "A copy of the data kept disconnected from the network, and therefore safe from ransomware encryption."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-threats-02"
+      }
+    ],
+    "level": 5
+  },
+  {
+    "id": "l-threats-03",
+    "domainId": "d-threats",
+    "title": "Social engineering: pretexting, baiting, quid pro quo",
+    "order": 3,
+    "estMinutes": 5,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "**Social engineering** is the practice of manipulating people into disclosing information or performing an action. The attacker does not go after the technology, but after the **human**: trust, fear, curiosity, the urge to help. It is very often the first step of an intrusion."
+      },
+      {
+        "type": "text",
+        "md": "Three classic techniques:\n\n- **Pretexting**: the attacker invents a believable **pretext** (a fake technician, a fake colleague, a fake survey) to build trust and extract information.\n- **Baiting**: they dangle a **lure** — a USB drive “forgotten” in a parking lot, a free download — that the victim goes on to use, triggering the infection.\n- **Quid pro quo** (“something for something”): they offer a **service in exchange** for information or access, for example a fake IT help desk that “helps” an employee in return for their password."
+      },
+      {
+        "type": "callout",
+        "variant": "tip",
+        "md": "These techniques exploit psychological levers: **authority** (posing as a senior manager), **urgency**, **reciprocity**. Spotting which lever is being pulled helps you defeat the manipulation."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Social engineering",
+            "def": "Manipulating a person into disclosing information or performing an action."
+          },
+          {
+            "term": "Pretexting",
+            "def": "Inventing a believable pretext to build trust and extract information."
+          },
+          {
+            "term": "Baiting",
+            "def": "An attractive object or file (USB drive, download) that the victim uses, triggering the infection."
+          },
+          {
+            "term": "Quid pro quo",
+            "def": "Offering a service in exchange for information or access (e.g. a fake IT help desk)."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-threats-03"
+      }
+    ],
+    "level": 5
+  },
+  {
+    "id": "l-threats-04",
+    "domainId": "d-threats",
+    "title": "Botnets and command & control (C2) servers",
+    "order": 4,
+    "estMinutes": 6,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "A **botnet** is a network of compromised machines — called **bots** or **zombies** — controlled remotely by an attacker. Each machine (computer, server, connected device) keeps working normally for its owner while secretly obeying the orders of the **botmaster**."
+      },
+      {
+        "type": "text",
+        "md": "The brain of the botnet is the **C2** (command and control) infrastructure: one or more servers that issue instructions and receive the stolen data. Bots contact the C2 at regular intervals — a periodic signal known as **beaconing** — to ask for their orders. Attackers make the C2 hard to take down:\n\n- **Centralized architecture** (IRC, HTTP/HTTPS): simple, but a single point to dismantle.\n- **P2P architecture** (peer-to-peer): the bots relay orders to each other, with no central server.\n- **DGA** (Domain Generation Algorithm): the bots generate thousands of candidate domain names every day to find the C2 again, which makes blocking far harder."
+      },
+      {
+        "type": "text",
+        "md": "What is a botnet for? Pooling the power of thousands of machines in order to: launch **DDoS** attacks (distributed denial of service), send spam, mine cryptocurrency, steal credentials, or distribute other malware."
+      },
+      {
+        "type": "callout",
+        "variant": "tip",
+        "md": "On the defensive side, analysts hunt for **beaconing**: regular outbound connections to a suspicious domain or IP address often give away a bot “calling home” to its C2."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Botnet",
+            "def": "A network of compromised machines controlled remotely by a single attacker."
+          },
+          {
+            "term": "Bot / Zombie",
+            "def": "An infected machine that secretly obeys the botmaster's orders."
+          },
+          {
+            "term": "C2 (Command and Control)",
+            "def": "The infrastructure that sends orders to the bots and collects the data they exfiltrate."
+          },
+          {
+            "term": "Botmaster",
+            "def": "The person or group that controls the botnet and issues its orders through the C2."
+          },
+          {
+            "term": "DDoS",
+            "def": "Distributed denial of service: overwhelming a target with traffic from many infected machines."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-threats-04"
+      }
+    ],
+    "level": 7
+  },
+  {
+    "id": "l-threats-05",
+    "domainId": "d-threats",
+    "title": "Advanced persistent threats (APT) and the cyber kill chain",
+    "order": 5,
+    "estMinutes": 7,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "An **APT** (Advanced Persistent Threat) is a highly organized, well-funded attacker — often a state-sponsored group — that goes after a specific target and aims to stay inside **for a long time and unnoticed**. Break the acronym down: **Advanced** (sophisticated techniques), **Persistent** (a lasting presence, long-term objectives), **Threat** (a determined human adversary, not opportunistic malware)."
+      },
+      {
+        "type": "text",
+        "md": "To describe how a targeted intrusion unfolds, Lockheed Martin proposed the **cyber kill chain**, a **linear seven-stage** model:\n\n1. **Reconnaissance**: gathering information about the target.\n2. **Weaponization**: building the weapon (e.g. a booby-trapped document).\n3. **Delivery**: sending it to the victim (email, USB drive, website).\n4. **Exploitation**: the vulnerability is triggered.\n5. **Installation**: the malware installs itself and establishes persistence.\n6. **Command & Control** (C2): the attacker takes remote control.\n7. **Actions on Objectives**: they achieve their goal (exfiltration, sabotage)."
+      },
+      {
+        "type": "text",
+        "md": "The point of the model is defensive: **breaking a single link** is enough to stop the attack. The earlier you step in along the chain, the less ground the attacker has covered and the smaller the damage."
+      },
+      {
+        "type": "callout",
+        "variant": "exam",
+        "md": "Do not mix up the two models: the **cyber kill chain** (Lockheed Martin) is a **linear** sequence of attack stages. **MITRE ATT&CK** is a **matrix** of tactics and techniques actually observed in the wild, neither linear nor sequential."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "APT (Advanced Persistent Threat)",
+            "def": "An organized, well-resourced attacker that goes after a specific target and stays inside for a long time, unnoticed."
+          },
+          {
+            "term": "Cyber kill chain",
+            "def": "A linear seven-stage model (Lockheed Martin) describing how a targeted intrusion unfolds."
+          },
+          {
+            "term": "Weaponization",
+            "def": "The stage where the attacker builds the weapon, for example a booby-trapped document ready to be delivered."
+          },
+          {
+            "term": "Exfiltration",
+            "def": "Quietly moving stolen data out of the victim's environment."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-threats-05"
+      }
+    ],
+    "level": 9
+  },
+  {
+    "id": "l-threats-06",
+    "domainId": "d-threats",
+    "title": "MITRE ATT&CK: tactics vs. techniques",
+    "order": 6,
+    "estMinutes": 6,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "**MITRE ATT&CK** is a public knowledge base that catalogs **attacker behaviors observed in the real world**. The acronym stands for **Adversarial Tactics, Techniques, and Common Knowledge**. It is laid out as a **matrix**: a grid where each column is an objective and each cell is a concrete way of reaching it."
+      },
+      {
+        "type": "text",
+        "md": "Two notions you must never confuse:\n\n- **Tactic**: the **why** — the attacker's objective at a given moment. Examples: *Initial Access*, *Persistence*, *Privilege Escalation*, *Exfiltration*.\n- **Technique**: the **how** — the method used to achieve that tactic. Every technique carries an identifier, e.g. **T1566 – Phishing**. A technique can be broken down into **sub-techniques** (e.g. T1566.001 – spearphishing attachment)."
+      },
+      {
+        "type": "text",
+        "md": "In short: the tactics are the **columns** of the matrix (the goals), the techniques are the **cells** that fill them (the means). A single tactic can be carried out through many techniques, and one technique can serve several tactics. Analysts use it to map an attack and spot their detection blind spots."
+      },
+      {
+        "type": "callout",
+        "variant": "exam",
+        "md": "Classic exam trap: the **kill chain** (Lockheed Martin) is **linear**; **ATT&CK** is a non-sequential **matrix** built on observed techniques. Remember: *tactic = objective (why)*, *technique = method (how)*."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "MITRE ATT&CK",
+            "def": "Public knowledge base of attacker tactics and techniques observed in the real world, laid out as a matrix."
+          },
+          {
+            "term": "Tactic",
+            "def": "The attacker's objective at a given moment (the why), e.g. persistence or exfiltration."
+          },
+          {
+            "term": "Technique",
+            "def": "The concrete method used to achieve a tactic (the how), identified by a code (e.g. T1566)."
+          },
+          {
+            "term": "Sub-technique",
+            "def": "A more specific variant of a technique (e.g. T1566.001, spearphishing attachment)."
+          },
+          {
+            "term": "Matrix",
+            "def": "The ATT&CK grid, where the columns are the tactics and the cells are the techniques."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-threats-06"
+      }
+    ],
+    "level": 11
+  },
+  {
+    "id": "l-threats-07",
+    "domainId": "d-threats",
+    "title": "Indicators of compromise (IOC) and threat intelligence",
+    "order": 7,
+    "estMinutes": 6,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "An **IOC** (Indicator of Compromise) is a technical trace showing that a system has **probably been attacked**. Examples: the **hash** of a malicious file, a C2 IP address or domain, a phishing URL, a suspicious file name, or a registry key created by malware."
+      },
+      {
+        "type": "text",
+        "md": "**Threat intelligence** is the process of **collecting, analyzing, and sharing** information about attackers and their methods, so as to anticipate them and defend better. It is often distributed through standardized formats such as **STIX** (how the data is structured) and **TAXII** (the exchange protocol), which lets organizations share IOCs with one another."
+      },
+      {
+        "type": "text",
+        "md": "Not all indicators are worth the same. The **Pyramid of Pain** (David Bianco) ranks IOCs by how hard they are for the attacker to change: a **hash** can be altered in a second (barely an inconvenience), whereas their **TTPs** (Tactics, Techniques, and Procedures — their working habits) are very costly to change. Blocking indicators from the top of the pyramid therefore hurts the attacker far more."
+      },
+      {
+        "type": "callout",
+        "variant": "tip",
+        "md": "An IOC is **reactive**: it describes a compromise that has already happened. It is complemented by **IOAs** (Indicators of Attack), which catch attack **behavior** in progress rather than a static trace."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "IOC (Indicator of Compromise)",
+            "def": "A technical trace revealing that a system has probably been compromised (hash, IP, domain, URL, etc.)."
+          },
+          {
+            "term": "Threat intelligence",
+            "def": "Collecting, analyzing, and sharing information about threats in order to anticipate them and defend better."
+          },
+          {
+            "term": "Hash",
+            "def": "A file's digital fingerprint; useful as an IOC, but very easily changed by the attacker."
+          },
+          {
+            "term": "STIX / TAXII",
+            "def": "Standard formats for structuring (STIX) and exchanging (TAXII) threat intelligence."
+          },
+          {
+            "term": "TTP",
+            "def": "Tactics, Techniques, and Procedures: an attacker's working habits, which are very costly to change."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-threats-07"
+      }
+    ],
+    "level": 11
+  },
+  {
+    "id": "l-threats-08",
+    "domainId": "d-threats",
+    "title": "Rootkits and persistence techniques",
+    "order": 8,
+    "estMinutes": 7,
+    "blocks": [
+      {
+        "type": "text",
+        "md": "A **rootkit** is malware designed to **hide its presence** (and that of other malicious components) while keeping lasting **privileged access**. The name comes from “root” (the administrator account on Unix) and “kit” (the tooling). Its goal is not to destroy, but to stay **invisible** for as long as possible."
+      },
+      {
+        "type": "text",
+        "md": "Rootkits are classified by the **level** at which they take hold — the lower, the more powerful and the harder to detect:\n\n- **User-mode**: intercepts application calls; the simplest kind, and the easiest to spot.\n- **Kernel-mode**: installs itself in the system **kernel** (through a driver), with the highest privileges; it can lie to the operating system itself.\n- **Bootkit**: infects the boot process (bootloader, **UEFI**) and loads **before** the operating system.\n- **Firmware / hardware**: the lowest level of all; it survives even a full reinstall."
+      },
+      {
+        "type": "text",
+        "md": "**Persistence** is the art of **surviving a reboot**. Common techniques:\n\n- **Registry** startup keys (Run keys), **scheduled tasks**, Windows **services**.\n- On Linux: **cron**, **systemd** units, startup scripts.\n- Hijacks such as **DLL hijacking** or the abuse of **WMI**.\n- At the deepest level, a **bootkit** guarantees that the malware reloads at every power-on."
+      },
+      {
+        "type": "callout",
+        "variant": "warning",
+        "md": "A **kernel-mode** rootkit can falsify what the antivirus and the operating system see: it then becomes nearly impossible to detect from the infected machine itself. You analyze it **offline** (with the disk mounted on another system), and you rely on **Secure Boot** and **measured boot** to keep it out in the first place."
+      },
+      {
+        "type": "keyterms",
+        "terms": [
+          {
+            "term": "Rootkit",
+            "def": "Malware that hides its presence while keeping lasting privileged access to the system."
+          },
+          {
+            "term": "User-mode",
+            "def": "A user-mode rootkit: it intercepts application calls; the easiest kind to detect."
+          },
+          {
+            "term": "Kernel-mode",
+            "def": "A kernel-mode rootkit, with maximum privileges; it can lie to the OS and to the antivirus."
+          },
+          {
+            "term": "Bootkit",
+            "def": "A rootkit that infects the boot process (bootloader, UEFI) and loads before the operating system."
+          },
+          {
+            "term": "Persistence",
+            "def": "The set of techniques that let malware survive a reboot."
+          }
+        ]
+      },
+      {
+        "type": "quickcheck",
+        "questionId": "q-threats-08"
+      }
+    ],
+    "level": 13
+  }
+]

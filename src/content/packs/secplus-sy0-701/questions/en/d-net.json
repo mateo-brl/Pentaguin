@@ -1,0 +1,290 @@
+[
+  {
+    "id": "q-net-01",
+    "domainId": "d-net",
+    "lessonIds": [
+      "l-net-01"
+    ],
+    "type": "single",
+    "stem": "Which of these addresses is a private IP address (not routable on the Internet)?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "192.168.1.10"
+      },
+      {
+        "id": "b",
+        "text": "8.8.8.8"
+      },
+      {
+        "id": "c",
+        "text": "172.15.0.1"
+      },
+      {
+        "id": "d",
+        "text": "93.184.216.34"
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "192.168.0.0/16 is one of the private ranges defined in RFC 1918; 172.15.x is already public, since the private range starts at 172.16, and the other two are public addresses.",
+    "difficulty": 1,
+    "level": 3,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-net-02",
+    "domainId": "d-net",
+    "lessonIds": [
+      "l-net-02"
+    ],
+    "type": "single",
+    "stem": "What is the main role of DNS?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Encrypting the communications between the browser and the server"
+      },
+      {
+        "id": "b",
+        "text": "Automatically assigning an IP address to a device joining the network"
+      },
+      {
+        "id": "c",
+        "text": "Translating a domain name such as example.com into an IP address"
+      },
+      {
+        "id": "d",
+        "text": "Filtering inbound traffic according to security rules"
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "DNS is the directory of the Internet: it converts a human-readable name into an IP address. Automatic IP assignment is the job of DHCP, and filtering the job of the firewall.",
+    "difficulty": 1,
+    "level": 4,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-net-03",
+    "domainId": "d-net",
+    "lessonIds": [
+      "l-net-03"
+    ],
+    "type": "single",
+    "stem": "Which port is used by default for HTTPS?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "80"
+      },
+      {
+        "id": "b",
+        "text": "443"
+      },
+      {
+        "id": "c",
+        "text": "22"
+      },
+      {
+        "id": "d",
+        "text": "3389"
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "HTTPS uses port 443 over TCP. Port 80 is for unencrypted HTTP, 22 for SSH and 3389 for RDP.",
+    "difficulty": 1,
+    "level": 4,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-net-04",
+    "domainId": "d-net",
+    "lessonIds": [
+      "l-net-04"
+    ],
+    "type": "single",
+    "stem": "On what criteria does a traditional network firewall decide whether to allow or block a packet?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The password of the user sending the packet"
+      },
+      {
+        "id": "b",
+        "text": "The make and model of the sending computer"
+      },
+      {
+        "id": "c",
+        "text": "The speed of the Internet connection"
+      },
+      {
+        "id": "d",
+        "text": "The source and destination IP address, the port and the protocol"
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "A network firewall filters on network criteria: IP addresses, ports and protocol. It knows nothing about passwords or about the make of the machine.",
+    "difficulty": 1,
+    "level": 5,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-net-05",
+    "domainId": "d-net",
+    "lessonIds": [
+      "l-net-05"
+    ],
+    "type": "single",
+    "stem": "How does TLS protect an HTTPS connection?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "It guarantees that the website is trustworthy and free of malware"
+      },
+      {
+        "id": "b",
+        "text": "It encrypts only the password, everything else travels in cleartext"
+      },
+      {
+        "id": "c",
+        "text": "It authenticates the server, then encrypts the exchanges with a symmetric session key"
+      },
+      {
+        "id": "d",
+        "text": "It replaces the server's IP address with a domain name"
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "TLS first authenticates the server through its certificate (asymmetric), then negotiates a symmetric session key that encrypts all the exchanges. The padlock says nothing about how honest the site is.",
+    "difficulty": 2,
+    "level": 6,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-net-06",
+    "domainId": "d-net",
+    "lessonIds": [
+      "l-net-06"
+    ],
+    "type": "single",
+    "stem": "What does a VPN mainly guarantee when you are on public Wi-Fi?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Total, untraceable anonymity on the Internet"
+      },
+      {
+        "id": "b",
+        "text": "An encrypted tunnel that protects the traffic between the device and the VPN server"
+      },
+      {
+        "id": "c",
+        "text": "A significantly faster Internet connection"
+      },
+      {
+        "id": "d",
+        "text": "Automatic removal of ads and malware"
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "A VPN encrypts the traffic inside a tunnel up to the VPN server, which protects it from the other users on the network. It guarantees neither total anonymity, nor speed, nor malware removal.",
+    "difficulty": 2,
+    "level": 6,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-net-07",
+    "domainId": "d-net",
+    "lessonIds": [
+      "l-net-07"
+    ],
+    "type": "single",
+    "stem": "What is a DMZ (demilitarized zone) for in a network architecture?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Automatically encrypting all of the company's internal traffic"
+      },
+      {
+        "id": "b",
+        "text": "Assigning IP addresses to the workstations on the local network"
+      },
+      {
+        "id": "c",
+        "text": "Speeding up DNS resolution for the internal servers"
+      },
+      {
+        "id": "d",
+        "text": "Hosting the services exposed to the Internet while isolating them from the internal network"
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "The DMZ places the services reachable from the Internet in an isolated buffer zone, so that a compromise does not reach the internal network directly.",
+    "difficulty": 2,
+    "level": 9,
+    "tags": [
+      "lesson-v1"
+    ]
+  },
+  {
+    "id": "q-net-08",
+    "domainId": "d-net",
+    "lessonIds": [
+      "l-net-08"
+    ],
+    "type": "single",
+    "stem": "What principle does ARP spoofing rely on?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The ARP protocol does not authenticate its replies: the attacker can map their own MAC address to the IP of the gateway"
+      },
+      {
+        "id": "b",
+        "text": "The DNS protocol returns a wrong IP address signed by an attacker"
+      },
+      {
+        "id": "c",
+        "text": "The firewall mistakenly opens port 3389 to the Internet"
+      },
+      {
+        "id": "d",
+        "text": "The server's TLS certificate has expired and is no longer valid"
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "ARP does not verify the authenticity of its replies: the attacker announces that their MAC address matches the IP of the gateway and thereby diverts the local network traffic to themselves.",
+    "difficulty": 3,
+    "level": 11,
+    "tags": [
+      "lesson-v1"
+    ]
+  }
+]
