@@ -6,7 +6,7 @@ import { ScrollView, StyleSheet, Switch, View } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Chip } from '@/components/ui/chip';
-import { Spacing } from '@/constants/theme';
+import { Spacing } from '@/theme';
 import { areRemindersEnabled, setRemindersEnabled } from '@/features/settings/notifications';
 import { setThemeMode, useThemeMode, type ThemeMode } from '@/features/settings/theme-mode';
 import { useTheme } from '@/hooks/use-theme';
@@ -114,21 +114,21 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    padding: Spacing.four,
-    gap: Spacing.four,
+    padding: Spacing.lg,
+    gap: Spacing.lg,
   },
   section: {
-    gap: Spacing.two,
+    gap: Spacing.sm,
   },
   chips: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: Spacing.two,
+    gap: Spacing.sm,
   },
   switchRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: Spacing.three,
+    gap: Spacing.base,
   },
   switchLabel: {
     flex: 1,

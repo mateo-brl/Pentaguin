@@ -5,7 +5,7 @@ import { FlatList, Pressable, StyleSheet, View } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Card } from '@/components/ui/card';
-import { Spacing } from '@/constants/theme';
+import { Spacing } from '@/theme';
 import { getDefaultPack } from '@/content';
 import { isUnlockedNow, packEntitlement, useEntitlements } from '@/features/monetization';
 import { useTheme } from '@/hooks/use-theme';
@@ -75,15 +75,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   list: {
-    padding: Spacing.four,
-    gap: Spacing.two,
+    padding: Spacing.lg,
+    gap: Spacing.sm,
   },
   intro: {
-    marginBottom: Spacing.two,
+    marginBottom: Spacing.sm,
   },
   empty: {
     textAlign: 'center',
-    paddingVertical: Spacing.four,
+    paddingVertical: Spacing.lg,
   },
   pressed: {
     opacity: 0.85,
@@ -91,14 +91,14 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: Spacing.three,
+    gap: Spacing.base,
   },
   locked: {
     opacity: 0.6,
   },
   body: {
     flex: 1,
-    gap: 2,
+    gap: Spacing.xs,
   },
   meta: {
     fontSize: 13,

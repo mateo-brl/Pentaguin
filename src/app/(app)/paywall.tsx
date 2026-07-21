@@ -9,7 +9,7 @@ import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { purchasesConfig } from '@/config/monetization';
-import { Spacing } from '@/constants/theme';
+import { Radius, Spacing } from '@/theme';
 import { DEFAULT_PACK_ID, getDefaultPack } from '@/content';
 import {
   activeProvider,
@@ -98,7 +98,7 @@ export default function PaywallScreen() {
     <ThemedView style={styles.container}>
       {/* Barre fixe hors du scroll : la fermeture reste toujours atteignable,
           grande cible (44×44) sous la safe area (Dynamic Island incluse). */}
-      <View style={[styles.header, { paddingTop: Math.max(insets.top, Spacing.three) }]}>
+      <View style={[styles.header, { paddingTop: Math.max(insets.top, Spacing.base) }]}>
         <Pressable
           onPress={() => router.back()}
           hitSlop={12}
@@ -177,13 +177,13 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    paddingHorizontal: Spacing.three,
-    paddingBottom: Spacing.one,
+    paddingHorizontal: Spacing.base,
+    paddingBottom: Spacing.xs,
   },
   closeBtn: {
     width: 44,
     height: 44,
-    borderRadius: 22,
+    borderRadius: Radius.pill,
     borderWidth: StyleSheet.hairlineWidth,
     alignItems: 'center',
     justifyContent: 'center',
@@ -193,9 +193,9 @@ const styles = StyleSheet.create({
     transform: [{ scale: 0.96 }],
   },
   content: {
-    paddingHorizontal: Spacing.four,
-    paddingBottom: Spacing.four,
-    gap: Spacing.three,
+    paddingHorizontal: Spacing.lg,
+    paddingBottom: Spacing.lg,
+    gap: Spacing.base,
   },
   title: {
     textAlign: 'center',
@@ -208,12 +208,12 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
   },
   bullets: {
-    gap: Spacing.two,
+    gap: Spacing.sm,
   },
   bullet: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: Spacing.two,
+    gap: Spacing.sm,
   },
   bulletText: {
     flex: 1,
@@ -225,6 +225,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   loading: {
-    paddingVertical: Spacing.two,
+    paddingVertical: Spacing.sm,
   },
 });

@@ -6,7 +6,7 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
 import { ProgressBar } from '@/components/ui/progress-bar';
-import { Spacing } from '@/constants/theme';
+import { Spacing } from '@/theme';
 import { ExamQuestion } from '@/features/exam/exam-question';
 import { useExamSession } from '@/features/exam/session';
 import { useTheme } from '@/hooks/use-theme';
@@ -134,8 +134,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    padding: Spacing.four,
-    gap: Spacing.three,
+    padding: Spacing.lg,
+    gap: Spacing.base,
   },
   flag: {
     alignSelf: 'flex-start',
@@ -145,13 +145,13 @@ const styles = StyleSheet.create({
   },
   nav: {
     flexDirection: 'row',
-    gap: Spacing.two,
+    gap: Spacing.sm,
   },
   navButton: {
     flex: 1,
   },
   finishLink: {
     alignItems: 'center',
-    paddingVertical: Spacing.two,
+    paddingVertical: Spacing.sm,
   },
 });

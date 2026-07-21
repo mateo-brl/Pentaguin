@@ -6,7 +6,7 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Spacing } from '@/constants/theme';
+import { Spacing } from '@/theme';
 import { maybeProposeStreakReminder } from '@/features/gamification/reminders';
 import { scorePct } from '@/features/quiz/logic';
 import { useQuizSession } from '@/features/quiz/session';
@@ -84,12 +84,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    padding: Spacing.four,
-    gap: Spacing.three,
+    padding: Spacing.lg,
+    gap: Spacing.base,
   },
   hero: {
     alignItems: 'center',
-    gap: Spacing.two,
-    paddingVertical: Spacing.five,
+    gap: Spacing.sm,
+    paddingVertical: Spacing.xl,
   },
 });

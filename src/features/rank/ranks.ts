@@ -26,14 +26,24 @@ export type Rank = {
   color: string;
 };
 
+/**
+ * Rampe des ligues — SANS violet, alignée sur la palette « encre & glacier ».
+ *
+ * Lecture voulue : on part de la terre (bronze patiné), on traverse le froid
+ * (acier → glacier), et on bascule dans le chaud pour les deux derniers rangs.
+ * L'Empereur porte l'or du manchot : le sommet, c'est devenir la mascotte.
+ *
+ * L'or de la ligue « Or » est volontairement un or ANCIEN, plus sourd que
+ * l'ambre d'action (#FBBE4B) : un rang ne doit jamais se lire comme un bouton.
+ */
 const LEAGUES: { league: League; color: string; tiers: (string | null)[] }[] = [
-  { league: 'bronze', color: '#B4713D', tiers: ['III', 'II', 'I'] },
-  { league: 'silver', color: '#8E9AAB', tiers: ['III', 'II', 'I'] },
-  { league: 'gold', color: '#D4A017', tiers: ['III', 'II', 'I'] },
-  { league: 'platinum', color: '#4FB8A8', tiers: ['III', 'II', 'I'] },
-  { league: 'diamond', color: '#5AA7F5', tiers: [null] },
-  { league: 'master', color: '#A98BFA', tiers: [null] },
-  { league: 'emperor', color: '#F0B429', tiers: [null] },
+  { league: 'bronze', color: '#A9713F', tiers: ['III', 'II', 'I'] }, // terre
+  { league: 'silver', color: '#8E9AAB', tiers: ['III', 'II', 'I'] }, // acier glacier
+  { league: 'gold', color: '#C9962A', tiers: ['III', 'II', 'I'] }, // or ancien
+  { league: 'platinum', color: '#5E9FB5', tiers: ['III', 'II', 'I'] }, // bleu acier
+  { league: 'diamond', color: '#7FC8E8', tiers: [null] }, // glacier clair — le plus froid
+  { league: 'master', color: '#E08A3C', tiers: [null] }, // orange brûlé — bascule
+  { league: 'emperor', color: '#F0B429', tiers: [null] }, // l'or du manchot
 ];
 
 export const RANKS: Rank[] = (() => {

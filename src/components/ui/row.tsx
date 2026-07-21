@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
-import { Radius, Spacing } from '@/constants/theme';
+import { Radius, Spacing } from '@/theme';
 import { useTheme } from '@/hooks/use-theme';
 
 /** Conteneur de liste groupée : une seule surface, séparateurs fins. */
@@ -94,23 +94,23 @@ export function SquareBadge({
 const styles = StyleSheet.create({
   group: {
     // Refonte : une seule surface bordée + séparateurs fins (rayon 16).
-    borderRadius: Radius.medium,
+    borderRadius: Radius.md,
     borderWidth: 1,
     overflow: 'hidden',
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: Spacing.three,
-    paddingHorizontal: Spacing.three,
-    paddingVertical: 14,
+    gap: Spacing.base,
+    paddingHorizontal: Spacing.base,
+    paddingVertical: Spacing.md,
   },
   dimmed: {
     opacity: 0.55,
   },
   body: {
     flex: 1,
-    gap: 2,
+    gap: Spacing.xs,
   },
   title: {
     fontSize: 15,
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
   badge: {
     width: 44,
     height: 44,
-    borderRadius: 14,
+    borderRadius: Radius.md,
     alignItems: 'center',
     justifyContent: 'center',
   },

@@ -1,4 +1,4 @@
-import { Hues } from '@/constants/theme';
+import { Hues } from '@/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
 export type Hue = { base: string; soft: string };

@@ -1,4 +1,5 @@
 import { StyleSheet, TextInput, type TextInputProps } from 'react-native';
+import { Radius, Spacing } from '@/theme';
 
 import { useTheme } from '@/hooks/use-theme';
 
@@ -29,9 +30,9 @@ export function Input({ invalid, style, ...rest }: Props) {
 const styles = StyleSheet.create({
   input: {
     height: 52,
-    borderRadius: 14,
+    borderRadius: Radius.md,
     borderWidth: 1,
-    paddingHorizontal: 16,
+    paddingHorizontal: Spacing.base,
     fontSize: 16,
   },
 });

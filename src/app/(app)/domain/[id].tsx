@@ -6,7 +6,7 @@ import { ScrollView, StyleSheet } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Row, RowGroup, SquareBadge } from '@/components/ui/row';
-import { Spacing } from '@/constants/theme';
+import { Spacing } from '@/theme';
 import { DEFAULT_PACK_ID, getDefaultPack, getDomain, lessonsByDomain } from '@/content';
 import { getCompletedLessonIds } from '@/db/repositories';
 import { isLessonUnlockedNow, useEntitlements } from '@/features/monetization';
@@ -99,10 +99,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   empty: {
-    padding: Spacing.four,
+    padding: Spacing.lg,
     textAlign: 'center',
   },
   content: {
-    padding: Spacing.four,
+    padding: Spacing.lg,
   },
 });

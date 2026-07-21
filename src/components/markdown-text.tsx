@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
-import { FontFamily, Spacing } from '@/constants/theme';
+import { FontFamily, Spacing } from '@/theme';
 
 /**
  * Rendu du sous-ensemble markdown autorisé dans le contenu (docs/AUTHORING.md) :
@@ -77,17 +77,17 @@ function renderInline(text: string): ReactNode[] {
 
 const styles = StyleSheet.create({
   container: {
-    gap: Spacing.two,
+    gap: Spacing.sm,
   },
   list: {
-    gap: Spacing.one,
+    gap: Spacing.xs,
   },
   listItem: {
     flexDirection: 'row',
-    gap: Spacing.two,
+    gap: Spacing.sm,
   },
   marker: {
-    minWidth: Spacing.three,
+    minWidth: Spacing.base,
     textAlign: 'right',
   },
   listText: {

@@ -6,7 +6,7 @@ import { Penguin } from '@/components/mascot/penguin';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
-import { Spacing } from '@/constants/theme';
+import { Radius, Spacing } from '@/theme';
 import { completeOnboarding } from '@/features/settings/first-run';
 import { useHues } from '@/hooks/use-hues';
 import { useStrings } from '@/i18n/strings';
@@ -64,29 +64,29 @@ const styles = StyleSheet.create({
   },
   safe: {
     flex: 1,
-    padding: Spacing.four,
+    padding: Spacing.lg,
     justifyContent: 'space-between',
   },
   content: {
     flex: 1,
     justifyContent: 'center',
-    gap: Spacing.five,
+    gap: Spacing.xl,
   },
   header: {
-    gap: Spacing.two,
+    gap: Spacing.sm,
   },
   bullets: {
-    gap: Spacing.three,
+    gap: Spacing.base,
   },
   bullet: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: Spacing.three,
+    gap: Spacing.base,
   },
   badge: {
     width: 48,
     height: 48,
-    borderRadius: 16,
+    borderRadius: Radius.md,
     alignItems: 'center',
     justifyContent: 'center',
   },

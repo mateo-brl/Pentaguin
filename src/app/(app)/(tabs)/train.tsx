@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Row, RowGroup, SquareBadge } from '@/components/ui/row';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+import { BottomTabInset, MaxContentWidth, Spacing } from '@/theme';
 import { useRank } from '@/features/rank/ranks';
 import { useHues } from '@/hooks/use-hues';
 import { useStrings } from '@/i18n/strings';
@@ -91,12 +91,12 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     maxWidth: MaxContentWidth,
-    paddingHorizontal: Spacing.four,
-    paddingBottom: BottomTabInset + Spacing.three,
+    paddingHorizontal: Spacing.lg,
+    paddingBottom: BottomTabInset + Spacing.base,
   },
   header: {
-    paddingTop: Spacing.five,
-    paddingBottom: Spacing.four,
+    paddingTop: Spacing.xl,
+    paddingBottom: Spacing.lg,
   },
   title: {
     fontSize: 28,
