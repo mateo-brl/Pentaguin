@@ -2,6 +2,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { Penguin } from '@/components/mascot/penguin';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
@@ -24,6 +25,9 @@ export default function OnboardingScreen() {
     <ThemedView style={styles.container}>
       <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
         <View style={styles.content}>
+          {/* Le manchot accueille : première impression de la marque. */}
+          <Penguin state="correct" size={128} animation="float" style={styles.hero} />
+
           <View style={styles.header}>
             <ThemedText type="title">{t.onboarding.title}</ThemedText>
             <ThemedText type="small" themeColor="textSecondary">
@@ -52,6 +56,9 @@ export default function OnboardingScreen() {
 }
 
 const styles = StyleSheet.create({
+  hero: {
+    alignSelf: 'center',
+  },
   container: {
     flex: 1,
   },

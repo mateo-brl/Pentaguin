@@ -1,20 +1,18 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { router } from 'expo-router';
 import { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { Penguin } from '@/components/mascot/penguin';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
 import { Spacing } from '@/constants/theme';
 import { usePlacementSession } from '@/features/placement/session';
-import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
 
 export default function PlacementIntroScreen() {
   const t = useStrings();
-  const theme = useTheme();
   const start = usePlacementSession((s) => s.start);
   const started = usePlacementSession((s) => s.state.step > 0 && !s.finished);
 
@@ -27,9 +25,7 @@ export default function PlacementIntroScreen() {
     <ThemedView style={styles.container}>
       <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
         <View style={styles.content}>
-          <View style={[styles.medal, { backgroundColor: theme.accentSoft }]}>
-            <Ionicons name="medal" size={44} color={theme.accent} />
-          </View>
+          <Penguin state="focus" size={116} animation="float" />
           <ThemedText type="title" style={styles.title}>
             {t.placement.title}
           </ThemedText>
@@ -61,14 +57,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: Spacing.three,
-  },
-  medal: {
-    width: 88,
-    height: 88,
-    borderRadius: 44,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: Spacing.two,
   },
   title: {
     textAlign: 'center',
