@@ -1,6 +1,8 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { StyleSheet, Text, View } from 'react-native';
+import { SvgXml } from 'react-native-svg';
 
+import { penguinHeadSvg } from '@/components/mascot/penguin-art';
 import { FontFamily } from '@/theme';
 import { useHues } from '@/hooks/use-hues';
 
@@ -12,7 +14,7 @@ type Props = {
   size?: number;
 };
 
-/** Pastille d'avatar : icône Ionicons ou initiales sur fond teinté. */
+/** Pastille d'avatar : manchot, icône Ionicons ou initiales sur fond teinté. */
 export function Avatar({ spec, pseudo, size = 44 }: Props) {
   const { hueFor } = useHues();
   const hue = hueFor(spec.color);
@@ -24,7 +26,9 @@ export function Avatar({ spec, pseudo, size = 44 }: Props) {
         styles.circle,
         { width: size, height: size, borderRadius: size / 2, backgroundColor: hue.soft },
       ]}>
-      {icon ? (
+      {spec.icon === 'penguin' ? (
+        <SvgXml xml={penguinHeadSvg} width={size * 0.72} height={size * 0.72} />
+      ) : icon ? (
         <Ionicons name={icon as keyof typeof Ionicons.glyphMap} size={size * 0.5} color={hue.base} />
       ) : (
         <Text style={{ color: hue.base, fontSize: size * 0.38, fontFamily: FontFamily.bold }}>

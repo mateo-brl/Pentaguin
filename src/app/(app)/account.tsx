@@ -5,6 +5,9 @@ import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { penguinHeadSvg } from '@/components/mascot/penguin-art';
+import { SvgXml } from 'react-native-svg';
+
 import { Avatar } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -179,7 +182,9 @@ function AvatarIconChoice({
         { backgroundColor: theme.backgroundElement, borderColor: theme.border },
         selected && { borderColor: theme.accent, borderWidth: 2 },
       ]}>
-      {ionicon ? (
+      {icon === 'penguin' ? (
+        <SvgXml xml={penguinHeadSvg} width={26} height={26} />
+      ) : ionicon ? (
         <Ionicons
           name={ionicon as keyof typeof Ionicons.glyphMap}
           size={22}

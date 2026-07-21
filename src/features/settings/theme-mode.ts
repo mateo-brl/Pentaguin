@@ -5,7 +5,9 @@ import { getKv, setKv } from '@/db/repositories';
 export type ThemeMode = 'system' | 'light' | 'dark';
 
 const KEY = 'theme_mode';
-let current: ThemeMode = 'system';
+// Sombre par défaut : l'identité de Pentaguin est une ambiance « encre ». Le
+// clair reste un simple basculement de tokens si l'utilisateur le choisit.
+let current: ThemeMode = 'dark';
 const listeners = new Set<() => void>();
 
 /** À appeler une fois au démarrage (lecture du choix persistant). */

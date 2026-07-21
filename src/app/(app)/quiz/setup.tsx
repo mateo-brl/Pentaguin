@@ -48,7 +48,7 @@ export default function QuizSetupScreen() {
               {pack.domains.map((domain) => (
                 <Chip
                   key={domain.id}
-                  label={domain.code}
+                  label={domain.code.replace('.0', '')}
                   selected={domainId === domain.id}
                   onPress={() => setDomainId(domain.id)}
                 />

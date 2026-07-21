@@ -58,10 +58,34 @@ concurrencent pas visuellement.
 `danger #E4655F` (rouge désaturé, jamais flashy) · `streak #EF9330` (orange
 brûlé du manchot, volontairement distinct de l'ambre d'action).
 
-### Teintes par thème (8 domaines, cycle de 5)
+### Ambiance : sombre par défaut
 
-Bleu glacier · cyan doux · orange brûlé · acier · rose poudré. **Sans violet**,
-et choisies pour ne pas être confondues avec l'accent ni le succès.
+Le thème par défaut est **sombre** (`theme-mode.ts`). C'est l'identité « encre »
+de Pentaguin. Le clair reste un simple basculement de tokens sémantiques si
+l'utilisateur le choisit dans Réglages — rien n'est codé en dur par mode.
+
+### Teintes des 8 domaines : `domainColor(index)`
+
+**Une seule famille froide** (bleu → acier glacier), dégradé maîtrisé sur 8
+pas — jamais un arc-en-ciel. Le fond de pastille est la même teinte à ~13 %
+(`base + '22'`) : les badges se lisent comme un système. Aucune de ces teintes
+n'entre en concurrence avec l'accent ambre (action) ni la menthe (succès).
+On n'utilise **pas** `Hues` pour les domaines — uniquement `domainColor`.
+
+`Hues` ne sert plus qu'aux **avatars** (variété d'identité personnelle assumée).
+
+### Icônes de listes : neutres
+
+Les icônes des liens (Profil) sont **monochromes** (`textSecondary` sur
+`backgroundSelected`), pas une icône colorée par ligne. Le seul élément coloré
+d'une liste est l'accent ambre, réservé aux actions.
+
+### Avatars
+
+Set : **manchot** (défaut, rendu par le vecteur de la mascotte), initiales,
+terminal, bug, fingerprint, flash, rocket, shield. Le **cadenas a été retiré**
+(cliché cyber + choix bizarre pour un avatar). Liste en miroir côté serveur
+(`backend/server.mjs : AVATAR_ICONS`).
 
 ## Rampe des 15 rangs
 
