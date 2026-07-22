@@ -19,20 +19,37 @@ function formatRemaining(ms: number): string {
   return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 }
 
+/**
+ * Compte à rebours ISOLÉ : lui seul se re-rend chaque seconde (via son propre
+ * `now`), pas tout l'écran d'examen ni les options du header natif.
+ */
+function Countdown({ endsAt }: { endsAt: number | null }) {
+  const theme = useTheme();
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    const timer = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+  const remaining = (endsAt ?? now) - now;
+  const lowTime = remaining < 5 * 60_000;
+  return (
+    <ThemedText type="mono" style={{ color: lowTime ? theme.danger : theme.accent }}>
+      {formatRemaining(remaining)}
+    </ThemedText>
+  );
+}
+
 export default function ExamPlayScreen() {
   const t = useStrings();
   const theme = useTheme();
   const { questions, currentIndex, selections, flagged, endsAt, finished } = useExamSession();
-  const [now, setNow] = useState(() => Date.now());
 
-  // Horloge de l'épreuve : rafraîchit l'affichage et clôt à l'expiration.
+  // Clôture à l'expiration : un seul intervalle, SANS setState local (donc pas
+  // de re-rendu de l'écran chaque seconde — voir Countdown pour l'affichage).
   useEffect(() => {
     const timer = setInterval(() => {
-      setNow(Date.now());
       const state = useExamSession.getState();
-      if (!state.finished && state.endsAt && Date.now() >= state.endsAt) {
-        state.finish();
-      }
+      if (!state.finished && state.endsAt && Date.now() >= state.endsAt) state.finish();
     }, 1000);
     return () => clearInterval(timer);
   }, []);
@@ -44,8 +61,6 @@ export default function ExamPlayScreen() {
   const selected = selections[question.id] ?? [];
   const isFlagged = Boolean(flagged[question.id]);
   const isLast = currentIndex + 1 === questions.length;
-  const remaining = (endsAt ?? now) - now;
-  const lowTime = remaining < 5 * 60_000;
 
   const toggle = (choiceId: string) => {
     const next =
@@ -76,11 +91,7 @@ export default function ExamPlayScreen() {
           headerShown: true,
           title: `${currentIndex + 1}/${questions.length}`,
           headerBackVisible: false,
-          headerRight: () => (
-            <ThemedText type="mono" style={{ color: lowTime ? theme.danger : theme.accent }}>
-              {formatRemaining(remaining)}
-            </ThemedText>
-          ),
+          headerRight: () => <Countdown endsAt={endsAt} />,
         }}
       />
       <ScrollView contentContainerStyle={styles.content}>

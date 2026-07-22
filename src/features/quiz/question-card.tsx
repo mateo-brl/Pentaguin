@@ -44,6 +44,7 @@ export function QuestionCard({ question, onAnswered }: Props) {
   };
 
   const validate = () => {
+    if (validated) return; // anti-double-tap : sinon XP et stats comptés 2×
     const isCorrect = isAnswerCorrect(question, selected);
     setValidated(true);
     if (isCorrect) successFeedback();

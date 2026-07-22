@@ -45,11 +45,16 @@ export default function LeaderboardScreen() {
   const [period, setPeriod] = useState<LeaderboardPeriod>('all');
   const [entries, setEntries] = useState<LeaderboardEntry[] | null>(null);
   const [error, setError] = useState(false);
+  const [retry, setRetry] = useState(0);
 
   useEffect(() => {
     if (!pseudo) return;
     let cancelled = false;
     (async () => {
+      // Repart d'un état de chargement : sinon l'ancienne liste reste affichée
+      // au changement de période (ou lors d'un réessai).
+      setEntries(null);
+      setError(false);
       try {
         const token = await getToken();
         await syncActivity(
@@ -68,7 +73,7 @@ export default function LeaderboardScreen() {
     return () => {
       cancelled = true;
     };
-  }, [pseudo, period]);
+  }, [pseudo, period, retry]);
 
   const join = () => {
     if (!isValidPseudo(input)) {
@@ -120,9 +125,12 @@ export default function LeaderboardScreen() {
           </View>
 
           {error ? (
-            <ThemedText type="small" themeColor="textSecondary" style={styles.message}>
-              {t.leaderboard.error}
-            </ThemedText>
+            <View style={styles.errorBox}>
+              <ThemedText type="small" themeColor="textSecondary" style={styles.message}>
+                {t.leaderboard.error}
+              </ThemedText>
+              <Button label={t.common.retry} variant="secondary" onPress={() => setRetry((r) => r + 1)} />
+            </View>
           ) : entries === null ? (
             <ActivityIndicator style={styles.loading} color={theme.accent} />
           ) : entries.length === 0 ? (
@@ -137,10 +145,10 @@ export default function LeaderboardScreen() {
                   const podium = item.rank <= 3;
                   return (
                     <Row
-                      key={item.rank}
+                      key={item.pseudo}
                       first={index === 0}
                       title={`${item.pseudo}${isSelf ? ` (${t.leaderboard.you})` : ''}`}
-                      subtitle={item.rankId != null ? rankLabel(item.rankId, t) : undefined}
+                      subtitle={Number.isInteger(item.rankId) ? rankLabel(item.rankId as number, t) : undefined}
                       leading={
                         <View style={styles.rank}>
                           <SquareBadge
@@ -190,6 +198,7 @@ const styles = StyleSheet.create({
     padding: Spacing.lg,
     paddingBottom: Spacing.sm,
   },
+  errorBox: { alignItems: 'center', gap: Spacing.base, padding: Spacing.lg },
   message: {
     padding: Spacing.lg,
     textAlign: 'center',

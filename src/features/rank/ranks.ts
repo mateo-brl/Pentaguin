@@ -59,6 +59,9 @@ export const MIN_RANK = 1;
 export const MAX_RANK = RANKS.length; // 15
 
 export function clampRank(id: number): number {
+  // Valeur non finie (donnée serveur non typée à l'exécution) → borne basse,
+  // sinon Math.round(NaN) = NaN → RANKS[NaN-1] = undefined → crash de l'écran.
+  if (!Number.isFinite(id)) return MIN_RANK;
   return Math.min(Math.max(Math.round(id), MIN_RANK), MAX_RANK);
 }
 
