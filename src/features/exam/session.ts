@@ -88,7 +88,10 @@ export const useExamSession = create<ExamSessionState>((set, get) => ({
         const isCorrect = isAnswerCorrect(question, selected);
         if (isCorrect) correctCount += 1;
         recordAnswer(attemptId, question.id, selected, isCorrect);
-        bumpQuestionStat(packId, question.id, isCorrect);
+        // Ne pollue « Mes erreurs » qu'avec les questions RÉELLEMENT vues :
+        // une non-réponse (temps écoulé/abandon) compte faux au SCORE, mais ne
+        // doit pas marquer comme ratée une question jamais affichée.
+        if (question.id in selections) bumpQuestionStat(packId, question.id, isCorrect);
       }
       finishAttempt(attemptId, scorePct(correctCount, questions.length));
       if (correctCount > 0) addDailyXp(correctCount * XP.correctAnswer);

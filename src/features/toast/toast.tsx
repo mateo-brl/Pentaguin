@@ -1,13 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-  type ReactNode,
-} from 'react';
+import { createContext, type ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { Animated, Pressable, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Radius, Spacing } from '@/theme';
@@ -61,9 +53,10 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   useEffect(() => () => {
     if (timer.current) clearTimeout(timer.current);
   }, []);
+  const ctxValue = useMemo(() => ({ show }), [show]);
 
   return (
-    <ToastContext.Provider value={{ show }}>
+    <ToastContext.Provider value={ctxValue}>
       {children}
       {toast && <ToastView toast={toast} opacity={opacity} translateY={translateY} onPress={hide} />}
     </ToastContext.Provider>

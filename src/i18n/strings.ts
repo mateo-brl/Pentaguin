@@ -8,6 +8,12 @@ export type Locale = (typeof locales)[number];
 const LOCALE_KEY = 'locale';
 
 const fr = {
+  common: {
+    notFoundTitle: 'Introuvable',
+    notFoundBody: 'Ce contenu n’est pas disponible. Il a peut-être été mis à jour.',
+    back: 'Retour',
+    retry: 'Réessayer',
+  },
   tabs: {
     home: 'Accueil',
     learn: 'Apprendre',
@@ -191,7 +197,7 @@ const fr = {
   paywall: {
     title: 'Pentaguin Pro',
     pitch: 'Débloque l’intégralité du pack Security+ :',
-    bulletDomains: 'Les 5 domaines et toutes les leçons',
+    bulletDomains: 'Les 8 thèmes et toutes les leçons',
     bulletBank: 'La banque de questions complète',
     bulletExams: 'Tous les examens blancs',
     oneTime: 'Achat unique — pas d’abonnement.',
@@ -363,6 +369,12 @@ const fr = {
 export type Strings = typeof fr;
 
 const en: Strings = {
+  common: {
+    notFoundTitle: 'Not found',
+    notFoundBody: 'This content isn’t available. It may have been updated.',
+    back: 'Back',
+    retry: 'Try again',
+  },
   tabs: {
     home: 'Home',
     learn: 'Learn',
@@ -403,7 +415,7 @@ const en: Strings = {
   onboarding: {
     title: 'Welcome to Pentaguin',
     subtitle: 'Your certification prep, five minutes at a time.',
-    bullet1: 'Clear lessons, in French with English technical terms.',
+    bullet1: 'Clear lessons, with the standard English technical terms.',
     bullet2: 'Quizzes and timed mock exams, under real conditions.',
     bullet3: 'Streaks, XP and a leaderboard to keep your momentum.',
     cta: 'Get started',
@@ -546,7 +558,7 @@ const en: Strings = {
   paywall: {
     title: 'Pentaguin Pro',
     pitch: 'Unlock the full Security+ pack:',
-    bulletDomains: 'All 5 domains and every lesson',
+    bulletDomains: 'All 8 themes and every lesson',
     bulletBank: 'The complete question bank',
     bulletExams: 'All mock exams',
     oneTime: 'One-time purchase — no subscription.',

@@ -50,8 +50,13 @@ export default function AccountScreen() {
   const [busy, setBusy] = useState(false);
 
   const applyAvatar = (next: AvatarSpec) => {
+    const previous = avatar;
     setAvatarSpec(next);
-    updateAvatar(serializeAvatar(next)).catch(() => toast.show(t.account.errorGeneric, 'error'));
+    // Rollback si la sauvegarde échoue (sinon l'UI diverge du serveur).
+    updateAvatar(serializeAvatar(next)).catch(() => {
+      setAvatarSpec(previous);
+      toast.show(t.account.errorGeneric, 'error');
+    });
   };
 
   const savePseudo = async () => {

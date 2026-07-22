@@ -1,26 +1,29 @@
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 
-import { activeProvider } from '@/features/monetization';
+import { Colors } from '@/theme';
 import { SessionProvider, useSession } from '@/features/account/session';
+import { activeProvider } from '@/features/monetization';
 import { useHasSeenOnboarding } from '@/features/settings/first-run';
 import { useHasChosenLocale } from '@/features/settings/locale-choice';
 import { initThemeMode } from '@/features/settings/theme-mode';
 import { ErrorBoundary } from '@/features/telemetry/error-boundary';
-import { installErrorReporter } from '@/features/telemetry/report';
+import { installErrorReporter, reportError } from '@/features/telemetry/report';
 import { ToastProvider } from '@/features/toast/toast';
+import { useColorScheme } from '@/hooks/use-color-scheme';
 import { initLocale } from '@/i18n/strings';
 
 // Garde d'entrée : tant qu'aucun compte n'est connecté, seul l'écran de
 // connexion est monté ; après connexion mais avant le choix du pseudo, seul
-// l'écran de pseudo l'est ; ensuite seulement le groupe (app) — donc toute
-// l'app — devient accessible. Les redirections sont gérées par expo-router
-// dès que la garde change (Stack.Protected, SDK 57).
+// l'écran de pseudo l'est ; ensuite seulement le groupe (app) devient
+// accessible. Redirections gérées par expo-router (Stack.Protected, SDK 57).
 function RootNavigator() {
   const { status } = useSession();
   const onboardingSeen = useHasSeenOnboarding();
   const localeChosen = useHasChosenLocale();
+  const scheme = useColorScheme();
 
   // status 'loading' : le splash natif reste affiché (voir SessionProvider).
   if (status === 'loading') return null;
@@ -28,7 +31,12 @@ function RootNavigator() {
   const signedOut = status === 'signedOut';
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
+    <Stack
+      screenOptions={{
+        headerShown: false,
+        // Fond de scène au thème → pas de flash blanc aux transitions en sombre.
+        contentStyle: { backgroundColor: Colors[scheme].background },
+      }}>
       <Stack.Protected guard={status === 'ready'}>
         <Stack.Screen name="(app)" />
       </Stack.Protected>
@@ -49,20 +57,31 @@ function RootNavigator() {
   );
 }
 
+/** Barre de statut au thème (heure/batterie lisibles sur fond sombre). */
+function ThemedStatusBar() {
+  const scheme = useColorScheme();
+  return <StatusBar style={scheme === 'dark' ? 'light' : 'dark'} />;
+}
+
 export default function RootLayout() {
   // Lecture des préférences persistantes + capteur d'erreurs avant le 1er rendu.
+  // Sous try/catch : cet init touche SQLite ; une base corrompue/pleine ne doit
+  // pas crasher AU-DESSUS de l'ErrorBoundary (écran de secours impossible).
   useState(() => {
-    initLocale();
-    initThemeMode();
-    installErrorReporter();
+    try {
+      initLocale();
+      initThemeMode();
+      installErrorReporter();
+    } catch (e) {
+      reportError(e, 'init');
+    }
     return true;
   });
 
-  // Polices chargées à l'EXÉCUTION : elles voyagent comme des assets d'EAS
-  // Update, donc modifiables en OTA sans rebuild natif. On ne rend rien tant
-  // qu'elles ne sont pas prêtes (le splash natif reste affiché) — sinon un
-  // premier rendu en police système « flasherait ».
-  const [fontsLoaded] = useFonts({
+  // Polices chargées à l'exécution (assets d'EAS Update → modifiables en OTA).
+  // On attend leur chargement, MAIS si un asset échoue on rend quand même
+  // (police système en repli) plutôt que de rester figé sur le splash.
+  const [fontsLoaded, fontError] = useFonts({
     'HankenGrotesk-Regular': require('../../assets/fonts/HankenGrotesk-Regular.ttf'),
     'HankenGrotesk-Medium': require('../../assets/fonts/HankenGrotesk-Medium.ttf'),
     'HankenGrotesk-SemiBold': require('../../assets/fonts/HankenGrotesk-SemiBold.ttf'),
@@ -72,15 +91,20 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
-    void activeProvider.init();
+    if (fontError) reportError(fontError, 'fonts');
+  }, [fontError]);
+
+  useEffect(() => {
+    activeProvider.init().catch((e) => reportError(e, 'purchases-init'));
   }, []);
 
-  if (!fontsLoaded) return null;
+  if (!fontsLoaded && !fontError) return null;
 
   return (
     <ErrorBoundary>
       <SessionProvider>
         <ToastProvider>
+          <ThemedStatusBar />
           <RootNavigator />
         </ToastProvider>
       </SessionProvider>

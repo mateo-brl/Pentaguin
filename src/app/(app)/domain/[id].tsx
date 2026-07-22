@@ -5,6 +5,7 @@ import { ScrollView, StyleSheet } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { ScreenFallback } from '@/components/ui/screen-fallback';
 import { Row, RowGroup, SquareBadge } from '@/components/ui/row';
 import { Spacing } from '@/theme';
 import { DEFAULT_PACK_ID, getDefaultPack, getDomain, lessonsByDomain } from '@/content';
@@ -32,9 +33,7 @@ export default function DomainScreen() {
     }, []),
   );
 
-  if (!domain) {
-    return null;
-  }
+  if (!domain) return <ScreenFallback />;
 
   const lessons = lessonsByDomain(pack, domain.id);
 

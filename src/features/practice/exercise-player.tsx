@@ -83,7 +83,7 @@ function TerminalPlayer({ ex }: { ex: TerminalExercise }) {
       <Brief text={ex.brief} />
       {!done && <ThemedText type="smallBold" style={styles.instruction}>{step.instruction}</ThemedText>}
 
-      <View style={styles.terminal}>
+      <View style={[styles.terminal, { backgroundColor: theme.backgroundTerminal }]}>
         {lines.map((l, i) => (
           <ThemedText
             key={i}
@@ -105,7 +105,7 @@ function TerminalPlayer({ ex }: { ex: TerminalExercise }) {
               placeholderTextColor={theme.textDisabled}
               autoCapitalize="none"
               autoCorrect={false}
-              style={[styles.termText, styles.termInput]}
+              style={[styles.termText, styles.termInput, { color: theme.text }]}
               returnKeyType="send"
             />
           </View>
@@ -114,7 +114,7 @@ function TerminalPlayer({ ex }: { ex: TerminalExercise }) {
 
       {done ? (
         <>
-          <View style={styles.successBox}>
+          <View style={[styles.successBox, { backgroundColor: theme.successSoft }]}>
             <Ionicons name="checkmark-circle" size={20} color={theme.success} />
             <ThemedText type="small" style={styles.successText}>{ex.success}</ThemedText>
           </View>
@@ -294,8 +294,10 @@ function ScenarioPlayer({ ex }: { ex: ScenarioExercise }) {
   const t = useStrings();
   const theme = useTheme();
   const [nodeId, setNodeId] = useState(ex.start);
-  const node = ex.nodes[nodeId];
-  const terminal = !node.choices || node.choices.length === 0;
+  // Repli si le nœud est introuvable (contenu poussé en contournant la
+  // validation) : on retombe sur le départ plutôt que de crasher au rendu.
+  const node = ex.nodes[nodeId] ?? ex.nodes[ex.start];
+  const terminal = !node || !node.choices || node.choices.length === 0;
 
   const outcomeColor =
     node.outcome === 'good' ? theme.success : node.outcome === 'bad' ? theme.danger : theme.accent;
@@ -307,9 +309,10 @@ function ScenarioPlayer({ ex }: { ex: ScenarioExercise }) {
         : t.practice.outcomeNeutral;
 
   const go = (to: string) => {
-    tapFeedback();
     const next = ex.nodes[to];
-    if (next && (!next.choices || next.choices.length === 0)) {
+    if (!next) return; // choix vers un nœud inconnu → on ignore (pas de crash)
+    tapFeedback();
+    if (!next.choices || next.choices.length === 0) {
       if (next.outcome === 'good') {
         successFeedback();
         rewardOnce(ex.id);
@@ -355,7 +358,6 @@ const styles = StyleSheet.create({
   instruction: { fontSize: 15 },
   flex: { flex: 1 },
   terminal: {
-    
     borderRadius: Radius.md,
     padding: Spacing.base,
     gap: Spacing.xs,
@@ -363,12 +365,11 @@ const styles = StyleSheet.create({
   },
   termText: { fontFamily: FontFamily.mono, fontSize: 12.5, lineHeight: 18 },
   termInputRow: { flexDirection: 'row', alignItems: 'center' },
-  termInput: { flex: 1,  padding: 0 },
+  termInput: { flex: 1, padding: 0 },
   successBox: {
     flexDirection: 'row',
     gap: Spacing.sm,
     alignItems: 'flex-start',
-    
     borderRadius: Radius.md,
     padding: Spacing.base,
   },

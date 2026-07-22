@@ -32,7 +32,7 @@ export default function QuizResultsScreen() {
 
   const replay = () => {
     useQuizSession.getState().reset();
-    router.replace('/quiz/setup');
+    router.dismissTo('/quiz/setup');
   };
 
   const backToTrain = () => {
