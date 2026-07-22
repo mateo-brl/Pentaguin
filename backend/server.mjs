@@ -54,6 +54,9 @@ const VERIFY_CODE_TTL_MS = 15 * 60_000;
 const MAX_LOGIN_FAILS = 6; // verrouillage temporaire au-delà
 const LOGIN_LOCK_MS = 15 * 60_000;
 const MAX_ERROR_REPORTS = 5000; // borne la croissance de la table
+// Hash bidon (coût scrypt équivalent) pour égaliser le temps de login quand le
+// compte n'existe pas — anti-énumération par timing.
+const DUMMY_PW = hashPassword('pentaguin-timing-equalizer');
 
 const db = new DatabaseSync(DB_PATH);
 db.exec(`
@@ -121,6 +124,9 @@ for (const alter of [
   'ALTER TABLE users ADD COLUMN totp_secret TEXT',
   'ALTER TABLE users ADD COLUMN totp_enabled INTEGER NOT NULL DEFAULT 0',
   'ALTER TABLE users ADD COLUMN email_verified INTEGER NOT NULL DEFAULT 0',
+  // Version de jeton : incrémentée à chaque changement de mot de passe / reset /
+  // désactivation 2FA → invalide les sessions JWT émises auparavant.
+  'ALTER TABLE users ADD COLUMN token_version INTEGER NOT NULL DEFAULT 0',
 ]) {
   try {
     db.exec(alter);
@@ -160,6 +166,10 @@ const insertUser = db.prepare(`
 `);
 const updatePassword = db.prepare(
   'UPDATE users SET password_hash = ?, password_salt = ?, updated_at = ? WHERE id = ?',
+);
+// Invalide toutes les sessions JWT existantes du compte (voir authUserId).
+const bumpTokenVersion = db.prepare(
+  'UPDATE users SET token_version = token_version + 1, updated_at = ? WHERE id = ?',
 );
 const updateTotp = db.prepare(
   'UPDATE users SET totp_secret = ?, totp_enabled = ?, updated_at = ? WHERE id = ?',
@@ -225,7 +235,15 @@ const isAvatar = (value) => {
   return Boolean(match) && AVATAR_ICONS.has(match[1]);
 };
 const isRank = (value) => Number.isInteger(value) && value >= 1 && value <= 15;
-const isDateKey = (value) => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value);
+const isDateKey = (value) => {
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const d = new Date(`${value}T00:00:00Z`);
+  // Vraie date calendaire : rejette 2026-99-99 / 2026-13-45 (que Date « corrige »).
+  if (Number.isNaN(d.getTime()) || d.toISOString().slice(0, 10) !== value) return false;
+  // Pas dans le FUTUR (tolérance 36 h pour les fuseaux) : sinon injection d'XP
+  // sur des dates futures qui gonflent durablement le classement.
+  return d.getTime() <= Date.now() + 36 * 3600 * 1000;
+};
 const isEmail = (value) =>
   typeof value === 'string' && value.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value);
 const isPassword = (value) => typeof value === 'string' && value.length >= 8 && value.length <= 128;
@@ -258,6 +276,42 @@ setInterval(() => {
   for (const [email, entry] of loginFails)
     if (!entry.lockedUntil || now > entry.lockedUntil) loginFails.delete(email);
 }, 600_000).unref();
+
+// — cooldown d'envoi d'e-mails par adresse (anti-bombardement) --------------------
+const mailCooldown = new Map(); // email → timestamp du prochain envoi autorisé
+const MAIL_COOLDOWN_MS = 60_000;
+setInterval(() => {
+  const now = Date.now();
+  for (const [email, until] of mailCooldown) if (now > until) mailCooldown.delete(email);
+}, 600_000).unref();
+/** true si un e-mail a déjà été envoyé à cette adresse il y a moins de 60 s. */
+function mailCoolingDown(email) {
+  if (Date.now() < (mailCooldown.get(email) ?? 0)) return true;
+  mailCooldown.set(email, Date.now() + MAIL_COOLDOWN_MS);
+  return false;
+}
+
+// — purge périodique : codes expirés + comptes squattés/abandonnés ---------------
+const purgeExpired = () => {
+  const now = Date.now();
+  try {
+    db.prepare('DELETE FROM reset_codes WHERE expires_at < ?').run(now);
+    db.prepare('DELETE FROM email_verifications WHERE expires_at < ?').run(now);
+    // Comptes e-mail JAMAIS vérifiés, sans provider social, sans données joueur,
+    // vieux de 7 j : squats (pré-réservation d'une adresse) ou inscriptions
+    // abandonnées. On ne touche pas à un compte qui a un joueur (données réelles).
+    db.prepare(
+      `DELETE FROM users
+       WHERE email_verified = 0 AND apple_sub IS NULL AND google_sub IS NULL
+         AND created_at < ?
+         AND id NOT IN (SELECT user_id FROM players WHERE user_id IS NOT NULL)`,
+    ).run(now - 7 * 86_400_000);
+  } catch (e) {
+    console.error('[purge]', e);
+  }
+};
+setInterval(purgeExpired, 3_600_000).unref();
+purgeExpired();
 
 function loginLockedUntil(email) {
   const entry = loginFails.get(email);
@@ -327,7 +381,12 @@ function authUserId(req) {
   if (!claims) return null;
   // Les jetons de défi (2FA mfa:1, vérif e-mail vrf:1) ne sont PAS des sessions.
   if (claims.mfa || claims.vrf) return null;
-  return selectUserById.get(claims.sub) ? claims.sub : null;
+  const user = selectUserById.get(claims.sub);
+  if (!user) return null;
+  // Révocation : un jeton d'une version antérieure (mot de passe changé, 2FA
+  // désactivée…) n'est plus valable même s'il n'a pas expiré.
+  if ((user.token_version ?? 0) !== (claims.tv ?? 0)) return null;
+  return claims.sub;
 }
 
 /** Résout (ou crée) la ligne joueur d'un compte ; peut absorber un deviceId anonyme. */
@@ -374,6 +433,7 @@ const mailAvailable = existsSync(SENDMAIL);
 
 /** Génère + envoie un code de vérification d'e-mail (6 chiffres, valable 15 min). */
 function sendVerificationCode(email) {
+  if (mailCoolingDown(email)) return; // anti-bombardement : 1 envoi / 60 s / adresse
   const code = String(randomBytes(4).readUInt32BE() % 1_000_000).padStart(6, '0');
   const codeHash = createHash('sha256').update(code).digest('hex');
   upsertVerifyCode.run(email, codeHash, Date.now() + VERIFY_CODE_TTL_MS);
@@ -457,7 +517,10 @@ async function handleSync(req, res) {
 }
 
 function issueSession(res, user) {
-  send(res, 200, { token: signSession(user.id, JWT_SECRET), email: user.email ?? null });
+  send(res, 200, {
+    token: signSession(user.id, JWT_SECRET, user.token_version ?? 0),
+    email: user.email ?? null,
+  });
 }
 
 async function handleRegister(req, res) {
@@ -490,7 +553,14 @@ async function handleLogin(req, res) {
   if (loginLockedUntil(normalized))
     return send(res, 429, { error: 'trop de tentatives, réessaie dans quelques minutes' });
   const user = selectUserByEmail.get(normalized);
-  if (!user?.password_hash || !verifyPassword(password, user.password_salt, user.password_hash)) {
+  if (!user?.password_hash) {
+    // Compte inexistant : on exécute quand même un scrypt (coût équivalent) pour
+    // que le temps de réponse ne trahisse PAS l'existence du compte (énumération).
+    verifyPassword(password, DUMMY_PW.salt, DUMMY_PW.hash);
+    recordLoginFail(normalized);
+    return send(res, 401, { error: 'identifiants invalides' });
+  }
+  if (!verifyPassword(password, user.password_salt, user.password_hash)) {
     recordLoginFail(normalized);
     return send(res, 401, { error: 'identifiants invalides' });
   }
@@ -609,7 +679,10 @@ async function handleTelemetry(req, res) {
   const context = typeof body.context === 'string' ? body.context.slice(0, 500) : null;
   insertErrorReport.run(Date.now(), appVer, platform, message, stack, context);
   pruneErrorReports.run(MAX_ERROR_REPORTS);
-  console.error(`[error-report] ${platform ?? '?'} v${appVer ?? '?'}: ${message}`);
+  // Assainit les retours-ligne avant de logguer (sinon forge de fausses lignes
+  // dans journald depuis une entrée non authentifiée).
+  const safeMessage = message.replace(/[\r\n]+/g, ' ');
+  console.error(`[error-report] ${platform ?? '?'} v${appVer ?? '?'}: ${safeMessage}`);
   send(res, 200, { ok: true });
 }
 
@@ -674,6 +747,7 @@ async function handleChangePassword(req, res) {
     return send(res, 401, { error: 'mot de passe actuel incorrect' });
   const { salt, hash } = hashPassword(newPassword);
   updatePassword.run(hash, salt, Date.now(), userId);
+  bumpTokenVersion.run(Date.now(), userId); // révoque les autres sessions
   send(res, 200, { ok: true });
 }
 
@@ -710,6 +784,7 @@ async function handle2faDisable(req, res) {
   if (!user.totp_enabled) return send(res, 400, { error: '2FA non activée' });
   if (!verifyTotp(user.totp_secret, code)) return send(res, 401, { error: 'code invalide' });
   updateTotp.run(null, 0, Date.now(), userId);
+  bumpTokenVersion.run(Date.now(), userId); // révoque les autres sessions
   send(res, 200, { ok: true, twoFactor: false });
 }
 
@@ -733,7 +808,7 @@ async function handleResetRequest(req, res) {
   // Réponse identique que l'email existe ou non (pas d'énumération de comptes).
   if (isEmail(email) && mailAvailable) {
     const user = selectUserByEmail.get(email.trim().toLowerCase());
-    if (user?.password_hash) {
+    if (user?.password_hash && !mailCoolingDown(user.email)) {
       const code = String(randomBytes(4).readUInt32BE() % 1_000_000).padStart(6, '0');
       const codeHash = createHash('sha256').update(code).digest('hex');
       upsertResetCode.run(user.email, codeHash, Date.now() + RESET_CODE_TTL_MS);
@@ -761,6 +836,7 @@ async function handleReset(req, res) {
   if (!user) return send(res, 401, { error: 'code invalide ou expiré' });
   const { salt, hash } = hashPassword(newPassword);
   updatePassword.run(hash, salt, Date.now(), user.id);
+  bumpTokenVersion.run(Date.now(), user.id); // révoque les autres sessions
   deleteResetCode.run(normalized);
   send(res, 200, { ok: true });
 }
@@ -780,17 +856,24 @@ const AUTH_ROUTES = new Set([
 ]);
 
 const server = createServer(async (req, res) => {
-  const ip = req.headers['x-real-ip'] ?? req.socket.remoteAddress ?? 'unknown';
-  const url = new URL(req.url ?? '/', 'http://localhost');
-
-  if (AUTH_ROUTES.has(url.pathname)) {
-    if (authRateLimited(ip)) return send(res, 429, { error: 'trop de requêtes' });
-    if (!JWT_SECRET) return send(res, 503, { error: 'authentification non configurée' });
-  } else if (rateLimited(ip)) {
-    return send(res, 429, { error: 'trop de requêtes' });
-  }
-
   try {
+    const ip = req.headers['x-real-ip'] ?? req.socket.remoteAddress ?? 'unknown';
+    // new URL() lève sur certaines cibles forgées (« // », « /\ ») : ce parse
+    // DOIT être dans le try, sinon la promesse rejetée tue le process (DoS).
+    let url;
+    try {
+      url = new URL(req.url ?? '/', 'http://localhost');
+    } catch {
+      return send(res, 400, { error: 'bad_request' });
+    }
+
+    if (AUTH_ROUTES.has(url.pathname)) {
+      if (authRateLimited(ip)) return send(res, 429, { error: 'trop de requêtes' });
+      if (!JWT_SECRET) return send(res, 503, { error: 'authentification non configurée' });
+    } else if (rateLimited(ip)) {
+      return send(res, 429, { error: 'trop de requêtes' });
+    }
+
     if (req.method === 'GET' && url.pathname === '/healthz') return send(res, 200, { ok: true });
     if (req.method === 'GET' && (url.pathname === '/privacy' || url.pathname === '/privacy.html'))
       return handlePrivacy(res);
@@ -834,10 +917,23 @@ const server = createServer(async (req, res) => {
     send(res, 404, { error: 'introuvable' });
   } catch (error) {
     const message = error instanceof Error ? error.message : 'erreur';
-    send(res, message === 'body_too_large' || message === 'invalid_json' ? 400 : 500, {
-      error: message,
-    });
+    // Ne ré-écrit pas une réponse déjà envoyée (sinon ERR_HTTP_HEADERS_SENT
+    // relèverait dans le catch et, sans handler process, tuerait le serveur).
+    if (!res.headersSent) {
+      send(res, message === 'body_too_large' || message === 'invalid_json' ? 400 : 500, {
+        error: message,
+      });
+    }
   }
+});
+
+// Filet de dernier recours : une exception/rejet non géré ne doit JAMAIS tuer le
+// process (sinon DoS trivial + perte de l'état mémoire). On loggue, on continue.
+process.on('unhandledRejection', (reason) => {
+  console.error('[unhandledRejection]', reason);
+});
+process.on('uncaughtException', (err) => {
+  console.error('[uncaughtException]', err);
 });
 
 server.listen(PORT, '127.0.0.1', () => {
