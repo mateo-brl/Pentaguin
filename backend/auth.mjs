@@ -35,11 +35,11 @@ export function verifyPassword(password, salt, expectedHashHex) {
 
 const SESSION_TTL_SECONDS = 180 * 86_400; // 6 mois
 
-export function signSession(userId, secret) {
+export function signSession(userId, secret, tokenVersion = 0) {
   const header = toB64url(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
   const now = Math.floor(Date.now() / 1000);
   const payload = toB64url(
-    JSON.stringify({ sub: userId, iat: now, exp: now + SESSION_TTL_SECONDS }),
+    JSON.stringify({ sub: userId, tv: tokenVersion, iat: now, exp: now + SESSION_TTL_SECONDS }),
   );
   const signature = createHmac('sha256', secret)
     .update(`${header}.${payload}`)
@@ -172,9 +172,14 @@ const JWKS_TTL_MS = 6 * 3_600_000;
 async function getJwks(url) {
   const cached = jwksCache.get(url);
   if (cached && Date.now() - cached.fetchedAt < JWKS_TTL_MS) return cached.keys;
-  const response = await fetch(url);
+  // Timeout : un JWKS lent ne doit pas bloquer le handler jusqu'au timeout nginx.
+  const response = await fetch(url, { signal: AbortSignal.timeout(5000) });
   if (!response.ok) throw new Error('jwks_fetch_failed');
   const { keys } = await response.json();
+  // Ne met en cache QUE des clés valides : une réponse 200 sans `keys` (page
+  // d'erreur JSON) empoisonnerait sinon le cache 6 h et casserait toutes les
+  // connexions Apple/Google. On throw sans cacher.
+  if (!Array.isArray(keys) || keys.length === 0) throw new Error('jwks_empty');
   jwksCache.set(url, { keys, fetchedAt: Date.now() });
   return keys;
 }
