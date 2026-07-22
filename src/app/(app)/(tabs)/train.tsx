@@ -7,12 +7,14 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Row, RowGroup, SquareBadge } from '@/components/ui/row';
 import { BottomTabInset, MaxContentWidth, Spacing, domainColor } from '@/theme';
+import { getDefaultPack } from '@/content';
 import { useRank } from '@/features/rank/ranks';
 import { useStrings } from '@/i18n/strings';
 
 export default function TrainScreen() {
   const t = useStrings();
   const rank = useRank();
+  const hasExams = getDefaultPack().exams.length > 0;
 
   // Positionnement obligatoire avant de s'entraîner.
   if (rank == null) return <Redirect href="/placement" />;
@@ -32,13 +34,19 @@ export default function TrainScreen() {
       desc: t.train.quizDesc,
       href: '/quiz/setup' as const,
     },
-    {
-      key: 'exam',
-      icon: 'timer' as const,
-      title: t.train.exam,
-      desc: t.train.examDesc,
-      href: '/exam' as const,
-    },
+    // Tuile « Examen blanc » masquée tant qu'aucun examen n'est livré (sinon
+    // elle mène à une liste vide).
+    ...(hasExams
+      ? [
+          {
+            key: 'exam',
+            icon: 'timer' as const,
+            title: t.train.exam,
+            desc: t.train.examDesc,
+            href: '/exam' as const,
+          },
+        ]
+      : []),
     {
       key: 'mistakes',
       icon: 'refresh' as const,

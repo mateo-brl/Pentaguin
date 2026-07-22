@@ -38,7 +38,7 @@ export default function PlacementPlayScreen() {
           key={current.id}
           question={current}
           validateLabel={isLast ? t.placement.finish : t.placement.validate}
-          onAnswer={(correct) => answer(correct)}
+          onAnswer={(correct) => answer(current.id, correct)}
         />
       </ScrollView>
     </ThemedView>
@@ -57,6 +57,13 @@ function PlacementQuestionView({
 }) {
   const theme = useTheme();
   const [selected, setSelected] = useState<string | null>(null);
+  const [answered, setAnswered] = useState(false);
+
+  const submit = () => {
+    if (answered || selected === null) return;
+    setAnswered(true);
+    onAnswer(selected === question.correct);
+  };
 
   return (
     <View style={styles.card}>
@@ -89,11 +96,7 @@ function PlacementQuestionView({
         })}
       </View>
 
-      <Button
-        label={validateLabel}
-        disabled={selected === null}
-        onPress={() => selected !== null && onAnswer(selected === question.correct)}
-      />
+      <Button label={validateLabel} disabled={selected === null || answered} onPress={submit} />
     </View>
   );
 }

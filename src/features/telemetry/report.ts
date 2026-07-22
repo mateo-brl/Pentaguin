@@ -1,4 +1,5 @@
 import Constants from 'expo-constants';
+import * as Updates from 'expo-updates';
 import { Platform } from 'react-native';
 
 import { backendConfig } from '@/config/backend';
@@ -8,8 +9,24 @@ import { backendConfig } from '@/config/backend';
  * les erreurs JS et on les envoie à notre propre backend (POST /v1/telemetry).
  * Ne lève JAMAIS : un échec de report ne doit pas aggraver la situation.
  */
+
+// Débit borné : une boucle de rendu en erreur ne doit pas marteler le backend
+// (au plus N rapports par fenêtre glissante).
+const RATE_WINDOW_MS = 60_000;
+const RATE_MAX = 8;
+let windowStart = 0;
+let windowCount = 0;
+
 function report(message: string, stack?: string, context?: string): void {
   try {
+    const now = Date.now();
+    if (now - windowStart > RATE_WINDOW_MS) {
+      windowStart = now;
+      windowCount = 0;
+    }
+    if (windowCount >= RATE_MAX) return; // fenêtre saturée : on jette en silence
+    windowCount += 1;
+
     void fetch(`${backendConfig.baseUrl}/v1/telemetry`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -17,6 +34,9 @@ function report(message: string, stack?: string, context?: string): void {
         message: message.slice(0, 500),
         stack: stack?.slice(0, 4000),
         appVersion: Constants.expoConfig?.version ?? '0.0.0',
+        // updateId : identifie l'OTA fautive (indispensable pour diagnostiquer
+        // quel update a introduit un crash).
+        updateId: Updates.updateId ?? null,
         platform: Platform.OS,
         context,
       }),

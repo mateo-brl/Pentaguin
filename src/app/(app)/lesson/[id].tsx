@@ -4,6 +4,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { ScreenFallback } from '@/components/ui/screen-fallback';
 import { Button } from '@/components/ui/button';
 import { XP } from '@/config/gamification';
 import { Radius, Spacing } from '@/theme';
@@ -12,7 +13,9 @@ import {
   addDailyXp,
   bumpQuestionStat,
   getCompletedLessonIds,
+  getKv,
   markLessonCompleted,
+  setKv,
 } from '@/db/repositories';
 import { LessonBlockView } from '@/features/lessons/lesson-blocks';
 import { isLessonUnlockedNow, useEntitlements } from '@/features/monetization';
@@ -30,7 +33,7 @@ export default function LessonScreen() {
     lesson ? getCompletedLessonIds(pack.id).has(lesson.id) : false,
   );
 
-  if (!lesson) return null;
+  if (!lesson) return <ScreenFallback />;
 
   // Garde Pro : accès direct à une leçon verrouillée → invite à débloquer.
   if (!isLessonUnlockedNow(lesson, entitlements)) {
@@ -48,6 +51,7 @@ export default function LessonScreen() {
   }
 
   const markDone = () => {
+    if (completed) return; // anti-double-tap : sinon XP de leçon crédité 2×
     markLessonCompleted(pack.id, lesson.id);
     addDailyXp(XP.lessonCompleted);
     setCompleted(true);
@@ -68,7 +72,13 @@ export default function LessonScreen() {
             pack={pack}
             onQuickcheckAnswered={(questionId, result) => {
               bumpQuestionStat(pack.id, questionId, result.isCorrect);
-              if (result.isCorrect) addDailyXp(XP.correctAnswer);
+              // XP crédité UNE seule fois par quickcheck (sinon farmable en
+              // rouvrant la leçon en boucle — le classement partage l'XP).
+              const xpKey = `qc_xp:${questionId}`;
+              if (result.isCorrect && !getKv(xpKey)) {
+                setKv(xpKey, '1');
+                addDailyXp(XP.correctAnswer);
+              }
             }}
           />
         ))}

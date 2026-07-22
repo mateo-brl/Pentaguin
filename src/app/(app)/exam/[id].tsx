@@ -4,11 +4,12 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
+import { ScreenFallback } from '@/components/ui/screen-fallback';
 import { Radius, Spacing } from '@/theme';
 import { getDefaultPack } from '@/content';
 import { buildExamQuestions } from '@/features/exam/build';
+import { isUnlockedNow, packEntitlement, useEntitlements } from '@/features/monetization';
 import { useExamSession } from '@/features/exam/session';
-import { useEntitlements } from '@/features/monetization';
 import { playableQuestions } from '@/features/quiz/select';
 import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
@@ -20,9 +21,29 @@ export default function ExamBriefScreen() {
   const t = useStrings();
   const theme = useTheme();
   const entitlements = useEntitlements();
-  const exam = pack.exams.find((e) => e.id === id);
+  const examIndex = pack.exams.findIndex((e) => e.id === id);
+  const exam = examIndex >= 0 ? pack.exams[examIndex] : undefined;
 
-  if (!exam) return null;
+  if (!exam) return <ScreenFallback />;
+
+  // Garde Pro : accès direct (deep-link) à un examen verrouillé → paywall.
+  const unlocked = isUnlockedNow(
+    { kind: 'exam', examIndex, entitlement: packEntitlement(pack.id) },
+    entitlements,
+  );
+  if (!unlocked) {
+    return (
+      <ThemedView style={styles.container}>
+        <Stack.Screen options={{ headerShown: true, title: exam.title }} />
+        <View style={styles.locked}>
+          <ThemedText type="subtitle" style={styles.lockedText}>
+            {t.lesson.locked}
+          </ThemedText>
+          <Button label={t.paywall.upsellCta} onPress={() => router.push('/paywall')} />
+        </View>
+      </ThemedView>
+    );
+  }
 
   const bankSize = playableQuestions(pack, null, entitlements).length;
   const canStart = bankSize > 0;
@@ -99,5 +120,15 @@ const styles = StyleSheet.create({
   },
   start: {
     marginTop: Spacing.sm,
+  },
+  locked: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: Spacing.base,
+    padding: Spacing.lg,
+  },
+  lockedText: {
+    textAlign: 'center',
   },
 });

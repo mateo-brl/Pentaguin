@@ -92,7 +92,13 @@ export default function PaywallScreen() {
     }
   };
 
-  const bullets = [t.paywall.bulletDomains, t.paywall.bulletBank, t.paywall.bulletExams];
+  // On ne promet les examens blancs que s'il en existe (sinon vente d'un
+  // contenu absent → rejet App Review + perte de confiance).
+  const bullets = [
+    t.paywall.bulletDomains,
+    t.paywall.bulletBank,
+    ...(pack.exams.length > 0 ? [t.paywall.bulletExams] : []),
+  ];
 
   return (
     <ThemedView style={styles.container}>
