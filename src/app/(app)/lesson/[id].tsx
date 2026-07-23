@@ -1,9 +1,12 @@
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useRef, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
+import { Penguin } from '@/components/mascot/penguin';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { FadeOut } from '@/components/ui/fade-out';
 import { ScreenFallback } from '@/components/ui/screen-fallback';
 import { Button } from '@/components/ui/button';
 import { XP } from '@/config/gamification';
@@ -19,7 +22,15 @@ import {
 } from '@/db/repositories';
 import { successFeedback } from '@/features/haptics/haptics';
 import { isInteractiveBlock, LessonBlockView } from '@/features/lessons/lesson-blocks';
-import { isLessonUnlockedNow, useEntitlements } from '@/features/monetization';
+import {
+  canShowSpontaneousUpsell,
+  getUpsellShownCount,
+  isCrucialUpsellMoment,
+  isEndOfFreeThemeMoment,
+  isLessonUnlockedNow,
+  markUpsellShown,
+  useEntitlements,
+} from '@/features/monetization';
 import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
 
@@ -40,20 +51,44 @@ export default function LessonScreen() {
     !lesson || completed ? (lesson?.blocks.length ?? 0) : 1,
   );
   const [finished, setFinished] = useState(completed);
+  // Proposition spontanée « fin du gratuit d'un thème » (1 fois à vie, cf. finish).
+  const [showThemeOffer, setShowThemeOffer] = useState(false);
 
   if (!lesson) return <ScreenFallback />;
 
-  // Garde Pro : accès direct à une leçon verrouillée → invite à débloquer.
+  // — Leçon Pro : aperçu « eau à la bouche » (on lit le début) puis invitation
+  //   douce. Pas un mur : on donne d'abord, on propose ensuite, sortie facile.
   if (!isLessonUnlockedNow(lesson, entitlements)) {
+    let previewCount = 0;
+    for (const block of lesson.blocks) {
+      if (isInteractiveBlock(block) || previewCount >= 3) break;
+      previewCount += 1;
+    }
+    previewCount = Math.max(1, previewCount);
+
     return (
       <ThemedView style={styles.container}>
         <Stack.Screen options={{ headerShown: true, title: lesson.title }} />
-        <View style={styles.locked}>
-          <ThemedText type="subtitle" style={styles.lockedTitle}>
-            {t.lesson.locked}
+        <ScrollView contentContainerStyle={styles.content}>
+          <ThemedText type="mono" themeColor="textSecondary" style={styles.meta}>
+            {lesson.estMinutes} {t.domain.minutes}
           </ThemedText>
-          <Button label={t.paywall.upsellCta} onPress={() => router.push('/paywall')} />
-        </View>
+          {lesson.blocks.slice(0, previewCount).map((block, index) => (
+            <LessonBlockView key={index} block={block} pack={pack} />
+          ))}
+          <FadeOut color={theme.background} />
+          <View style={[styles.curtain, { backgroundColor: theme.backgroundElement, borderColor: theme.accent }]}>
+            <Ionicons name="sparkles" size={22} color={theme.accent} />
+            <ThemedText type="subtitle" style={styles.curtainTitle}>
+              {t.lesson.previewTitle}
+            </ThemedText>
+            <ThemedText type="small" themeColor="textSecondary" style={styles.curtainBody}>
+              {t.lesson.previewBody}
+            </ThemedText>
+            <Button label={t.lesson.previewCta} onPress={() => router.push('/paywall')} style={styles.curtainCta} />
+            <Button label={t.lesson.previewBack} variant="ghost" onPress={() => router.back()} />
+          </View>
+        </ScrollView>
       </ThemedView>
     );
   }
@@ -69,6 +104,17 @@ export default function LessonScreen() {
       addDailyXp(XP.lessonCompleted);
       setCompleted(true);
       successFeedback();
+      // Bon moment pour L'UNIQUE proposition spontanée : l'utilisateur vient
+      // d'épuiser le gratuit de ce thème (pic de satisfaction), pas à froid.
+      const done = getCompletedLessonIds(pack.id); // inclut la leçon qu'on vient de finir
+      if (
+        isEndOfFreeThemeMoment(lesson, done, entitlements) &&
+        canShowSpontaneousUpsell(getUpsellShownCount(), entitlements) &&
+        isCrucialUpsellMoment(done.size)
+      ) {
+        setShowThemeOffer(true);
+        markUpsellShown();
+      }
     }
   };
 
@@ -79,7 +125,6 @@ export default function LessonScreen() {
     } else {
       setRevealed(revealed + 1);
     }
-    // Laisse le nouveau bloc se poser avant de faire défiler vers lui.
     setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 80);
   };
 
@@ -87,7 +132,6 @@ export default function LessonScreen() {
     <ThemedView style={styles.container}>
       <Stack.Screen options={{ headerShown: true, title: lesson.title }} />
 
-      {/* Barre de progression de lecture */}
       <View style={[styles.progressTrack, { backgroundColor: theme.backgroundElement }]}>
         <View
           style={[
@@ -113,8 +157,6 @@ export default function LessonScreen() {
             onInteracted={index === revealed - 1 && !finished ? advance : undefined}
             onQuickcheckAnswered={(questionId, result) => {
               bumpQuestionStat(pack.id, questionId, result.isCorrect);
-              // XP crédité UNE seule fois par quickcheck (sinon farmable en
-              // rouvrant la leçon en boucle — le classement partage l'XP).
               const xpKey = `qc_xp:${questionId}`;
               if (result.isCorrect && !getKv(xpKey)) {
                 setKv(xpKey, '1');
@@ -134,11 +176,22 @@ export default function LessonScreen() {
                 {t.lesson.completedBody.replace('{xp}', String(XP.lessonCompleted))}
               </ThemedText>
             </View>
-            <Button
-              label={t.lesson.backToLessons}
-              onPress={() => router.back()}
-              style={styles.doneButton}
-            />
+
+            {showThemeOffer ? (
+              <View style={[styles.curtain, { backgroundColor: theme.backgroundElement, borderColor: theme.accent }]}>
+                <Penguin state="rankup" accessory="terminal" size={64} animation="pop" />
+                <ThemedText type="subtitle" style={styles.curtainTitle}>
+                  {t.lesson.freeThemeTitle}
+                </ThemedText>
+                <ThemedText type="small" themeColor="textSecondary" style={styles.curtainBody}>
+                  {t.lesson.freeThemeBody}
+                </ThemedText>
+                <Button label={t.lesson.previewCta} onPress={() => router.push('/paywall')} style={styles.curtainCta} />
+                <Button label={t.lesson.backToLessons} variant="ghost" onPress={() => router.back()} />
+              </View>
+            ) : (
+              <Button label={t.lesson.backToLessons} onPress={() => router.back()} style={styles.doneButton} />
+            )}
           </>
         ) : (
           !waitingOnInteraction && (
@@ -157,16 +210,6 @@ export default function LessonScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  locked: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: Spacing.base,
-    padding: Spacing.lg,
-  },
-  lockedTitle: {
-    textAlign: 'center',
   },
   progressTrack: {
     height: 3,
@@ -191,5 +234,23 @@ const styles = StyleSheet.create({
   },
   doneButton: {
     marginTop: Spacing.sm,
+  },
+  curtain: {
+    borderWidth: 1.5,
+    borderRadius: Radius.lg,
+    padding: Spacing.lg,
+    gap: Spacing.sm,
+    alignItems: 'center',
+    marginTop: Spacing.sm,
+  },
+  curtainTitle: {
+    textAlign: 'center',
+  },
+  curtainBody: {
+    textAlign: 'center',
+  },
+  curtainCta: {
+    alignSelf: 'stretch',
+    marginTop: Spacing.xs,
   },
 });
