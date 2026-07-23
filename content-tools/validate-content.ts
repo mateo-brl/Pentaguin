@@ -5,9 +5,11 @@ import placementRaw from '../src/content/placement/questions.json';
 import { placementBankSchema } from '../src/content/placement/schema';
 import practiceEnRaw from '../src/content/practice/exercises.en.json';
 import practiceRaw from '../src/content/practice/exercises.json';
-import { practiceBankSchema } from '../src/content/practice/schema';
+import missionsEnRaw from '../src/content/practice/missions.en.json';
+import missionsRaw from '../src/content/practice/missions.json';
+import { missionBankSchema, practiceBankSchema } from '../src/content/practice/schema';
 import { contentPackSchema } from '../src/content/schema';
-import { validateExercise } from '../src/features/practice/logic';
+import { validateExercise, validateMission } from '../src/features/practice/logic';
 
 let failed = false;
 
@@ -123,6 +125,58 @@ if (!practice.success) {
     );
   }
 }
+}
+
+// — Missions scénarisées -----------------------------------------------------------
+for (const [locale, source, exercisesSource] of [
+  ['fr', missionsRaw, practiceRaw],
+  ['en', missionsEnRaw, practiceEnRaw],
+] as const) {
+  const missions = missionBankSchema.safeParse(source);
+  if (!missions.success) {
+    failed = true;
+    console.error(`✖ missions (${locale}) : schéma invalide`);
+    for (const issue of missions.error.issues) {
+      console.error(`    ${issue.path.join('.') || '(racine)'} — ${issue.message}`);
+    }
+    continue;
+  }
+  const exerciseIds = new Set(
+    practiceBankSchema.safeParse(exercisesSource).data?.map((e) => e.id) ?? [],
+  );
+  const errors: string[] = [];
+  const seen = new Set<string>();
+  for (const mission of missions.data) {
+    if (seen.has(mission.id)) errors.push(`mission en double : ${mission.id}`);
+    seen.add(mission.id);
+    errors.push(...validateMission(mission, exerciseIds));
+  }
+  if (errors.length > 0) {
+    failed = true;
+    for (const error of errors) console.error(`  ✖ ${error}`);
+  } else {
+    console.log(`✔ missions (${locale}) — ${missions.data.length} mission(s)`);
+  }
+}
+
+// — Parité FR/EN (mêmes ids des deux côtés : la bascule de langue ne casse rien) ----
+const parityChecks: [string, { id: string }[], { id: string }[]][] = [
+  ['pratique', practiceRaw, practiceEnRaw],
+  ['missions', missionsRaw, missionsEnRaw],
+];
+for (const [label, fr, en] of parityChecks) {
+  if (en.length === 0) continue; // traduction pas encore livrée : repli FR assumé
+  const frIds = new Set(fr.map((e) => e.id));
+  const enIds = new Set(en.map((e) => e.id));
+  const missing = [...frIds].filter((id) => !enIds.has(id));
+  const extra = [...enIds].filter((id) => !frIds.has(id));
+  if (missing.length > 0 || extra.length > 0) {
+    failed = true;
+    if (missing.length > 0) console.error(`  ✖ ${label} : ids absents en EN — ${missing.join(', ')}`);
+    if (extra.length > 0) console.error(`  ✖ ${label} : ids EN sans équivalent FR — ${extra.join(', ')}`);
+  } else {
+    console.log(`✔ parité FR/EN (${label})`);
+  }
 }
 
 process.exit(failed ? 1 : 0);

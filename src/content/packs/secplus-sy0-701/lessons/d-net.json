@@ -1,430 +1,704 @@
 [
-  {
-    "id": "l-net-01",
-    "domainId": "d-net",
-    "title": "Modèle client/serveur et adresse IP",
-    "order": 1,
-    "estMinutes": 5,
-    "blocks": [
-      {
-        "type": "text",
-        "md": "Sur un réseau, la plupart des échanges suivent le modèle **client/serveur**. Le **client** (client), c'est le programme qui demande quelque chose : ton navigateur, ton application mobile. Le **serveur** (server), c'est la machine qui écoute les demandes et répond : elle renvoie une page web, un e-mail, une vidéo. Quand tu ouvres un site, ton navigateur (client) envoie une requête, le serveur la traite et répond."
-      },
-      {
-        "type": "text",
-        "md": "Pour se trouver, chaque machine a une **adresse IP** (IP address), un numéro qui l'identifie sur le réseau, un peu comme une adresse postale. On distingue deux familles :\n\n- **Adresse IP publique** : unique et visible sur tout Internet. C'est celle que ton opérateur attribue à ta box.\n- **Adresse IP privée** : valable seulement à l'intérieur d'un réseau local (ta maison, une entreprise). Elle n'est **pas routable** sur Internet : plusieurs foyers peuvent utiliser la même sans conflit."
-      },
-      {
-        "type": "text",
-        "md": "Les plages privées sont fixées par la norme **RFC 1918** : `10.0.0.0/8`, `172.16.0.0/12` (soit 172.16 à 172.31) et `192.168.0.0/16`. À la sortie de ton réseau, un mécanisme appelé **NAT** (Network Address Translation) traduit ton adresse privée en l'adresse publique de la box, pour que la réponse revienne au bon appareil."
-      },
-      {
-        "type": "callout",
-        "variant": "tip",
-        "md": "Le fait qu'une adresse commence par `192.168` ou `10.` te dit tout de suite qu'on est **dans un réseau local** : cette machine n'est pas directement joignable depuis Internet."
-      },
-      {
-        "type": "keyterms",
-        "terms": [
-          {
-            "term": "Client",
-            "def": "Programme qui demande un service (navigateur, application) en envoyant une requête à un serveur."
-          },
-          {
-            "term": "Serveur (server)",
-            "def": "Machine qui écoute les demandes des clients et leur renvoie une réponse."
-          },
-          {
-            "term": "Adresse IP publique",
-            "def": "Adresse unique et routable, visible depuis n'importe où sur Internet."
-          },
-          {
-            "term": "Adresse IP privée",
-            "def": "Adresse valable uniquement dans un réseau local, non routable sur Internet (RFC 1918)."
-          },
-          {
-            "term": "NAT",
-            "def": "Mécanisme qui traduit les adresses privées d'un réseau local en une adresse publique pour sortir sur Internet."
-          }
-        ]
-      },
-      {
-        "type": "quickcheck",
-        "questionId": "q-net-01"
-      }
+ {
+  "id": "l-net-01",
+  "domainId": "d-net",
+  "title": "Modèle client/serveur et adresse IP",
+  "order": 1,
+  "estMinutes": 5,
+  "blocks": [
+   {
+    "type": "hook",
+    "md": "Novembre 2019 : le RIPE NCC, le registre Internet européen, attribue les toutes dernières adresses IPv4 disponibles. Le stock conçu dans les années 80 est officiellement épuisé — et pourtant, Internet continue de grandir. Cette leçon t'explique le tour de passe-passe qui rend ça possible."
+   },
+   {
+    "type": "text",
+    "md": "Commençons par le décor. Sur un réseau, la plupart des échanges suivent le modèle **client/serveur**. Le **client** (client), c'est le programme qui demande quelque chose : ton navigateur, ton application mobile. Le **serveur** (server), c'est la machine qui écoute les demandes et répond : elle renvoie une page web, un e-mail, une vidéo. Quand tu ouvres un site, ton navigateur (client) envoie une requête, le serveur la traite et répond."
+   },
+   {
+    "type": "predict",
+    "question": "Ton téléphone, ta console et ta TV sont tous connectés à la même box. Combien d'adresses IP publiques ton foyer occupe-t-il sur Internet ?",
+    "choices": [
+     {
+      "id": "a",
+      "text": "Une par appareil connecté"
+     },
+     {
+      "id": "b",
+      "text": "Une seule pour tout le foyer"
+     },
+     {
+      "id": "c",
+      "text": "Aucune : seuls les serveurs ont une adresse publique"
+     }
     ],
-    "level": 3
-  },
-  {
-    "id": "l-net-02",
-    "domainId": "d-net",
-    "title": "Le DNS : de exemple.com à l'adresse IP",
-    "order": 2,
-    "estMinutes": 5,
-    "blocks": [
-      {
-        "type": "text",
-        "md": "Les machines communiquent avec des adresses IP, mais toi tu tapes `exemple.com`. Qui fait le lien ? Le **DNS** (Domain Name System), l'annuaire d'Internet : il **traduit un nom de domaine en adresse IP**. Sans lui, il faudrait retenir des suites de chiffres pour chaque site."
-      },
-      {
-        "type": "text",
-        "md": "Quand tu ouvres `exemple.com`, ton ordinateur interroge un **resolver** (résolveur, souvent celui de ton opérateur). S'il ne connaît pas la réponse, il questionne à son tour, de haut en bas, la hiérarchie du DNS :\n\n1. Les serveurs **racine** (root), qui pointent vers le domaine de premier niveau.\n2. Le serveur du **TLD** (Top-Level Domain), ici `.com`.\n3. Le serveur **faisant autorité** (authoritative) du domaine, qui détient la vraie réponse.\n\nLa réponse (un **enregistrement A** pour une IPv4, **AAAA** pour une IPv6) redescend jusqu'à toi."
-      },
-      {
-        "type": "text",
-        "md": "Pour éviter de tout recommencer à chaque visite, les réponses sont **mises en cache** pendant une durée appelée **TTL** (Time To Live). Le DNS utilise principalement le **port 53**. C'est un service critique : le manipuler permet de rediriger un utilisateur vers un faux site (**DNS spoofing**)."
-      },
-      {
-        "type": "callout",
-        "variant": "warning",
-        "md": "Le DNS classique circule **en clair** : un observateur du réseau voit quels sites tu résous. Des variantes comme **DoH** (DNS over HTTPS) ou **DoT** (DNS over TLS) chiffrent ces requêtes pour protéger ta vie privée."
-      },
-      {
-        "type": "keyterms",
-        "terms": [
-          {
-            "term": "DNS",
-            "def": "Système qui traduit un nom de domaine (exemple.com) en adresse IP."
-          },
-          {
-            "term": "Resolver",
-            "def": "Serveur qui reçoit ta requête et interroge la hiérarchie DNS pour trouver l'adresse IP."
-          },
-          {
-            "term": "TLD",
-            "def": "Domaine de premier niveau, la fin d'un nom de domaine : .com, .fr, .org."
-          },
-          {
-            "term": "Enregistrement A / AAAA",
-            "def": "Fiche DNS associant un nom à une adresse IPv4 (A) ou IPv6 (AAAA)."
-          },
-          {
-            "term": "TTL",
-            "def": "Durée de vie pendant laquelle une réponse DNS peut rester en cache avant d'être revérifiée."
-          }
-        ]
-      },
-      {
-        "type": "quickcheck",
-        "questionId": "q-net-02"
-      }
+    "correctId": "b",
+    "reveal": "Une seule : celle de la box. Tes appareils utilisent des adresses privées, invisibles depuis Internet — c'est ce qui a permis de survivre à la pénurie d'IPv4."
+   },
+   {
+    "type": "text",
+    "md": "Voyons pourquoi. Pour se trouver, chaque machine a une **adresse IP** (IP address), un numéro qui l'identifie sur le réseau, un peu comme une adresse postale. On distingue deux familles :\n\n- **Adresse IP publique** : unique et visible sur tout Internet. C'est celle que ton opérateur attribue à ta box.\n- **Adresse IP privée** : valable seulement à l'intérieur d'un réseau local (ta maison, une entreprise). Elle n'est **pas routable** sur Internet : plusieurs foyers peuvent utiliser la même sans conflit."
+   },
+   {
+    "type": "truefalse",
+    "statement": "Ton adresse IP publique identifie précisément ton appareil sur Internet.",
+    "answer": false,
+    "explanation": "Elle identifie ta box : tous les appareils du foyer partagent la même adresse publique. Un mécanisme se charge de redistribuer chaque réponse au bon appareil — on le voit tout de suite."
+   },
+   {
+    "type": "text",
+    "md": "Les plages privées sont fixées par la norme **RFC 1918** : `10.0.0.0/8`, `172.16.0.0/12` (soit 172.16 à 172.31) et `192.168.0.0/16`. À la sortie de ton réseau, un mécanisme appelé **NAT** (Network Address Translation) traduit ton adresse privée en l'adresse publique de la box, pour que la réponse revienne au bon appareil."
+   },
+   {
+    "type": "callout",
+    "variant": "tip",
+    "md": "Le fait qu'une adresse commence par `192.168` ou `10.` te dit tout de suite qu'on est **dans un réseau local** : cette machine n'est pas directement joignable depuis Internet."
+   },
+   {
+    "type": "flipcards",
+    "cards": [
+     {
+      "front": "Client",
+      "back": "Programme qui demande un service (navigateur, application) en envoyant une requête à un serveur."
+     },
+     {
+      "front": "Serveur (server)",
+      "back": "Machine qui écoute les demandes des clients et leur renvoie une réponse."
+     },
+     {
+      "front": "Adresse IP publique",
+      "back": "Adresse unique et routable, visible depuis n'importe où sur Internet."
+     },
+     {
+      "front": "Adresse IP privée",
+      "back": "Adresse valable uniquement dans un réseau local, non routable sur Internet (RFC 1918)."
+     },
+     {
+      "front": "NAT",
+      "back": "Mécanisme qui traduit les adresses privées d'un réseau local en une adresse publique pour sortir sur Internet."
+     }
+    ]
+   },
+   {
+    "type": "quickcheck",
+    "questionId": "q-net-01"
+   }
+  ],
+  "level": 3
+ },
+ {
+  "id": "l-net-02",
+  "domainId": "d-net",
+  "title": "Le DNS : de exemple.com à l'adresse IP",
+  "order": 2,
+  "estMinutes": 5,
+  "blocks": [
+   {
+    "type": "hook",
+    "md": "21 octobre 2016 : Twitter, Netflix, Spotify et Reddit semblent disparaître d'Internet pendant des heures. Leurs serveurs, eux, fonctionnent parfaitement. C'est leur annuaire qu'on a fait tomber : le botnet Mirai bombarde Dyn, un grand fournisseur DNS — et sans annuaire, plus personne ne trouve les adresses."
+   },
+   {
+    "type": "text",
+    "md": "Cet annuaire, le voici. Les machines communiquent avec des adresses IP, mais toi tu tapes `exemple.com`. Qui fait le lien ? Le **DNS** (Domain Name System), l'annuaire d'Internet : il **traduit un nom de domaine en adresse IP**. Sans lui, il faudrait retenir des suites de chiffres pour chaque site."
+   },
+   {
+    "type": "predict",
+    "question": "Ton resolver DNS n'a jamais vu exemple.com. Par où commence-t-il son enquête ?",
+    "choices": [
+     {
+      "id": "a",
+      "text": "Par les serveurs racine, tout en haut de la hiérarchie"
+     },
+     {
+      "id": "b",
+      "text": "Il contacte directement le serveur du domaine"
+     },
+     {
+      "id": "c",
+      "text": "Il demande aux autres resolvers autour de lui"
+     }
     ],
-    "level": 4
-  },
-  {
-    "id": "l-net-03",
-    "domainId": "d-net",
-    "title": "Ports et protocoles courants",
-    "order": 3,
-    "estMinutes": 5,
-    "blocks": [
-      {
-        "type": "text",
-        "md": "Une même machine héberge souvent plusieurs services : un serveur web, une messagerie, un accès à distance. Comment savoir à quel service s'adresse un paquet qui arrive ? Grâce au **port**, un numéro (de 0 à 65535) qui identifie le service visé sur la machine. L'adresse IP désigne la **machine**, le port désigne le **service** sur cette machine."
-      },
-      {
-        "type": "text",
-        "md": "Chaque **protocole** (protocol), c'est-à-dire un langage d'échange standardisé, a un port par défaut bien connu. À retenir absolument :\n\n- **22 — SSH** : administration et connexion distante **chiffrée**.\n- **25 — SMTP** : envoi d'e-mails entre serveurs.\n- **53 — DNS** : résolution des noms de domaine.\n- **80 — HTTP** : web **en clair**.\n- **443 — HTTPS** : web **chiffré** (HTTP + TLS).\n- **3389 — RDP** : bureau à distance Windows (Remote Desktop Protocol)."
-      },
-      {
-        "type": "text",
-        "md": "Les ports de 0 à 1023 sont dits **well-known** (bien connus) et réservés à ces services standards. La plupart s'appuient sur **TCP**, qui garantit la livraison ordonnée des données ; le DNS utilise surtout **UDP**, plus rapide mais sans garantie de livraison."
-      },
-      {
-        "type": "callout",
-        "variant": "exam",
-        "md": "Retiens le couple **80 = HTTP en clair / 443 = HTTPS chiffré**, ainsi que **22 = SSH** et **3389 = RDP**. Ces numéros tombent très souvent, aussi bien en examen que sur le terrain lors d'un scan de ports."
-      },
-      {
-        "type": "keyterms",
-        "terms": [
-          {
-            "term": "Port",
-            "def": "Numéro (0 à 65535) qui identifie un service précis sur une machine."
-          },
-          {
-            "term": "Protocole",
-            "def": "Langage d'échange standardisé entre deux machines (HTTP, SSH, DNS...)."
-          },
-          {
-            "term": "SSH",
-            "def": "Protocole d'administration à distance chiffré, port 22."
-          },
-          {
-            "term": "RDP",
-            "def": "Remote Desktop Protocol, bureau à distance Windows, port 3389."
-          },
-          {
-            "term": "TCP / UDP",
-            "def": "TCP assure une livraison fiable et ordonnée ; UDP est plus rapide mais sans garantie."
-          }
-        ]
-      },
-      {
-        "type": "quickcheck",
-        "questionId": "q-net-03"
-      }
+    "correctId": "a",
+    "reveal": "Il part du sommet : les serveurs racine l'orientent vers le .com, qui l'oriente vers le serveur du domaine. Une descente étage par étage, pas un registre central unique."
+   },
+   {
+    "type": "text",
+    "md": "Déroulons cette descente. Quand tu ouvres `exemple.com`, ton ordinateur interroge un **resolver** (résolveur, souvent celui de ton opérateur). S'il ne connaît pas la réponse, il questionne à son tour, de haut en bas, la hiérarchie du DNS :\n\n1. Les serveurs **racine** (root), qui pointent vers le domaine de premier niveau.\n2. Le serveur du **TLD** (Top-Level Domain), ici `.com`.\n3. Le serveur **faisant autorité** (authoritative) du domaine, qui détient la vraie réponse.\n\nLa réponse (un **enregistrement A** pour une IPv4, **AAAA** pour une IPv6) redescend jusqu'à toi."
+   },
+   {
+    "type": "text",
+    "md": "Pour éviter de tout recommencer à chaque visite, les réponses sont **mises en cache** pendant une durée appelée **TTL** (Time To Live). Le DNS utilise principalement le **port 53**. C'est un service critique : le manipuler permet de rediriger un utilisateur vers un faux site (**DNS spoofing**)."
+   },
+   {
+    "type": "truefalse",
+    "statement": "Si tu navigues uniquement en HTTPS, un observateur du réseau ne peut pas savoir quels sites tu visites.",
+    "answer": false,
+    "explanation": "HTTPS chiffre le contenu des pages, mais tes requêtes DNS, elles, partent en clair : l'observateur voit chaque nom de domaine que tu résous."
+   },
+   {
+    "type": "callout",
+    "variant": "warning",
+    "md": "Le DNS classique circule **en clair** : un observateur du réseau voit quels sites tu résous. Des variantes comme **DoH** (DNS over HTTPS) ou **DoT** (DNS over TLS) chiffrent ces requêtes pour protéger ta vie privée."
+   },
+   {
+    "type": "flipcards",
+    "cards": [
+     {
+      "front": "DNS",
+      "back": "Système qui traduit un nom de domaine (exemple.com) en adresse IP."
+     },
+     {
+      "front": "Resolver",
+      "back": "Serveur qui reçoit ta requête et interroge la hiérarchie DNS pour trouver l'adresse IP."
+     },
+     {
+      "front": "TLD",
+      "back": "Domaine de premier niveau, la fin d'un nom de domaine : .com, .fr, .org."
+     },
+     {
+      "front": "Enregistrement A / AAAA",
+      "back": "Fiche DNS associant un nom à une adresse IPv4 (A) ou IPv6 (AAAA)."
+     },
+     {
+      "front": "TTL",
+      "back": "Durée de vie pendant laquelle une réponse DNS peut rester en cache avant d'être revérifiée."
+     }
+    ]
+   },
+   {
+    "type": "quickcheck",
+    "questionId": "q-net-02"
+   }
+  ],
+  "level": 4
+ },
+ {
+  "id": "l-net-03",
+  "domainId": "d-net",
+  "title": "Ports et protocoles courants",
+  "order": 3,
+  "estMinutes": 5,
+  "blocks": [
+   {
+    "type": "hook",
+    "md": "12 mai 2017 : le ransomware WannaCry paralyse des hôpitaux britanniques et se propage dans 150 pays en quelques jours. Sa méthode de chasse ? Scanner Internet à la recherche de machines exposant un seul port : le 445. Un simple numéro — et c'est tout le sujet de cette leçon."
+   },
+   {
+    "type": "text",
+    "md": "Un port, donc. Une même machine héberge souvent plusieurs services : un serveur web, une messagerie, un accès à distance. Comment savoir à quel service s'adresse un paquet qui arrive ? Grâce au **port**, un numéro (de 0 à 65535) qui identifie le service visé sur la machine. L'adresse IP désigne la **machine**, le port désigne le **service** sur cette machine."
+   },
+   {
+    "type": "predict",
+    "question": "Ton navigateur charge une page en HTTPS. Vers quel port du serveur part ta requête ?",
+    "choices": [
+     {
+      "id": "a",
+      "text": "80"
+     },
+     {
+      "id": "b",
+      "text": "443"
+     },
+     {
+      "id": "c",
+      "text": "22"
+     },
+     {
+      "id": "d",
+      "text": "53"
+     }
     ],
-    "level": 4
-  },
-  {
-    "id": "l-net-04",
-    "domainId": "d-net",
-    "title": "Le pare-feu (firewall) : filtrer le trafic",
-    "order": 4,
-    "estMinutes": 5,
-    "blocks": [
-      {
-        "type": "text",
-        "md": "Un **pare-feu** (firewall) est un dispositif, logiciel ou matériel, qui **contrôle le trafic réseau** selon un ensemble de règles. Il se place à la frontière entre deux zones (par exemple ton réseau local et Internet) et, pour chaque paquet, décide de le **laisser passer** ou de le **bloquer**."
-      },
-      {
-        "type": "text",
-        "md": "Un pare-feu classique décide à partir de critères réseau : **adresse IP source et destination**, **port**, et **protocole** (TCP, UDP...). On distingue :\n\n- **Stateless** (sans état) : il juge chaque paquet isolément.\n- **Stateful** (à états) : il **suit l'état des connexions**. Il sait qu'un paquet entrant fait partie d'une conversation que tu as toi-même initiée, et l'autorise en conséquence.\n\nOn parle aussi de filtrage **ingress** (entrant) et **egress** (sortant)."
-      },
-      {
-        "type": "text",
-        "md": "La bonne pratique est le **default deny** (tout interdire par défaut) : on bloque tout, puis on ouvre seulement ce qui est nécessaire. Les pare-feux de nouvelle génération (**NGFW**, Next-Generation Firewall) vont plus loin en inspectant aussi l'application et le contenu, pas seulement les ports."
-      },
-      {
-        "type": "callout",
-        "variant": "tip",
-        "md": "Un pare-feu filtre **par où** passe le trafic, il ne vérifie pas **qui** tu es. Il ne remplace ni l'authentification, ni le chiffrement, ni l'antivirus : c'est une couche parmi d'autres."
-      },
-      {
-        "type": "keyterms",
-        "terms": [
-          {
-            "term": "Pare-feu (firewall)",
-            "def": "Dispositif qui autorise ou bloque le trafic réseau selon des règles."
-          },
-          {
-            "term": "Stateful",
-            "def": "Pare-feu qui suit l'état des connexions pour autoriser les réponses au trafic légitime."
-          },
-          {
-            "term": "Default deny",
-            "def": "Principe consistant à tout bloquer par défaut et n'ouvrir que le strict nécessaire."
-          },
-          {
-            "term": "Egress / Ingress",
-            "def": "Filtrage du trafic sortant (egress) et entrant (ingress) d'une zone réseau."
-          }
-        ]
-      },
-      {
-        "type": "quickcheck",
-        "questionId": "q-net-04"
-      }
+    "correctId": "b",
+    "reveal": "443, le port par défaut du web chiffré. Le 80, c'est le web en clair — même service, deux portes différentes."
+   },
+   {
+    "type": "text",
+    "md": "Chaque **protocole** (protocol), c'est-à-dire un langage d'échange standardisé, a ainsi un port par défaut bien connu. À retenir absolument :\n\n- **22 — SSH** : administration et connexion distante **chiffrée**.\n- **25 — SMTP** : envoi d'e-mails entre serveurs.\n- **53 — DNS** : résolution des noms de domaine.\n- **80 — HTTP** : web **en clair**.\n- **443 — HTTPS** : web **chiffré** (HTTP + TLS).\n- **3389 — RDP** : bureau à distance Windows (Remote Desktop Protocol)."
+   },
+   {
+    "type": "text",
+    "md": "Les ports de 0 à 1023 sont dits **well-known** (bien connus) et réservés à ces services standards. La plupart s'appuient sur **TCP**, qui garantit la livraison ordonnée des données ; le DNS utilise surtout **UDP**, plus rapide mais sans garantie de livraison."
+   },
+   {
+    "type": "truefalse",
+    "statement": "Si un flux passe par le port 443, c'est forcément du HTTPS légitime.",
+    "answer": false,
+    "explanation": "Un port n'est qu'une convention : rien n'empêche un malware de faire transiter son trafic par le 443 pour se fondre dans la masse. Le numéro indique l'usage attendu, pas une garantie."
+   },
+   {
+    "type": "callout",
+    "variant": "exam",
+    "md": "Retiens le couple **80 = HTTP en clair / 443 = HTTPS chiffré**, ainsi que **22 = SSH** et **3389 = RDP**. Ces numéros tombent très souvent, aussi bien en examen que sur le terrain lors d'un scan de ports."
+   },
+   {
+    "type": "flipcards",
+    "cards": [
+     {
+      "front": "Port",
+      "back": "Numéro (0 à 65535) qui identifie un service précis sur une machine."
+     },
+     {
+      "front": "Protocole",
+      "back": "Langage d'échange standardisé entre deux machines (HTTP, SSH, DNS...)."
+     },
+     {
+      "front": "SSH",
+      "back": "Protocole d'administration à distance chiffré, port 22."
+     },
+     {
+      "front": "RDP",
+      "back": "Remote Desktop Protocol, bureau à distance Windows, port 3389."
+     },
+     {
+      "front": "TCP / UDP",
+      "back": "TCP assure une livraison fiable et ordonnée ; UDP est plus rapide mais sans garantie."
+     }
+    ]
+   },
+   {
+    "type": "quickcheck",
+    "questionId": "q-net-03"
+   }
+  ],
+  "level": 4
+ },
+ {
+  "id": "l-net-04",
+  "domainId": "d-net",
+  "title": "Le pare-feu (firewall) : filtrer le trafic",
+  "order": 4,
+  "estMinutes": 5,
+  "blocks": [
+   {
+    "type": "hook",
+    "md": "Tu es agent de sécurité à l'entrée d'un immeuble. Des centaines de personnes se présentent chaque minute : impossible d'interroger chacune. Tu travailles donc avec une liste de règles — qui entre, qui sort, par quelle porte. Bienvenue dans le quotidien d'un pare-feu."
+   },
+   {
+    "type": "text",
+    "md": "Un **pare-feu** (firewall) est un dispositif, logiciel ou matériel, qui **contrôle le trafic réseau** selon un ensemble de règles. Il se place à la frontière entre deux zones (par exemple ton réseau local et Internet) et, pour chaque paquet, décide de le **laisser passer** ou de le **bloquer**."
+   },
+   {
+    "type": "predict",
+    "question": "Ton pare-feu bloque tout le trafic entrant. Tu ouvres un site web : la réponse du serveur est bien du trafic entrant. Arrive-t-elle jusqu'à toi ?",
+    "choices": [
+     {
+      "id": "a",
+      "text": "Oui : le pare-feu sait qu'elle répond à une connexion que tu as initiée"
+     },
+     {
+      "id": "b",
+      "text": "Non : elle est bloquée comme tout le reste"
+     },
+     {
+      "id": "c",
+      "text": "Oui : le trafic web n'est jamais filtré"
+     }
     ],
-    "level": 5
-  },
-  {
-    "id": "l-net-05",
-    "domainId": "d-net",
-    "title": "HTTP vs HTTPS et le rôle de TLS",
-    "order": 5,
-    "estMinutes": 6,
-    "blocks": [
-      {
-        "type": "text",
-        "md": "**HTTP** (HyperText Transfer Protocol) est le protocole du web. Dans sa version d'origine, tout circule **en clair** : un intermédiaire sur le réseau peut lire et modifier les pages, les mots de passe, les formulaires. **HTTPS** (HTTP Secure) résout ce problème : c'est simplement HTTP transporté à l'intérieur de **TLS**."
-      },
-      {
-        "type": "text",
-        "md": "**TLS** (Transport Layer Security, successeur de SSL) apporte trois garanties : **authentification** du serveur, **confidentialité** (chiffrement) et **intégrité** (détection de toute altération). Son fonctionnement se fait en deux temps lors du **handshake** (poignée de main) :\n\n1. **Authentification asymétrique** : le serveur présente un **certificat** signé par une autorité de certification (**CA**). Le client vérifie ce certificat pour s'assurer qu'il parle bien au bon serveur.\n2. Client et serveur **négocient alors une clé de session symétrique**, unique et éphémère, qui servira à chiffrer tous les échanges."
-      },
-      {
-        "type": "text",
-        "md": "Pourquoi ce mélange ? La cryptographie **asymétrique** (deux clés, publique et privée) est idéale pour l'authentification et l'échange initial, mais lente. La cryptographie **symétrique** (une seule clé partagée) est très rapide, parfaite pour chiffrer tout le volume de données ensuite. TLS combine le meilleur des deux."
-      },
-      {
-        "type": "callout",
-        "variant": "warning",
-        "md": "Le cadenas HTTPS prouve que **la connexion est chiffrée et que le serveur est bien celui du domaine affiché**. Il ne prouve **pas** que le site est honnête : un site de phishing peut parfaitement avoir un certificat valide. HTTPS protège le tuyau, pas ce qu'il y a au bout."
-      },
-      {
-        "type": "keyterms",
-        "terms": [
-          {
-            "term": "HTTP",
-            "def": "Protocole du web transmettant les données en clair, sans chiffrement."
-          },
-          {
-            "term": "HTTPS",
-            "def": "HTTP transporté dans TLS : échanges chiffrés et serveur authentifié."
-          },
-          {
-            "term": "TLS",
-            "def": "Protocole qui authentifie le serveur, chiffre et protège l'intégrité des données."
-          },
-          {
-            "term": "Certificat",
-            "def": "Document signé par une autorité (CA) qui prouve l'identité d'un serveur."
-          },
-          {
-            "term": "Clé de session",
-            "def": "Clé symétrique éphémère négociée pendant le handshake pour chiffrer la conversation."
-          }
-        ]
-      },
-      {
-        "type": "quickcheck",
-        "questionId": "q-net-05"
-      }
+    "correctId": "a",
+    "reveal": "C'est le propre d'un pare-feu stateful : il suit l'état des connexions et laisse revenir les réponses au trafic que tu as toi-même lancé."
+   },
+   {
+    "type": "text",
+    "md": "Détaillons. Un pare-feu classique décide à partir de critères réseau : **adresse IP source et destination**, **port**, et **protocole** (TCP, UDP...). On distingue :\n\n- **Stateless** (sans état) : il juge chaque paquet isolément.\n- **Stateful** (à états) : il **suit l'état des connexions**. Il sait qu'un paquet entrant fait partie d'une conversation que tu as toi-même initiée, et l'autorise en conséquence.\n\nOn parle aussi de filtrage **ingress** (entrant) et **egress** (sortant)."
+   },
+   {
+    "type": "text",
+    "md": "La bonne pratique est le **default deny** (tout interdire par défaut) : on bloque tout, puis on ouvre seulement ce qui est nécessaire. Les pare-feux de nouvelle génération (**NGFW**, Next-Generation Firewall) vont plus loin en inspectant aussi l'application et le contenu, pas seulement les ports."
+   },
+   {
+    "type": "truefalse",
+    "statement": "Un pare-feu bien configuré rend l'antivirus superflu.",
+    "answer": false,
+    "explanation": "Un malware que tu télécharges toi-même arrive par un flux autorisé (le port 443, par exemple) : le pare-feu le laisse passer. Filtrer le trafic et analyser les fichiers sont deux couches différentes — il faut les deux."
+   },
+   {
+    "type": "callout",
+    "variant": "tip",
+    "md": "Un pare-feu filtre **par où** passe le trafic, il ne vérifie pas **qui** tu es. Il ne remplace ni l'authentification, ni le chiffrement, ni l'antivirus : c'est une couche parmi d'autres."
+   },
+   {
+    "type": "flipcards",
+    "cards": [
+     {
+      "front": "Pare-feu (firewall)",
+      "back": "Dispositif qui autorise ou bloque le trafic réseau selon des règles."
+     },
+     {
+      "front": "Stateful",
+      "back": "Pare-feu qui suit l'état des connexions pour autoriser les réponses au trafic légitime."
+     },
+     {
+      "front": "Default deny",
+      "back": "Principe consistant à tout bloquer par défaut et n'ouvrir que le strict nécessaire."
+     },
+     {
+      "front": "Egress / Ingress",
+      "back": "Filtrage du trafic sortant (egress) et entrant (ingress) d'une zone réseau."
+     }
+    ]
+   },
+   {
+    "type": "quickcheck",
+    "questionId": "q-net-04"
+   }
+  ],
+  "level": 5
+ },
+ {
+  "id": "l-net-05",
+  "domainId": "d-net",
+  "title": "HTTP vs HTTPS et le rôle de TLS",
+  "order": 5,
+  "estMinutes": 6,
+  "blocks": [
+   {
+    "type": "hook",
+    "md": "2010 : une simple extension Firefox nommée Firesheep permet à n'importe qui, sur le Wi-Fi d'un café, de voler la session Facebook des autres clients. Un clic, zéro compétence technique. Le coupable : un web qui circulait encore largement en clair."
+   },
+   {
+    "type": "text",
+    "md": "Ce web en clair, c'est **HTTP** (HyperText Transfer Protocol), le protocole du web. Dans sa version d'origine, tout circule **en clair** : un intermédiaire sur le réseau peut lire et modifier les pages, les mots de passe, les formulaires. **HTTPS** (HTTP Secure) résout ce problème : c'est simplement HTTP transporté à l'intérieur de **TLS**."
+   },
+   {
+    "type": "predict",
+    "question": "Ton navigateur se connecte au site de ta banque en HTTPS. Que vérifie-t-il pour s'assurer qu'il parle bien au vrai serveur ?",
+    "choices": [
+     {
+      "id": "a",
+      "text": "Un certificat signé par une autorité de confiance"
+     },
+     {
+      "id": "b",
+      "text": "L'adresse IP officielle de la banque"
+     },
+     {
+      "id": "c",
+      "text": "Un mot de passe que seul le serveur connaît"
+     }
     ],
-    "level": 6
-  },
-  {
-    "id": "l-net-06",
-    "domainId": "d-net",
-    "title": "Le VPN : tunnel chiffré",
-    "order": 6,
-    "estMinutes": 5,
-    "blocks": [
-      {
-        "type": "text",
-        "md": "Un **VPN** (Virtual Private Network, réseau privé virtuel) crée un **tunnel chiffré** entre ton appareil et un serveur VPN. Tout ton trafic passe d'abord, chiffré, dans ce tunnel jusqu'au serveur, qui le renvoie ensuite vers sa destination. Pour le réseau que tu traverses (un Wi-Fi de café, par exemple), le contenu est illisible."
-      },
-      {
-        "type": "text",
-        "md": "On l'utilise pour deux grandes raisons :\n\n- **Remote access** : un salarié se connecte à distance au réseau de son entreprise comme s'il était sur place.\n- **Confidentialité sur un réseau non fiable** : sur un Wi-Fi public, le VPN empêche les autres usagers du même réseau de lire ton trafic.\n\nLes protocoles modernes courants sont **WireGuard**, **OpenVPN** et **IPsec**."
-      },
-      {
-        "type": "callout",
-        "variant": "warning",
-        "md": "Un VPN n'est **pas** un manteau d'invisibilité. Il déplace la confiance vers le fournisseur du VPN, qui **voit ton trafic** à la sortie du tunnel. Il ne te rend pas anonyme, ne supprime pas les malwares, et ne remplace pas HTTPS : garde les deux."
-      },
-      {
-        "type": "keyterms",
-        "terms": [
-          {
-            "term": "VPN",
-            "def": "Réseau privé virtuel : tunnel chiffré entre un appareil et un serveur VPN."
-          },
-          {
-            "term": "Tunnel",
-            "def": "Canal dans lequel le trafic est encapsulé et chiffré de bout en bout du tunnel."
-          },
-          {
-            "term": "Remote access",
-            "def": "Usage du VPN pour accéder à distance au réseau interne d'une organisation."
-          },
-          {
-            "term": "WireGuard / IPsec",
-            "def": "Protocoles modernes utilisés pour établir un tunnel VPN chiffré."
-          }
-        ]
-      },
-      {
-        "type": "quickcheck",
-        "questionId": "q-net-06"
-      }
+    "correctId": "a",
+    "reveal": "Le serveur présente un certificat signé par une autorité de certification (CA). Sans cette preuve vérifiable, n'importe qui pourrait se faire passer pour ta banque."
+   },
+   {
+    "type": "text",
+    "md": "Ce certificat est la première étape d'un mécanisme plus large. **TLS** (Transport Layer Security, successeur de SSL) apporte trois garanties : **authentification** du serveur, **confidentialité** (chiffrement) et **intégrité** (détection de toute altération). Son fonctionnement se fait en deux temps lors du **handshake** (poignée de main) :\n\n1. **Authentification asymétrique** : le serveur présente un **certificat** signé par une autorité de certification (**CA**). Le client vérifie ce certificat pour s'assurer qu'il parle bien au bon serveur.\n2. Client et serveur **négocient alors une clé de session symétrique**, unique et éphémère, qui servira à chiffrer tous les échanges."
+   },
+   {
+    "type": "predict",
+    "question": "Le serveur est authentifié. Pour chiffrer ensuite le gros des échanges, TLS bascule sur quel type de chiffrement ?",
+    "choices": [
+     {
+      "id": "a",
+      "text": "Asymétrique : deux clés, c'est plus sûr"
+     },
+     {
+      "id": "b",
+      "text": "Symétrique : une clé de session partagée, bien plus rapide"
+     }
     ],
-    "level": 6
-  },
-  {
-    "id": "l-net-07",
-    "domainId": "d-net",
-    "title": "Segmentation réseau, VLAN et DMZ",
-    "order": 7,
-    "estMinutes": 6,
-    "blocks": [
-      {
-        "type": "text",
-        "md": "Un réseau tout plat, où chaque machine peut parler à toutes les autres, est une aubaine pour un attaquant : une seule machine compromise lui ouvre l'ensemble du réseau. La **segmentation** consiste à **découper le réseau en zones isolées**, pour limiter la portée d'une intrusion et freiner le **lateral movement** (déplacement latéral d'un attaquant de machine en machine)."
-      },
-      {
-        "type": "text",
-        "md": "Un outil clé est le **VLAN** (Virtual LAN, réseau local virtuel). Il permet de créer plusieurs réseaux **logiquement séparés** sur un même équipement physique (un switch), au **niveau 2** du modèle OSI. Chaque trame est étiquetée (**tag 802.1Q**) pour savoir à quel VLAN elle appartient. On peut ainsi séparer, par exemple, le VLAN des postes de travail, celui de la voix sur IP et celui des serveurs, sans tirer de nouveaux câbles."
-      },
-      {
-        "type": "text",
-        "md": "La **DMZ** (DeMilitarized Zone, zone démilitarisée) est un sous-réseau tampon qui **héberge les services exposés à Internet** (serveur web, serveur de messagerie). Elle est encadrée par des pare-feux et **isolée du réseau interne** : si un serveur public de la DMZ est piraté, l'attaquant ne débouche pas directement sur le réseau interne sensible."
-      },
-      {
-        "type": "callout",
-        "variant": "exam",
-        "md": "Résume ainsi : le **VLAN** sépare **logiquement** le réseau interne en zones ; la **DMZ** isole les services **exposés à Internet** du reste. Les deux réduisent le **blast radius** (rayon d'impact) d'une compromission."
-      },
-      {
-        "type": "keyterms",
-        "terms": [
-          {
-            "term": "Segmentation",
-            "def": "Découpage d'un réseau en zones isolées pour limiter la propagation d'une attaque."
-          },
-          {
-            "term": "VLAN",
-            "def": "Réseau local virtuel : séparation logique de plusieurs réseaux sur un même switch (niveau 2)."
-          },
-          {
-            "term": "DMZ",
-            "def": "Sous-réseau tampon qui héberge les services exposés à Internet, isolé du réseau interne."
-          },
-          {
-            "term": "Lateral movement",
-            "def": "Progression d'un attaquant d'une machine à l'autre à l'intérieur d'un réseau."
-          }
-        ]
-      },
-      {
-        "type": "quickcheck",
-        "questionId": "q-net-07"
-      }
+    "correctId": "b",
+    "reveal": "Symétrique. L'asymétrique n'a servi qu'à s'authentifier et à négocier cette clé de session — ensuite, place à la vitesse."
+   },
+   {
+    "type": "text",
+    "md": "Pourquoi ce mélange ? La cryptographie **asymétrique** (deux clés, publique et privée) est idéale pour l'authentification et l'échange initial, mais lente. La cryptographie **symétrique** (une seule clé partagée) est très rapide, parfaite pour chiffrer tout le volume de données ensuite. TLS combine le meilleur des deux."
+   },
+   {
+    "type": "truefalse",
+    "statement": "Le cadenas HTTPS garantit que le site est digne de confiance.",
+    "answer": false,
+    "explanation": "Il garantit un tuyau chiffré vers le serveur du domaine affiché, rien de plus. Un site de phishing peut obtenir un certificat parfaitement valide."
+   },
+   {
+    "type": "callout",
+    "variant": "warning",
+    "md": "Le cadenas HTTPS prouve que **la connexion est chiffrée et que le serveur est bien celui du domaine affiché**. Il ne prouve **pas** que le site est honnête : un site de phishing peut parfaitement avoir un certificat valide. HTTPS protège le tuyau, pas ce qu'il y a au bout."
+   },
+   {
+    "type": "flipcards",
+    "cards": [
+     {
+      "front": "HTTP",
+      "back": "Protocole du web transmettant les données en clair, sans chiffrement."
+     },
+     {
+      "front": "HTTPS",
+      "back": "HTTP transporté dans TLS : échanges chiffrés et serveur authentifié."
+     },
+     {
+      "front": "TLS",
+      "back": "Protocole qui authentifie le serveur, chiffre et protège l'intégrité des données."
+     },
+     {
+      "front": "Certificat",
+      "back": "Document signé par une autorité (CA) qui prouve l'identité d'un serveur."
+     },
+     {
+      "front": "Clé de session",
+      "back": "Clé symétrique éphémère négociée pendant le handshake pour chiffrer la conversation."
+     }
+    ]
+   },
+   {
+    "type": "quickcheck",
+    "questionId": "q-net-05"
+   }
+  ],
+  "level": 6
+ },
+ {
+  "id": "l-net-06",
+  "domainId": "d-net",
+  "title": "Le VPN : tunnel chiffré",
+  "order": 6,
+  "estMinutes": 5,
+  "blocks": [
+   {
+    "type": "hook",
+    "md": "Tu ouvres ton laptop dans un aéroport, Wi-Fi gratuit, et tu consultes tes mails. Trois sièges plus loin, quelqu'un a lancé un analyseur de trafic et observe tout ce qui circule sur le réseau. Ce qu'il voit de toi dépend d'une seule chose : un tunnel."
+   },
+   {
+    "type": "predict",
+    "question": "Sur ce Wi-Fi public, tu actives ton VPN. Que voit désormais le curieux qui observe le réseau ?",
+    "choices": [
+     {
+      "id": "a",
+      "text": "Tout ton trafic, comme avant"
+     },
+     {
+      "id": "b",
+      "text": "Plus rien : tu es devenu invisible sur le réseau"
+     },
+     {
+      "id": "c",
+      "text": "Un seul flux chiffré vers un serveur, au contenu illisible"
+     }
     ],
-    "level": 9
-  },
-  {
-    "id": "l-net-08",
-    "domainId": "d-net",
-    "title": "Attaque de l'homme du milieu (MITM) et ARP spoofing",
-    "order": 8,
-    "estMinutes": 7,
-    "blocks": [
-      {
-        "type": "text",
-        "md": "Dans une attaque de l'**homme du milieu** — **MITM** (Man-In-The-Middle) —, un attaquant **s'intercale** entre deux interlocuteurs qui croient se parler directement. Placé au milieu, il peut **écouter**, mais aussi **modifier** ou **rejouer** les messages qui transitent, sans que les victimes s'en aperçoivent."
-      },
-      {
-        "type": "text",
-        "md": "Sur un réseau local, la technique la plus classique pour se placer au milieu est l'**ARP spoofing** (aussi appelé ARP poisoning). Rappel : le protocole **ARP** (Address Resolution Protocol) sert à trouver, à partir d'une adresse IP, l'**adresse MAC** (l'identifiant physique de la carte réseau) correspondante sur le réseau local. Or **ARP n'authentifie pas ses réponses** : n'importe qui peut répondre."
-      },
-      {
-        "type": "text",
-        "md": "L'attaquant en profite : il envoie de **faux messages ARP** affirmant que **son** adresse MAC correspond à l'IP de la **passerelle** (la box/routeur). Les machines du réseau enregistrent cette fausse correspondance et lui envoient leur trafic, qu'il fait ensuite suivre vers la vraie passerelle. Il est désormais au milieu. C'est une attaque **locale** : elle ne fonctionne que sur le même segment réseau (niveau 2)."
-      },
-      {
-        "type": "callout",
-        "variant": "tip",
-        "md": "Contre-mesures : **HTTPS/TLS** protège le contenu même si l'attaquant intercepte le trafic (il déclencherait une alerte de certificat s'il tentait de le déchiffrer), le **Dynamic ARP Inspection** sur les switchs bloque les fausses réponses ARP, et un **VPN** chiffre tout le trafic dans le tunnel."
-      },
-      {
-        "type": "keyterms",
-        "terms": [
-          {
-            "term": "MITM",
-            "def": "Attaque où un tiers s'intercale entre deux parties pour écouter ou altérer leurs échanges."
-          },
-          {
-            "term": "ARP",
-            "def": "Protocole qui résout une adresse IP en adresse MAC sur un réseau local, sans authentification."
-          },
-          {
-            "term": "Adresse MAC",
-            "def": "Identifiant physique unique d'une carte réseau, utilisé au niveau local (niveau 2)."
-          },
-          {
-            "term": "ARP spoofing",
-            "def": "Envoi de fausses réponses ARP pour détourner le trafic du réseau local vers l'attaquant."
-          }
-        ]
-      },
-      {
-        "type": "quickcheck",
-        "questionId": "q-net-08"
-      }
+    "correctId": "c",
+    "reveal": "Il voit qu'un tunnel existe et vers quel serveur il mène — mais tout ce qui circule dedans est chiffré, donc illisible."
+   },
+   {
+    "type": "text",
+    "md": "Ce tunnel, c'est un **VPN** (Virtual Private Network, réseau privé virtuel) : un **tunnel chiffré** entre ton appareil et un serveur VPN. Tout ton trafic passe d'abord, chiffré, dans ce tunnel jusqu'au serveur, qui le renvoie ensuite vers sa destination. Pour le réseau que tu traverses (un Wi-Fi de café, par exemple), le contenu est illisible."
+   },
+   {
+    "type": "text",
+    "md": "On l'utilise pour deux grandes raisons :\n\n- **Remote access** : un salarié se connecte à distance au réseau de son entreprise comme s'il était sur place.\n- **Confidentialité sur un réseau non fiable** : sur un Wi-Fi public, le VPN empêche les autres usagers du même réseau de lire ton trafic.\n\nLes protocoles modernes courants sont **WireGuard**, **OpenVPN** et **IPsec**."
+   },
+   {
+    "type": "truefalse",
+    "statement": "Avec un VPN, tu es anonyme sur Internet.",
+    "answer": false,
+    "explanation": "Le VPN déplace la confiance : ton fournisseur VPN voit ton trafic sortir du tunnel, et les sites peuvent toujours te reconnaître (comptes, cookies). C'est un tunnel chiffré, pas une cape d'invisibilité."
+   },
+   {
+    "type": "callout",
+    "variant": "warning",
+    "md": "Un VPN n'est **pas** un manteau d'invisibilité. Il déplace la confiance vers le fournisseur du VPN, qui **voit ton trafic** à la sortie du tunnel. Il ne te rend pas anonyme, ne supprime pas les malwares, et ne remplace pas HTTPS : garde les deux."
+   },
+   {
+    "type": "flipcards",
+    "cards": [
+     {
+      "front": "VPN",
+      "back": "Réseau privé virtuel : tunnel chiffré entre un appareil et un serveur VPN."
+     },
+     {
+      "front": "Tunnel",
+      "back": "Canal dans lequel le trafic est encapsulé et chiffré de bout en bout du tunnel."
+     },
+     {
+      "front": "Remote access",
+      "back": "Usage du VPN pour accéder à distance au réseau interne d'une organisation."
+     },
+     {
+      "front": "WireGuard / IPsec",
+      "back": "Protocoles modernes utilisés pour établir un tunnel VPN chiffré."
+     }
+    ]
+   },
+   {
+    "type": "quickcheck",
+    "questionId": "q-net-06"
+   }
+  ],
+  "level": 6
+ },
+ {
+  "id": "l-net-07",
+  "domainId": "d-net",
+  "title": "Segmentation réseau, VLAN et DMZ",
+  "order": 7,
+  "estMinutes": 6,
+  "blocks": [
+   {
+    "type": "hook",
+    "md": "Fin 2013, des attaquants s'introduisent chez le distributeur américain Target via un accès… de son prestataire de chauffage-climatisation. De là, ils progressent jusqu'aux caisses enregistreuses : environ 40 millions de numéros de cartes bancaires volés. Un réseau mal cloisonné transforme un accès mineur en catastrophe."
+   },
+   {
+    "type": "text",
+    "md": "C'est le danger du réseau tout plat, où chaque machine peut parler à toutes les autres : une aubaine pour un attaquant, puisqu'une seule machine compromise lui ouvre l'ensemble du réseau. La **segmentation** consiste à **découper le réseau en zones isolées**, pour limiter la portée d'une intrusion et freiner le **lateral movement** (déplacement latéral d'un attaquant de machine en machine)."
+   },
+   {
+    "type": "predict",
+    "question": "Ton entreprise veut isoler les postes de travail, la téléphonie et les serveurs, sans racheter d'équipement ni tirer de nouveaux câbles. Possible ?",
+    "choices": [
+     {
+      "id": "a",
+      "text": "Non : chaque réseau isolé exige son propre matériel"
+     },
+     {
+      "id": "b",
+      "text": "Oui : un même switch peut être découpé logiquement en plusieurs réseaux"
+     },
+     {
+      "id": "c",
+      "text": "Non : seule une séparation physique isole vraiment"
+     }
     ],
-    "level": 11
-  }
+    "correctId": "b",
+    "reveal": "C'est exactement le rôle du VLAN : plusieurs réseaux logiquement étanches sur le même équipement physique."
+   },
+   {
+    "type": "text",
+    "md": "Le **VLAN** (Virtual LAN, réseau local virtuel) permet en effet de créer plusieurs réseaux **logiquement séparés** sur un même équipement physique (un switch), au **niveau 2** du modèle OSI. Chaque trame est étiquetée (**tag 802.1Q**) pour savoir à quel VLAN elle appartient. On peut ainsi séparer, par exemple, le VLAN des postes de travail, celui de la voix sur IP et celui des serveurs, sans tirer de nouveaux câbles."
+   },
+   {
+    "type": "predict",
+    "question": "L'entreprise héberge son site web public. Où placer ce serveur exposé à Internet ?",
+    "choices": [
+     {
+      "id": "a",
+      "text": "Dans le réseau interne, avec les autres serveurs"
+     },
+     {
+      "id": "b",
+      "text": "Dans une zone tampon isolée, entre Internet et le réseau interne"
+     },
+     {
+      "id": "c",
+      "text": "Directement sur Internet, hors de tout pare-feu"
+     }
+    ],
+    "correctId": "b",
+    "reveal": "Cette zone tampon, c'est la DMZ : si le serveur public tombe, l'attaquant reste enfermé dans le sas."
+   },
+   {
+    "type": "text",
+    "md": "La **DMZ** (DeMilitarized Zone, zone démilitarisée) est ce sous-réseau tampon qui **héberge les services exposés à Internet** (serveur web, serveur de messagerie). Elle est encadrée par des pare-feux et **isolée du réseau interne** : si un serveur public de la DMZ est piraté, l'attaquant ne débouche pas directement sur le réseau interne sensible."
+   },
+   {
+    "type": "callout",
+    "variant": "exam",
+    "md": "Résume ainsi : le **VLAN** sépare **logiquement** le réseau interne en zones ; la **DMZ** isole les services **exposés à Internet** du reste. Les deux réduisent le **blast radius** (rayon d'impact) d'une compromission."
+   },
+   {
+    "type": "flipcards",
+    "cards": [
+     {
+      "front": "Segmentation",
+      "back": "Découpage d'un réseau en zones isolées pour limiter la propagation d'une attaque."
+     },
+     {
+      "front": "VLAN",
+      "back": "Réseau local virtuel : séparation logique de plusieurs réseaux sur un même switch (niveau 2)."
+     },
+     {
+      "front": "DMZ",
+      "back": "Sous-réseau tampon qui héberge les services exposés à Internet, isolé du réseau interne."
+     },
+     {
+      "front": "Lateral movement",
+      "back": "Progression d'un attaquant d'une machine à l'autre à l'intérieur d'un réseau."
+     }
+    ]
+   },
+   {
+    "type": "quickcheck",
+    "questionId": "q-net-07"
+   }
+  ],
+  "level": 9
+ },
+ {
+  "id": "l-net-08",
+  "domainId": "d-net",
+  "title": "Attaque de l'homme du milieu (MITM) et ARP spoofing",
+  "order": 8,
+  "estMinutes": 7,
+  "blocks": [
+   {
+    "type": "hook",
+    "md": "Cette fois, tu es l'attaquant. Assis dans un café, connecté au même Wi-Fi que tout le monde, ton objectif est simple : faire transiter le trafic des autres clients par ta machine, sans qu'ils s'en doutent. À la fin de cette leçon, tu sauras exactement comment on s'y prend — et comment on le bloque."
+   },
+   {
+    "type": "text",
+    "md": "Ce scénario porte un nom : l'attaque de l'**homme du milieu** — **MITM** (Man-In-The-Middle). Un attaquant **s'intercale** entre deux interlocuteurs qui croient se parler directement. Placé au milieu, il peut **écouter**, mais aussi **modifier** ou **rejouer** les messages qui transitent, sans que les victimes s'en aperçoivent."
+   },
+   {
+    "type": "predict",
+    "question": "Sur le réseau local, le protocole ARP relie adresses IP et adresses MAC. Qu'arrive-t-il si une machine envoie une réponse ARP mensongère ?",
+    "choices": [
+     {
+      "id": "a",
+      "text": "Elle est rejetée : ARP vérifie l'identité de l'émetteur"
+     },
+     {
+      "id": "b",
+      "text": "Elle est acceptée : ARP croit tout le monde sur parole"
+     },
+     {
+      "id": "c",
+      "text": "Le switch la détecte et coupe le port aussitôt"
+     }
+    ],
+    "correctId": "b",
+    "reveal": "ARP n'authentifie rien : la dernière réponse reçue fait foi. Toute l'attaque qui suit repose sur cette confiance aveugle."
+   },
+   {
+    "type": "text",
+    "md": "C'est précisément la technique la plus classique pour se placer au milieu sur un réseau local : l'**ARP spoofing** (aussi appelé ARP poisoning). Rappel : le protocole **ARP** (Address Resolution Protocol) sert à trouver, à partir d'une adresse IP, l'**adresse MAC** (l'identifiant physique de la carte réseau) correspondante sur le réseau local. Or **ARP n'authentifie pas ses réponses** : n'importe qui peut répondre."
+   },
+   {
+    "type": "text",
+    "md": "L'attaquant en profite : il envoie de **faux messages ARP** affirmant que **son** adresse MAC correspond à l'IP de la **passerelle** (la box/routeur). Les machines du réseau enregistrent cette fausse correspondance et lui envoient leur trafic, qu'il fait ensuite suivre vers la vraie passerelle. Il est désormais au milieu. C'est une attaque **locale** : elle ne fonctionne que sur le même segment réseau (niveau 2)."
+   },
+   {
+    "type": "truefalse",
+    "statement": "Un attaquant en position d'homme du milieu peut lire tes mots de passe même sur un site en HTTPS.",
+    "answer": false,
+    "explanation": "Il intercepte bien le trafic, mais le contenu reste chiffré par TLS. Pour le déchiffrer, il devrait présenter un faux certificat — et ton navigateur donnerait l'alerte. D'où les contre-mesures qui suivent."
+   },
+   {
+    "type": "callout",
+    "variant": "tip",
+    "md": "Contre-mesures : **HTTPS/TLS** protège le contenu même si l'attaquant intercepte le trafic (il déclencherait une alerte de certificat s'il tentait de le déchiffrer), le **Dynamic ARP Inspection** sur les switchs bloque les fausses réponses ARP, et un **VPN** chiffre tout le trafic dans le tunnel."
+   },
+   {
+    "type": "flipcards",
+    "cards": [
+     {
+      "front": "MITM",
+      "back": "Attaque où un tiers s'intercale entre deux parties pour écouter ou altérer leurs échanges."
+     },
+     {
+      "front": "ARP",
+      "back": "Protocole qui résout une adresse IP en adresse MAC sur un réseau local, sans authentification."
+     },
+     {
+      "front": "Adresse MAC",
+      "back": "Identifiant physique unique d'une carte réseau, utilisé au niveau local (niveau 2)."
+     },
+     {
+      "front": "ARP spoofing",
+      "back": "Envoi de fausses réponses ARP pour détourner le trafic du réseau local vers l'attaquant."
+     }
+    ]
+   },
+   {
+    "type": "quickcheck",
+    "questionId": "q-net-08"
+   }
+  ],
+  "level": 11
+ }
 ]

@@ -29,6 +29,40 @@ export const lessonBlockSchema = z.discriminatedUnion('type', [
       .min(1),
   }),
   z.object({ type: z.literal('quickcheck'), questionId: idSchema }),
+  /**
+   * Accroche d'ouverture : fait réel ou mise en situation, racontée par le
+   * manchot. Toujours en PREMIER bloc — elle donne l'enjeu avant la matière.
+   */
+  z.object({ type: z.literal('hook'), md: mdSchema }),
+  /**
+   * Pari d'intuition : on demande l'avis AVANT d'expliquer. Se tromper est
+   * sans enjeu (aucun XP) — c'est le moment d'apprentissage recherché.
+   * `reveal` est affiché après la réponse, quelle qu'elle soit.
+   */
+  z.object({
+    type: z.literal('predict'),
+    question: z.string().min(1),
+    choices: z
+      .array(z.object({ id: z.string().regex(/^[a-f]$/), text: z.string().min(1) }))
+      .min(2)
+      .max(4),
+    correctId: z.string().regex(/^[a-f]$/),
+    reveal: z.string().min(1),
+  }),
+  /** Vrai/faux tapotable — micro-interaction entre deux passages de texte. */
+  z.object({
+    type: z.literal('truefalse'),
+    statement: z.string().min(1),
+    answer: z.boolean(),
+    explanation: z.string().min(1),
+  }),
+  /** Cartes à retourner : le terme au recto, la définition au verso. */
+  z.object({
+    type: z.literal('flipcards'),
+    cards: z
+      .array(z.object({ front: z.string().min(1), back: z.string().min(1) }))
+      .min(1),
+  }),
 ]);
 
 export const lessonSchema = z.object({

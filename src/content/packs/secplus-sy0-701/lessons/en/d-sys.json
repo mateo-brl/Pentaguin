@@ -7,16 +7,48 @@
     "estMinutes": 6,
     "blocks": [
       {
+        "type": "hook",
+        "md": "You have just taken over a production Linux server. In front of a critical script, `ls -l` shows `-rwxr-xr--`: nine little characters that single-handedly decide who may read, change or run what. Learning to read them at a glance is the alphabet of Linux security."
+      },
+      {
         "type": "text",
         "md": "On Linux, every file and every directory belongs to an owning **user** and to a **group**. Access rights are organized into **three classes**: the owner (**u**), the group (**g**) and **others (o)**, meaning everyone else on the system. Each class is granted three permissions: **read (r)**, **write (w)** and **execute (x)** — hence the shorthand **rwx**."
       },
       {
-        "type": "text",
-        "md": "The `ls -l` command displays these rights as `-rwxr-xr--`. The first character indicates the type (`-` for a file, `d` for a directory). Then come three groups of three letters: the owner's rights, then the group's, then those of others. A dash `-` in place of a letter means \"permission not granted\". Here: the owner has `rwx`, the group `r-x`, and others `r--`."
+        "type": "predict",
+        "question": "Your ls -l shows -rwxr-xr--. Your best guess: what can a random user on the system — neither the owner nor a group member — do with this file?",
+        "choices": [
+          { "id": "a", "text": "Read it, but not modify or run it" },
+          { "id": "b", "text": "Read it and run it" },
+          { "id": "c", "text": "Nothing at all" }
+        ],
+        "correctId": "a",
+        "reveal": "The nine letters read in blocks of three: owner rwx, group r-x, others r--. For everyone else in the world: read-only."
       },
       {
         "type": "text",
-        "md": "There is a more compact notation: **octal notation**. Each permission is given a value — `r`=4, `w`=2, `x`=1 — and the values are added up per class. So `rwx`=7, `r-x`=5, `r--`=4. The **`chmod`** command (change mode) modifies these permissions: `chmod 755 script.sh` gives `rwxr-xr-x`, and `chmod 644 note.txt` gives `rw-r--r--`. The **`chown`** command, for its part, changes the owner and the group."
+        "md": "Let's take it step by step. The `ls -l` command displays these rights as `-rwxr-xr--`. The first character indicates the type (`-` for a file, `d` for a directory). Then come three groups of three letters: the owner's rights, then the group's, then those of others. A dash `-` in place of a letter means \"permission not granted\". Here: the owner has `rwx`, the group `r-x`, and others `r--`."
+      },
+      {
+        "type": "predict",
+        "question": "A quick bet: in octal notation, r is worth 4, w is 2, x is 1, added up per class. What does chmod 644 do to note.txt?",
+        "choices": [
+          { "id": "a", "text": "rw-r--r--: only the owner can write" },
+          { "id": "b", "text": "rwxr--r--: the owner can do everything" },
+          { "id": "c", "text": "rw-rw-rw-: everyone can write" }
+        ],
+        "correctId": "a",
+        "reveal": "6 = 4+2, so rw- for the owner; 4 = r-- for the group and for others alike. Result: rw-r--r--."
+      },
+      {
+        "type": "text",
+        "md": "That **octal notation** is the compact way of writing rights: each permission is given a value — `r`=4, `w`=2, `x`=1 — and the values are added up per class. So `rwx`=7, `r-x`=5, `r--`=4. The **`chmod`** command (change mode) modifies these permissions: `chmod 755 script.sh` gives `rwxr-xr-x`, and `chmod 644 note.txt` gives `rw-r--r--`. The **`chown`** command, for its part, changes the owner and the group."
+      },
+      {
+        "type": "truefalse",
+        "statement": "On a directory, the x permission is what lets you run the programs stored inside it.",
+        "answer": false,
+        "explanation": "On a directory, x grants traversal: entering it and reaching a file by name. Whether a program can run depends on the x bit set on the file itself."
       },
       {
         "type": "callout",
@@ -24,23 +56,23 @@
         "md": "Classic trap: on a **directory**, the `x` bit does not mean \"run a program\". It grants the right to **traverse** the directory, that is, to enter it and reach a file by name. Without `x` on a directory, even with `r`, you cannot access its contents; with `r` alone, you can list the names but cannot descend into it."
       },
       {
-        "type": "keyterms",
-        "terms": [
+        "type": "flipcards",
+        "cards": [
           {
-            "term": "rwx",
-            "def": "The three basic permissions: read (r), write (w) and execute (x)."
+            "front": "rwx",
+            "back": "The three basic permissions: read (r), write (w) and execute (x)."
           },
           {
-            "term": "user / group / others classes",
-            "def": "Rights are defined separately for the owner, the group, and then everyone else."
+            "front": "user / group / others classes",
+            "back": "Rights are defined separately for the owner, the group, and then everyone else."
           },
           {
-            "term": "chmod",
-            "def": "Command that changes the permissions of a file or directory (e.g. chmod 644)."
+            "front": "chmod",
+            "back": "Command that changes the permissions of a file or directory (e.g. chmod 644)."
           },
           {
-            "term": "Octal notation",
-            "def": "Numeric way of writing permissions: r=4, w=2, x=1, added up per class."
+            "front": "Octal notation",
+            "back": "Numeric way of writing permissions: r=4, w=2, x=1, added up per class."
           }
         ]
       },
@@ -59,12 +91,33 @@
     "estMinutes": 6,
     "blocks": [
       {
+        "type": "hook",
+        "md": "You run IT for a small company. Half the staff are administrators on their machines, \"because it's more convenient\". One morning, one of them double-clicks a booby-trapped attachment — and what happens next comes down to a few precise mechanisms: account types, tokens, UAC."
+      },
+      {
         "type": "text",
         "md": "Windows distinguishes two broad types of account. A **standard account** lets you use the machine (office work, browsing) but **not** install software system-wide, change protected settings or touch other users' files. An **administrator account**, a member of the local **Administrators** group, controls the entire system. The right habit is **least privilege**: do your day-to-day work with a standard account."
       },
       {
+        "type": "predict",
+        "question": "Signed in with an administrator account, you launch an ordinary application. What rights does it run with by default?",
+        "choices": [
+          { "id": "a", "text": "Full administrator rights, since the account holds them" },
+          { "id": "b", "text": "Standard rights: the admin privileges are set aside" },
+          { "id": "c", "text": "SYSTEM rights, above even the administrator" }
+        ],
+        "correctId": "b",
+        "reveal": "Counter-intuitive but true: even as an admin, your programs run with standard rights by default, through a filtered token. That is UAC's job."
+      },
+      {
         "type": "text",
         "md": "This is where **UAC (User Account Control)** comes in. Even when you are signed in with an administrator account, your session receives a **filtered token** with standard rights by default: your programs run with limited privileges. When an action requires administrator rights, UAC displays an **elevation prompt**. Technically, an admin account holds a **split token** — a full token and a filtered token — and elevation switches to the full token. This limits the damage done by malware launched inside your normal session."
+      },
+      {
+        "type": "truefalse",
+        "statement": "As long as UAC is enabled, no program can gain administrator rights without a prompt appearing on screen.",
+        "answer": false,
+        "explanation": "False: known bypasses exist (auto-elevating binaries, DLL hijacking). UAC raises the bar, but it is not a security boundary."
       },
       {
         "type": "text",
@@ -76,27 +129,27 @@
         "md": "**UAC is not an absolute security boundary.** It is a safeguard that forces explicit consent and limits unintentional elevations, but bypasses exist. Always combine it with a **standard account** for daily use and the principle of **least privilege**."
       },
       {
-        "type": "keyterms",
-        "terms": [
+        "type": "flipcards",
+        "cards": [
           {
-            "term": "Standard account",
-            "def": "Account with limited rights, without control over the system as a whole."
+            "front": "Standard account",
+            "back": "Account with limited rights, without control over the system as a whole."
           },
           {
-            "term": "Administrator account",
-            "def": "Member of the Administrators group; full control of the machine."
+            "front": "Administrator account",
+            "back": "Member of the Administrators group; full control of the machine."
           },
           {
-            "term": "UAC (User Account Control)",
-            "def": "Mechanism that runs with standard rights by default and prompts for elevation on sensitive actions."
+            "front": "UAC (User Account Control)",
+            "back": "Mechanism that runs with standard rights by default and prompts for elevation on sensitive actions."
           },
           {
-            "term": "Split token",
-            "def": "An admin account holds two tokens: a filtered one (standard) and a full one (admin)."
+            "front": "Split token",
+            "back": "An admin account holds two tokens: a filtered one (standard) and a full one (admin)."
           },
           {
-            "term": "Least privilege",
-            "def": "Principle of granting only the rights that are strictly necessary."
+            "front": "Least privilege",
+            "back": "Principle of granting only the rights that are strictly necessary."
           }
         ]
       },
@@ -115,12 +168,38 @@
     "estMinutes": 7,
     "blocks": [
       {
+        "type": "hook",
+        "md": "In Greek mythology, Kerberos — Cerberus — is the three-headed dog guarding the gates of the underworld. The protocol designed at MIT in the 1980s lives up to its name: three players (the client, the KDC, the resource) and one mission — guarding the entrance to nearly every corporate network running Active Directory."
+      },
+      {
         "type": "text",
         "md": "**Active Directory (AD)** is Microsoft's directory service: it centralizes **users**, **computers**, **groups** and their rights within a **domain**. The servers that host AD are the **domain controllers (DCs)**. Instead of a local account on every machine, a user has a single **domain account** that works everywhere. To prove identity, AD relies primarily on the **Kerberos** protocol."
       },
       {
+        "type": "predict",
+        "question": "Your session is open and over the day you access ten servers in the domain. How many times does your password travel across the network?",
+        "choices": [
+          { "id": "a", "text": "Ten times, encrypted on each connection" },
+          { "id": "b", "text": "Once, at logon" },
+          { "id": "c", "text": "Zero: it never travels — tickets stand in for it" }
+        ],
+        "correctId": "c",
+        "reveal": "Kerberos' founding principle: the client proves it knows the password without ever sending it, then presents tickets."
+      },
+      {
         "type": "text",
         "md": "Kerberos is a **ticket-based** authentication protocol. The central player is the **KDC (Key Distribution Center)**, running on every DC, which comprises two services: the **AS (Authentication Service)** and the **TGS (Ticket Granting Service)**. Key idea: **the password does not travel across the network on every access**. The user authenticates once, receives tickets, and then presents those tickets."
+      },
+      {
+        "type": "predict",
+        "question": "At logon you received a \"master ticket\": the TGT. Now you want to open a file share — who do you present it to?",
+        "choices": [
+          { "id": "a", "text": "The file server, directly" },
+          { "id": "b", "text": "The TGS, which exchanges it for a service ticket" },
+          { "id": "c", "text": "The AS, to redo a full authentication" }
+        ],
+        "correctId": "b",
+        "reveal": "A TGT is never used directly against a resource: you exchange it with the TGS for a dedicated service ticket."
       },
       {
         "type": "text",
@@ -132,27 +211,27 @@
         "md": "Key exam point: with Kerberos, **the password does not travel on every access**. The user obtains a **TGT** (master ticket) from the **KDC**, then exchanges that TGT for **service tickets** for each resource. It is **tickets** that travel across the network, not the password."
       },
       {
-        "type": "keyterms",
-        "terms": [
+        "type": "flipcards",
+        "cards": [
           {
-            "term": "Active Directory (AD)",
-            "def": "Microsoft's directory service, centralizing users, computers and rights within a domain."
+            "front": "Active Directory (AD)",
+            "back": "Microsoft's directory service, centralizing users, computers and rights within a domain."
           },
           {
-            "term": "Domain controller (DC)",
-            "def": "Server that hosts Active Directory and authenticates domain accounts."
+            "front": "Domain controller (DC)",
+            "back": "Server that hosts Active Directory and authenticates domain accounts."
           },
           {
-            "term": "KDC (Key Distribution Center)",
-            "def": "Kerberos service, hosted on the DC, that issues tickets; it comprises the AS and the TGS."
+            "front": "KDC (Key Distribution Center)",
+            "back": "Kerberos service, hosted on the DC, that issues tickets; it comprises the AS and the TGS."
           },
           {
-            "term": "TGT (Ticket Granting Ticket)",
-            "def": "Master ticket obtained at logon; it is then used to request service tickets."
+            "front": "TGT (Ticket Granting Ticket)",
+            "back": "Master ticket obtained at logon; it is then used to request service tickets."
           },
           {
-            "term": "TGS (Ticket Granting Service)",
-            "def": "KDC service that exchanges a valid TGT for a service ticket for one specific resource."
+            "front": "TGS (Ticket Granting Service)",
+            "back": "KDC service that exchanges a valid TGT for a service ticket for one specific resource."
           }
         ]
       },
@@ -171,12 +250,38 @@
     "estMinutes": 6,
     "blocks": [
       {
+        "type": "hook",
+        "md": "You administer a fleet of 3,000 Windows machines. Monday morning, the order comes down: automatic session lock, SMBv1 disabled and a stronger password policy — everywhere, by Friday. Visiting each machine? Nobody does that. This is what GPOs are for."
+      },
+      {
         "type": "text",
         "md": "A **GPO (Group Policy Object)** is a set of configuration rules that Active Directory pushes **automatically** to the computers and users of a domain. Rather than configuring each machine by hand, an administrator defines a policy once and AD applies it to thousands of endpoints. The scope is very broad: password policy, allowed software, services, firewall, session lock, and more."
       },
       {
+        "type": "predict",
+        "question": "Two GPOs contradict each other: the one linked to the domain enforces a setting, the one linked to the machine's OU enforces the opposite. Which one applies?",
+        "choices": [
+          { "id": "a", "text": "The domain's: the highest level wins" },
+          { "id": "b", "text": "The OU's: the last one applied wins" },
+          { "id": "c", "text": "Neither: the conflict cancels both settings" }
+        ],
+        "correctId": "b",
+        "reveal": "The order of application is Local, Site, Domain, then OU: the policy applied last — the one closest to the object — wins by default."
+      },
+      {
         "type": "text",
         "md": "GPOs are **linked** to AD containers: the **site**, the **domain** or an **OU (Organizational Unit)**. A machine applies the GPOs of every level it belongs to. The order of application is **Local → Site → Domain → OU** (mnemonic: LSDOU); by default, the policy applied **last** (the OU closest to the object) **wins** in case of conflict. Clients refresh policy periodically (roughly every 90 minutes) or on demand with `gpupdate`. The files live in **SYSVOL**, a share replicated to every DC."
+      },
+      {
+        "type": "predict",
+        "question": "To harden those 3,000 machines, where does an experienced security team start?",
+        "choices": [
+          { "id": "a", "text": "It writes its own rules, starting from a blank page" },
+          { "id": "b", "text": "It applies a recognized baseline (CIS, Microsoft), then tailors it" },
+          { "id": "c", "text": "It installs an antivirus and leaves it at that" }
+        ],
+        "correctId": "b",
+        "reveal": "Nobody reinvents hardening: you start from a proven baseline, adapt it to your context — and test it before rolling it out."
       },
       {
         "type": "text",
@@ -188,27 +293,27 @@
         "md": "To harden an estate, don't start from a blank page: apply a recognized **baseline** (Microsoft Security Baseline, CIS Benchmark) via GPO, then test it on a limited scope (a **pilot OU**) before rolling it out broadly. A badly configured GPO can break production as fast as it protects it."
       },
       {
-        "type": "keyterms",
-        "terms": [
+        "type": "flipcards",
+        "cards": [
           {
-            "term": "GPO (Group Policy Object)",
-            "def": "Set of configuration rules pushed automatically by AD to machines and users."
+            "front": "GPO (Group Policy Object)",
+            "back": "Set of configuration rules pushed automatically by AD to machines and users."
           },
           {
-            "term": "OU (Organizational Unit)",
-            "def": "Active Directory container that groups objects and to which a GPO can be linked."
+            "front": "OU (Organizational Unit)",
+            "back": "Active Directory container that groups objects and to which a GPO can be linked."
           },
           {
-            "term": "SYSVOL",
-            "def": "Share replicated to every domain controller where GPO files are stored."
+            "front": "SYSVOL",
+            "back": "Share replicated to every domain controller where GPO files are stored."
           },
           {
-            "term": "gpupdate",
-            "def": "Command that forces an immediate refresh of Group Policy on a machine."
+            "front": "gpupdate",
+            "back": "Command that forces an immediate refresh of Group Policy on a machine."
           },
           {
-            "term": "Security baseline",
-            "def": "Recognized hardened configuration template (CIS, Microsoft) used as a starting point."
+            "front": "Security baseline",
+            "back": "Recognized hardened configuration template (CIS, Microsoft) used as a starting point."
           }
         ]
       },
@@ -227,8 +332,23 @@
     "estMinutes": 7,
     "blocks": [
       {
+        "type": "hook",
+        "md": "1988: the Morris worm brings a large part of the young Internet to its knees. Among its entry points, a buffer overflow in Unix's `fingerd` service. Nearly forty years later, this class of flaw remains one of the most exploited in the world — let's see why it is so formidable."
+      },
+      {
         "type": "text",
         "md": "A program reserves memory areas called **buffers** to store data, for example text typed by a user. A **buffer overflow** happens when the program writes **more data than the buffer can hold**, without checking the size. The excess spills into **adjacent memory** and **overwrites** whatever was there."
+      },
+      {
+        "type": "predict",
+        "question": "A program writes 200 bytes into a buffer sized for 100, with no checking at all. What is the worst realistic outcome?",
+        "choices": [
+          { "id": "a", "text": "The program crashes: annoying, nothing more" },
+          { "id": "b", "text": "The extra data simply gets truncated" },
+          { "id": "c", "text": "An attacker takes control of the execution flow" }
+        ],
+        "correctId": "c",
+        "reveal": "The excess overwrites neighboring memory — including control data such as the return address. And that is where everything plays out."
       },
       {
         "type": "text",
@@ -237,6 +357,16 @@
       {
         "type": "text",
         "md": "Modern systems stack several protections. **DEP / NX (Data Execution Prevention / No-eXecute)** marks **data** pages (such as the stack) **non-executable**: the processor refuses to run code from them, which blocks classic injected shellcode. **ASLR (Address Space Layout Randomization)** **randomizes** memory addresses (stack, heap, libraries) on every run, preventing the attacker from predicting where to jump. The **stack canary** places a secret value just before the return address; the function checks it before returning and aborts if an overflow has changed it."
+      },
+      {
+        "type": "predict",
+        "question": "DEP makes the stack non-executable, ASLR scrambles the addresses, the canary stands guard. Is the buffer overflow dead and buried?",
+        "choices": [
+          { "id": "a", "text": "Yes: combined, these protections close the door" },
+          { "id": "b", "text": "No: attackers work around them, notably with ROP" }
+        ],
+        "correctId": "b",
+        "reveal": "They are mitigations, not cures: ROP reuses code that is already executable, and one information leak is enough to defeat ASLR."
       },
       {
         "type": "text",
@@ -248,27 +378,27 @@
         "md": "Match each protection: **DEP/NX** prevents **code execution in data areas** (stack, heap); **ASLR** **randomizes** memory addresses; the **stack canary** detects stack corruption before a function returns. The buffer overflow itself **overwrites control data** — first and foremost the return address."
       },
       {
-        "type": "keyterms",
-        "terms": [
+        "type": "flipcards",
+        "cards": [
           {
-            "term": "Buffer",
-            "def": "Memory area reserved by a program to temporarily store data."
+            "front": "Buffer",
+            "back": "Memory area reserved by a program to temporarily store data."
           },
           {
-            "term": "Buffer overflow",
-            "def": "Writing more data than the buffer can hold, overwriting adjacent memory."
+            "front": "Buffer overflow",
+            "back": "Writing more data than the buffer can hold, overwriting adjacent memory."
           },
           {
-            "term": "DEP / NX",
-            "def": "Protection that makes data areas non-executable in order to block injected code."
+            "front": "DEP / NX",
+            "back": "Protection that makes data areas non-executable in order to block injected code."
           },
           {
-            "term": "ASLR",
-            "def": "Randomization of memory addresses on every run to make targets unpredictable."
+            "front": "ASLR",
+            "back": "Randomization of memory addresses on every run to make targets unpredictable."
           },
           {
-            "term": "Stack canary",
-            "def": "Secret value placed before the return address to detect a stack overflow."
+            "front": "Stack canary",
+            "back": "Secret value placed before the return address to detect a stack overflow."
           }
         ]
       },
@@ -287,12 +417,38 @@
     "estMinutes": 6,
     "blocks": [
       {
+        "type": "hook",
+        "md": "You are a pentester. Your payload has just run and a shell opens on the target server… as `www-data`, an account with next to no rights. The real work starts now: becoming root."
+      },
+      {
         "type": "text",
         "md": "**Privilege escalation** means moving from limited rights to **higher rights** on a system — typically from a standard user to **root** (Linux) or **SYSTEM / Administrator** (Windows). It is a key stage of an intrusion: an attacker rarely lands with full power; they arrive with a modest account, then **escalate** their privileges."
       },
       {
+        "type": "predict",
+        "question": "From Claire's account — an ordinary user — an attacker takes control of Karim's account, another ordinary user. What is this move called?",
+        "choices": [
+          { "id": "a", "text": "Vertical escalation" },
+          { "id": "b", "text": "Horizontal escalation" },
+          { "id": "c", "text": "Lateral movement" }
+        ],
+        "correctId": "b",
+        "reveal": "Same level of rights, different account: horizontal escalation. Lateral movement, for its part, means hopping from machine to machine — more on that later."
+      },
+      {
         "type": "text",
         "md": "There are two forms. **Vertical** escalation gains **more** rights than the account holds (user → admin/root): this is classic \"privesc\". **Horizontal** escalation means taking control of **another account at the same level** (for example another user) in order to reach their data or widen the attacker's foothold."
+      },
+      {
+        "type": "predict",
+        "question": "Your best guess: what most often gets an attacker to root in practice?",
+        "choices": [
+          { "id": "a", "text": "A zero-day flaw in the kernel" },
+          { "id": "b", "text": "Brute-forcing the root password" },
+          { "id": "c", "text": "A misconfiguration: a forgotten SUID binary, an overly broad sudo rule" }
+        ],
+        "correctId": "c",
+        "reveal": "In most cases there is no need for a novel exploit: an overly permissive configuration is more than enough."
       },
       {
         "type": "text",
@@ -304,27 +460,27 @@
         "md": "Most privilege escalations exploit a **misconfiguration**, not a brand-new vulnerability. Defensive habits: apply **least privilege**, audit **SUID** binaries and **sudo** rules, fix file permissions and **patch** quickly. A simple `sudo -l` or a forgotten SUID binary is often all it takes to become root."
       },
       {
-        "type": "keyterms",
-        "terms": [
+        "type": "flipcards",
+        "cards": [
           {
-            "term": "Privilege escalation",
-            "def": "Moving from limited rights to higher rights (root, SYSTEM) on a system."
+            "front": "Privilege escalation",
+            "back": "Moving from limited rights to higher rights (root, SYSTEM) on a system."
           },
           {
-            "term": "Vertical escalation",
-            "def": "Gaining higher privileges than the account holds (user to admin/root)."
+            "front": "Vertical escalation",
+            "back": "Gaining higher privileges than the account holds (user to admin/root)."
           },
           {
-            "term": "Horizontal escalation",
-            "def": "Taking control of another account that has the same level of rights."
+            "front": "Horizontal escalation",
+            "back": "Taking control of another account that has the same level of rights."
           },
           {
-            "term": "SUID (Linux)",
-            "def": "Special bit that makes a program run with the rights of its owner, often root."
+            "front": "SUID (Linux)",
+            "back": "Special bit that makes a program run with the rights of its owner, often root."
           },
           {
-            "term": "sudo",
-            "def": "Linux mechanism that lets a user run certain commands with elevated rights."
+            "front": "sudo",
+            "back": "Linux mechanism that lets a user run certain commands with elevated rights."
           }
         ]
       },
@@ -343,12 +499,38 @@
     "estMinutes": 6,
     "blocks": [
       {
+        "type": "hook",
+        "md": "Monday, 8 a.m. You discover that a server in your fleet has been compromised — for three weeks. The investigation's first question: what happened during all that time? The answer depends on a choice made long before the attack."
+      },
+      {
+        "type": "predict",
+        "question": "On this server, logging had never been seriously configured. What can the analyst hope to reconstruct?",
+        "choices": [
+          { "id": "a", "text": "Most of it: a disk always keeps usable traces" },
+          { "id": "b", "text": "Almost nothing: without logs, no usable evidence" },
+          { "id": "c", "text": "Only the list of stolen files" }
+        ],
+        "correctId": "b",
+        "reveal": "Without logs, an intrusion leaves virtually no usable evidence. Detection is prepared before the attack."
+      },
+      {
         "type": "text",
         "md": "To detect an attack on a machine — an **endpoint**, workstation or server — you first need **traces**. **Logging** records events: logons, process creations, file access, service changes. On **Windows**, this is the **Event Log** — for example event **4624** (successful logon) or **4688** (process creation) — enriched by **Sysmon**. On **Linux**, it is **auditd** and **journald/syslog**. Without logs, an intrusion leaves no usable evidence."
       },
       {
         "type": "text",
         "md": "Logs tell you **what happened**, but reading them by hand across an entire estate is impossible. An **EDR (Endpoint Detection and Response)** is an **agent** installed on every endpoint that **continuously collects telemetry** (processes, network connections, file and registry changes), **detects suspicious behavior**, and can **respond**: kill a process, **isolate** the machine from the network, roll back changes."
+      },
+      {
+        "type": "predict",
+        "question": "A Word document launches PowerShell, which connects to the internet. No known malicious file is involved. Who can raise the alarm?",
+        "choices": [
+          { "id": "a", "text": "The classic antivirus, by signature" },
+          { "id": "b", "text": "The EDR, through behavioral analysis" },
+          { "id": "c", "text": "No one: without a known signature, nothing to detect" }
+        ],
+        "correctId": "b",
+        "reveal": "No file is known to be malicious, yet the chain of behaviors is suspicious: that is exactly the EDR's home turf."
       },
       {
         "type": "text",
@@ -360,27 +542,27 @@
         "md": "Remember how they complement each other: **logs** tell you **what happened** (after the fact), while **EDR** adds real-time **behavioral detection** and **response** (isolate the machine, kill the process). One does not replace the other: centralize your logs (SIEM) **and** deploy an EDR."
       },
       {
-        "type": "keyterms",
-        "terms": [
+        "type": "flipcards",
+        "cards": [
           {
-            "term": "Endpoint",
-            "def": "End device on the network: workstation or server, a target for monitoring."
+            "front": "Endpoint",
+            "back": "End device on the network: workstation or server, a target for monitoring."
           },
           {
-            "term": "Logging",
-            "def": "Recording of system events (logons, processes, access) for analysis."
+            "front": "Logging",
+            "back": "Recording of system events (logons, processes, access) for analysis."
           },
           {
-            "term": "EDR (Endpoint Detection and Response)",
-            "def": "Agent that collects endpoint telemetry, detects suspicious behavior and can respond."
+            "front": "EDR (Endpoint Detection and Response)",
+            "back": "Agent that collects endpoint telemetry, detects suspicious behavior and can respond."
           },
           {
-            "term": "SIEM",
-            "def": "System that centralizes and correlates logs from an entire estate for detection."
+            "front": "SIEM",
+            "back": "System that centralizes and correlates logs from an entire estate for detection."
           },
           {
-            "term": "Sysmon",
-            "def": "Windows tool that enriches logging with detailed events (processes, network)."
+            "front": "Sysmon",
+            "back": "Windows tool that enriches logging with detailed events (processes, network)."
           }
         ]
       },
@@ -399,12 +581,38 @@
     "estMinutes": 7,
     "blocks": [
       {
+        "type": "hook",
+        "md": "June 2017: NotPetya paralyzes entire multinationals within hours. Its lightning spread did not owe everything to the EternalBlue exploit: the malware also stole credentials from memory and replayed them from machine to machine via PsExec and WMI. That chapter is called **lateral movement** — and one of its favorite weapons is **pass-the-hash**."
+      },
+      {
         "type": "text",
         "md": "On Windows and Active Directory, the **NTLM** protocol never sends the password across the network. Instead, the system stores and uses an **NTLM hash** derived from the password. During NTLM authentication, the server sends a **challenge** and the client answers it using its NTLM hash (challenge-response mechanism). The consequence: to prove you are a given user, all you need is to **hold their NTLM hash** — the cleartext password is not required."
       },
       {
+        "type": "predict",
+        "question": "An attacker gets hold of an administrator's NTLM hash — not the password. What must they do with it to log on as that admin?",
+        "choices": [
+          { "id": "a", "text": "Crack it first, to recover the cleartext password" },
+          { "id": "b", "text": "Replay it as is: the password is superfluous" },
+          { "id": "c", "text": "Nothing: a hash cannot be used to authenticate" }
+        ],
+        "correctId": "b",
+        "reveal": "With NTLM, the hash is the secret: holding it is enough to answer the challenge-response. That is the whole principle of pass-the-hash."
+      },
+      {
         "type": "text",
         "md": "**Pass-the-hash (PtH)** exploits exactly that: an attacker who has obtained a user's **NTLM hash** can **authenticate as that user without ever knowing their password**. They are not trying to **crack** the hash; they **replay** it directly. These hashes are typically stolen from the memory of the **LSASS** process (with tools such as Mimikatz) on an already compromised machine, or from the local **SAM** database."
+      },
+      {
+        "type": "predict",
+        "question": "The same local administrator password is deployed on all 200 machines of a fleet. The attacker steals the hash from a single machine. How many machines are within reach?",
+        "choices": [
+          { "id": "a", "text": "Just one: the hash is specific to each machine" },
+          { "id": "b", "text": "All 200: same password, same hash, everywhere" },
+          { "id": "c", "text": "None, as long as they lack the cleartext password" }
+        ],
+        "correctId": "b",
+        "reveal": "The hash derives from the password, not the machine: one theft unlocks the entire fleet. That is exactly what LAPS prevents."
       },
       {
         "type": "text",
@@ -420,27 +628,27 @@
         "md": "Exam point: **pass-the-hash reuses the NTLM hash without ever knowing the password**. The attacker does not \"crack\" the hash: they **replay** it as is in order to authenticate. It is an engine of **lateral movement**, and it is especially devastating when a local admin account shares the same password (and therefore the same hash) across several machines."
       },
       {
-        "type": "keyterms",
-        "terms": [
+        "type": "flipcards",
+        "cards": [
           {
-            "term": "NTLM hash",
-            "def": "Value derived from the password, stored and used by Windows for NTLM authentication."
+            "front": "NTLM hash",
+            "back": "Value derived from the password, stored and used by Windows for NTLM authentication."
           },
           {
-            "term": "Pass-the-hash (PtH)",
-            "def": "Reuse of a stolen NTLM hash to authenticate without knowing the password."
+            "front": "Pass-the-hash (PtH)",
+            "back": "Reuse of a stolen NTLM hash to authenticate without knowing the password."
           },
           {
-            "term": "Lateral movement",
-            "def": "An attacker's progression from machine to machine inside a compromised network."
+            "front": "Lateral movement",
+            "back": "An attacker's progression from machine to machine inside a compromised network."
           },
           {
-            "term": "LSASS",
-            "def": "Windows process that handles authentication; its memory holds sought-after secrets."
+            "front": "LSASS",
+            "back": "Windows process that handles authentication; its memory holds sought-after secrets."
           },
           {
-            "term": "LAPS",
-            "def": "Solution that enforces a unique, managed local administrator password per machine."
+            "front": "LAPS",
+            "back": "Solution that enforces a unique, managed local administrator password per machine."
           }
         ]
       },

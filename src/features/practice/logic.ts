@@ -1,4 +1,4 @@
-import type { PracticeExercise, TerminalExercise } from '@/content/practice';
+import type { PracticeExercise, PracticeMission, TerminalExercise } from '@/content/practice';
 
 /** La commande saisie satisfait-elle l'étape courante du terminal ? */
 export function matchTerminalStep(input: string, step: TerminalExercise['steps'][number]): boolean {
@@ -27,6 +27,11 @@ export function validateExercise(ex: PracticeExercise): string[] {
           new RegExp(s.expect);
         } catch {
           errs.push(`${ex.id} · étape ${i + 1} : regex invalide`);
+          return;
+        }
+        // Mode composer : la commande construite avec les jetons doit passer.
+        if (s.tokens && !matchTerminalStep(s.tokens.join(' '), s)) {
+          errs.push(`${ex.id} · étape ${i + 1} : tokens.join(' ') ne satisfait pas expect`);
         }
       });
       break;
@@ -56,6 +61,23 @@ export function validateExercise(ex: PracticeExercise): string[] {
       if (!hasEnd) errs.push(`${ex.id} : aucun nœud terminal avec une issue`);
       break;
     }
+  }
+  return errs;
+}
+
+/**
+ * Cohérence d'une mission (validation de contenu) : toutes les étapes doivent
+ * référencer un exercice existant, sans doublon d'étape.
+ */
+export function validateMission(mission: PracticeMission, exerciseIds: ReadonlySet<string>): string[] {
+  const errs: string[] = [];
+  for (const stepId of mission.steps) {
+    if (!exerciseIds.has(stepId)) {
+      errs.push(`mission ${mission.id} : étape vers un exercice inconnu « ${stepId} »`);
+    }
+  }
+  if (new Set(mission.steps).size !== mission.steps.length) {
+    errs.push(`mission ${mission.id} : étapes en double`);
   }
   return errs;
 }

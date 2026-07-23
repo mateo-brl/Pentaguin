@@ -7,12 +7,38 @@
     "estMinutes": 7,
     "blocks": [
       {
+        "type": "hook",
+        "md": "Tu es pentester, mandaté par une banque pour attaquer ses propres serveurs. Mêmes outils qu'un cybercriminel, mêmes cibles — mais un contrat signé change absolument tout. Cette frontière invisible, c'est tout ton métier."
+      },
+      {
+        "type": "predict",
+        "question": "En droit, qu'est-ce qui sépare un pentester d'un cybercriminel ?",
+        "choices": [
+          { "id": "a", "text": "Les outils et les techniques employés" },
+          { "id": "b", "text": "L'autorisation écrite et l'intention" },
+          { "id": "c", "text": "Le fait de causer des dégâts ou non" }
+        ],
+        "correctId": "b",
+        "reveal": "Techniquement, les deux peuvent faire la même chose. Seuls le mandat signé et l'intention déclarée font la différence — dans le métier comme devant un juge."
+      },
+      {
         "type": "text",
         "md": "Un **test d'intrusion** (penetration test, ou **pentest**) consiste à **simuler l'attaque d'un adversaire réel**, mais dans un cadre autorisé, pour découvrir les failles d'un système **avant** qu'un vrai attaquant ne les exploite. L'objectif n'est pas de « casser pour casser » : c'est de mesurer le risque et de fournir à l'organisation des recommandations concrètes pour se protéger. Ce qui distingue un pentester d'un pirate n'est donc pas la technique employée, mais l'**autorisation** et l'**intention**."
       },
       {
         "type": "text",
         "md": "Le travail suit une **méthodologie** structurée et itérative, souvent découpée en grandes phases :\n\n1. **Reconnaissance** : collecter de l'information sur la cible.\n2. **Scan et énumération** : cartographier les machines, ports et services.\n3. **Exploitation** : tirer parti d'une vulnérabilité pour obtenir un accès.\n4. **Post-exploitation** : évaluer l'impact réel (données atteignables, rebonds possibles).\n5. **Rapport** : documenter les failles, leur gravité et les correctifs.\n\nCes phases ne sont pas strictement linéaires : une découverte en post-exploitation peut relancer une phase de reconnaissance sur un nouveau segment."
+      },
+      {
+        "type": "predict",
+        "question": "Un responsable te dit à l'oral « vas-y, teste notre serveur ». Tu peux lancer le scan ?",
+        "choices": [
+          { "id": "a", "text": "Oui, un accord verbal suffit" },
+          { "id": "b", "text": "Seulement avec un mandat écrit qui définit le périmètre" },
+          { "id": "c", "text": "Oui, tant que tu ne casses rien" }
+        ],
+        "correctId": "b",
+        "reveal": "Un accord oral — surtout venant de quelqu'un sans autorité sur le système — ne te protège pas. Il faut un mandat signé qui délimite précisément le scope."
       },
       {
         "type": "text",
@@ -24,23 +50,23 @@
         "md": "**Pas d'autorisation écrite = infraction pénale**, même pour un simple scan de ports ou un test « pour voir ». Le consentement verbal d'un interlocuteur qui n'a pas autorité sur le système ne suffit pas : il faut un mandat signé par le bon responsable, définissant clairement le périmètre."
       },
       {
-        "type": "keyterms",
-        "terms": [
+        "type": "flipcards",
+        "cards": [
           {
-            "term": "Test d'intrusion (pentest)",
-            "def": "Simulation autorisée d'une attaque pour découvrir et documenter les failles d'un système."
+            "front": "Test d'intrusion (pentest)",
+            "back": "Simulation autorisée d'une attaque pour découvrir et documenter les failles d'un système."
           },
           {
-            "term": "Scope (périmètre)",
-            "def": "Liste précise des cibles autorisées au test, et de ce qui en est exclu."
+            "front": "Scope (périmètre)",
+            "back": "Liste précise des cibles autorisées au test, et de ce qui en est exclu."
           },
           {
-            "term": "Règles d'engagement (ROE)",
-            "def": "Cadre convenu de la mission : horaires, techniques interdites, contacts, gestion des données."
+            "front": "Règles d'engagement (ROE)",
+            "back": "Cadre convenu de la mission : horaires, techniques interdites, contacts, gestion des données."
           },
           {
-            "term": "Autorisation",
-            "def": "Mandat écrit signé par le propriétaire du système, sans lequel la mission est illégale."
+            "front": "Autorisation",
+            "back": "Mandat écrit signé par le propriétaire du système, sans lequel la mission est illégale."
           }
         ]
       },
@@ -59,12 +85,38 @@
     "estMinutes": 6,
     "blocks": [
       {
+        "type": "hook",
+        "md": "Tu veux cartographier une cible sans qu'elle s'en aperçoive. Tu n'as encore envoyé aucun paquet vers ses serveurs — et pourtant tu connais déjà ses technologies, ses employés, ses sous-domaines. Tout était public."
+      },
+      {
         "type": "text",
         "md": "La **reconnaissance** (reconnaissance, ou « recon ») est la première phase d'un test : **rassembler un maximum d'informations sur la cible** avant tout contact offensif. Plus on connaît la surface d'attaque — noms de domaine, adresses, technologies, employés — plus la suite est efficace. C'est souvent la phase la plus longue, et paradoxalement la plus discrète."
       },
       {
+        "type": "predict",
+        "question": "Laquelle de ces reconnaissances la cible peut-elle repérer dans ses journaux ?",
+        "choices": [
+          { "id": "a", "text": "La reconnaissance passive" },
+          { "id": "b", "text": "La reconnaissance active" },
+          { "id": "c", "text": "Les deux laissent des traces" }
+        ],
+        "correctId": "b",
+        "reveal": "La passive n'interroge que des sources tierces : la cible ne voit rien. L'active touche directement son infrastructure — et laisse donc des traces dans ses logs."
+      },
+      {
         "type": "text",
         "md": "On distingue deux modes, à ne pas confondre :\n\n- **Reconnaissance passive** : on **n'interagit pas directement** avec les systèmes de la cible. On se contente de sources tierces et publiques (registres WHOIS, DNS publics, moteurs de recherche, transparence des certificats, réseaux sociaux). La cible ne voit rien.\n- **Reconnaissance active** : on **interroge directement** l'infrastructure cible (résolution de ses sous-domaines, connexion à ses services). C'est plus riche, mais **détectable** : cela laisse des traces dans les journaux (logs) de la cible.\n\nLa passive précède logiquement l'active."
+      },
+      {
+        "type": "predict",
+        "question": "Une entreprise publie un rapport PDF sur son site. Que peut en tirer un attaquant, sans rien pirater ?",
+        "choices": [
+          { "id": "a", "text": "Rien, c'est juste un document public" },
+          { "id": "b", "text": "Des métadonnées : noms d'utilisateurs, logiciels, parfois des chemins internes" },
+          { "id": "c", "text": "Uniquement le contenu visible du texte" }
+        ],
+        "correctId": "b",
+        "reveal": "Les métadonnées d'un fichier trahissent souvent l'auteur, la version du logiciel, parfois des chemins réseau. De l'OSINT en or — et totalement légal à collecter."
       },
       {
         "type": "text",
@@ -76,27 +128,27 @@
         "md": "Côté défense, on réduit son exposition OSINT : limiter les informations techniques dans les offres d'emploi, nettoyer les **métadonnées** des documents publiés, surveiller les fuites de données, et cartographier régulièrement sa propre surface d'attaque comme le ferait un attaquant."
       },
       {
-        "type": "keyterms",
-        "terms": [
+        "type": "flipcards",
+        "cards": [
           {
-            "term": "Reconnaissance",
-            "def": "Phase de collecte d'informations sur la cible avant toute action offensive."
+            "front": "Reconnaissance",
+            "back": "Phase de collecte d'informations sur la cible avant toute action offensive."
           },
           {
-            "term": "Reconnaissance passive",
-            "def": "Collecte via des sources tierces publiques, sans interagir avec la cible ni laisser de trace."
+            "front": "Reconnaissance passive",
+            "back": "Collecte via des sources tierces publiques, sans interagir avec la cible ni laisser de trace."
           },
           {
-            "term": "Reconnaissance active",
-            "def": "Interrogation directe de l'infrastructure cible, plus riche mais détectable dans ses journaux."
+            "front": "Reconnaissance active",
+            "back": "Interrogation directe de l'infrastructure cible, plus riche mais détectable dans ses journaux."
           },
           {
-            "term": "OSINT",
-            "def": "Renseignement obtenu à partir de sources d'information ouvertes et publiques."
+            "front": "OSINT",
+            "back": "Renseignement obtenu à partir de sources d'information ouvertes et publiques."
           },
           {
-            "term": "Surface d'attaque",
-            "def": "Ensemble des points par lesquels un attaquant pourrait tenter d'entrer dans un système."
+            "front": "Surface d'attaque",
+            "back": "Ensemble des points par lesquels un attaquant pourrait tenter d'entrer dans un système."
           }
         ]
       },
@@ -115,12 +167,33 @@
     "estMinutes": 7,
     "blocks": [
       {
+        "type": "hook",
+        "md": "Ta liste de cibles est prête. Maintenant tu frappes aux portes : lesquelles sont ouvertes, qui répond derrière, quelle version tourne ? Chaque coup de sonde peut te trahir dans les journaux de la cible."
+      },
+      {
         "type": "text",
         "md": "Une fois la reconnaissance faite, le **scan** dresse une carte technique de la cible : quelles machines sont **actives**, quels **ports** sont ouverts, quels **services** écoutent derrière et dans quelle **version**. C'est une phase **active**, donc détectable : chaque paquet envoyé peut apparaître dans les journaux de la cible. L'outil de référence, à connaître au moins de nom, est **Nmap** (Network Mapper)."
       },
       {
+        "type": "predict",
+        "question": "Quelle est la différence entre scanner et énumérer un service ?",
+        "choices": [
+          { "id": "a", "text": "Scanner trouve les portes ouvertes ; énumérer fouille ce qu'il y a derrière" },
+          { "id": "b", "text": "C'est la même chose sous deux noms différents" },
+          { "id": "c", "text": "Énumérer se fait toujours avant de scanner" }
+        ],
+        "correctId": "a",
+        "reveal": "Le scan répond « quelles portes sont ouvertes ? ». L'énumération passe la porte : comptes, partages, versions exactes, configuration."
+      },
+      {
         "type": "text",
         "md": "Il faut distinguer deux notions souvent confondues :\n\n- Le **scan** répond à *« quelles portes existent et sont ouvertes ? »* : découverte d'hôtes, ports ouverts, détection de service et de version.\n- L'**énumération** (enumeration) va plus loin : *« qu'y a-t-il derrière cette porte ouverte ? »*. On **interroge en détail** un service identifié pour en extraire des informations précieuses : comptes utilisateurs, partages réseau, versions exactes, dossiers, configuration. La **bannière** (banner) renvoyée par un service, par exemple, révèle souvent son logiciel et sa version."
+      },
+      {
+        "type": "truefalse",
+        "statement": "Un port ouvert constitue déjà, à lui seul, une vulnérabilité.",
+        "answer": false,
+        "explanation": "Un port ouvert n'est qu'un service qui écoute. Il ne devient un risque que si le service derrière est vulnérable ou mal configuré."
       },
       {
         "type": "text",
@@ -132,27 +205,27 @@
         "md": "Côté défense : un **IDS/IPS** (système de détection/prévention d'intrusion) repère les scans, la **limitation de débit** (rate limiting) ralentit l'énumération, et surtout le **default deny** (n'exposer que le strict nécessaire) réduit le nombre de portes à trouver. On ne peut pas énumérer un service qui n'est pas exposé."
       },
       {
-        "type": "keyterms",
-        "terms": [
+        "type": "flipcards",
+        "cards": [
           {
-            "term": "Scan",
-            "def": "Découverte des hôtes actifs, des ports ouverts et des services d'une cible."
+            "front": "Scan",
+            "back": "Découverte des hôtes actifs, des ports ouverts et des services d'une cible."
           },
           {
-            "term": "Énumération",
-            "def": "Extraction détaillée d'informations (comptes, partages, versions) depuis un service identifié."
+            "front": "Énumération",
+            "back": "Extraction détaillée d'informations (comptes, partages, versions) depuis un service identifié."
           },
           {
-            "term": "Port ouvert",
-            "def": "Point d'écoute actif sur une machine, indiquant un service accessible sur le réseau."
+            "front": "Port ouvert",
+            "back": "Point d'écoute actif sur une machine, indiquant un service accessible sur le réseau."
           },
           {
-            "term": "Bannière (banner)",
-            "def": "Information renvoyée par un service qui révèle souvent son logiciel et sa version."
+            "front": "Bannière (banner)",
+            "back": "Information renvoyée par un service qui révèle souvent son logiciel et sa version."
           },
           {
-            "term": "Nmap",
-            "def": "Outil de référence de scan réseau : découverte d'hôtes, de ports et de services."
+            "front": "Nmap",
+            "back": "Outil de référence de scan réseau : découverte d'hôtes, de ports et de services."
           }
         ]
       },
@@ -171,12 +244,38 @@
     "estMinutes": 7,
     "blocks": [
       {
+        "type": "hook",
+        "md": "Tu repères un service dans une version précise. Quelque part existe peut-être une faille connue portant son nom de code — CVE-2024-quelque-chose. Reste à savoir si elle est vraiment exploitable ici, car un exploit n'est jamais universel."
+      },
+      {
+        "type": "predict",
+        "question": "Existe-t-il un exploit « universel », capable de compromettre n'importe quel système ?",
+        "choices": [
+          { "id": "a", "text": "Oui, les frameworks comme Metasploit en fournissent" },
+          { "id": "b", "text": "Non, chaque exploit vise une vulnérabilité précise" },
+          { "id": "c", "text": "Oui, mais seulement sur les vieux systèmes" }
+        ],
+        "correctId": "b",
+        "reveal": "Aucun exploit magique : chacun est écrit pour une faille donnée, dans un logiciel et une version donnés. Change la version, et il ne prend plus."
+      },
+      {
         "type": "text",
         "md": "L'**exploitation** est le moment où l'on tire parti d'une **vulnérabilité** précise pour obtenir un résultat non prévu : un accès, l'exécution de code, une fuite d'information. Point capital à retenir : **un exploit vise une vulnérabilité bien précise**. Il n'existe pas d'exploit « universel » ; chaque exploit est écrit pour une faille donnée, dans un logiciel et une version donnés."
       },
       {
         "type": "text",
         "md": "Trois mots à ne pas confondre :\n\n- **Vulnérabilité** (vulnerability) : la faiblesse elle-même (un défaut de code, une mauvaise configuration).\n- **Exploit** : la technique ou le code qui **abuse** de cette faiblesse.\n- **Payload** (charge utile) : ce qui **s'exécute une fois la faille franchie** (par exemple ouvrir un accès distant).\n\nUne vulnérabilité publiquement recensée reçoit un identifiant **CVE** (Common Vulnerabilities and Exposures), du type `CVE-2024-XXXX`, qui permet à tout le monde d'en parler sans ambiguïté."
+      },
+      {
+        "type": "predict",
+        "question": "Un framework comme Metasploit signifie-t-il que « tout est exploitable » ?",
+        "choices": [
+          { "id": "a", "text": "Oui, il automatise n'importe quelle attaque" },
+          { "id": "b", "text": "Non, il organise des outils, mais la réussite dépend du contexte" },
+          { "id": "c", "text": "Oui, à condition d'être administrateur" }
+        ],
+        "correctId": "b",
+        "reveal": "Metasploit standardise et rend reproductible. Mais la fiabilité d'un exploit dépend de la version exacte, des protections en place et du contexte."
       },
       {
         "type": "text",
@@ -188,27 +287,27 @@
         "md": "La meilleure défense découle directement de la définition : **un exploit a besoin d'une vulnérabilité pour exister**. Supprimez la faille, et l'exploit n'a plus de prise. D'où l'importance du **patch management** (application régulière des correctifs) et de la **réduction de la surface d'attaque** : moins de logiciels exposés, moins de failles potentielles."
       },
       {
-        "type": "keyterms",
-        "terms": [
+        "type": "flipcards",
+        "cards": [
           {
-            "term": "Vulnérabilité",
-            "def": "Faiblesse d'un système (défaut de code ou de configuration) susceptible d'être exploitée."
+            "front": "Vulnérabilité",
+            "back": "Faiblesse d'un système (défaut de code ou de configuration) susceptible d'être exploitée."
           },
           {
-            "term": "Exploit",
-            "def": "Technique ou code qui tire parti d'une vulnérabilité précise pour en abuser."
+            "front": "Exploit",
+            "back": "Technique ou code qui tire parti d'une vulnérabilité précise pour en abuser."
           },
           {
-            "term": "Payload",
-            "def": "Charge utile qui s'exécute une fois la vulnérabilité franchie (ex. un accès distant)."
+            "front": "Payload",
+            "back": "Charge utile qui s'exécute une fois la vulnérabilité franchie (ex. un accès distant)."
           },
           {
-            "term": "CVE",
-            "def": "Identifiant public standardisé d'une vulnérabilité connue, ex. CVE-2024-XXXX."
+            "front": "CVE",
+            "back": "Identifiant public standardisé d'une vulnérabilité connue, ex. CVE-2024-XXXX."
           },
           {
-            "term": "Framework (Metasploit)",
-            "def": "Boîte à outils organisant exploits, payloads et modules pour des tests reproductibles."
+            "front": "Framework (Metasploit)",
+            "back": "Boîte à outils organisant exploits, payloads et modules pour des tests reproductibles."
           }
         ]
       },
@@ -227,8 +326,29 @@
     "estMinutes": 7,
     "blocks": [
       {
+        "type": "hook",
+        "md": "Tu récupères un fichier d'empreintes. Aucun mot de passe en clair — rien que des hashs. Et pourtant, sur ta propre machine, sans aucune limite d'essais, tes cartes graphiques vont en tester des milliards par seconde."
+      },
+      {
         "type": "text",
         "md": "Un système correctement conçu ne stocke **jamais** les mots de passe en clair : il en conserve une **empreinte** (hash), résultat d'une fonction à sens unique. Le **cassage de mot de passe** (password cracking) consiste à **retrouver le mot de passe d'origine à partir de son empreinte**. On ne « déchiffre » pas un hash : on **devine** des candidats, on les hache à leur tour, et on compare."
+      },
+      {
+        "type": "truefalse",
+        "statement": "Casser un mot de passe, c'est « déchiffrer » son empreinte pour retrouver l'original.",
+        "answer": false,
+        "explanation": "Un hash n'est pas chiffré : la fonction est à sens unique. On ne le déchiffre pas — on devine des candidats, on les hache à leur tour, et on compare."
+      },
+      {
+        "type": "predict",
+        "question": "Dans quel scénario un attaquant peut-il tester des milliards de mots de passe sans jamais être bloqué ?",
+        "choices": [
+          { "id": "a", "text": "En ligne, directement contre le service" },
+          { "id": "b", "text": "Hors ligne, sur sa machine, avec le fichier d'empreintes" },
+          { "id": "c", "text": "Aucun : il y a toujours une limite de tentatives" }
+        ],
+        "correctId": "b",
+        "reveal": "Hors ligne, l'attaquant a le fichier de hashs chez lui : plus aucun blocage possible. Seule compte la vitesse de ses GPU."
       },
       {
         "type": "text",
@@ -244,27 +364,27 @@
         "md": "La défense contre le cassage **hors ligne** ne consiste pas à interdire les tentatives (impossible, l'attaquant est chez lui) mais à les rendre **trop lentes** : utiliser une **KDF lente** (fonction de dérivation de clé comme **bcrypt**, **scrypt** ou **Argon2**), et ajouter un **sel** (salt) **unique** par mot de passe. Le sel rend inutiles les tables précalculées (rainbow tables) et empêche que deux mots de passe identiques aient la même empreinte. À l'inverse, un MD5 ou SHA-1 **sans sel** se casse en masse."
       },
       {
-        "type": "keyterms",
-        "terms": [
+        "type": "flipcards",
+        "cards": [
           {
-            "term": "Empreinte (hash)",
-            "def": "Résultat d'une fonction à sens unique stockée à la place du mot de passe en clair."
+            "front": "Empreinte (hash)",
+            "back": "Résultat d'une fonction à sens unique stockée à la place du mot de passe en clair."
           },
           {
-            "term": "Cassage hors ligne",
-            "def": "Recherche du mot de passe sur la machine de l'attaquant, sans limite de tentatives."
+            "front": "Cassage hors ligne",
+            "back": "Recherche du mot de passe sur la machine de l'attaquant, sans limite de tentatives."
           },
           {
-            "term": "Dictionnaire / Règles / Masque",
-            "def": "Méthodes de cassage : liste de mots, transformations automatiques, force brute selon un motif."
+            "front": "Dictionnaire / Règles / Masque",
+            "back": "Méthodes de cassage : liste de mots, transformations automatiques, force brute selon un motif."
           },
           {
-            "term": "Sel (salt)",
-            "def": "Valeur aléatoire unique ajoutée avant hachage, qui déjoue les tables précalculées."
+            "front": "Sel (salt)",
+            "back": "Valeur aléatoire unique ajoutée avant hachage, qui déjoue les tables précalculées."
           },
           {
-            "term": "KDF lente",
-            "def": "Fonction de dérivation volontairement coûteuse (bcrypt, scrypt, Argon2) qui ralentit chaque essai."
+            "front": "KDF lente",
+            "back": "Fonction de dérivation volontairement coûteuse (bcrypt, scrypt, Argon2) qui ralentit chaque essai."
           }
         ]
       },
@@ -283,12 +403,38 @@
     "estMinutes": 7,
     "blocks": [
       {
+        "type": "hook",
+        "md": "Tu es entré — mais avec un compte lambda, sans droits. Le vrai jeu commence : transformer ce pied dans la porte en contrôle total de la machine, puis rebondir vers le reste du réseau."
+      },
+      {
         "type": "text",
         "md": "Un accès initial obtenu est souvent **limité** : un compte utilisateur ordinaire, sans grands droits. L'**élévation de privilèges** (privilege escalation, « privesc ») consiste à **passer de ces droits restreints à des droits élevés** — administrateur sous Windows, **root** sous Linux — qui donnent le contrôle de la machine. On parle d'élévation **verticale** (d'un compte faible vers un compte plus puissant) et d'élévation **horizontale** (accéder aux ressources d'un autre utilisateur de même niveau)."
       },
       {
+        "type": "predict",
+        "question": "D'où vient le plus souvent une élévation de privilèges ?",
+        "choices": [
+          { "id": "a", "text": "D'une technique de hacking très avancée et rare" },
+          { "id": "b", "text": "D'erreurs évitables : mauvaises permissions, service non corrigé, sudo trop permissif" },
+          { "id": "c", "text": "D'un défaut matériel du processeur" }
+        ],
+        "correctId": "b",
+        "reveal": "La plupart des privesc exploitent des négligences de configuration : permissions bâclées, correctifs manquants, identifiants en clair. Évitables — donc corrigeables."
+      },
+      {
         "type": "text",
         "md": "Les causes d'élévation sont presque toujours des **erreurs évitables** : mauvaises **permissions** sur des fichiers, service ou noyau **non corrigé** (vulnérabilité connue), configuration `sudo` trop permissive, **identifiants stockés** en clair dans un script ou un fichier de configuration. On reste ici au niveau conceptuel : l'idée n'est pas de fournir des commandes, mais de comprendre **pourquoi** ces failles existent — pour les supprimer."
+      },
+      {
+        "type": "predict",
+        "question": "Une seule machine compromise dans un réseau : quel danger pour le reste ?",
+        "choices": [
+          { "id": "a", "text": "Aucun, elle reste isolée par nature" },
+          { "id": "b", "text": "Elle peut servir de relais pour rebondir vers des segments internes" },
+          { "id": "c", "text": "Elle ne menace que les machines identiques" }
+        ],
+        "correctId": "b",
+        "reveal": "C'est le pivoting : l'attaquant se sert de la machine conquise comme tremplin. De proche en proche — le mouvement latéral — une seule brèche peut menacer tout un réseau mal cloisonné."
       },
       {
         "type": "text",
@@ -300,27 +446,27 @@
         "md": "Défenses complémentaires : le **moindre privilège** (chaque compte n'a que les droits strictement nécessaires) réduit l'utilité d'un compte volé ; le **patch management** ferme les failles d'élévation ; la **segmentation réseau** empêche de rebondir librement d'un segment à l'autre ; et la surveillance (EDR, journaux) détecte les mouvements latéraux anormaux."
       },
       {
-        "type": "keyterms",
-        "terms": [
+        "type": "flipcards",
+        "cards": [
           {
-            "term": "Élévation de privilèges (privesc)",
-            "def": "Passage de droits limités à des droits élevés (administrateur ou root) sur un système."
+            "front": "Élévation de privilèges (privesc)",
+            "back": "Passage de droits limités à des droits élevés (administrateur ou root) sur un système."
           },
           {
-            "term": "Vertical / Horizontal",
-            "def": "Élévation vers un compte plus puissant (vertical) ou vers un autre compte de même niveau (horizontal)."
+            "front": "Vertical / Horizontal",
+            "back": "Élévation vers un compte plus puissant (vertical) ou vers un autre compte de même niveau (horizontal)."
           },
           {
-            "term": "Pivoting",
-            "def": "Utiliser une machine compromise comme relais pour rebondir vers un autre segment réseau."
+            "front": "Pivoting",
+            "back": "Utiliser une machine compromise comme relais pour rebondir vers un autre segment réseau."
           },
           {
-            "term": "Mouvement latéral (lateral movement)",
-            "def": "Progression d'un attaquant de machine en machine à l'intérieur d'un réseau."
+            "front": "Mouvement latéral (lateral movement)",
+            "back": "Progression d'un attaquant de machine en machine à l'intérieur d'un réseau."
           },
           {
-            "term": "Moindre privilège",
-            "def": "Principe n'accordant à chaque compte que les droits strictement nécessaires à son rôle."
+            "front": "Moindre privilège",
+            "back": "Principe n'accordant à chaque compte que les droits strictement nécessaires à son rôle."
           }
         ]
       },
@@ -339,12 +485,33 @@
     "estMinutes": 7,
     "blocks": [
       {
+        "type": "hook",
+        "md": "L'accès est obtenu. L'attaquant veut maintenant piloter la machine à distance, discrètement — et son trafic de commande se déguise en HTTPS ou en requêtes DNS parfaitement banales."
+      },
+      {
         "type": "text",
         "md": "La **post-exploitation** regroupe tout ce qui se passe **après** l'obtention d'un accès. L'attaquant évalue la **valeur** de la machine conquise, collecte de l'information, cherche à **maintenir son accès** dans le temps et repère les rebonds possibles. Dans un test autorisé, cette phase sert surtout à **démontrer l'impact réel** : jusqu'où un attaquant pourrait-il aller, quelles données seraient exposées ? C'est ce qui transforme « un port ouvert » en risque concret et chiffrable."
       },
       {
+        "type": "predict",
+        "question": "Comment le trafic de commande (C2) d'un attaquant reste-t-il discret sur le réseau ?",
+        "choices": [
+          { "id": "a", "text": "En chiffrant tout avec un protocole exotique inconnu" },
+          { "id": "b", "text": "En se fondant dans des protocoles légitimes comme HTTPS ou DNS" },
+          { "id": "c", "text": "En coupant tout accès Internet de la machine" }
+        ],
+        "correctId": "b",
+        "reveal": "Un canal exotique attirerait l'œil. Un C2 efficace imite le trafic normal — HTTPS, DNS — pour se noyer dans la masse. D'où l'intérêt de surveiller le trafic sortant."
+      },
+      {
         "type": "text",
         "md": "Le **C2** — **Command and Control** (commandement et contrôle, aussi noté C&C) — désigne le **canal et l'infrastructure par lesquels l'attaquant pilote à distance les machines compromises**. L'agent installé sur la victime (parfois appelé **beacon** ou **implant**) contacte régulièrement le serveur de l'attaquant pour recevoir des ordres et renvoyer des résultats. Pour rester discret, ce trafic **se fond souvent dans des protocoles légitimes** comme HTTPS ou DNS, afin de ressembler à du trafic normal."
+      },
+      {
+        "type": "truefalse",
+        "statement": "Redémarrer une machine compromise suffit généralement à en chasser l'attaquant.",
+        "answer": false,
+        "explanation": "C'est précisément le rôle de la persistance : des mécanismes qui rétablissent l'accès après un redémarrage. Rebooter ne suffit pas — il faut nettoyer en profondeur."
       },
       {
         "type": "text",
@@ -356,27 +523,27 @@
         "md": "Détecter un C2 repose surtout sur la **surveillance du trafic sortant** (egress) : un poste qui « appelle » régulièrement un serveur externe (beaconing) à intervalles suspects est un signal fort. Les parades incluent le filtrage egress, la détection de balises régulières, l'**EDR** sur les postes, la **segmentation** et le threat hunting."
       },
       {
-        "type": "keyterms",
-        "terms": [
+        "type": "flipcards",
+        "cards": [
           {
-            "term": "Post-exploitation",
-            "def": "Actions menées après l'accès : évaluation de la valeur, collecte, maintien de l'accès, rebonds."
+            "front": "Post-exploitation",
+            "back": "Actions menées après l'accès : évaluation de la valeur, collecte, maintien de l'accès, rebonds."
           },
           {
-            "term": "C2 (Command and Control)",
-            "def": "Canal et infrastructure servant à piloter à distance les machines compromises."
+            "front": "C2 (Command and Control)",
+            "back": "Canal et infrastructure servant à piloter à distance les machines compromises."
           },
           {
-            "term": "Beacon / Implant",
-            "def": "Agent installé sur la victime qui contacte le serveur de l'attaquant pour recevoir des ordres."
+            "front": "Beacon / Implant",
+            "back": "Agent installé sur la victime qui contacte le serveur de l'attaquant pour recevoir des ordres."
           },
           {
-            "term": "Persistance",
-            "def": "Mécanismes permettant de conserver l'accès à une machine même après un redémarrage."
+            "front": "Persistance",
+            "back": "Mécanismes permettant de conserver l'accès à une machine même après un redémarrage."
           },
           {
-            "term": "Exfiltration",
-            "def": "Sortie de données hors du réseau de la victime vers l'attaquant."
+            "front": "Exfiltration",
+            "back": "Sortie de données hors du réseau de la victime vers l'attaquant."
           }
         ]
       },
@@ -395,12 +562,38 @@
     "estMinutes": 7,
     "blocks": [
       {
+        "type": "hook",
+        "md": "Fin de mission : tu as compromis le domaine, exfiltré des données de test, cartographié le réseau. Reste le plus important — et ce n'est pas la partie technique."
+      },
+      {
+        "type": "predict",
+        "question": "À quoi se mesure vraiment la valeur d'un pentest ?",
+        "choices": [
+          { "id": "a", "text": "Au nombre de vulnérabilités trouvées" },
+          { "id": "b", "text": "À la capacité de l'organisation à corriger les failles" },
+          { "id": "c", "text": "À la sophistication des techniques employées" }
+        ],
+        "correctId": "b",
+        "reveal": "Trouver cent failles ne sert à rien si rien n'est corrigé. La valeur d'un pentest tient à ses remédiations priorisées et à leur mise en œuvre — vérifiée par un retest."
+      },
+      {
         "type": "text",
         "md": "Le **rapport** est le **vrai livrable** d'un test d'intrusion : sans lui, tout le travail technique ne sert à rien. Un bon rapport n'est pas une liste brute de failles, c'est un document **actionnable** qui comprend généralement : une **synthèse pour les dirigeants** (executive summary) en langage clair, le **périmètre** et la **méthodologie**, les **vulnérabilités** trouvées avec leur **gravité**, une preuve reproductible (**PoC**, proof of concept), et surtout des **recommandations de remédiation** priorisées."
       },
       {
         "type": "text",
         "md": "Chaque faille est **notée** selon sa gravité, souvent à l'aide du **CVSS** (Common Vulnerability Scoring System), afin de **prioriser** les corrections : on traite d'abord ce qui combine forte probabilité et fort impact. La valeur d'un pentest ne se mesure pas au **nombre** de failles listées, mais à la capacité de l'organisation à les **corriger**. Une bonne mission se termine d'ailleurs par un **retest** vérifiant que les correctifs tiennent."
+      },
+      {
+        "type": "predict",
+        "question": "Qu'est-ce qu'une « purple team » ?",
+        "choices": [
+          { "id": "a", "text": "Une troisième équipe indépendante, entre l'attaque et la défense" },
+          { "id": "b", "text": "La collaboration entre red team (attaque) et blue team (défense)" },
+          { "id": "c", "text": "L'équipe chargée de rédiger le rapport final" }
+        ],
+        "correctId": "b",
+        "reveal": "Le violet naît du mélange du rouge et du bleu : pas une équipe de plus, mais la collaboration entre offensif et défensif pour améliorer la détection."
       },
       {
         "type": "text",
@@ -412,27 +605,27 @@
         "md": "À retenir : **red = attaque**, **blue = défense**, **purple = collaboration** des deux pour améliorer la détection. Et rappelez-vous que la valeur d'un rapport réside dans ses **recommandations de remédiation priorisées**, pas dans le nombre de vulnérabilités trouvées."
       },
       {
-        "type": "keyterms",
-        "terms": [
+        "type": "flipcards",
+        "cards": [
           {
-            "term": "Rapport de pentest",
-            "def": "Livrable final : synthèse, périmètre, failles notées et recommandations de remédiation priorisées."
+            "front": "Rapport de pentest",
+            "back": "Livrable final : synthèse, périmètre, failles notées et recommandations de remédiation priorisées."
           },
           {
-            "term": "CVSS",
-            "def": "Système de notation standardisé de la gravité d'une vulnérabilité, utile pour prioriser."
+            "front": "CVSS",
+            "back": "Système de notation standardisé de la gravité d'une vulnérabilité, utile pour prioriser."
           },
           {
-            "term": "Red team",
-            "def": "Équipe offensive qui simule un adversaire pour éprouver les défenses."
+            "front": "Red team",
+            "back": "Équipe offensive qui simule un adversaire pour éprouver les défenses."
           },
           {
-            "term": "Blue team",
-            "def": "Équipe défensive qui surveille, détecte et répond aux attaques."
+            "front": "Blue team",
+            "back": "Équipe défensive qui surveille, détecte et répond aux attaques."
           },
           {
-            "term": "Purple team",
-            "def": "Collaboration entre red et blue team visant à améliorer la détection et la défense."
+            "front": "Purple team",
+            "back": "Collaboration entre red et blue team visant à améliorer la détection et la défense."
           }
         ]
       },

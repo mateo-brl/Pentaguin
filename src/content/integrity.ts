@@ -32,11 +32,22 @@ export function validatePackIntegrity(pack: ContentPack): IntegrityReport {
     if (!domainIds.has(lesson.domainId)) {
       errors.push(`leçon ${lesson.id} : domaine inconnu « ${lesson.domainId} »`);
     }
-    for (const block of lesson.blocks) {
+    lesson.blocks.forEach((block, index) => {
       if (block.type === 'quickcheck' && !questionIds.has(block.questionId)) {
         errors.push(`leçon ${lesson.id} : quickcheck vers une question inconnue « ${block.questionId} »`);
       }
-    }
+      if (block.type === 'predict') {
+        if (!block.choices.some((c) => c.id === block.correctId)) {
+          errors.push(`leçon ${lesson.id} : predict avec correctId « ${block.correctId} » absent des choix`);
+        }
+        if (new Set(block.choices.map((c) => c.id)).size !== block.choices.length) {
+          errors.push(`leçon ${lesson.id} : predict avec ids de choix en double`);
+        }
+      }
+      if (block.type === 'hook' && index !== 0) {
+        warnings.push(`leçon ${lesson.id} : bloc hook en position ${index + 1} (attendu en ouverture)`);
+      }
+    });
   }
 
   for (const question of pack.questions) {
