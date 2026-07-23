@@ -33,7 +33,7 @@ export default function HomeScreen() {
   const theme = useTheme();
   const entitlements = useEntitlements();
   const rank = useRank();
-  const { current, freezes, goal, celebrate } = useRetention();
+  const { current, freezes, goal, week, celebrate } = useRetention();
   const { me } = useSession();
 
   // Célébration d'un palier : `celebrate` est stable pendant un focus (le hook
@@ -135,6 +135,33 @@ export default function HomeScreen() {
                   </ThemedText>
                 </View>
               )}
+            </View>
+          </View>
+
+          {/* Récap de la semaine : la régularité rend visible (7 jours). */}
+          <View style={[styles.weekCard, { backgroundColor: theme.backgroundElement, borderColor: theme.border }]}>
+            <View style={styles.weekHead}>
+              <ThemedText type="label" themeColor="textSecondary">
+                {t.retention.weekTitle}
+              </ThemedText>
+              <ThemedText type="mono" themeColor="textSecondary" style={{ fontSize: 12 }}>
+                {week.activeDays}/7 · {week.weekXp} XP
+              </ThemedText>
+            </View>
+            <View style={styles.weekStrip}>
+              {week.days.map((d, i) => (
+                <View
+                  key={d.date}
+                  style={[
+                    styles.weekCell,
+                    {
+                      backgroundColor: d.active ? theme.streakSoft : theme.backgroundSelected,
+                      borderColor: i === week.days.length - 1 ? theme.accent : 'transparent',
+                    },
+                  ]}>
+                  {d.active && <Ionicons name="flame" size={14} color={theme.streak} />}
+                </View>
+              ))}
             </View>
           </View>
 
@@ -293,6 +320,22 @@ const styles = StyleSheet.create({
     padding: Spacing.base,
   },
   goalText: { flex: 1, gap: 2 },
+  weekCard: {
+    borderRadius: Radius.lg,
+    borderWidth: Stroke.hair,
+    padding: Spacing.base,
+    gap: Spacing.sm,
+  },
+  weekHead: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  weekStrip: { flexDirection: 'row', gap: Spacing.xs },
+  weekCell: {
+    flex: 1,
+    height: 30,
+    borderRadius: Radius.sm,
+    borderWidth: 1.5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   freezeRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.xs, marginTop: 2 },
   heroText: { flex: 1, gap: Spacing.xs },
   heroTitle: { fontSize: 26, lineHeight: 32 },

@@ -5,10 +5,12 @@ import {
   dailyGoalProgress,
   DAILY_GOAL_XP,
   isMilestone,
+  last7Days,
   maybeEarnFreeze,
   MAX_FREEZES,
   nextMilestone,
   streakWithFreezes,
+  weeklyRecap,
 } from '../retention';
 
 describe('dailyGoalProgress', () => {
@@ -67,5 +69,33 @@ describe('gain de bouclier', () => {
     expect(maybeEarnFreeze(base, '2026-07-20', DAILY_GOAL_XP, '2026-07-20')).toBeNull();
     // plafond atteint → rien
     expect(maybeEarnFreeze({ freezes: MAX_FREEZES, frozenDays: [] }, '2026-07-20', 999, null)).toBeNull();
+  });
+
+  it('respecte un objectif personnalisé', () => {
+    const base = { freezes: 0, frozenDays: [] };
+    // objectif « light » à 20 : 20 XP suffit
+    expect(maybeEarnFreeze(base, '2026-07-20', 20, null, 20)?.state.freezes).toBe(1);
+    // objectif « intense » à 50 : 30 XP ne suffit pas
+    expect(maybeEarnFreeze(base, '2026-07-20', 30, null, 50)).toBeNull();
+  });
+});
+
+describe('récap hebdo', () => {
+  it('last7Days renvoie 7 jours consécutifs finissant aujourd’hui', () => {
+    const days = last7Days('2026-07-20');
+    expect(days).toHaveLength(7);
+    expect(days[6]).toBe('2026-07-20');
+    expect(days[0]).toBe('2026-07-14');
+  });
+
+  it('compte les jours actifs et l’XP de la semaine', () => {
+    const recap = weeklyRecap(
+      ['2026-07-20', '2026-07-18', '2026-07-01'], // 07-01 hors fenêtre
+      { '2026-07-20': 40, '2026-07-18': 30, '2026-07-01': 999 },
+      '2026-07-20',
+    );
+    expect(recap.activeDays).toBe(2);
+    expect(recap.weekXp).toBe(70); // 40 + 30, le hors-fenêtre exclu
+    expect(recap.days.at(-1)).toMatchObject({ date: '2026-07-20', active: true, xp: 40 });
   });
 });
