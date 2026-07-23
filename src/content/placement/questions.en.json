@@ -1702,7 +1702,7 @@
       }
     ],
     "correct": "b",
-    "explanation": "HTTPS encrypts the transport. It does NOT guarantee that the site is honest — a malicious site can use HTTPS too.",
+    "explanation": "HTTPS encrypts the transport. It does NOT guarantee that the site is honest: a malicious site can use HTTPS too.",
     "tags": [
       "placement-v1"
     ]
@@ -10774,7 +10774,7 @@
       }
     ],
     "correct": "c",
-    "explanation": "Pass-the-hash replays the account's NT hash, which stands as proof of identity in NTLM.",
+    "explanation": "Pass-the-hash replays the account's NT hash, which serves as proof of identity in NTLM.",
     "tags": [
       "placement-v1"
     ]

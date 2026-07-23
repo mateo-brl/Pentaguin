@@ -5,14 +5,14 @@
   "title": "La première ligne de défense",
   "level": 3,
   "tagline": "Reconnaître, réagir, se relever, se protéger : les gestes de base.",
-  "intro": "Bienvenue. Avant les attaques sophistiquées, la plupart des compromissions commencent par un simple e-mail piégé. Je vais te confier quatre situations du quotidien : tu apprendras d'abord à démasquer un expéditeur usurpé, puis à garder la tête froide devant un message alarmiste, à reprendre le contrôle d'un compte déjà piraté, et enfin à fermer la porte aux failles connues. Ce sont ces réflexes-là qui font la différence.",
+  "intro": "Bienvenue. Avant les attaques sophistiquées, la plupart des compromissions commencent par un simple e-mail piégé. Je vais te confier quatre situations du quotidien : tu apprendras d'abord à démasquer un expéditeur usurpé, puis à garder la tête froide devant un message alarmiste, à reprendre le contrôle d'un compte déjà piraté, et enfin à fermer la porte aux failles connues.",
   "steps": [
    "fond-anal",
    "fond-scen",
    "fond-order",
    "fond-term"
   ],
-  "debrief": "Tu tiens désormais les fondamentaux : le domaine prime sur le nom affiché, l'urgence est un signal d'alerte, un compte compromis se reprend dans l'ordre, et un système à jour referme les failles connues. C'est sur ces bases que se construit tout le reste."
+  "debrief": "Tu tiens désormais les fondamentaux : le domaine prime sur le nom affiché, l'urgence est un signal d'alerte, un compte compromis se reprend dans l'ordre, et un système à jour referme les failles connues."
  },
  {
   "id": "m-net",
@@ -20,14 +20,14 @@
   "title": "Sur la piste d'une machine suspecte",
   "level": 6,
   "tagline": "Du café public au reverse shell : suis la trace sur le réseau.",
-  "intro": "Tu rejoins l'équipe réseau. Une machine se comporte bizarrement depuis qu'elle est revenue d'un déplacement. Avant de plonger, tu poses les bases : comment un nom de domaine devient une adresse IP. Ensuite tu remontes le fil — le Wi-Fi public où tout a commencé, la connexion sortante qui trahit un reverse shell, puis le diagnostic réseau complet, en lecture seule.",
+  "intro": "Tu rejoins l'équipe réseau. Une machine se comporte bizarrement depuis qu'elle est revenue d'un déplacement. Avant de plonger, tu poses les bases : comment un nom de domaine devient une adresse IP. Ensuite tu remontes le fil : le Wi-Fi public où tout a commencé, la connexion sortante qui trahit un reverse shell, puis le diagnostic réseau complet, en lecture seule.",
   "steps": [
    "net-order",
    "net-scen",
    "net-anal",
    "net-term"
   ],
-  "debrief": "Enquête bouclée : tu sais comment une requête DNS descend la hiérarchie, pourquoi un faux point d'accès est un piège, à quoi ressemble un canal C2 sortant, et comment diagnostiquer une chaîne réseau sans rien casser. Le réseau n'a plus de zone d'ombre pour toi."
+  "debrief": "Enquête bouclée : tu sais comment une requête DNS descend la hiérarchie, pourquoi un faux point d'accès est un piège, à quoi ressemble un canal C2 sortant, et comment diagnostiquer une chaîne réseau sans rien casser."
  },
  {
   "id": "m-crypto",
@@ -35,14 +35,14 @@
   "title": "L'application sous garde cryptographique",
   "level": 9,
   "tagline": "Mots de passe, code, TLS, certificats : la crypto de bout en bout.",
-  "intro": "On te confie la sécurité cryptographique d'une application. Tu commences par le stockage des mots de passe — le premier rempart le jour d'une fuite —, puis tu passes en revue une routine de chiffrement à la recherche d'une faille de mode. Ensuite tu remontes le fil du handshake TLS qui protège les données en transit, avant d'inspecter toi-même un certificat et de vérifier une empreinte à l'openssl.",
+  "intro": "On te confie la sécurité cryptographique d'une application. Tu commences par le stockage des mots de passe, le premier rempart le jour d'une fuite, puis tu passes en revue une routine de chiffrement à la recherche d'une faille de mode. Ensuite tu remontes le fil du handshake TLS qui protège les données en transit, avant d'inspecter toi-même un certificat et de vérifier une empreinte à l'openssl.",
   "steps": [
    "crypto-scen",
    "crypto-anal",
    "crypto-order",
    "crypto-term"
   ],
-  "debrief": "Bilan : un mot de passe se hache avec un KDF lent et salé, un chiffrement par blocs ne se fait jamais en ECB, TLS négocie en asymétrique puis chiffre en symétrique, et un certificat se lit et se vérifie à la main. Tu maîtrises la crypto, du repos au transit."
+  "debrief": "Bilan : un mot de passe se hache avec un KDF lent et salé, un chiffrement par blocs ne se fait jamais en ECB, TLS négocie en asymétrique puis chiffre en symétrique, et un certificat se lit et se vérifie à la main."
  },
  {
   "id": "m-web",
@@ -50,14 +50,14 @@
   "title": "Gardien de l'application web",
   "level": 9,
   "tagline": "XSS, IDOR, OAuth, en-têtes : défendre une app de bout en bout.",
-  "intro": "Tu veilles sur une application web exposée sur Internet. D'abord tu débusques une attaque XSS noyée dans le journal d'accès, puis tu tombes par hasard sur une faille IDOR qu'il faut gérer proprement, dans les règles. Tu remets ensuite dans l'ordre le flux OAuth 2.0 qui délègue l'accès sans livrer le mot de passe, avant de vérifier toi-même les en-têtes de sécurité HTTP du site avant sa mise en production.",
+  "intro": "Tu veilles sur une application web exposée sur Internet. D'abord tu débusques une attaque XSS noyée dans le journal d'accès, puis tu tombes par hasard sur une faille IDOR qu'il faut gérer proprement. Tu remets ensuite dans l'ordre le flux OAuth 2.0 qui délègue l'accès sans livrer le mot de passe, puis tu vérifies toi-même les en-têtes de sécurité HTTP du site avant sa mise en production.",
   "steps": [
    "web-anal",
    "web-scen",
    "web-order",
    "web-term"
   ],
-  "debrief": "Tu as couvert toute la chaîne web : reconnaître un XSS réfléchi, signaler une faille en divulgation responsable, comprendre le flux OAuth Authorization Code, et durcir un site via HSTS et CSP. De l'attaque au durcissement, le Web n'a plus de secret."
+  "debrief": "Tu as couvert toute la chaîne web : reconnaître un XSS réfléchi, signaler une faille en divulgation responsable, comprendre le flux OAuth Authorization Code, et durcir un site via HSTS et CSP."
  },
  {
   "id": "m-sys",
@@ -65,44 +65,44 @@
   "title": "Du fichier au domaine : la montée en privilèges",
   "level": 10,
   "tagline": "Permissions, SUID, Kerberos, Domain Admin : la chasse aux privilèges.",
-  "intro": "Tu durcis un parc Linux et un Active Directory. Tu repères d'abord une permission de trop dans un script de provisioning, puis tu audites la surface d'élévation locale d'un serveur, en lecture seule. Tu remontes ensuite le déroulé d'une authentification Kerberos pour comprendre comment un domaine délivre ses tickets — juste avant de te retrouver, en test autorisé, Domain Admin bien trop tôt, avec les bonnes décisions à prendre.",
+  "intro": "Tu durcis un parc Linux et un Active Directory. Tu repères d'abord une permission de trop dans un script de provisioning, puis tu audites la surface d'élévation locale d'un serveur, en lecture seule. Tu remontes ensuite le déroulé d'une authentification Kerberos pour comprendre comment un domaine délivre ses tickets, juste avant de te retrouver, en test autorisé, Domain Admin bien trop tôt : à toi de prendre les bonnes décisions.",
   "steps": [
    "sys-anal",
    "sys-term",
    "sys-order",
    "sys-scen"
   ],
-  "debrief": "Du fichier au domaine, tu as suivi le fil des privilèges : une permission laxiste ouvre une fuite, un binaire SUID mal placé mène à root, Kerberos orchestre l'accès via le KDC, et un accès Domain Admin en pentest se documente sans jamais déborder du périmètre. La montée en privilèges n'a plus de mystère."
+  "debrief": "Du fichier au domaine, tu as suivi le fil des privilèges : une permission laxiste ouvre une fuite, un binaire SUID mal placé mène à root, Kerberos orchestre l'accès via le KDC, et un accès Domain Admin en pentest se documente sans jamais déborder du périmètre."
  },
  {
   "id": "m-threats",
   "domainId": "d-threats",
   "title": "Anatomie d'une attaque",
   "level": 8,
-  "tagline": "De la kill chain à la note de rançon : comprendre, détecter, disséquer, réagir.",
-  "intro": "Tu es analyste des menaces. Tu commences par la théorie du terrain — les sept étapes de la Cyber Kill Chain que suit tout attaquant. Puis tu passes à la traque : un indicateur de compromission caché dans les logs DNS trahit un canal C2, et une pièce jointe « invoice.pdf » cache en réalité un exécutable que tu dissèques sans jamais l'exécuter. Quand le ransomware finit par se déclencher sur un poste, c'est à toi de réagir.",
+  "tagline": "De la kill chain à la note de rançon : détecter, disséquer, réagir.",
+  "intro": "Tu es analyste des menaces. Tu commences par la théorie : les sept étapes de la Cyber Kill Chain que suit tout attaquant. Puis tu passes à la traque : un indicateur de compromission caché dans les logs DNS trahit un canal C2, et une pièce jointe « invoice.pdf » cache un exécutable que tu dissèques sans jamais l'exécuter. Quand le ransomware finit par se déclencher sur un poste, c'est à toi de réagir.",
   "steps": [
    "threats-order",
    "threats-anal",
    "threats-term",
    "threats-scen"
   ],
-  "debrief": "Tu as suivi une attaque de bout en bout : la kill chain qui la structure, le domaine DGA qui trahit le C2, le triage statique qui démasque un ransomware déguisé, et la réponse qui isole, alerte et restaure sans jamais payer. Comprendre l'attaquant, c'est déjà le contrer."
+  "debrief": "Tu as suivi une attaque de bout en bout : la kill chain qui la structure, le domaine DGA qui trahit le C2, le triage statique qui démasque un ransomware déguisé, et la réponse qui isole, alerte et restaure sans jamais payer."
  },
  {
   "id": "m-defense",
   "domainId": "d-defense",
   "title": "Quart de nuit au SOC",
   "level": 11,
-  "tagline": "Détecter, investiguer, méthodiser, répondre : une nuit de garde au SOC.",
-  "intro": "Tu prends ton quart au SOC. D'abord, un événement critique se cache dans le bruit du SIEM : une connexion qui a réussi là où tout le monde ne voit que des alertes. Tu plonges ensuite dans les journaux pour reconstituer un brute-force SSH, puis tu remets d'aplomb la méthode — les six phases de la réponse à incident — avant de l'appliquer pour de vrai à un ransomware qui se propage en direct.",
+  "tagline": "Détecter, investiguer, répondre : une nuit de garde au SOC.",
+  "intro": "Tu prends ton quart au SOC. D'abord, un événement critique se cache dans le bruit du SIEM : une connexion qui a réussi là où tout le monde ne voit que des alertes. Tu plonges ensuite dans les journaux pour reconstituer un brute-force SSH, puis tu remets d'aplomb la méthode, les six phases de la réponse à incident, avant de l'appliquer pour de vrai à un ransomware qui se propage en direct.",
   "steps": [
    "defense-anal",
    "defense-term",
    "defense-order",
    "defense-scen"
   ],
-  "debrief": "Belle garde : tu as su repérer la compromission aboutie que le SIEM noyait, reconstituer une intrusion SSH ligne par ligne, ordonner le cycle de réponse à incident et le dérouler sous pression sans céder au chantage. Détecter, investiguer, contenir, restaurer : le réflexe blue team est en place."
+  "debrief": "Belle garde : tu as su repérer la compromission aboutie que le SIEM noyait, reconstituer une intrusion SSH ligne par ligne, ordonner le cycle de réponse à incident et le dérouler sous pression sans céder au chantage."
  },
  {
   "id": "m-off",
@@ -110,13 +110,13 @@
   "title": "Pentest sous mandat",
   "level": 11,
   "tagline": "Du cadre légal à la faille : mener un test d'intrusion dans les règles.",
-  "intro": "Un client te confie un test d'intrusion. Tout commence par le cadre : autorisation écrite, scope, décisions qui te gardent du bon côté de la loi. Tu révises ensuite la méthodologie ordonnée d'un pentest, avant de passer à l'action — reconnaissance et énumération en lecture seule sur une cible autorisée. Enfin, dans une configuration récupérée, une ligne rend le serveur exploitable sans même un identifiant : à toi de la trouver.",
+  "intro": "Un client te confie un test d'intrusion. Tout commence par le cadre : autorisation écrite, scope, décisions qui te gardent du bon côté de la loi. Tu révises ensuite la méthodologie ordonnée d'un pentest, avant de passer à l'action : reconnaissance et énumération en lecture seule sur une cible autorisée. Enfin, dans une configuration récupérée, une ligne rend le serveur exploitable sans même un identifiant : à toi de la trouver.",
   "steps": [
    "off-scen",
    "off-order",
    "off-term",
    "off-anal"
   ],
-  "debrief": "Mission menée dans les règles : rien sans autorisation écrite ni scope, une méthodologie qui va du cadrage au rapport, une reconnaissance non intrusive et une faille de configuration débusquée. Le pentest éthique, c'est autant de rigueur légale que de technique."
+  "debrief": "Mission menée dans les règles : rien sans autorisation écrite ni scope, une méthodologie qui va du cadrage au rapport, une reconnaissance non intrusive et une faille de configuration débusquée."
  }
 ]

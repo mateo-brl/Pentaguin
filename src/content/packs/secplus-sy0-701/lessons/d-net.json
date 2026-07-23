@@ -8,7 +8,7 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "Novembre 2019 : le RIPE NCC, le registre Internet européen, attribue les toutes dernières adresses IPv4 disponibles. Le stock conçu dans les années 80 est officiellement épuisé — et pourtant, Internet continue de grandir. Cette leçon t'explique le tour de passe-passe qui rend ça possible."
+    "md": "Novembre 2019 : le RIPE NCC, le registre Internet européen, attribue les toutes dernières adresses IPv4 disponibles. Le stock conçu dans les années 80 est officiellement épuisé. Et pourtant, Internet continue de grandir. Cette leçon t'explique le tour de passe-passe qui rend ça possible."
    },
    {
     "type": "text",
@@ -32,7 +32,7 @@
      }
     ],
     "correctId": "b",
-    "reveal": "Une seule : celle de la box. Tes appareils utilisent des adresses privées, invisibles depuis Internet — c'est ce qui a permis de survivre à la pénurie d'IPv4."
+    "reveal": "Une seule : celle de la box. Tes appareils utilisent des adresses privées, invisibles depuis Internet, ce qui a permis de survivre à la pénurie d'IPv4."
    },
    {
     "type": "text",
@@ -42,7 +42,7 @@
     "type": "truefalse",
     "statement": "Ton adresse IP publique identifie précisément ton appareil sur Internet.",
     "answer": false,
-    "explanation": "Elle identifie ta box : tous les appareils du foyer partagent la même adresse publique. Un mécanisme se charge de redistribuer chaque réponse au bon appareil — on le voit tout de suite."
+    "explanation": "Elle identifie ta box : tous les appareils du foyer partagent la même adresse publique. Un mécanisme se charge de redistribuer chaque réponse au bon appareil."
    },
    {
     "type": "text",
@@ -94,7 +94,7 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "21 octobre 2016 : Twitter, Netflix, Spotify et Reddit semblent disparaître d'Internet pendant des heures. Leurs serveurs, eux, fonctionnent parfaitement. C'est leur annuaire qu'on a fait tomber : le botnet Mirai bombarde Dyn, un grand fournisseur DNS — et sans annuaire, plus personne ne trouve les adresses."
+    "md": "21 octobre 2016 : Twitter, Netflix, Spotify et Reddit semblent disparaître d'Internet pendant des heures. Leurs serveurs, eux, fonctionnent parfaitement. C'est leur annuaire qu'on a fait tomber : le botnet Mirai bombarde Dyn, un grand fournisseur DNS. Sans annuaire, plus personne ne trouve les adresses."
    },
    {
     "type": "text",
@@ -180,7 +180,7 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "12 mai 2017 : le ransomware WannaCry paralyse des hôpitaux britanniques et se propage dans 150 pays en quelques jours. Sa méthode de chasse ? Scanner Internet à la recherche de machines exposant un seul port : le 445. Un simple numéro — et c'est tout le sujet de cette leçon."
+    "md": "12 mai 2017 : le ransomware WannaCry paralyse des hôpitaux britanniques et se propage dans 150 pays en quelques jours. Sa méthode de chasse ? Scanner Internet à la recherche de machines exposant un seul port : le 445. Un simple numéro, et c'est tout le sujet de cette leçon."
    },
    {
     "type": "text",
@@ -208,11 +208,11 @@
      }
     ],
     "correctId": "b",
-    "reveal": "443, le port par défaut du web chiffré. Le 80, c'est le web en clair — même service, deux portes différentes."
+    "reveal": "443, le port par défaut du web chiffré. Le 80, c'est le web en clair : même service, deux portes différentes."
    },
    {
     "type": "text",
-    "md": "Chaque **protocole** (protocol), c'est-à-dire un langage d'échange standardisé, a ainsi un port par défaut bien connu. À retenir absolument :\n\n- **22 — SSH** : administration et connexion distante **chiffrée**.\n- **25 — SMTP** : envoi d'e-mails entre serveurs.\n- **53 — DNS** : résolution des noms de domaine.\n- **80 — HTTP** : web **en clair**.\n- **443 — HTTPS** : web **chiffré** (HTTP + TLS).\n- **3389 — RDP** : bureau à distance Windows (Remote Desktop Protocol)."
+    "md": "Chaque **protocole** (protocol), c'est-à-dire un langage d'échange standardisé, a ainsi un port par défaut bien connu. À retenir absolument :\n\n- **22, SSH** : administration et connexion distante **chiffrée**.\n- **25, SMTP** : envoi d'e-mails entre serveurs.\n- **53, DNS** : résolution des noms de domaine.\n- **80, HTTP** : web **en clair**.\n- **443, HTTPS** : web **chiffré** (HTTP + TLS).\n- **3389, RDP** : bureau à distance Windows (Remote Desktop Protocol)."
    },
    {
     "type": "text",
@@ -270,7 +270,7 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "Tu es agent de sécurité à l'entrée d'un immeuble. Des centaines de personnes se présentent chaque minute : impossible d'interroger chacune. Tu travailles donc avec une liste de règles — qui entre, qui sort, par quelle porte. Bienvenue dans le quotidien d'un pare-feu."
+    "md": "Tu es agent de sécurité à l'entrée d'un immeuble. Des centaines de personnes se présentent chaque minute : impossible d'interroger chacune. Tu travailles donc avec une liste de règles : qui entre, qui sort, par quelle porte. Bienvenue dans le quotidien d'un pare-feu."
    },
    {
     "type": "text",
@@ -308,7 +308,7 @@
     "type": "truefalse",
     "statement": "Un pare-feu bien configuré rend l'antivirus superflu.",
     "answer": false,
-    "explanation": "Un malware que tu télécharges toi-même arrive par un flux autorisé (le port 443, par exemple) : le pare-feu le laisse passer. Filtrer le trafic et analyser les fichiers sont deux couches différentes — il faut les deux."
+    "explanation": "Un malware que tu télécharges toi-même arrive par un flux autorisé (le port 443, par exemple) : le pare-feu le laisse passer. Filtrer le trafic et analyser les fichiers sont deux couches différentes : il faut les deux."
    },
    {
     "type": "callout",
@@ -396,7 +396,7 @@
      }
     ],
     "correctId": "b",
-    "reveal": "Symétrique. L'asymétrique n'a servi qu'à s'authentifier et à négocier cette clé de session — ensuite, place à la vitesse."
+    "reveal": "Symétrique. L'asymétrique n'a servi qu'à s'authentifier et à négocier cette clé de session. Ensuite, place à la vitesse."
    },
    {
     "type": "text",
@@ -474,7 +474,7 @@
      }
     ],
     "correctId": "c",
-    "reveal": "Il voit qu'un tunnel existe et vers quel serveur il mène — mais tout ce qui circule dedans est chiffré, donc illisible."
+    "reveal": "Il voit qu'un tunnel existe et vers quel serveur il mène, mais tout ce qui circule dedans est chiffré, donc illisible."
    },
    {
     "type": "text",
@@ -628,11 +628,11 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "Cette fois, tu es l'attaquant. Assis dans un café, connecté au même Wi-Fi que tout le monde, ton objectif est simple : faire transiter le trafic des autres clients par ta machine, sans qu'ils s'en doutent. À la fin de cette leçon, tu sauras exactement comment on s'y prend — et comment on le bloque."
+    "md": "Cette fois, tu es l'attaquant. Assis dans un café, connecté au même Wi-Fi que tout le monde, ton objectif est simple : faire transiter le trafic des autres clients par ta machine, sans qu'ils s'en doutent. À la fin de cette leçon, tu sauras exactement comment on s'y prend, et comment on le bloque."
    },
    {
     "type": "text",
-    "md": "Ce scénario porte un nom : l'attaque de l'**homme du milieu** — **MITM** (Man-In-The-Middle). Un attaquant **s'intercale** entre deux interlocuteurs qui croient se parler directement. Placé au milieu, il peut **écouter**, mais aussi **modifier** ou **rejouer** les messages qui transitent, sans que les victimes s'en aperçoivent."
+    "md": "Ce scénario porte un nom : l'attaque de l'**homme du milieu**, ou **MITM** (Man-In-The-Middle). Un attaquant **s'intercale** entre deux interlocuteurs qui croient se parler directement. Placé au milieu, il peut **écouter**, mais aussi **modifier** ou **rejouer** les messages qui transitent, sans que les victimes s'en aperçoivent."
    },
    {
     "type": "predict",
@@ -666,7 +666,7 @@
     "type": "truefalse",
     "statement": "Un attaquant en position d'homme du milieu peut lire tes mots de passe même sur un site en HTTPS.",
     "answer": false,
-    "explanation": "Il intercepte bien le trafic, mais le contenu reste chiffré par TLS. Pour le déchiffrer, il devrait présenter un faux certificat — et ton navigateur donnerait l'alerte. D'où les contre-mesures qui suivent."
+    "explanation": "Il intercepte bien le trafic, mais le contenu reste chiffré par TLS. Pour le déchiffrer, il devrait présenter un faux certificat, et ton navigateur donnerait l'alerte. D'où les contre-mesures qui suivent."
    },
    {
     "type": "callout",

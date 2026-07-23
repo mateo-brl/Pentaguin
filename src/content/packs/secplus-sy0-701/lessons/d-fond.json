@@ -8,7 +8,7 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "En 2012, LinkedIn se fait voler les **hashes** de ses mots de passe. L'ampleur réelle n'apparaît qu'en 2016 : 117 millions de comptes en vente sur le marché noir — suivis d'une cascade de piratages sur d'autres sites, partout où les victimes réutilisaient le même mot de passe."
+    "md": "En 2012, LinkedIn se fait voler les **hashes** de ses mots de passe. L'ampleur réelle n'apparaît qu'en 2016 : 117 millions de comptes en vente sur le marché noir, suivis d'une cascade de piratages sur d'autres sites, partout où les victimes réutilisaient le même mot de passe."
    },
    {
     "type": "text",
@@ -20,11 +20,11 @@
     "choices": [
      {
       "id": "a",
-      "text": "P@ss1 — court mais plein de symboles"
+      "text": "P@ss1, court mais plein de symboles"
      },
      {
       "id": "b",
-      "text": "tortue plage moulin cactus — long mais tout simple"
+      "text": "tortue plage moulin cactus, long mais tout simple"
      }
     ],
     "correctId": "b",
@@ -32,7 +32,7 @@
    },
    {
     "type": "text",
-    "md": "Un bon mot de passe n'a en effet rien à voir avec des symboles compliqués : ce qui compte vraiment, c'est qu'il soit **long, imprévisible et unique** pour chaque compte. Un attaquant qui teste des milliards de combinaisons met beaucoup plus de temps sur une phrase de quatre mots que sur `P@ss1`."
+    "md": "Un bon mot de passe n'a rien à voir avec des symboles compliqués : il doit être **long, imprévisible et unique** pour chaque compte. Un attaquant qui teste des milliards de combinaisons met beaucoup plus de temps sur une phrase de quatre mots que sur `P@ss1`."
    },
    {
     "type": "callout",
@@ -61,13 +61,13 @@
    },
    {
     "type": "text",
-    "md": "Ce rejeu massif a un nom : le **credential stuffing** (rejeu d'identifiants volés). C'est pourquoi l'unicité compte autant que la longueur. Un site sérieux ne conserve d'ailleurs jamais ton mot de passe en clair, mais son **hash** (une empreinte irréversible). Retenir des dizaines de mots de passe uniques est impossible de tête : c'est le rôle du **gestionnaire de mots de passe**, qui les génère, les chiffre et les remplit pour toi."
+    "md": "Ce rejeu massif a un nom : le **credential stuffing** (rejeu d'identifiants volés). C'est pourquoi l'unicité compte autant que la longueur. Un site sérieux ne conserve jamais ton mot de passe en clair, mais son **hash** (une empreinte irréversible). Retenir des dizaines de mots de passe uniques est impossible de tête : c'est le rôle du **gestionnaire de mots de passe**, qui les génère, les chiffre et les remplit pour toi."
    },
    {
     "type": "truefalse",
     "statement": "Si tu oublies ton mot de passe, un site sérieux peut te le renvoyer par e-mail.",
     "answer": false,
-    "explanation": "Un site sérieux ne stocke que le **hash**, une empreinte irréversible : il ne connaît pas ton mot de passe et ne peut que t'en faire créer un nouveau. Un site capable de te renvoyer ton mot de passe en clair le stocke mal — méfiance."
+    "explanation": "Un site sérieux ne stocke que le **hash**, une empreinte irréversible : il ne connaît pas ton mot de passe et ne peut que t'en faire créer un nouveau. Un site capable de te renvoyer ton mot de passe en clair le stocke mal. Méfiance."
    },
    {
     "type": "flipcards",
@@ -106,7 +106,7 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "Entre 2013 et 2015, un escroc lituanien a envoyé de fausses factures par e-mail à Google et Facebook. Les deux géants ont payé — plus de 100 millions de dollars au total. Si leurs équipes peuvent se faire avoir par un simple e-mail, personne n'est trop malin pour le phishing."
+    "md": "Entre 2013 et 2015, un escroc lituanien a envoyé de fausses factures par e-mail à Google et Facebook. Les deux géants ont payé, plus de 100 millions de dollars au total. Si leurs équipes peuvent se faire avoir par un simple e-mail, personne n'est trop malin pour le phishing."
    },
    {
     "type": "text",
@@ -130,7 +130,7 @@
      }
     ],
     "correctId": "b",
-    "reveal": "Fautes et logos se corrigent facilement — les messages frauduleux sont souvent impeccables. Le domaine, lui, ne peut pas être le vrai : c'est là que l'imposture se voit."
+    "reveal": "Fautes et logos se corrigent facilement : les messages frauduleux sont souvent impeccables. Le domaine, lui, ne peut pas être le vrai : c'est là que l'imposture se voit."
    },
    {
     "type": "text",
@@ -158,7 +158,7 @@
    },
    {
     "type": "text",
-    "md": "En cas de doute, n'utilise donc jamais le lien ni le numéro fournis dans le message : va sur le site officiel par tes propres moyens. Redouble de prudence quand le message est personnalisé — ton nom, ton poste, tes dossiers en cours : c'est le **spear phishing**, ciblé et bien plus crédible."
+    "md": "En cas de doute, n'utilise donc jamais le lien ni le numéro fournis dans le message : va sur le site officiel par tes propres moyens. Redouble de prudence quand le message est personnalisé (ton nom, ton poste, tes dossiers en cours) : c'est le **spear phishing**, ciblé et bien plus crédible."
    },
    {
     "type": "callout",
@@ -328,7 +328,7 @@
    },
    {
     "type": "text",
-    "md": "Le point clé : dès qu'un correctif sort, la faille devient **publique**. Les attaquants savent désormais quoi viser et scannent Internet à la recherche d'appareils non mis à jour."
+    "md": "Dès qu'un correctif sort, la faille devient **publique**. Les attaquants savent désormais quoi viser et scannent Internet à la recherche d'appareils non mis à jour."
    },
    {
     "type": "predict",
@@ -348,7 +348,7 @@
    },
    {
     "type": "text",
-    "md": "La grande majorité des intrusions n'exploitent en effet pas des failles secrètes mais des vulnérabilités **déjà corrigées** que les victimes n'ont pas installées. Une faille encore inconnue de l'éditeur, sans correctif disponible, s'appelle un **zero-day** : c'est plus rare et plus cher pour l'attaquant. Un logiciel en fin de vie, qui ne reçoit plus de patchs, reste vulnérable pour toujours."
+    "md": "La grande majorité des intrusions visent des vulnérabilités **déjà corrigées** que les victimes n'ont pas installées, pas des failles secrètes. Une faille encore inconnue de l'éditeur, sans correctif disponible, s'appelle un **zero-day** : c'est plus rare et plus cher pour l'attaquant. Un logiciel en fin de vie, qui ne reçoit plus de patchs, reste vulnérable pour toujours."
    },
    {
     "type": "callout",
@@ -392,7 +392,7 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "Lundi, 8 h 04. Ton écran affiche : « Tes fichiers ont été chiffrés. Paie pour les récupérer. » Photos, documents, comptabilité — tout est verrouillé. Une seule question compte encore : existe-t-il une copie que l'attaquant n'a pas pu atteindre ?"
+    "md": "Lundi, 8 h 04. Ton écran affiche : « Tes fichiers ont été chiffrés. Paie pour les récupérer. » Photos, documents, comptabilité : tout est verrouillé. Une seule question compte encore : existe-t-il une copie que l'attaquant n'a pas pu atteindre ?"
    },
    {
     "type": "text",
@@ -436,7 +436,7 @@
      }
     ],
     "correctId": "b",
-    "reveal": "Un ransomware chiffre tout ce que la machine peut atteindre — disques externes et dossiers réseau compris. Une copie branchée en permanence n'est pas isolée."
+    "reveal": "Un ransomware chiffre tout ce que la machine peut atteindre, disques externes et dossiers réseau compris. Une copie branchée en permanence n'est pas isolée."
    },
    {
     "type": "text",
@@ -494,7 +494,7 @@
    },
    {
     "type": "text",
-    "md": "Le Wi-Fi gratuit d'un café ou d'un aéroport est pratique, mais tu ne contrôles ni le réseau ni qui y est connecté. Bonne nouvelle : grâce au chiffrement **HTTPS**, on ne peut plus lire aussi facilement le contenu de tes échanges avec les sites. Le vrai danger s'est déplacé ailleurs."
+    "md": "Le Wi-Fi gratuit d'un café ou d'un aéroport est pratique, mais tu ne contrôles ni le réseau ni qui y est connecté. Bonne nouvelle : grâce au chiffrement **HTTPS**, on ne peut plus lire aussi facilement le contenu de tes échanges avec les sites. Le danger s'est déplacé ailleurs."
    },
    {
     "type": "predict",
@@ -538,11 +538,11 @@
      }
     ],
     "correctId": "b",
-    "reveal": "Le contenu est chiffré, mais des métadonnées restent visibles — dont les domaines contactés. Le réseau sait où tu vas, pas ce que tu y fais."
+    "reveal": "Le contenu est chiffré, mais des métadonnées restent visibles, dont les domaines contactés. Le réseau sait où tu vas, pas ce que tu y fais."
    },
    {
     "type": "text",
-    "md": "Même via HTTPS, certaines métadonnées restent en effet visibles, comme les **noms de domaine** que tu visites. Un **VPN** (réseau privé virtuel) crée un tunnel chiffré entre ton appareil et un serveur de confiance, masquant ces traces au réseau local."
+    "md": "Même via HTTPS, certaines métadonnées restent visibles, comme les **noms de domaine** que tu visites. Un **VPN** (réseau privé virtuel) crée un tunnel chiffré entre ton appareil et un serveur de confiance, et masque ces traces au réseau local."
    },
    {
     "type": "callout",
@@ -586,7 +586,7 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "En 2019, le FBI publie une alerte inhabituelle : ne fais plus confiance au cadenas. Les sites de phishing s'offrent désormais des certificats HTTPS parfaitement valides — précisément parce que le public croit que cadenas = site fiable."
+    "md": "En 2019, le FBI publie une alerte inhabituelle : ne fais plus confiance au cadenas. Les sites de phishing s'offrent désormais des certificats HTTPS parfaitement valides, précisément parce que le public croit que cadenas = site fiable."
    },
    {
     "type": "text",
@@ -610,7 +610,7 @@
      }
     ],
     "correctId": "b",
-    "reveal": "Le cadenas parle de la **connexion**, pas du site. Chiffrement du transport et identité du domaine : rien de plus — et c'est déjà beaucoup."
+    "reveal": "Le cadenas parle de la **connexion**, pas du site. Chiffrement du transport et identité du domaine : rien de plus."
    },
    {
     "type": "text",
@@ -620,7 +620,7 @@
     "type": "truefalse",
     "statement": "Obtenir un certificat HTTPS coûte cher et exige des vérifications poussées : hors de portée d'un escroc.",
     "answer": false,
-    "explanation": "Des autorités délivrent des certificats gratuits, en quelques minutes, sur simple preuve de contrôle du domaine. C'est excellent pour la sécurité du web — et sans aucun rapport avec l'honnêteté du site."
+    "explanation": "Des autorités délivrent des certificats gratuits, en quelques minutes, sur simple preuve de contrôle du domaine. C'est excellent pour la sécurité du web, mais sans aucun rapport avec l'honnêteté du site."
    },
    {
     "type": "text",
@@ -668,11 +668,11 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "Ton téléphone vient de glisser de ta poche dans une rame de métro. Dans la main de quelqu'un d'autre, ce rectangle contient tes messages, tes photos, tes e-mails, ta banque — et de quoi réinitialiser presque tous tes mots de passe. La suite dépend de deux réglages."
+    "md": "Ton téléphone vient de glisser de ta poche dans une rame de métro. Dans la main de quelqu'un d'autre, ce rectangle contient tes messages, tes photos, tes e-mails, ta banque, et de quoi réinitialiser presque tous tes mots de passe. La suite dépend de deux réglages."
    },
    {
     "type": "text",
-    "md": "Ces deux réglages, ce sont un bon **verrouillage d'écran** et une gestion sérieuse des **permissions** accordées aux applications. Le premier protège l'appareil lui-même — la clé de ta vie numérique — ; la seconde limite ce que chaque app voit de ta vie."
+    "md": "Ces deux réglages, ce sont un bon **verrouillage d'écran** et une gestion sérieuse des **permissions** accordées aux applications. Le premier protège l'appareil lui-même (la clé de ta vie numérique) ; la seconde limite ce que chaque app voit de ta vie."
    },
    {
     "type": "predict",
@@ -692,11 +692,11 @@
      }
     ],
     "correctId": "b",
-    "reveal": "Verrouillé, un smartphone moderne garde ses données chiffrées. Sans le code, la mémoire ne livre qu'un charabia illisible — même extraite de l'appareil."
+    "reveal": "Verrouillé, un smartphone moderne garde ses données chiffrées. Sans le code, la mémoire ne livre qu'un charabia illisible, même extraite de l'appareil."
    },
    {
     "type": "text",
-    "md": "Le verrouillage n'est en effet pas qu'un rideau visuel. Sur un smartphone moderne, lorsqu'il est verrouillé, les données sont protégées par le **chiffrement au repos** : sans le code, un voleur ne peut pas les lire, même en démontant l'appareil. La biométrie (empreinte, visage) déverrouille commodément la clé, mais c'est ton **code** qui reste le socle de sécurité — choisis-le long et active le verrouillage automatique rapide."
+    "md": "Le verrouillage n'est pas qu'un rideau visuel. Sur un smartphone moderne, lorsqu'il est verrouillé, les données sont protégées par le **chiffrement au repos** : sans le code, un voleur ne peut pas les lire, même en démontant l'appareil. La biométrie (empreinte, visage) déverrouille commodément la clé, mais c'est ton **code** qui reste le socle de sécurité : choisis-le long et active le verrouillage automatique rapide."
    },
    {
     "type": "predict",

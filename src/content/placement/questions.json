@@ -1702,7 +1702,7 @@
       }
     ],
     "correct": "b",
-    "explanation": "HTTPS chiffre le transport. Cela ne garantit PAS que le site soit honnête — un site malveillant peut aussi être en HTTPS.",
+    "explanation": "HTTPS chiffre le transport. Cela ne garantit PAS que le site soit honnête : un site malveillant peut aussi être en HTTPS.",
     "tags": [
       "placement-v1"
     ]

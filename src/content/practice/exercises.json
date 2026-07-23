@@ -76,7 +76,7 @@
   "kind": "order",
   "title": "Réagir à un compte compromis",
   "level": 3,
-  "brief": "Trop tard : l'un de tes comptes en ligne a été piraté et des connexions inconnues s'y affichent. Tu dois reprendre le contrôle sans aggraver la situation — remets les étapes de réaction dans le bon ordre.",
+  "brief": "Trop tard : l'un de tes comptes en ligne a été piraté et des connexions inconnues s'y affichent. Tu dois reprendre le contrôle sans aggraver la situation. Remets les étapes de réaction dans le bon ordre.",
   "prompt": "Ordonne les actions pour reprendre le contrôle du compte et limiter les dégâts.",
   "items": [
    {
@@ -107,7 +107,7 @@
    "d",
    "e"
   ],
-  "explanation": "On reprend d'abord le contrôle en changeant le mot de passe depuis un appareil sûr (a), puis on déconnecte les sessions encore ouvertes de l'attaquant (b). On ajoute ensuite une authentification à deux facteurs pour verrouiller l'accès (c). On vérifie que l'attaquant n'a pas laissé de porte dérobée — règle de transfert ou adresse de récupération modifiée (d). Enfin, on prévient ses contacts et le service pour contenir les dégâts (e).",
+  "explanation": "On reprend d'abord le contrôle en changeant le mot de passe depuis un appareil sûr (a), puis on déconnecte les sessions encore ouvertes de l'attaquant (b). On ajoute ensuite une authentification à deux facteurs pour verrouiller l'accès (c). On vérifie que l'attaquant n'a pas laissé de porte dérobée, comme une règle de transfert ou une adresse de récupération modifiée (d). Enfin, on prévient ses contacts et le service pour contenir les dégâts (e).",
   "tags": [
    "practice-v1"
   ]
@@ -172,7 +172,7 @@
     ]
    }
   ],
-  "success": "Bien joué : ton système est à jour. Installer les mises à jour régulièrement ferme les failles connues — c'est un réflexe d'hygiène numérique essentiel.",
+  "success": "Bien joué : ton système est à jour. Installer les mises à jour régulièrement referme les failles connues, un réflexe d'hygiène numérique de base.",
   "tags": [
    "practice-v1"
   ]
@@ -203,7 +203,7 @@
     ]
    },
    "n2": {
-    "text": "Le personnel confirme : le vrai réseau est « CafeCentral_WiFi » (WPA2). Aucun réseau « Free » n'est officiel — c'est très probablement un evil twin monté par un attaquant. Tu rejoins le bon réseau. Et pour ta banque ?",
+    "text": "Le personnel confirme : le vrai réseau est « CafeCentral_WiFi » (WPA2). Aucun réseau « Free » n'est officiel : c'est très probablement un evil twin monté par un attaquant. Tu rejoins le bon réseau. Et pour ta banque ?",
     "choices": [
      {
       "text": "Je vérifie l'URL exacte et le cadenas HTTPS de ma banque (ou j'utilise l'app en 4G/5G)",
@@ -233,7 +233,7 @@
     "outcome": "good"
    },
    "bad1": {
-    "text": "« CafeCentral_Free » est un evil twin : un attaquant a cloné le nom du café sur un point d'accès ouvert. Tout ton trafic non chiffré transite par lui — capture d'identifiants, DNS spoofing, portail captif piégé. On ne se connecte jamais à un Wi-Fi ouvert non vérifié pour un usage sensible.",
+    "text": "« CafeCentral_Free » est un evil twin : un attaquant a cloné le nom du café sur un point d'accès ouvert. Tout ton trafic non chiffré transite par lui : capture d'identifiants, DNS spoofing, portail captif piégé. On ne se connecte jamais à un Wi-Fi ouvert non vérifié pour un usage sensible.",
     "outcome": "bad"
    },
    "bad2": {
@@ -326,7 +326,7 @@
     "outcome": "bad"
    },
    "bad3": {
-    "text": "Un sel global codé en dur annule une bonne partie du bénéfice : deux utilisateurs avec le même mot de passe auront la même empreinte, et le sel une fois divulgué permet de pré-calculer les attaques. Le sel doit être aléatoire et unique par utilisateur — ce que bcrypt/Argon2 font déjà pour toi.",
+    "text": "Un sel global codé en dur annule une bonne partie du bénéfice : deux utilisateurs avec le même mot de passe auront la même empreinte, et le sel une fois divulgué permet de pré-calculer les attaques. Le sel doit être aléatoire et unique par utilisateur, ce que bcrypt/Argon2 font déjà pour toi.",
     "outcome": "bad"
    }
   },
@@ -351,7 +351,7 @@
   ],
   "question": "Quelle connexion correspond à un reverse shell (canal de commande & contrôle) ?",
   "correctLine": 3,
-  "explanation": "`bash` n'a aucune raison d'ouvrir une connexion sortante vers Internet. Ici il établit une session vers 185.220.101.47:4444 : le port 4444 est celui par défaut de Metasploit et l'IP appartient à une plage connue de nœuds de sortie Tor — c'est un reverse shell. Les autres lignes sont légitimes : HTTPS sortant (443) de firefox et de thunderbird, SSH entrant (22) depuis le LAN, et 443 servi par nginx à un poste local.",
+  "explanation": "`bash` n'a aucune raison d'ouvrir une connexion sortante vers Internet. Ici il établit une session vers 185.220.101.47:4444 : le port 4444 est celui par défaut de Metasploit et l'IP appartient à une plage connue de nœuds de sortie Tor. C'est un reverse shell. Les autres lignes sont légitimes : HTTPS sortant (443) de firefox et de thunderbird, SSH entrant (22) depuis le LAN, et 443 servi par nginx à un poste local.",
   "tags": [
    "practice-v1"
   ]
@@ -414,7 +414,7 @@
     ]
    }
   ],
-  "success": "Diagnostic complet : le DNS résout `intranet.exemple.lan` → 10.20.30.40 (réponse du résolveur sur le port 53), une session HTTPS (443) est bien établie, et traceroute confirme un chemin court et sain (3 sauts, < 2 ms). Côté réseau, tout est nominal — la lenteur est probablement applicative (côté serveur ou navigateur), pas réseau.",
+  "success": "Diagnostic complet : le DNS résout `intranet.exemple.lan` → 10.20.30.40 (réponse du résolveur sur le port 53), une session HTTPS (443) est bien établie, et traceroute confirme un chemin court et sain (3 sauts, < 2 ms). Côté réseau, tout est nominal : la lenteur est probablement applicative (côté serveur ou navigateur), pas réseau.",
   "tags": [
    "practice-v1"
   ]
@@ -446,7 +446,7 @@
   "kind": "scenario",
   "title": "Ransomware détecté sur un poste",
   "level": 7,
-  "brief": "Un utilisateur t'appelle, paniqué : une note de rançon s'affiche et ses fichiers portent désormais l'extension `.locked`. Un ransomware a chiffré le poste et chaque seconde compte — prends les bonnes décisions.",
+  "brief": "Un utilisateur t'appelle, paniqué : une note de rançon s'affiche et ses fichiers portent désormais l'extension `.locked`. Un ransomware a chiffré le poste et chaque seconde compte. Prends les bonnes décisions.",
   "start": "n1",
   "nodes": {
    "n1": {
@@ -548,7 +548,7 @@
   ],
   "question": "Quelle ligne introduit une faiblesse cryptographique majeure ?",
   "correctLine": 4,
-  "explanation": "Le mode ECB chiffre chaque bloc indépendamment : deux blocs de clair identiques donnent deux blocs de chiffré identiques. Les motifs du message fuient donc dans le chiffré (l'exemple célèbre du « pingouin ECB » reste parfaitement reconnaissable). Il faut un mode qui casse cette régularité : idéalement AES-GCM (chiffrement authentifié, avec un nonce unique à chaque message), ou au minimum CBC avec un IV aléatoire. La clé, elle, est correctement chargée depuis l'environnement — ce n'est pas le problème ici.",
+  "explanation": "Le mode ECB chiffre chaque bloc indépendamment : deux blocs de clair identiques donnent deux blocs de chiffré identiques. Les motifs du message fuient donc dans le chiffré (l'exemple célèbre du « pingouin ECB » reste parfaitement reconnaissable). Il faut un mode qui casse cette régularité : idéalement AES-GCM (chiffrement authentifié, avec un nonce unique à chaque message), ou au minimum CBC avec un IV aléatoire. La clé, elle, est correctement chargée depuis l'environnement : ce n'est pas le problème ici.",
   "tags": [
    "practice-v1"
   ]
@@ -594,7 +594,7 @@
    "auth",
    "return"
   ],
-  "explanation": "Résolution DNS récursive : le client consulte d'abord son cache local, puis délègue au résolveur récursif. Faute de réponse en cache, le résolveur descend la hiérarchie — racine → TLD (.com) → serveur faisant autorité — qui livre l'enregistrement A. Le résolveur met en cache selon le TTL puis renvoie l'IP. Le DNS écoute sur le port 53 (UDP, avec repli TCP pour les réponses volumineuses).",
+  "explanation": "Résolution DNS récursive : le client consulte d'abord son cache local, puis délègue au résolveur récursif. Faute de réponse en cache, le résolveur descend la hiérarchie, racine → TLD (.com) → serveur faisant autorité, qui livre l'enregistrement A. Le résolveur met en cache selon le TTL puis renvoie l'IP. Le DNS écoute sur le port 53 (UDP, avec repli TCP pour les réponses volumineuses).",
   "tags": [
    "practice-v1"
   ]
@@ -605,7 +605,7 @@
   "title": "La permission de trop",
   "level": 8,
   "artifactKind": "code",
-  "brief": "Tu relis un script de provisioning qui prépare des sauvegardes de base de données sur un serveur Linux. Une ligne y introduit une mauvaise configuration de permissions — repère-la avant qu'elle ne parte en production.",
+  "brief": "Tu relis un script de provisioning qui prépare des sauvegardes de base de données sur un serveur Linux. Une ligne y introduit une mauvaise configuration de permissions : repère-la avant qu'elle ne parte en production.",
   "lines": [
    "#!/usr/bin/env bash",
    "useradd -r -s /usr/sbin/nologin svc-backup",
@@ -617,7 +617,7 @@
   ],
   "question": "Quelle ligne introduit une mauvaise configuration de permissions dangereuse ?",
   "correctLine": 6,
-  "explanation": "`chmod 777` accorde les droits lecture + écriture + exécution à tout le monde (`rwxrwxrwx`). Sur un dump de base de données — donnée sensible — cela permet à n'importe quel utilisateur local de LIRE les données (fuite) et de les MODIFIER (altération de la sauvegarde). Il faut au contraire restreindre : `chmod 600` (propriétaire seul) ou `640` avec un groupe dédié, en laissant le propriétaire `svc-backup`. Règle : moindre privilège sur les fichiers sensibles.",
+  "explanation": "`chmod 777` accorde les droits lecture + écriture + exécution à tout le monde (`rwxrwxrwx`). Sur un dump de base de données (donnée sensible), cela permet à n'importe quel utilisateur local de LIRE les données (fuite) et de les MODIFIER (altération de la sauvegarde). Il faut au contraire restreindre : `chmod 600` (propriétaire seul) ou `640` avec un groupe dédié, en laissant le propriétaire `svc-backup`. Règle : moindre privilège sur les fichiers sensibles.",
   "tags": [
    "practice-v1"
   ]
@@ -713,7 +713,7 @@
   ],
   "question": "Quelle ligne signale une compromission aboutie (et non une simple alerte) ?",
   "correctLine": 5,
-  "explanation": "Les trois lignes WARN (EventID 4625) ne sont que des échecs de connexion : bruyantes, mais bénignes tant qu'elles échouent. La ligne vraiment critique est le INFO EventID 4624 status=success : depuis la MÊME IP externe 203.0.113.66 et juste après les trois échecs, le compte « administrateur » se connecte cette fois avec succès en LogonType=10 (RemoteInteractive / RDP). C'est un brute-force RDP qui a réussi — la brèche réelle. Piège classique : l'événement le plus grave n'est pas le plus bruyant, il passe en INFO.",
+  "explanation": "Les trois lignes WARN (EventID 4625) ne sont que des échecs de connexion : bruyantes, mais bénignes tant qu'elles échouent. La ligne vraiment critique est le INFO EventID 4624 status=success : depuis la MÊME IP externe 203.0.113.66 et juste après les trois échecs, le compte « administrateur » se connecte cette fois avec succès en LogonType=10 (RemoteInteractive / RDP). C'est un brute-force RDP qui a réussi : la brèche réelle. Piège classique : l'événement le plus grave n'est pas le plus bruyant, il passe en INFO.",
   "tags": [
    "practice-v1"
   ]
@@ -774,7 +774,7 @@
     "outcome": "good"
    },
    "bad1": {
-    "text": "Un accord oral n'a aucune valeur probante. Sans autorisation écrite définissant le scope, tout accès à un système que tu ne possèdes pas est un accès non autorisé — un délit (en France, art. 323-1 du Code pénal). On ne touche à rien avant la signature.",
+    "text": "Un accord oral n'a aucune valeur probante. Sans autorisation écrite définissant le scope, tout accès à un système que tu ne possèdes pas est un accès non autorisé, un délit (en France, art. 323-1 du Code pénal). On ne touche à rien avant la signature.",
     "outcome": "bad"
    },
    "bad2": {
@@ -855,7 +855,7 @@
     ]
    }
   ],
-  "success": "Bilan de l'audit : le compte `audit` peut lancer `find` en root sans mot de passe (`sudo -l`) ET `find` figure parmi les binaires SUID. Or `find` permet d'exécuter des commandes arbitraires (`find . -exec /bin/sh \\; -quit`) : c'est une voie d'élévation vers root à corriger en priorité (retirer l'entrée sudo, ôter le bit SUID). Ces commandes de reconnaissance — `id`, `sudo -l`, `find -perm -4000` — sont non destructives et forment la base d'un audit de privilèges local.",
+  "success": "Bilan de l'audit : le compte `audit` peut lancer `find` en root sans mot de passe (`sudo -l`) ET `find` figure parmi les binaires SUID. Or `find` permet d'exécuter des commandes arbitraires (`find . -exec /bin/sh \\; -quit`) : c'est une voie d'élévation vers root à corriger en priorité (retirer l'entrée sudo, ôter le bit SUID). Ces commandes de reconnaissance (`id`, `sudo -l`, `find -perm -4000`) sont non destructives et forment la base d'un audit de privilèges local.",
   "tags": [
    "practice-v1"
   ]
@@ -882,7 +882,7 @@
    },
    {
     "id": "delivery",
-    "text": "Livraison : transmettre l'arme à la cible — e-mail, USB, site web (Delivery)"
+    "text": "Livraison : transmettre l'arme à la cible par e-mail, USB ou site web (Delivery)"
    },
    {
     "id": "actions",
@@ -906,7 +906,7 @@
    "c2",
    "actions"
   ],
-  "explanation": "Cyber Kill Chain (Lockheed Martin) : Reconnaissance → Militarisation (Weaponization) → Livraison (Delivery) → Exploitation → Installation → Commande & contrôle (C2) → Actions sur objectifs. L'intérêt défensif : plus on rompt la chaîne tôt, moins l'attaquant atteint son but — chaque étape offre une occasion de détection et de blocage.",
+  "explanation": "Cyber Kill Chain (Lockheed Martin) : Reconnaissance → Militarisation (Weaponization) → Livraison (Delivery) → Exploitation → Installation → Commande & contrôle (C2) → Actions sur objectifs. L'intérêt défensif : plus on rompt la chaîne tôt, moins l'attaquant atteint son but : chaque étape offre une occasion de détection et de blocage.",
   "tags": [
    "practice-v1"
   ]
@@ -979,7 +979,7 @@
     ]
    }
   ],
-  "success": "Bien joué. Tu as confirmé deux protections clés : HSTS (max-age élevé + includeSubDomains + preload) oblige le navigateur à n'utiliser que HTTPS, et la CSP `default-src 'self'; script-src 'self'` limite les scripts au domaine du site — une barrière de plus contre le XSS. curl -I n'a fait que lire les en-têtes : aucune donnée modifiée.",
+  "success": "Bien joué. Tu as confirmé deux protections : HSTS (max-age élevé + includeSubDomains + preload) oblige le navigateur à n'utiliser que HTTPS, et la CSP `default-src 'self'; script-src 'self'` limite les scripts au domaine du site, une barrière de plus contre le XSS. curl -I n'a fait que lire les en-têtes : aucune donnée modifiée.",
   "tags": [
    "practice-v1"
   ]
@@ -1045,27 +1045,27 @@
   "items": [
    {
     "id": "erad",
-    "text": "Éradication — éliminer la cause racine : malware, comptes compromis, accès de l'attaquant"
+    "text": "Éradication : éliminer la cause racine (malware, comptes compromis, accès de l'attaquant)"
    },
    {
     "id": "prep",
-    "text": "Préparation — équipe, outils, playbooks et sauvegardes prêts avant tout incident"
+    "text": "Préparation : équipe, outils, playbooks et sauvegardes prêts avant tout incident"
    },
    {
     "id": "lecons",
-    "text": "Leçons apprises — post-mortem, mise à jour des procédures et des défenses"
+    "text": "Leçons apprises : post-mortem, mise à jour des procédures et des défenses"
    },
    {
     "id": "confine",
-    "text": "Confinement — isoler pour stopper la propagation (segmentation, coupure réseau)"
+    "text": "Confinement : isoler pour stopper la propagation (segmentation, coupure réseau)"
    },
    {
     "id": "ident",
-    "text": "Identification — détecter, qualifier et délimiter le périmètre de l'incident"
+    "text": "Identification : détecter, qualifier et délimiter le périmètre de l'incident"
    },
    {
     "id": "retab",
-    "text": "Rétablissement — restaurer, remettre en production et surveiller le retour à la normale"
+    "text": "Rétablissement : restaurer, remettre en production et surveiller le retour à la normale"
    }
   ],
   "correctOrder": [
@@ -1122,7 +1122,7 @@
    "postexploit",
    "reporting"
   ],
-  "explanation": "Cadrage & autorisation d'abord (le fondement légal) → Reconnaissance → Scan & énumération → Exploitation (viser une vuln précise) → Post-exploitation (mesurer l'impact réel : privilèges, pivoting) → Rapport, qui délivre la vraie valeur pour le client. On ne scanne pas avant d'avoir le scope, et on ne conclut qu'après avoir tout documenté.",
+  "explanation": "Cadrage & autorisation d'abord (le fondement légal) → Reconnaissance → Scan & énumération → Exploitation (viser une vuln précise) → Post-exploitation (mesurer l'impact réel : privilèges, pivoting) → Rapport, qui délivre la valeur pour le client. On ne scanne pas avant d'avoir le scope, et on ne conclut qu'après avoir tout documenté.",
   "tags": [
    "practice-v1"
   ]
@@ -1245,7 +1245,7 @@
   "kind": "scenario",
   "title": "Ransomware en cours : décisions de réponse à incident",
   "level": 11,
-  "brief": "08 h 14. Ton EDR remonte un chiffrement massif de fichiers sur un serveur de partage, et l'alerte gagne d'autres postes. Un ransomware est en cours de déploiement — enchaîne les bonnes décisions.",
+  "brief": "08 h 14. Ton EDR remonte un chiffrement massif de fichiers sur un serveur de partage, et l'alerte gagne d'autres postes. Un ransomware est en cours de déploiement. Enchaîne les bonnes décisions.",
   "start": "n1",
   "nodes": {
    "n1": {
@@ -1269,7 +1269,7 @@
     "text": "Bien vu : l'isolement réseau stoppe la propagation tout en préservant les machines. Elles sont toujours allumées. Tu veux collecter les preuves avant de nettoyer. Dans quel ordre ?",
     "choices": [
      {
-      "text": "Capturer d'abord la mémoire vive (RAM), puis l'image disque — ordre de volatilité",
+      "text": "Capturer d'abord la mémoire vive (RAM), puis l'image disque (ordre de volatilité)",
       "to": "n3"
      },
      {
@@ -1300,7 +1300,7 @@
     "outcome": "good"
    },
    "bad_off": {
-    "text": "Couper brutalement l'alimentation stoppe le chiffrement mais détruit toute la mémoire vive — or les clés de chiffrement y résident parfois — et peut corromper des fichiers en cours d'écriture. La bonne pratique est d'isoler du réseau sans éteindre, pour contenir tout en préservant les preuves.",
+    "text": "Couper brutalement l'alimentation stoppe le chiffrement mais détruit toute la mémoire vive (or les clés de chiffrement y résident parfois) et peut corromper des fichiers en cours d'écriture. La bonne pratique est d'isoler du réseau sans éteindre, pour contenir tout en préservant les preuves.",
     "outcome": "bad"
    },
    "bad_wait": {
@@ -1329,7 +1329,7 @@
   "kind": "terminal",
   "title": "Reconnaissance & énumération d'une cible autorisée",
   "level": 11,
-  "brief": "Mission autorisée, cible dans le scope. Objectif : reconnaissance et énumération en LECTURE seule — cartographier la surface d'attaque sans la moindre action intrusive. Chaque sortie est déjà interprétée pour toi.",
+  "brief": "Mission autorisée, cible dans le scope. Objectif : reconnaissance et énumération en LECTURE seule, cartographier la surface d'attaque sans la moindre action intrusive. Chaque sortie est déjà interprétée pour toi.",
   "shell": "pentester@kali:~$",
   "steps": [
    {
@@ -1429,7 +1429,7 @@
   "kind": "order",
   "title": "Le déroulé d'une authentification Kerberos",
   "level": 11,
-  "brief": "Un utilisateur ouvre une session sur un service d'un domaine Active Directory : Kerberos entre en scène. Remets les échanges dans l'ordre — KDC → TGT → TGS → service.",
+  "brief": "Un utilisateur ouvre une session sur un service d'un domaine Active Directory : Kerberos entre en scène. Remets les échanges dans l'ordre : KDC → TGT → TGS → service.",
   "prompt": "Touche les échanges dans l'ordre chronologique du protocole.",
   "items": [
    {
@@ -1475,7 +1475,7 @@
   "kind": "terminal",
   "title": "Triage statique d'un échantillon suspect",
   "level": 11,
-  "brief": "Une pièce jointe `invoice.pdf` reçue par un utilisateur te paraît louche. Dans un labo isolé, mène un triage STATIQUE et défensif : on n'exécute jamais l'échantillon, on ne fait que l'observer — identifie sa vraie nature, calcule son empreinte et extrais ses chaînes.",
+  "brief": "Une pièce jointe `invoice.pdf` reçue par un utilisateur te paraît louche. Dans un labo isolé, mène un triage STATIQUE et défensif : on n'exécute jamais l'échantillon, on ne fait que l'observer. Identifie sa vraie nature, calcule son empreinte et extrais ses chaînes.",
   "shell": "analyst@lab:~$",
   "steps": [
    {
@@ -1527,7 +1527,7 @@
     ]
    }
   ],
-  "success": "Triage réussi. `file` a démasqué un exécutable PE32 caché sous une extension `.pdf` ; le SHA-256 permet d'interroger la threat intel sans partager le binaire ; `strings` a révélé des IOC parlants — une URL C2 codée en dur, l'appel `CryptEncrypt` et une note de rançon avec l'extension `.locked` : signature d'un ransomware. Analyse purement statique, dans un environnement isolé — on n'exécute jamais l'échantillon.",
+  "success": "Triage réussi. `file` a démasqué un exécutable PE32 caché sous une extension `.pdf` ; le SHA-256 permet d'interroger la threat intel sans partager le binaire ; `strings` a révélé des IOC parlants : une URL C2 codée en dur, l'appel `CryptEncrypt` et une note de rançon avec l'extension `.locked`, la signature d'un ransomware. Analyse purement statique, dans un environnement isolé : on n'exécute jamais l'échantillon.",
   "tags": [
    "practice-v1"
   ]
@@ -1537,7 +1537,7 @@
   "kind": "terminal",
   "title": "Inspecter un certificat avec openssl",
   "level": 12,
-  "brief": "On te confie le certificat TLS d'un serveur (server.crt) et une image ISO fraîchement téléchargée. Avec openssl, en lecture seule, inspecte le certificat puis vérifie l'intégrité du fichier — tu ne modifies rien.",
+  "brief": "On te confie le certificat TLS d'un serveur (server.crt) et une image ISO fraîchement téléchargée. Avec openssl, en lecture seule, inspecte le certificat puis vérifie l'intégrité du fichier. Tu ne modifies rien.",
   "shell": "user@pc:~$",
   "steps": [
    {
@@ -1600,7 +1600,7 @@
     ]
    }
   ],
-  "success": "Bien joué. Tu as lu la chaîne de confiance du certificat (émetteur, validité, clé publique), calculé son empreinte SHA-256 (utile pour le pinning), et vérifié l'intégrité d'un fichier via son hash SHA-256. Attention à la nuance : un hash prouve l'intégrité (le fichier n'a pas été altéré), pas l'authenticité — pour l'authenticité il faut une signature (GPG, ou un certificat de confiance comme ici).",
+  "success": "Bien joué. Tu as lu la chaîne de confiance du certificat (émetteur, validité, clé publique), calculé son empreinte SHA-256 (utile pour le pinning), et vérifié l'intégrité d'un fichier via son hash SHA-256. Attention à la nuance : un hash prouve l'intégrité (le fichier n'a pas été altéré), pas l'authenticité. Pour l'authenticité il faut une signature (GPG, ou un certificat de confiance comme ici).",
   "tags": [
    "practice-v1"
   ]

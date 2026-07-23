@@ -8,7 +8,7 @@
     "blocks": [
       {
         "type": "hook",
-        "md": "You are a pentester, hired by a bank to attack its own servers. Same tools as a criminal hacker, same targets — but a signed contract changes absolutely everything. That invisible line is your entire profession."
+        "md": "You are a pentester, hired by a bank to attack its own servers. Same tools as a criminal hacker, same targets, but a signed contract changes everything. That line is your profession."
       },
       {
         "type": "predict",
@@ -19,7 +19,7 @@
           { "id": "c", "text": "Whether or not damage is caused" }
         ],
         "correctId": "b",
-        "reveal": "Technically, the two can do the very same thing. Only the signed mandate and the declared intent make the difference — in the profession as much as before a judge."
+        "reveal": "Technically, the two can do the very same thing. Only the signed mandate and the declared intent make the difference, in the profession as much as before a judge."
       },
       {
         "type": "text",
@@ -38,11 +38,11 @@
           { "id": "c", "text": "Yes, as long as you break nothing" }
         ],
         "correctId": "b",
-        "reveal": "Verbal consent — especially from someone with no authority over the system — does not protect you. You need a signed mandate that precisely defines the scope."
+        "reveal": "Verbal consent, especially from someone with no authority over the system, does not protect you. You need a signed mandate that precisely defines the scope."
       },
       {
         "type": "text",
-        "md": "Nothing begins without a **legal framework**. Three documents are non-negotiable:\n\n- The **written authorization** signed by the system's owner (the famous “permission slip”, or engagement letter): without it, the engagement is illegal.\n- The **scope**: the precise list of what may be tested (IP addresses, domains, applications) — and, above all, of what is **out of scope**.\n- The **rules of engagement** (ROE): permitted time windows, forbidden techniques (denial of service, for instance), emergency contacts, handling of sensitive data.\n\nIn France, accessing a system without authorization falls under **Article 323-1 of the French Criminal Code**: authorization is not a formality, it is what separates the profession from a criminal offense."
+        "md": "Nothing begins without a **legal framework**. Three documents are mandatory:\n\n- The **written authorization** signed by the system's owner (the famous “permission slip”, or engagement letter): without it, the engagement is illegal.\n- The **scope**: the precise list of what may be tested (IP addresses, domains, applications), and, above all, of what is **out of scope**.\n- The **rules of engagement** (ROE): permitted time windows, forbidden techniques (denial of service, for instance), emergency contacts, handling of sensitive data.\n\nIn France, accessing a system without authorization falls under **Article 323-1 of the French Criminal Code**: authorization is not a formality, it is what separates the profession from a criminal offense."
       },
       {
         "type": "callout",
@@ -86,11 +86,11 @@
     "blocks": [
       {
         "type": "hook",
-        "md": "You want to map out a target without it noticing. You have not sent a single packet to its servers yet — and already you know its technologies, its employees, its subdomains. All of it was public."
+        "md": "You want to map out a target without it noticing. You have not sent a single packet to its servers yet, and already you know its technologies, its employees, its subdomains. All of it was public."
       },
       {
         "type": "text",
-        "md": "**Reconnaissance** (often shortened to “recon”) is the first phase of a test: **gathering as much information about the target as possible** before any offensive contact. The better you know the attack surface — domain names, addresses, technologies, employees — the more effective everything that follows becomes. It is often the longest phase, and paradoxically the quietest."
+        "md": "**Reconnaissance** (often shortened to “recon”) is the first phase of a test: **gathering as much information about the target as possible** before any offensive contact. The better you know the attack surface (domain names, addresses, technologies, employees), the more effective everything that follows becomes. It is often the longest phase, and paradoxically the quietest."
       },
       {
         "type": "predict",
@@ -101,7 +101,7 @@
           { "id": "c", "text": "Both leave traces" }
         ],
         "correctId": "b",
-        "reveal": "Passive recon only queries third-party sources: the target sees nothing. Active recon touches its infrastructure directly — and therefore leaves traces in its logs."
+        "reveal": "Passive recon only queries third-party sources: the target sees nothing. Active recon touches its infrastructure directly, and therefore leaves traces in its logs."
       },
       {
         "type": "text",
@@ -116,7 +116,7 @@
           { "id": "c", "text": "Only the visible text content" }
         ],
         "correctId": "b",
-        "reveal": "A file's metadata often gives away the author, the software version, sometimes network paths. Pure OSINT gold — and perfectly legal to collect."
+        "reveal": "A file's metadata often gives away the author, the software version, sometimes network paths. Valuable OSINT, and perfectly legal to collect."
       },
       {
         "type": "text",
@@ -245,7 +245,7 @@
     "blocks": [
       {
         "type": "hook",
-        "md": "You spot a service in a specific version. Somewhere there may be a known flaw that carries its code name — CVE-2024-something. The question is whether it is actually exploitable here, because an exploit is never universal."
+        "md": "You spot a service in a specific version. Somewhere there may be a known flaw that carries its code name: CVE-2024-something. The question is whether it is actually exploitable here, because an exploit is never universal."
       },
       {
         "type": "predict",
@@ -279,7 +279,7 @@
       },
       {
         "type": "text",
-        "md": "An exploitation **framework** such as **Metasploit** (published by Rapid7) is, at the conceptual level, an **organized toolbox**: it brings exploit modules, payloads and utilities together in a consistent interface. Its value in authorized testing lies in **standardization** and **reproducibility** — being able to cleanly repeat the same demonstration and to document it. You should not conclude from this that “everything is exploitable”, however: an exploit's reliability depends on the exact version, on the protections in place and on the context."
+        "md": "An exploitation **framework** such as **Metasploit** (published by Rapid7) is, at the conceptual level, an **organized toolbox**: it brings exploit modules, payloads and utilities together in a consistent interface. Its value in authorized testing lies in **standardization** and **reproducibility**: being able to cleanly repeat the same demonstration and to document it. You should not conclude from this that “everything is exploitable”, however: an exploit's reliability depends on the exact version, on the protections in place and on the context."
       },
       {
         "type": "callout",
@@ -327,7 +327,7 @@
     "blocks": [
       {
         "type": "hook",
-        "md": "You get hold of a hash file. Not a single plaintext password — just hashes. And yet, on your own machine, with no limit on attempts, your graphics cards are about to test billions of them per second."
+        "md": "You get hold of a hash file. Not a single plaintext password, just hashes. And yet, on your own machine, with no limit on attempts, your graphics cards are about to test billions of them per second."
       },
       {
         "type": "text",
@@ -337,7 +337,7 @@
         "type": "truefalse",
         "statement": "Cracking a password means “decrypting” its hash to recover the original.",
         "answer": false,
-        "explanation": "A hash is not encrypted: the function is one-way. You do not decrypt it — you guess candidates, hash them in turn, and compare."
+        "explanation": "A hash is not encrypted: the function is one-way. You do not decrypt it: you guess candidates, hash them in turn, and compare."
       },
       {
         "type": "predict",
@@ -361,7 +361,7 @@
       {
         "type": "callout",
         "variant": "tip",
-        "md": "Defending against **offline** cracking is not about limiting attempts (impossible — the attacker is working on their own machine) but about making them **far too slow**: use a **slow KDF** (a key derivation function such as **bcrypt**, **scrypt** or **Argon2**), and add a **unique salt** per password. The salt makes precomputed tables (rainbow tables) useless and prevents two identical passwords from having the same hash. Unsalted MD5 or SHA-1, by contrast, gets cracked wholesale."
+        "md": "Defending against **offline** cracking is not about limiting attempts (impossible, the attacker is working on their own machine) but about making them **far too slow**: use a **slow KDF** (a key derivation function such as **bcrypt**, **scrypt** or **Argon2**), and add a **unique salt** per password. The salt makes precomputed tables (rainbow tables) useless and prevents two identical passwords from having the same hash. Unsalted MD5 or SHA-1, by contrast, gets cracked wholesale."
       },
       {
         "type": "flipcards",
@@ -404,11 +404,11 @@
     "blocks": [
       {
         "type": "hook",
-        "md": "You are in — but with an ordinary account, no rights. The real game begins: turning that foot in the door into full control of the machine, then bouncing on to the rest of the network."
+        "md": "You are in, but with an ordinary account, no rights. The real game begins: turning that foot in the door into full control of the machine, then bouncing on to the rest of the network."
       },
       {
         "type": "text",
-        "md": "The initial access you obtain is often **limited**: an ordinary user account with few rights. **Privilege escalation** (“privesc”) consists of **moving from those restricted rights to elevated ones** — Administrator on Windows, **root** on Linux — which give control of the machine. We speak of **vertical** escalation (from a low-privileged account to a more powerful one) and of **horizontal** escalation (reaching the resources of another user at the same level)."
+        "md": "The initial access you obtain is often **limited**: an ordinary user account with few rights. **Privilege escalation** (“privesc”) consists of **moving from those restricted rights to elevated ones** (Administrator on Windows, **root** on Linux) which give control of the machine. We speak of **vertical** escalation (from a low-privileged account to a more powerful one) and of **horizontal** escalation (reaching the resources of another user at the same level)."
       },
       {
         "type": "predict",
@@ -419,11 +419,11 @@
           { "id": "c", "text": "From a hardware defect in the processor" }
         ],
         "correctId": "b",
-        "reveal": "Most privescs exploit configuration oversights: sloppy permissions, missing patches, plaintext credentials. Avoidable — and therefore fixable."
+        "reveal": "Most privescs exploit configuration oversights: sloppy permissions, missing patches, plaintext credentials. Avoidable, and therefore fixable."
       },
       {
         "type": "text",
-        "md": "The causes of escalation are almost always **avoidable mistakes**: bad file **permissions**, an **unpatched** service or kernel (a known vulnerability), an overly permissive `sudo` configuration, **credentials stored** in plaintext in a script or a configuration file. We stay at the conceptual level here: the point is not to hand out commands, but to understand **why** these flaws exist — so that they can be removed."
+        "md": "The causes of escalation are almost always **avoidable mistakes**: bad file **permissions**, an **unpatched** service or kernel (a known vulnerability), an overly permissive `sudo` configuration, **credentials stored** in plaintext in a script or a configuration file. We stay at the conceptual level here: the point is not to hand out commands, but to understand **why** these flaws exist, so that they can be removed."
       },
       {
         "type": "predict",
@@ -434,7 +434,7 @@
           { "id": "c", "text": "It only threatens identical machines" }
         ],
         "correctId": "b",
-        "reveal": "This is pivoting: the attacker uses the machine they took over as a springboard. Hop by hop — lateral movement — a single breach can threaten an entire poorly segmented network."
+        "reveal": "This is pivoting: the attacker uses the machine they took over as a springboard. Hop by hop, lateral movement, a single breach can threaten an entire poorly segmented network."
       },
       {
         "type": "text",
@@ -486,7 +486,7 @@
     "blocks": [
       {
         "type": "hook",
-        "md": "Access is obtained. The attacker now wants to drive the machine remotely, discreetly — and their command traffic disguises itself as perfectly ordinary HTTPS or DNS requests."
+        "md": "Access is obtained. The attacker now wants to drive the machine remotely, discreetly, and their command traffic disguises itself as perfectly ordinary HTTPS or DNS requests."
       },
       {
         "type": "text",
@@ -501,17 +501,17 @@
           { "id": "c", "text": "By cutting off all of the machine's Internet access" }
         ],
         "correctId": "b",
-        "reveal": "An exotic channel would catch the eye. An effective C2 mimics normal traffic — HTTPS, DNS — to disappear into the crowd. Hence the value of monitoring outbound traffic."
+        "reveal": "An exotic channel would catch the eye. An effective C2 mimics normal traffic (HTTPS, DNS) to disappear into the crowd. Hence the value of monitoring outbound traffic."
       },
       {
         "type": "text",
-        "md": "**C2** — **Command and Control** (also written C&C) — refers to the **channel and the infrastructure through which the attacker remotely drives the compromised machines**. The agent installed on the victim (sometimes called a **beacon** or an **implant**) regularly calls back to the attacker's server to receive orders and return results. To stay discreet, this traffic **often blends into legitimate protocols** such as HTTPS or DNS, so that it looks like normal traffic."
+        "md": "**C2**, **Command and Control** (also written C&C), refers to the **channel and the infrastructure through which the attacker remotely drives the compromised machines**. The agent installed on the victim (sometimes called a **beacon** or an **implant**) regularly calls back to the attacker's server to receive orders and return results. To stay discreet, this traffic **often blends into legitimate protocols** such as HTTPS or DNS, so that it looks like normal traffic."
       },
       {
         "type": "truefalse",
         "statement": "Rebooting a compromised machine is usually enough to get rid of the attacker.",
         "answer": false,
-        "explanation": "This is exactly what persistence is for: mechanisms that restore access after a reboot. Rebooting is not enough — you have to clean up thoroughly."
+        "explanation": "This is exactly what persistence is for: mechanisms that restore access after a reboot. Rebooting is not enough: you have to clean up thoroughly."
       },
       {
         "type": "text",
@@ -563,7 +563,7 @@
     "blocks": [
       {
         "type": "hook",
-        "md": "End of the engagement: you have compromised the domain, exfiltrated test data, mapped the network. The most important part is still to come — and it is not the technical one."
+        "md": "End of the engagement: you have compromised the domain, exfiltrated test data, mapped the network. The most important part is still to come, and it is not the technical one."
       },
       {
         "type": "predict",
@@ -574,7 +574,7 @@
           { "id": "c", "text": "The sophistication of the techniques used" }
         ],
         "correctId": "b",
-        "reveal": "Finding a hundred flaws is worthless if nothing gets fixed. A pentest's value lies in its prioritized remediations and their implementation — confirmed by a retest."
+        "reveal": "Finding a hundred flaws is worthless if nothing gets fixed. A pentest's value lies in its prioritized remediations and their implementation, confirmed by a retest."
       },
       {
         "type": "text",

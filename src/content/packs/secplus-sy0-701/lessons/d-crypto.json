@@ -8,7 +8,7 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "1963, en pleine Guerre froide. Le « téléphone rouge » entre Washington et Moscou est chiffré avec des clés à usage unique — livrées physiquement, par valise diplomatique. Pendant des siècles, le talon d'Achille de toute la cryptographie a tenu là : avant de chiffrer, il faut d'abord se partager un secret."
+    "md": "1963, en pleine Guerre froide. Le « téléphone rouge » entre Washington et Moscou est chiffré avec des clés à usage unique, livrées physiquement, par valise diplomatique. Pendant des siècles, le talon d'Achille de toute la cryptographie a tenu là : avant de chiffrer, il faut d'abord se partager un secret."
    },
    {
     "type": "text",
@@ -40,7 +40,7 @@
    },
    {
     "type": "text",
-    "md": "C'est exactement le principe du **chiffrement asymétrique** : une **paire de clés** liées mathématiquement — une **clé publique** (que tout le monde peut connaître) et une **clé privée** (gardée secrète). Pour la confidentialité, on chiffre avec la clé **publique** du destinataire ; lui seul peut déchiffrer avec sa clé **privée**. Exemples : **RSA**, **ECC** (courbes elliptiques). Cela résout le problème de l'échange de clé, mais c'est **bien plus lent** que le symétrique."
+    "md": "C'est exactement le principe du **chiffrement asymétrique** : une **paire de clés** liées mathématiquement : une **clé publique** (que tout le monde peut connaître) et une **clé privée** (gardée secrète). Pour la confidentialité, on chiffre avec la clé **publique** du destinataire ; lui seul peut déchiffrer avec sa clé **privée**. Exemples : **RSA**, **ECC** (courbes elliptiques). Cela résout le problème de l'échange de clé, mais c'est **bien plus lent** que le symétrique."
    },
    {
     "type": "predict",
@@ -68,9 +68,9 @@
    },
    {
     "type": "truefalse",
-    "statement": "Le chiffrement asymétrique est « plus fort » que le symétrique — c'est pour ça qu'on l'utilise dans TLS.",
+    "statement": "Le chiffrement asymétrique est « plus fort » que le symétrique, c'est pour ça qu'on l'utilise dans TLS.",
     "answer": false,
-    "explanation": "Ni plus fort ni plus faible : il résout un autre problème. AES reste incassable en pratique ; l'asymétrique est là parce qu'il règle l'échange de clé — et il est bien plus lent."
+    "explanation": "Ni plus fort ni plus faible : il résout un autre problème. AES reste incassable en pratique ; l'asymétrique est là parce qu'il règle l'échange de clé, et il est bien plus lent."
    },
    {
     "type": "callout",
@@ -118,7 +118,7 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "2012 : LinkedIn se fait voler 6,5 millions d'empreintes de mots de passe. Elles étaient en SHA-1, sans sel — une grande partie est tombée en quelques jours. Comprendre pourquoi, c'est tout l'enjeu de cette leçon."
+    "md": "2012 : LinkedIn se fait voler 6,5 millions d'empreintes de mots de passe. Elles étaient en SHA-1, sans sel, et une grande partie est tombée en quelques jours. Comprendre pourquoi, c'est l'objet de cette leçon."
    },
    {
     "type": "text",
@@ -137,7 +137,7 @@
    {
     "type": "callout",
     "variant": "warning",
-    "md": "Ne confonds jamais **hachage** et **chiffrement** : le hachage est irréversible et sans clé. Par ailleurs, **MD5** et **SHA-1** sont **obsolètes** — on sait fabriquer des collisions. Utilise la famille **SHA-2** (SHA-256) ou **SHA-3**."
+    "md": "Ne confonds jamais **hachage** et **chiffrement** : le hachage est irréversible et sans clé. **MD5** et **SHA-1** sont **obsolètes** : on sait fabriquer des collisions. Utilise la famille **SHA-2** (SHA-256) ou **SHA-3**."
    },
    {
     "type": "predict",
@@ -145,11 +145,11 @@
     "choices": [
      {
       "id": "a",
-      "text": "Deux empreintes identiques — et il peut chercher cette empreinte dans des tables précalculées."
+      "text": "Deux empreintes identiques, et il peut chercher cette empreinte dans des tables précalculées."
      },
      {
       "id": "b",
-      "text": "Deux empreintes différentes — le hachage intègre automatiquement le nom d'utilisateur."
+      "text": "Deux empreintes différentes : le hachage intègre automatiquement le nom d'utilisateur."
      },
      {
       "id": "c",
@@ -161,7 +161,7 @@
    },
    {
     "type": "text",
-    "md": "Pour stocker des mots de passe, on n'enregistre jamais le mot de passe en clair : on stocke son empreinte. Mais une empreinte seule reste vulnérable aux **rainbow tables** (tables d'empreintes précalculées). La parade est le **salt** (sel) : une valeur **aléatoire et unique par mot de passe**, ajoutée avant le hachage. Le sel **n'est pas secret** — il est stocké à côté de l'empreinte. Il garantit que deux utilisateurs ayant le même mot de passe obtiennent des empreintes **différentes**, et rend les rainbow tables inutilisables. Attention : le sel seul ne suffit pas pour des mots de passe — il faut aussi une fonction **lente** (voir la leçon sur bcrypt, scrypt, Argon2)."
+    "md": "Pour stocker des mots de passe, on n'enregistre jamais le mot de passe en clair : on stocke son empreinte. Mais une empreinte seule reste vulnérable aux **rainbow tables** (tables d'empreintes précalculées). La parade est le **salt** (sel) : une valeur **aléatoire et unique par mot de passe**, ajoutée avant le hachage. Le sel **n'est pas secret** : il est stocké à côté de l'empreinte. Il garantit que deux utilisateurs ayant le même mot de passe obtiennent des empreintes **différentes**, et rend les rainbow tables inutilisables. Attention : le sel seul ne suffit pas pour des mots de passe, il faut aussi une fonction **lente** (voir la leçon sur bcrypt, scrypt, Argon2)."
    },
    {
     "type": "flipcards",
@@ -208,7 +208,7 @@
    },
    {
     "type": "text",
-    "md": "**TLS** (Transport Layer Security, l'ancien SSL) est le protocole qui sécurise les communications sur Internet — c'est le **S** de **HTTPS**. Il apporte trois garanties : **confidentialité** (personne ne lit le trafic), **intégrité** (personne ne le modifie sans être détecté) et **authentification** (on parle bien au bon serveur)."
+    "md": "**TLS** (Transport Layer Security, l'ancien SSL) est le protocole qui sécurise les communications sur Internet : c'est le **S** de **HTTPS**. Il apporte trois garanties : **confidentialité** (personne ne lit le trafic), **intégrité** (personne ne le modifie sans être détecté) et **authentification** (on parle bien au bon serveur)."
    },
    {
     "type": "text",
@@ -216,7 +216,7 @@
    },
    {
     "type": "predict",
-    "question": "Pendant le handshake, client et serveur doivent convenir d'un secret partagé — alors qu'un attaquant peut lire tout ce qui transite. Comment est-ce possible ?",
+    "question": "Pendant le handshake, client et serveur doivent convenir d'un secret partagé, alors qu'un attaquant peut lire tout ce qui transite. Comment est-ce possible ?",
     "choices": [
      {
       "id": "a",
@@ -232,11 +232,11 @@
      }
     ],
     "correctId": "b",
-    "reveal": "C'est le tour de force de Diffie-Hellman : le secret n'est jamais transmis — chaque partie le calcule dans son coin."
+    "reveal": "C'est le tour de force de Diffie-Hellman : le secret n'est jamais transmis, chaque partie le calcule dans son coin."
    },
    {
     "type": "text",
-    "md": "Le cœur de l'accord de clé moderne est en effet **Diffie-Hellman** (souvent sur courbes elliptiques : **ECDHE**). Sa force : les deux parties calculent un **même secret partagé** en n'échangeant que des valeurs publiques — le secret n'est **jamais transmis** sur le réseau."
+    "md": "Le cœur de l'accord de clé moderne est en effet **Diffie-Hellman** (souvent sur courbes elliptiques : **ECDHE**). Sa force : les deux parties calculent un **même secret partagé** en n'échangeant que des valeurs publiques : le secret n'est **jamais transmis** sur le réseau."
    },
    {
     "type": "predict",
@@ -312,7 +312,7 @@
    },
    {
     "type": "predict",
-    "question": "Tu veux prouver que c'est bien toi qui as écrit un message. Tu le « signes » — mais avec quelle clé ?",
+    "question": "Tu veux prouver que c'est bien toi qui as écrit un message. Tu le « signes », mais avec quelle clé ?",
     "choices": [
      {
       "id": "a",
@@ -328,7 +328,7 @@
      }
     ],
     "correctId": "b",
-    "reveal": "On signe avec la clé privée — seul son détenteur le peut — et n'importe qui vérifie avec la clé publique. C'est l'inverse du chiffrement de confidentialité."
+    "reveal": "On signe avec la clé privée (seul son détenteur le peut) et n'importe qui vérifie avec la clé publique. C'est l'inverse du chiffrement de confidentialité."
    },
    {
     "type": "text",
@@ -342,7 +342,7 @@
     "type": "truefalse",
     "statement": "Un message signé numériquement est aussi confidentiel : la signature le chiffre.",
     "answer": false,
-    "explanation": "Signer n'est pas chiffrer : le message peut voyager en clair. La signature garantit l'origine, l'intégrité et la non-répudiation — pour la confidentialité, il faut chiffrer en plus."
+    "explanation": "Signer n'est pas chiffrer : le message peut voyager en clair. La signature garantit l'origine, l'intégrité et la non-répudiation. Pour la confidentialité, il faut chiffrer en plus."
    },
    {
     "type": "predict",
@@ -375,7 +375,7 @@
    {
     "type": "callout",
     "variant": "warning",
-    "md": "Toute la sécurité repose sur le secret de la **clé privée** : **la clé privée signe, la clé publique vérifie**. Si une clé privée fuit, un attaquant peut usurper l'identité correspondante — d'où l'importance de la révocation."
+    "md": "Toute la sécurité repose sur le secret de la **clé privée** : **la clé privée signe, la clé publique vérifie**. Si une clé privée fuit, un attaquant peut usurper l'identité correspondante, d'où l'importance de la révocation."
    },
    {
     "type": "flipcards",
@@ -418,7 +418,7 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "2009 : le site RockYou se fait voler 32 millions de mots de passe stockés en clair. La liste circule encore aujourd'hui sous le nom `rockyou.txt` — l'arme de base de quiconque casse des mots de passe. Stocker en clair est impardonnable ; mais mal hacher ne vaut guère mieux."
+    "md": "2009 : le site RockYou se fait voler 32 millions de mots de passe stockés en clair. La liste circule encore aujourd'hui sous le nom `rockyou.txt`, l'arme de base de quiconque casse des mots de passe. Stocker en clair est impardonnable, mais mal hacher ne vaut guère mieux."
    },
    {
     "type": "predict",
@@ -442,7 +442,7 @@
    },
    {
     "type": "text",
-    "md": "Les fonctions de hachage générales comme **SHA-256** sont en effet conçues pour être **très rapides** — c'est parfait pour vérifier un fichier, mais **catastrophique pour les mots de passe**. Les mots de passe ont peu d'**entropie** (faible aléa), et un attaquant qui récupère la base peut tester des **milliards de candidats par seconde** sur des **GPU** ou des **ASIC**."
+    "md": "Les fonctions de hachage générales comme **SHA-256** sont en effet conçues pour être **très rapides** : c'est parfait pour vérifier un fichier, mais **catastrophique pour les mots de passe**. Les mots de passe ont peu d'**entropie** (faible aléa), et un attaquant qui récupère la base peut tester des **milliards de candidats par seconde** sur des **GPU** ou des **ASIC**."
    },
    {
     "type": "text",
@@ -546,7 +546,7 @@
    },
    {
     "type": "text",
-    "md": "**ECB** (Electronic Codebook) chiffre chaque bloc **indépendamment** avec la même clé. Conséquence : **deux blocs de clair identiques donnent deux blocs chiffrés identiques**. Le chiffré **laisse fuir les motifs** du clair — l'image du pingouin, encore reconnaissable après chiffrement, en est l'exemple célèbre. **ECB ne doit jamais être utilisé** pour des données réelles."
+    "md": "**ECB** (Electronic Codebook) chiffre chaque bloc **indépendamment** avec la même clé. Conséquence : **deux blocs de clair identiques donnent deux blocs chiffrés identiques**. Le chiffré **laisse fuir les motifs** du clair : l'image du pingouin, encore reconnaissable après chiffrement, en est l'exemple célèbre. **ECB ne doit jamais être utilisé** pour des données réelles."
    },
    {
     "type": "text",
@@ -628,7 +628,7 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "Septembre 2010 : deux chercheurs, Juliano Rizzo et Thai Duong, montrent qu'on peut déchiffrer les données de millions de sites ASP.NET sans connaître la clé — simplement en observant les erreurs de padding. Microsoft publie un correctif d'urgence hors calendrier. Voici l'oracle."
+    "md": "Septembre 2010 : deux chercheurs, Juliano Rizzo et Thai Duong, montrent qu'on peut déchiffrer les données de millions de sites ASP.NET sans connaître la clé, simplement en observant les erreurs de padding. Microsoft publie un correctif d'urgence hors calendrier. Voici l'oracle."
    },
    {
     "type": "text",
@@ -648,11 +648,11 @@
      }
     ],
     "correctId": "b",
-    "reveal": "Ce bit — padding valide ou non — fait du serveur un « oracle », qu'on peut interroger autant de fois qu'on veut."
+    "reveal": "Ce bit, padding valide ou non, fait du serveur un « oracle » qu'on peut interroger autant de fois qu'on veut."
    },
    {
     "type": "text",
-    "md": "Un **padding oracle** est **tout système qui révèle, directement ou indirectement, si le padding d'un message déchiffré est valide ou non**. Ce signal peut être explicite (un message d'erreur « padding invalide » distinct d'une autre erreur) ou implicite (une **différence de temps de réponse**). Ce simple bit d'information — padding valide ou non — suffit à tout casser."
+    "md": "Un **padding oracle** est **tout système qui révèle, directement ou indirectement, si le padding d'un message déchiffré est valide ou non**. Ce signal peut être explicite (un message d'erreur « padding invalide » distinct d'une autre erreur) ou implicite (une **différence de temps de réponse**). Ce simple bit d'information, padding valide ou non, suffit à tout casser."
    },
    {
     "type": "predict",
@@ -676,7 +676,7 @@
    },
    {
     "type": "text",
-    "md": "Le mécanisme complet : l'attaquant **modifie octet par octet le bloc précédent `C_{i-1}`** et soumet le résultat à l'oracle. En cherchant la valeur qui rend le padding valide, il déduit la **valeur intermédiaire** `D_K(C_i)`, puis, par un simple XOR, **le clair correspondant** — le tout **sans jamais connaître la clé**. En répétant sur chaque octet puis chaque bloc, il **déchiffre le message entier**. Attaques célèbres : **POODLE** et **Lucky Thirteen**."
+    "md": "Le mécanisme complet : l'attaquant **modifie octet par octet le bloc précédent `C_{i-1}`** et soumet le résultat à l'oracle. En cherchant la valeur qui rend le padding valide, il déduit la **valeur intermédiaire** `D_K(C_i)`, puis, par un simple XOR, **le clair correspondant**, le tout **sans jamais connaître la clé**. En répétant sur chaque octet puis chaque bloc, il **déchiffre le message entier**. Attaques célèbres : **POODLE** et **Lucky Thirteen**."
    },
    {
     "type": "callout",
@@ -724,7 +724,7 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "Janvier 2018 : Spectre et Meltdown révèlent que la quasi-totalité des processeurs modernes laissent fuir des secrets via leur cache et l'exécution spéculative. Aucun algorithme n'était cassé — le coupable était le matériel qui les exécute."
+    "md": "Janvier 2018 : Spectre et Meltdown révèlent que la quasi-totalité des processeurs modernes laissent fuir des secrets via leur cache et l'exécution spéculative. Aucun algorithme n'était cassé : le coupable était le matériel qui les exécute."
    },
    {
     "type": "truefalse",
@@ -734,7 +734,7 @@
    },
    {
     "type": "text",
-    "md": "Une **attaque par canal auxiliaire** (side-channel attack) n'attaque pas les **mathématiques** de l'algorithme, mais son **implémentation** : elle exploite ce qui **fuit** pendant l'exécution — le **temps** de calcul, la **consommation électrique**, les **émanations électromagnétiques** ou le comportement du **cache** du processeur. L'algorithme peut être parfait sur le papier et rester vulnérable à cause du code ou du matériel qui l'exécute."
+    "md": "Une **attaque par canal auxiliaire** (side-channel attack) n'attaque pas les **mathématiques** de l'algorithme, mais son **implémentation** : elle exploite ce qui **fuit** pendant l'exécution : le **temps** de calcul, la **consommation électrique**, les **émanations électromagnétiques** ou le comportement du **cache** du processeur. L'algorithme peut être parfait sur le papier et rester vulnérable à cause du code ou du matériel qui l'exécute."
    },
    {
     "type": "predict",
@@ -758,7 +758,7 @@
    },
    {
     "type": "text",
-    "md": "Les **attaques par timing** exploitent précisément le fait que le **temps d'exécution dépend d'un secret**. Exemple classique : comparer un MAC ou un mot de passe avec un `==` qui **s'arrête au premier octet différent**. Plus la comparaison dure longtemps, plus le préfixe deviné est correct — l'attaquant reconstitue le secret octet par octet. La parade est la **comparaison à temps constant** (constant-time), qui examine **tous** les octets quoi qu'il arrive."
+    "md": "Les **attaques par timing** exploitent précisément le fait que le **temps d'exécution dépend d'un secret**. Exemple classique : comparer un MAC ou un mot de passe avec un `==` qui **s'arrête au premier octet différent**. Plus la comparaison dure longtemps, plus le préfixe deviné est correct : l'attaquant reconstitue le secret octet par octet. La parade est la **comparaison à temps constant** (constant-time), qui examine **tous** les octets quoi qu'il arrive."
    },
    {
     "type": "predict",
