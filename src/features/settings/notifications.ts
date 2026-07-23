@@ -49,3 +49,50 @@ export async function setRemindersEnabled(enabled: boolean): Promise<boolean> {
 export function markRemindersEnabled(): void {
   setKv(ENABLED_KEY, '1');
 }
+
+const SIGNATURE_KEY = 'reminder_signature';
+
+/**
+ * Reprogramme le rappel quotidien avec un message PERSONNALISÉ (conscient de la
+ * série et de l'objectif). Silencieux si le rappel est désactivé, et ne
+ * reprogramme que si le message a changé (évite un travail inutile à chaque
+ * focus d'écran). OTA-compatible : notification locale, aucun serveur push.
+ */
+export async function refreshDailyReminder({
+  streak,
+  goalDone,
+}: {
+  streak: number;
+  goalDone: boolean;
+}): Promise<void> {
+  if (!areRemindersEnabled()) return;
+  const t = getStrings();
+
+  let title = t.notifications.reminderTitle;
+  let body = t.notifications.reminderBody;
+  if (goalDone) {
+    title = t.notifications.reminderSafeTitle;
+    body = t.notifications.reminderSafeBody;
+  } else if (streak > 0) {
+    title = t.notifications.reminderStreakTitle;
+    body = t.notifications.reminderStreakBody.replace('{days}', String(streak));
+  }
+
+  const signature = `${title}|${body}`;
+  if (getKv(SIGNATURE_KEY) === signature) return; // message inchangé → rien à faire
+
+  try {
+    await Notifications.cancelAllScheduledNotificationsAsync();
+    await Notifications.scheduleNotificationAsync({
+      content: { title, body },
+      trigger: {
+        type: Notifications.SchedulableTriggerInputTypes.DAILY,
+        hour: REMINDER_HOUR,
+        minute: 0,
+      },
+    });
+    setKv(SIGNATURE_KEY, signature);
+  } catch {
+    // notifications indisponibles : ne jamais bloquer
+  }
+}

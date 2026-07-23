@@ -8,6 +8,7 @@ import { SessionProvider, useSession } from '@/features/account/session';
 import { activeProvider } from '@/features/monetization';
 import { useHasSeenOnboarding } from '@/features/settings/first-run';
 import { useHasChosenLocale } from '@/features/settings/locale-choice';
+import { initDailyGoal } from '@/features/settings/daily-goal';
 import { initThemeMode } from '@/features/settings/theme-mode';
 import { ErrorBoundary } from '@/features/telemetry/error-boundary';
 import { installErrorReporter, reportError } from '@/features/telemetry/report';
@@ -71,6 +72,7 @@ export default function RootLayout() {
     try {
       initLocale();
       initThemeMode();
+      initDailyGoal();
       installErrorReporter();
     } catch (e) {
       reportError(e, 'init');

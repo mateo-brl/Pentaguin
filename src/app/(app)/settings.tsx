@@ -6,7 +6,9 @@ import { ScrollView, StyleSheet, Switch, View } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Chip } from '@/components/ui/chip';
+import { GOAL_XP, GOAL_LEVELS, type GoalLevel } from '@/features/gamification/retention';
 import { Spacing } from '@/theme';
+import { setDailyGoalLevel, useDailyGoalLevel } from '@/features/settings/daily-goal';
 import { areRemindersEnabled, setRemindersEnabled } from '@/features/settings/notifications';
 import { setThemeMode, useThemeMode, type ThemeMode } from '@/features/settings/theme-mode';
 import { useTheme } from '@/hooks/use-theme';
@@ -16,8 +18,15 @@ export default function SettingsScreen() {
   const t = useStrings();
   const theme = useTheme();
   const themeMode = useThemeMode();
+  const goalLevel = useDailyGoalLevel();
   const locale = getLocale();
   const version = Constants.expoConfig?.version ?? '0.0.0';
+
+  const goalLabel: Record<GoalLevel, string> = {
+    light: t.retention.goalLight,
+    normal: t.retention.goalNormal,
+    intense: t.retention.goalIntense,
+  };
 
   const [reminders, setReminders] = useState(() => areRemindersEnabled());
   const [reminderDenied, setReminderDenied] = useState(false);
@@ -65,6 +74,20 @@ export default function SettingsScreen() {
                 label={item.label}
                 selected={themeMode === item.value}
                 onPress={() => setThemeMode(item.value)}
+              />
+            ))}
+          </View>
+        </View>
+
+        <View style={styles.section}>
+          <ThemedText type="label">{t.retention.goalSettingTitle}</ThemedText>
+          <View style={styles.chips}>
+            {GOAL_LEVELS.map((level) => (
+              <Chip
+                key={level}
+                label={`${goalLabel[level]} · ${GOAL_XP[level]} XP`}
+                selected={goalLevel === level}
+                onPress={() => setDailyGoalLevel(level)}
               />
             ))}
           </View>

@@ -11,8 +11,13 @@ import { computeStreak, previousDay, type Streak } from './streak';
  * - Paliers : jalons célébrés pour donner un cap.
  */
 
-/** Cible d'XP quotidienne (2 leçons ou ~3 bonnes réponses). */
+/** Cible d'XP quotidienne par défaut (2 leçons ou ~3 bonnes réponses). */
 export const DAILY_GOAL_XP = 30;
+
+/** Objectifs quotidiens ajustables. */
+export type GoalLevel = 'light' | 'normal' | 'intense';
+export const GOAL_XP: Record<GoalLevel, number> = { light: 20, normal: 30, intense: 50 };
+export const GOAL_LEVELS: readonly GoalLevel[] = ['light', 'normal', 'intense'];
 /** Nombre maximum de boucliers stockables. */
 export const MAX_FREEZES = 2;
 /** Jalons de série célébrés (une fois chacun). */
@@ -75,9 +80,42 @@ export function maybeEarnFreeze(
   today: string,
   todayXp: number,
   lastEarned: string | null,
+  goal: number = DAILY_GOAL_XP,
 ): { state: FreezeState; lastEarned: string } | null {
-  if (todayXp < DAILY_GOAL_XP || lastEarned === today || state.freezes >= MAX_FREEZES) return null;
+  if (todayXp < goal || lastEarned === today || state.freezes >= MAX_FREEZES) return null;
   return { state: { ...state, freezes: state.freezes + 1 }, lastEarned: today };
+}
+
+/** Les 7 clés de jour se terminant aujourd'hui (du plus ancien au plus récent). */
+export function last7Days(today: string): string[] {
+  const days = [today];
+  for (let i = 0; i < 6; i += 1) days.unshift(previousDay(days[0]));
+  return days;
+}
+
+export type WeekRecap = {
+  days: { date: string; active: boolean; xp: number }[];
+  activeDays: number;
+  weekXp: number;
+};
+
+/** Bilan des 7 derniers jours (activité + XP) pour le récap hebdo. */
+export function weeklyRecap(
+  activity: readonly string[],
+  xpByDate: Readonly<Record<string, number>>,
+  today: string,
+): WeekRecap {
+  const set = new Set(activity);
+  const days = last7Days(today).map((date) => ({
+    date,
+    active: set.has(date),
+    xp: xpByDate[date] ?? 0,
+  }));
+  return {
+    days,
+    activeDays: days.filter((d) => d.active).length,
+    weekXp: days.reduce((sum, d) => sum + d.xp, 0),
+  };
 }
 
 /** Série calculée sur l'activité EFFECTIVE (boucliers inclus). */
