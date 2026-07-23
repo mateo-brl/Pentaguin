@@ -308,7 +308,7 @@
    },
    {
     "type": "predict",
-    "question": "A vendor releases a security patch. For the machines that do not install it, the immediate risk…",
+    "question": "A vendor releases a security patch. For the machines that do not install it, how does the immediate risk change?",
     "choices": [
      {
       "id": "a",
@@ -332,7 +332,7 @@
    },
    {
     "type": "predict",
-    "question": "Your bet: the vast majority of intrusions exploit…",
+    "question": "What do the vast majority of intrusions actually exploit?",
     "choices": [
      {
       "id": "a",
@@ -424,7 +424,7 @@
    },
    {
     "type": "predict",
-    "question": "Your backup lives on an external drive permanently plugged into the PC. Ransomware strikes. Your copy…",
+    "question": "Your backup lives on an external drive permanently plugged into the PC. Ransomware strikes — what happens to your copy?",
     "choices": [
      {
       "id": "a",
@@ -676,7 +676,7 @@
    },
    {
     "type": "predict",
-    "question": "A thief grabs your locked phone, takes it apart and wires the memory chip to a computer. He reads…",
+    "question": "A thief grabs your locked phone, takes it apart and wires the memory chip to a computer. What can he read?",
     "choices": [
      {
       "id": "a",
@@ -700,7 +700,7 @@
    },
    {
     "type": "predict",
-    "question": "A flashlight app asks for access to your contacts and your location. That is…",
+    "question": "A flashlight app asks for access to your contacts and your location. How should you read that?",
     "choices": [
      {
       "id": "a",

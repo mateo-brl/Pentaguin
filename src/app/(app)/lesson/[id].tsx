@@ -125,14 +125,21 @@ export default function LessonScreen() {
         ))}
 
         {finished ? (
-          <View style={[styles.done, { backgroundColor: theme.successSoft }]}>
-            <ThemedText type="smallBold" style={{ color: theme.success }}>
-              {t.lesson.completedTitle}
-            </ThemedText>
-            <ThemedText type="small">
-              {t.lesson.completedBody.replace('{xp}', String(XP.lessonCompleted))}
-            </ThemedText>
-          </View>
+          <>
+            <View style={[styles.done, { backgroundColor: theme.successSoft }]}>
+              <ThemedText type="smallBold" style={{ color: theme.success }}>
+                {t.lesson.completedTitle}
+              </ThemedText>
+              <ThemedText type="small">
+                {t.lesson.completedBody.replace('{xp}', String(XP.lessonCompleted))}
+              </ThemedText>
+            </View>
+            <Button
+              label={t.lesson.backToLessons}
+              onPress={() => router.back()}
+              style={styles.doneButton}
+            />
+          </>
         ) : (
           !waitingOnInteraction && (
             <Button

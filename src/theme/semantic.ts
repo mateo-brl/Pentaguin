@@ -22,6 +22,11 @@ export const Colors = {
     textSecondary: palette.glacier300,
     textDisabled: palette.glacier400,
 
+    // Le terminal est une surface sombre dans les DEUX thèmes : son texte reste
+    // clair partout (sinon texte sombre sur fond sombre en mode clair).
+    terminalText: palette.glacier100,
+    terminalTextDim: palette.glacier400,
+
     accent: palette.amber500,
     accentSoft: palette.amberSoft,
     accentDark: palette.amber600,
@@ -51,6 +56,10 @@ export const Colors = {
     text: palette.slate900,
     textSecondary: palette.slate600,
     textDisabled: palette.slate600,
+
+    // Fond terminal sombre même en mode clair → texte clair fixe (cf. dark).
+    terminalText: palette.glacier100,
+    terminalTextDim: palette.glacier400,
 
     accent: palette.amber700,
     accentSoft: palette.amberSoftLight,
