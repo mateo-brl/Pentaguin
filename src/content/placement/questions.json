@@ -7582,7 +7582,7 @@
       }
     ],
     "correct": "c",
-    "explanation": "Le KDC (Key Distribution Center) émet des tickets (TGT puis TGS) ; le mot de passe ne circule pas à chaque accès.",
+    "explanation": "Le KDC (Key Distribution Center) émet des tickets (TGT puis ticket de service) ; le mot de passe ne circule pas à chaque accès.",
     "tags": [
       "placement-v1"
     ]

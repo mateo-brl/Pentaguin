@@ -47,7 +47,7 @@
       {
         "type": "callout",
         "variant": "warning",
-        "md": "**No written authorization = a criminal offense**, even for a simple port scan or a “just to see” test. Verbal consent from someone who has no authority over the system is not enough: you need a signed mandate from the right decision-maker, clearly defining the scope."
+        "md": "**No written authorization = you risk criminal prosecution**, even for a simple port scan or a “just to see” test. Verbal consent from someone who has no authority over the system is not enough: you need a signed mandate from the right decision-maker, clearly defining the scope."
       },
       {
         "type": "flipcards",
