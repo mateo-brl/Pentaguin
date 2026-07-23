@@ -17,6 +17,11 @@ const fr = {
     milestoneTitle: 'Série en feu !',
     milestoneBody: '{days} jours d’affilée. Rien ne t’arrête.',
     milestoneCta: 'Génial',
+    weekTitle: 'Cette semaine',
+    goalSettingTitle: 'Objectif quotidien',
+    goalLight: 'Léger',
+    goalNormal: 'Normal',
+    goalIntense: 'Intense',
   },
   common: {
     notFoundTitle: 'Introuvable',
@@ -203,6 +208,10 @@ const fr = {
   notifications: {
     reminderTitle: 'Garde ta série',
     reminderBody: 'Quelques minutes de révision suffisent pour prolonger ta série.',
+    reminderStreakTitle: 'Ta série continue ?',
+    reminderStreakBody: 'Tu es à {days} jours d’affilée. Quelques minutes suffisent pour continuer.',
+    reminderSafeTitle: 'Objectif du jour atteint',
+    reminderSafeBody: 'Bravo. Reviens demain pour rester sur ta lancée.',
   },
   paywall: {
     title: 'Pentaguin Pro',
@@ -388,6 +397,11 @@ const en: Strings = {
     milestoneTitle: 'Streak on fire!',
     milestoneBody: '{days} days in a row. Nothing stops you.',
     milestoneCta: 'Awesome',
+    weekTitle: 'This week',
+    goalSettingTitle: 'Daily goal',
+    goalLight: 'Light',
+    goalNormal: 'Normal',
+    goalIntense: 'Intense',
   },
   common: {
     notFoundTitle: 'Not found',
@@ -574,6 +588,10 @@ const en: Strings = {
   notifications: {
     reminderTitle: 'Keep your streak going',
     reminderBody: 'A few minutes of review is enough to extend your streak.',
+    reminderStreakTitle: 'Keep your streak going?',
+    reminderStreakBody: 'You’re on a {days}-day streak. A few minutes is enough to continue.',
+    reminderSafeTitle: 'Daily goal reached',
+    reminderSafeBody: 'Nice work. Come back tomorrow to keep the momentum.',
   },
   paywall: {
     title: 'Pentaguin Pro',
