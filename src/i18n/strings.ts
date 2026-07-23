@@ -162,6 +162,7 @@ const fr = {
     flipHint: 'Touche une carte pour la retourner',
     completedTitle: 'Leçon terminée',
     completedBody: '+{xp} XP — ça rentre.',
+    backToLessons: 'Revenir aux leçons',
   },
   quiz: {
     title: 'Quiz',
@@ -565,6 +566,7 @@ const en: Strings = {
     flipHint: 'Tap a card to flip it',
     completedTitle: 'Lesson completed',
     completedBody: '+{xp} XP — it’s sinking in.',
+    backToLessons: 'Back to lessons',
   },
   quiz: {
     title: 'Quiz',

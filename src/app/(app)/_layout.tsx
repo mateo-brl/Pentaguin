@@ -17,6 +17,8 @@ export default function AppLayout() {
         headerTintColor: theme.accent,
         headerTitleStyle: { color: theme.text },
         headerShadowVisible: false,
+        // Chevron seul (sinon iOS affiche le nom du groupe parent, ex. « (tabs) »).
+        headerBackButtonDisplayMode: 'minimal',
         contentStyle: { backgroundColor: theme.background },
       }}>
       <Stack.Screen name="paywall" options={{ presentation: 'modal' }} />
