@@ -276,7 +276,7 @@
      },
      {
       "front": "TOTP",
-      "back": "Code à usage unique valable quelques secondes, généré par une application d'authentification synchronisée dans le temps."
+      "back": "Code à usage unique valable une trentaine de secondes (30 s par défaut), généré par une application d'authentification synchronisée dans le temps."
      },
      {
       "front": "Facteur",

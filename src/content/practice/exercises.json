@@ -709,7 +709,7 @@
    "2026-07-20T08:16:12 auth WARN EventID=4625 user=administrateur src=203.0.113.66 LogonType=10 status=failure reason=bad_password",
    "2026-07-20T08:16:19 auth INFO EventID=4624 user=administrateur src=203.0.113.66 LogonType=10 status=success",
    "2026-07-20T08:16:45 sysmon INFO EventID=3 host=SRV-APP01 image=chrome.exe dest=142.250.75.238:443",
-   "2026-07-20T08:17:10 dns INFO query=maj.microsoft.com type=A response=NOERROR"
+   "2026-07-20T08:17:10 dns INFO query=update.microsoft.com type=A response=NOERROR"
   ],
   "question": "Quelle ligne signale une compromission aboutie (et non une simple alerte) ?",
   "correctLine": 5,
@@ -1709,7 +1709,7 @@
   "title": "La ligne qui rend le serveur exploitable",
   "level": 13,
   "artifactKind": "code",
-  "brief": "Pendant un audit autorisé, tu récupères le fichier de configuration d'un serveur SSH (sshd_config). Une seule ligne y introduit une faiblesse directement exploitable, sans même disposer d'un identifiant valide. Sauras-tu la repérer ?",
+  "brief": "Pendant un audit autorisé, tu récupères le fichier de configuration d'un serveur SSH (sshd_config). Une seule ligne y introduit une faiblesse directement exploitable, sans même connaître de mot de passe. Sauras-tu la repérer ?",
   "lines": [
    "Port 2222",
    "PermitRootLogin prohibit-password",
