@@ -32,6 +32,14 @@ export const terminalExerciseSchema = z.object({
         output: z.string().min(1),
         /** Indice optionnel (commande attendue en clair). */
         hint: z.string().optional(),
+        /**
+         * Jetons composant la commande attendue, dans l'ordre. Présents →
+         * l'étape se joue en mode « composer » (tapoter des jetons, aucun
+         * clavier). `tokens.join(' ')` doit satisfaire `expect`.
+         */
+        tokens: z.array(z.string().min(1)).min(1).optional(),
+        /** Jetons pièges mélangés aux bons (mode composer uniquement). */
+        distractors: z.array(z.string().min(1)).optional(),
       }),
     )
     .min(1),
@@ -90,10 +98,32 @@ export const practiceExerciseSchema = z.discriminatedUnion('kind', [
   scenarioExerciseSchema,
 ]);
 
+/**
+ * Mission scénarisée : un fil narratif qui enchaîne des exercices existants.
+ * Briefing par le manchot, étapes, puis rapport de mission en débrief.
+ */
+export const missionSchema = z.object({
+  id: z.string().regex(/^[a-z0-9][a-z0-9-]*$/),
+  /** Domaine de rattachement (couleur/regroupement à l'affichage). */
+  domainId: z.string().regex(/^[a-z0-9][a-z0-9-]*$/),
+  title: z.string().min(1),
+  level: z.number().int().min(1).max(15),
+  /** Une phrase d'appel affichée sur la carte de mission. */
+  tagline: z.string().min(1),
+  /** Briefing narratif (le manchot pose la situation et l'enjeu). */
+  intro: z.string().min(1),
+  /** Ids d'exercices joués dans l'ordre. */
+  steps: z.array(z.string().min(1)).min(1),
+  /** Rapport de mission : ce qu'on retient, raconté dans l'univers. */
+  debrief: z.string().min(1),
+});
+
 export type TerminalExercise = z.infer<typeof terminalExerciseSchema>;
 export type AnalysisExercise = z.infer<typeof analysisExerciseSchema>;
 export type OrderExercise = z.infer<typeof orderExerciseSchema>;
 export type ScenarioExercise = z.infer<typeof scenarioExerciseSchema>;
 export type PracticeExercise = z.infer<typeof practiceExerciseSchema>;
+export type PracticeMission = z.infer<typeof missionSchema>;
 
 export const practiceBankSchema = z.array(practiceExerciseSchema);
+export const missionBankSchema = z.array(missionSchema);

@@ -1,430 +1,704 @@
 [
-  {
-    "id": "l-net-01",
-    "domainId": "d-net",
-    "title": "The client/server model and IP addresses",
-    "order": 1,
-    "estMinutes": 5,
-    "blocks": [
-      {
-        "type": "text",
-        "md": "On a network, most exchanges follow the **client/server** model. The **client** is the program that asks for something: your browser, your mobile app. The **server** is the machine that listens for requests and answers them: it sends back a web page, an email, a video. When you open a website, your browser (the client) sends a request, the server processes it and replies."
-      },
-      {
-        "type": "text",
-        "md": "To find each other, every machine has an **IP address**, a number that identifies it on the network, a bit like a postal address. There are two families:\n\n- **Public IP address**: unique and visible across the whole Internet. It is the one your ISP assigns to your router.\n- **Private IP address**: valid only inside a local network (your home, a company). It is **not routable** on the Internet: several households can use the same one without any conflict."
-      },
-      {
-        "type": "text",
-        "md": "The private ranges are set by the **RFC 1918** standard: `10.0.0.0/8`, `172.16.0.0/12` (that is, 172.16 through 172.31) and `192.168.0.0/16`. On the way out of your network, a mechanism called **NAT** (Network Address Translation) translates your private address into the router's public address, so that the reply comes back to the right device."
-      },
-      {
-        "type": "callout",
-        "variant": "tip",
-        "md": "The fact that an address starts with `192.168` or `10.` tells you right away that you are **on a local network**: that machine is not directly reachable from the Internet."
-      },
-      {
-        "type": "keyterms",
-        "terms": [
-          {
-            "term": "Client",
-            "def": "Program that requests a service (browser, application) by sending a request to a server."
-          },
-          {
-            "term": "Server",
-            "def": "Machine that listens for client requests and sends a response back to them."
-          },
-          {
-            "term": "Public IP address",
-            "def": "Unique, routable address, visible from anywhere on the Internet."
-          },
-          {
-            "term": "Private IP address",
-            "def": "Address valid only inside a local network, not routable on the Internet (RFC 1918)."
-          },
-          {
-            "term": "NAT",
-            "def": "Mechanism that translates the private addresses of a local network into a public address to reach the Internet."
-          }
-        ]
-      },
-      {
-        "type": "quickcheck",
-        "questionId": "q-net-01"
-      }
+ {
+  "id": "l-net-01",
+  "domainId": "d-net",
+  "title": "The client/server model and IP addresses",
+  "order": 1,
+  "estMinutes": 5,
+  "blocks": [
+   {
+    "type": "hook",
+    "md": "November 2019: RIPE NCC, Europe's Internet registry, hands out the very last available IPv4 addresses. The address pool designed back in the 1980s is officially exhausted — and yet the Internet keeps on growing. This lesson explains the sleight of hand that makes it possible."
+   },
+   {
+    "type": "text",
+    "md": "Let's set the scene first. On a network, most exchanges follow the **client/server** model. The **client** is the program that asks for something: your browser, your mobile app. The **server** is the machine that listens for requests and answers them: it sends back a web page, an email, a video. When you open a website, your browser (the client) sends a request, the server processes it and replies."
+   },
+   {
+    "type": "predict",
+    "question": "Your phone, your console and your TV are all connected to the same home router. How many public IP addresses does your household occupy on the Internet?",
+    "choices": [
+     {
+      "id": "a",
+      "text": "One per connected device"
+     },
+     {
+      "id": "b",
+      "text": "A single one for the whole household"
+     },
+     {
+      "id": "c",
+      "text": "None: only servers get a public address"
+     }
     ],
-    "level": 3
-  },
-  {
-    "id": "l-net-02",
-    "domainId": "d-net",
-    "title": "DNS: from example.com to an IP address",
-    "order": 2,
-    "estMinutes": 5,
-    "blocks": [
-      {
-        "type": "text",
-        "md": "Machines talk to each other using IP addresses, but you type `example.com`. What makes the link? **DNS** (Domain Name System), the directory of the Internet: it **translates a domain name into an IP address**. Without it, you would have to remember strings of digits for every single site."
-      },
-      {
-        "type": "text",
-        "md": "When you open `example.com`, your computer queries a **resolver** (often the one run by your ISP). If it does not know the answer, it in turn queries the DNS hierarchy from the top down:\n\n1. The **root** servers, which point to the top-level domain.\n2. The **TLD** (Top-Level Domain) server, here `.com`.\n3. The domain's **authoritative** server, which holds the real answer.\n\nThe answer (an **A record** for IPv4, **AAAA** for IPv6) travels back down to you."
-      },
-      {
-        "type": "text",
-        "md": "To avoid starting over on every visit, answers are **cached** for a period called the **TTL** (Time To Live). DNS mainly uses **port 53**. It is a critical service: tampering with it makes it possible to redirect a user to a fake site (**DNS spoofing**)."
-      },
-      {
-        "type": "callout",
-        "variant": "warning",
-        "md": "Plain DNS travels **in cleartext**: anyone watching the network can see which sites you resolve. Variants such as **DoH** (DNS over HTTPS) or **DoT** (DNS over TLS) encrypt those queries to protect your privacy."
-      },
-      {
-        "type": "keyterms",
-        "terms": [
-          {
-            "term": "DNS",
-            "def": "System that translates a domain name (example.com) into an IP address."
-          },
-          {
-            "term": "Resolver",
-            "def": "Server that receives your query and walks the DNS hierarchy to find the IP address."
-          },
-          {
-            "term": "TLD",
-            "def": "Top-level domain, the ending of a domain name: .com, .org, .net."
-          },
-          {
-            "term": "A / AAAA record",
-            "def": "DNS entry mapping a name to an IPv4 (A) or IPv6 (AAAA) address."
-          },
-          {
-            "term": "TTL",
-            "def": "How long a DNS answer may stay in cache before it has to be checked again."
-          }
-        ]
-      },
-      {
-        "type": "quickcheck",
-        "questionId": "q-net-02"
-      }
+    "correctId": "b",
+    "reveal": "Just one: the router's. Your devices use private addresses, invisible from the Internet — which is what allowed us to survive the IPv4 shortage."
+   },
+   {
+    "type": "text",
+    "md": "Here is why. To find each other, every machine has an **IP address**, a number that identifies it on the network, a bit like a postal address. There are two families:\n\n- **Public IP address**: unique and visible across the whole Internet. It is the one your ISP assigns to your router.\n- **Private IP address**: valid only inside a local network (your home, a company). It is **not routable** on the Internet: several households can use the same one without any conflict."
+   },
+   {
+    "type": "truefalse",
+    "statement": "Your public IP address precisely identifies your device on the Internet.",
+    "answer": false,
+    "explanation": "It identifies your router: every device in the household shares the same public address. A mechanism takes care of routing each reply back to the right device — we look at it next."
+   },
+   {
+    "type": "text",
+    "md": "The private ranges are set by the **RFC 1918** standard: `10.0.0.0/8`, `172.16.0.0/12` (that is, 172.16 through 172.31) and `192.168.0.0/16`. On the way out of your network, a mechanism called **NAT** (Network Address Translation) translates your private address into the router's public address, so that the reply comes back to the right device."
+   },
+   {
+    "type": "callout",
+    "variant": "tip",
+    "md": "The fact that an address starts with `192.168` or `10.` tells you right away that you are **on a local network**: that machine is not directly reachable from the Internet."
+   },
+   {
+    "type": "flipcards",
+    "cards": [
+     {
+      "front": "Client",
+      "back": "Program that requests a service (browser, application) by sending a request to a server."
+     },
+     {
+      "front": "Server",
+      "back": "Machine that listens for client requests and sends a response back to them."
+     },
+     {
+      "front": "Public IP address",
+      "back": "Unique, routable address, visible from anywhere on the Internet."
+     },
+     {
+      "front": "Private IP address",
+      "back": "Address valid only inside a local network, not routable on the Internet (RFC 1918)."
+     },
+     {
+      "front": "NAT",
+      "back": "Mechanism that translates the private addresses of a local network into a public address to reach the Internet."
+     }
+    ]
+   },
+   {
+    "type": "quickcheck",
+    "questionId": "q-net-01"
+   }
+  ],
+  "level": 3
+ },
+ {
+  "id": "l-net-02",
+  "domainId": "d-net",
+  "title": "DNS: from example.com to an IP address",
+  "order": 2,
+  "estMinutes": 5,
+  "blocks": [
+   {
+    "type": "hook",
+    "md": "October 21, 2016: Twitter, Netflix, Spotify and Reddit seem to vanish from the Internet for hours. Their servers are running just fine. It is their directory that has been knocked out: the Mirai botnet is hammering Dyn, a major DNS provider — and without the directory, nobody can find the addresses."
+   },
+   {
+    "type": "text",
+    "md": "Meet that directory. Machines talk to each other using IP addresses, but you type `example.com`. What makes the link? **DNS** (Domain Name System), the directory of the Internet: it **translates a domain name into an IP address**. Without it, you would have to remember strings of digits for every single site."
+   },
+   {
+    "type": "predict",
+    "question": "Your DNS resolver has never seen example.com. Where does it start its investigation?",
+    "choices": [
+     {
+      "id": "a",
+      "text": "With the root servers, at the very top of the hierarchy"
+     },
+     {
+      "id": "b",
+      "text": "It contacts the domain's server directly"
+     },
+     {
+      "id": "c",
+      "text": "It asks the other resolvers around it"
+     }
     ],
-    "level": 4
-  },
-  {
-    "id": "l-net-03",
-    "domainId": "d-net",
-    "title": "Common ports and protocols",
-    "order": 3,
-    "estMinutes": 5,
-    "blocks": [
-      {
-        "type": "text",
-        "md": "A single machine often hosts several services: a web server, a mail service, remote access. So how do you know which service an incoming packet is meant for? Thanks to the **port**, a number (from 0 to 65535) that identifies the target service on the machine. The IP address points to the **machine**, the port points to the **service** on that machine."
-      },
-      {
-        "type": "text",
-        "md": "Every **protocol**, meaning a standardized language for exchanges, has a well-known default port. Absolute must-knows:\n\n- **22 — SSH**: **encrypted** remote administration and login.\n- **25 — SMTP**: sending email between servers.\n- **53 — DNS**: domain name resolution.\n- **80 — HTTP**: web **in cleartext**.\n- **443 — HTTPS**: **encrypted** web (HTTP + TLS).\n- **3389 — RDP**: Windows remote desktop (Remote Desktop Protocol)."
-      },
-      {
-        "type": "text",
-        "md": "Ports 0 to 1023 are called **well-known** ports and are reserved for these standard services. Most of them rely on **TCP**, which guarantees ordered delivery of the data; DNS mostly uses **UDP**, faster but with no delivery guarantee."
-      },
-      {
-        "type": "callout",
-        "variant": "exam",
-        "md": "Remember the pair **80 = HTTP in cleartext / 443 = HTTPS encrypted**, along with **22 = SSH** and **3389 = RDP**. These numbers come up very often, both on the exam and in the field during a port scan."
-      },
-      {
-        "type": "keyterms",
-        "terms": [
-          {
-            "term": "Port",
-            "def": "Number (0 to 65535) that identifies a specific service on a machine."
-          },
-          {
-            "term": "Protocol",
-            "def": "Standardized language for exchanges between two machines (HTTP, SSH, DNS...)."
-          },
-          {
-            "term": "SSH",
-            "def": "Encrypted remote administration protocol, port 22."
-          },
-          {
-            "term": "RDP",
-            "def": "Remote Desktop Protocol, Windows remote desktop, port 3389."
-          },
-          {
-            "term": "TCP / UDP",
-            "def": "TCP provides reliable, ordered delivery; UDP is faster but offers no guarantee."
-          }
-        ]
-      },
-      {
-        "type": "quickcheck",
-        "questionId": "q-net-03"
-      }
+    "correctId": "a",
+    "reveal": "It starts at the top: the root servers point it to .com, which points it to the domain's server. A step-by-step descent, not one central registry."
+   },
+   {
+    "type": "text",
+    "md": "Let's walk through that descent. When you open `example.com`, your computer queries a **resolver** (often the one run by your ISP). If it does not know the answer, it in turn queries the DNS hierarchy from the top down:\n\n1. The **root** servers, which point to the top-level domain.\n2. The **TLD** (Top-Level Domain) server, here `.com`.\n3. The domain's **authoritative** server, which holds the real answer.\n\nThe answer (an **A record** for IPv4, **AAAA** for IPv6) travels back down to you."
+   },
+   {
+    "type": "text",
+    "md": "To avoid starting over on every visit, answers are **cached** for a period called the **TTL** (Time To Live). DNS mainly uses **port 53**. It is a critical service: tampering with it makes it possible to redirect a user to a fake site (**DNS spoofing**)."
+   },
+   {
+    "type": "truefalse",
+    "statement": "If you only ever browse over HTTPS, someone watching the network cannot tell which sites you visit.",
+    "answer": false,
+    "explanation": "HTTPS encrypts the content of the pages, but your DNS queries leave in cleartext: the observer sees every domain name you resolve."
+   },
+   {
+    "type": "callout",
+    "variant": "warning",
+    "md": "Plain DNS travels **in cleartext**: anyone watching the network can see which sites you resolve. Variants such as **DoH** (DNS over HTTPS) or **DoT** (DNS over TLS) encrypt those queries to protect your privacy."
+   },
+   {
+    "type": "flipcards",
+    "cards": [
+     {
+      "front": "DNS",
+      "back": "System that translates a domain name (example.com) into an IP address."
+     },
+     {
+      "front": "Resolver",
+      "back": "Server that receives your query and walks the DNS hierarchy to find the IP address."
+     },
+     {
+      "front": "TLD",
+      "back": "Top-level domain, the ending of a domain name: .com, .org, .net."
+     },
+     {
+      "front": "A / AAAA record",
+      "back": "DNS entry mapping a name to an IPv4 (A) or IPv6 (AAAA) address."
+     },
+     {
+      "front": "TTL",
+      "back": "How long a DNS answer may stay in cache before it has to be checked again."
+     }
+    ]
+   },
+   {
+    "type": "quickcheck",
+    "questionId": "q-net-02"
+   }
+  ],
+  "level": 4
+ },
+ {
+  "id": "l-net-03",
+  "domainId": "d-net",
+  "title": "Common ports and protocols",
+  "order": 3,
+  "estMinutes": 5,
+  "blocks": [
+   {
+    "type": "hook",
+    "md": "May 12, 2017: the WannaCry ransomware cripples British hospitals and spreads to 150 countries within days. Its hunting method? Scanning the Internet for machines exposing a single port: 445. One little number — and it is the whole subject of this lesson."
+   },
+   {
+    "type": "text",
+    "md": "So, a port. A single machine often hosts several services: a web server, a mail service, remote access. So how do you know which service an incoming packet is meant for? Thanks to the **port**, a number (from 0 to 65535) that identifies the target service on the machine. The IP address points to the **machine**, the port points to the **service** on that machine."
+   },
+   {
+    "type": "predict",
+    "question": "Your browser loads a page over HTTPS. Which port on the server does your request go to?",
+    "choices": [
+     {
+      "id": "a",
+      "text": "80"
+     },
+     {
+      "id": "b",
+      "text": "443"
+     },
+     {
+      "id": "c",
+      "text": "22"
+     },
+     {
+      "id": "d",
+      "text": "53"
+     }
     ],
-    "level": 4
-  },
-  {
-    "id": "l-net-04",
-    "domainId": "d-net",
-    "title": "The firewall: filtering traffic",
-    "order": 4,
-    "estMinutes": 5,
-    "blocks": [
-      {
-        "type": "text",
-        "md": "A **firewall** is a device, either software or hardware, that **controls network traffic** according to a set of rules. It sits at the border between two zones (your local network and the Internet, for example) and, for each packet, decides whether to **let it through** or **block it**."
-      },
-      {
-        "type": "text",
-        "md": "A traditional firewall decides based on network criteria: **source and destination IP address**, **port**, and **protocol** (TCP, UDP...). There are two kinds:\n\n- **Stateless**: it judges each packet in isolation.\n- **Stateful**: it **tracks the state of connections**. It knows that an inbound packet belongs to a conversation you started yourself, and allows it accordingly.\n\nWe also talk about **ingress** (inbound) and **egress** (outbound) filtering."
-      },
-      {
-        "type": "text",
-        "md": "The best practice is **default deny**: block everything, then open only what is necessary. Next-generation firewalls (**NGFW**) go further and also inspect the application and the content, not just the ports."
-      },
-      {
-        "type": "callout",
-        "variant": "tip",
-        "md": "A firewall filters **where** traffic goes, it does not check **who** you are. It replaces neither authentication, nor encryption, nor antivirus: it is one layer among others."
-      },
-      {
-        "type": "keyterms",
-        "terms": [
-          {
-            "term": "Firewall",
-            "def": "Device that allows or blocks network traffic according to rules."
-          },
-          {
-            "term": "Stateful",
-            "def": "Firewall that tracks the state of connections in order to allow replies to legitimate traffic."
-          },
-          {
-            "term": "Default deny",
-            "def": "Principle of blocking everything by default and opening only what is strictly necessary."
-          },
-          {
-            "term": "Egress / Ingress",
-            "def": "Filtering of traffic leaving (egress) and entering (ingress) a network zone."
-          }
-        ]
-      },
-      {
-        "type": "quickcheck",
-        "questionId": "q-net-04"
-      }
+    "correctId": "b",
+    "reveal": "443, the default port of the encrypted web. Port 80 is the cleartext web — same service, two different doors."
+   },
+   {
+    "type": "text",
+    "md": "Every **protocol**, meaning a standardized language for exchanges, has a well-known default port like this. Absolute must-knows:\n\n- **22 — SSH**: **encrypted** remote administration and login.\n- **25 — SMTP**: sending email between servers.\n- **53 — DNS**: domain name resolution.\n- **80 — HTTP**: web **in cleartext**.\n- **443 — HTTPS**: **encrypted** web (HTTP + TLS).\n- **3389 — RDP**: Windows remote desktop (Remote Desktop Protocol)."
+   },
+   {
+    "type": "text",
+    "md": "Ports 0 to 1023 are called **well-known** ports and are reserved for these standard services. Most of them rely on **TCP**, which guarantees ordered delivery of the data; DNS mostly uses **UDP**, faster but with no delivery guarantee."
+   },
+   {
+    "type": "truefalse",
+    "statement": "If a flow goes through port 443, it must be legitimate HTTPS.",
+    "answer": false,
+    "explanation": "A port is only a convention: nothing stops malware from pushing its traffic through 443 to blend into the crowd. The number signals the expected use, not a guarantee."
+   },
+   {
+    "type": "callout",
+    "variant": "exam",
+    "md": "Remember the pair **80 = HTTP in cleartext / 443 = HTTPS encrypted**, along with **22 = SSH** and **3389 = RDP**. These numbers come up very often, both on the exam and in the field during a port scan."
+   },
+   {
+    "type": "flipcards",
+    "cards": [
+     {
+      "front": "Port",
+      "back": "Number (0 to 65535) that identifies a specific service on a machine."
+     },
+     {
+      "front": "Protocol",
+      "back": "Standardized language for exchanges between two machines (HTTP, SSH, DNS...)."
+     },
+     {
+      "front": "SSH",
+      "back": "Encrypted remote administration protocol, port 22."
+     },
+     {
+      "front": "RDP",
+      "back": "Remote Desktop Protocol, Windows remote desktop, port 3389."
+     },
+     {
+      "front": "TCP / UDP",
+      "back": "TCP provides reliable, ordered delivery; UDP is faster but offers no guarantee."
+     }
+    ]
+   },
+   {
+    "type": "quickcheck",
+    "questionId": "q-net-03"
+   }
+  ],
+  "level": 4
+ },
+ {
+  "id": "l-net-04",
+  "domainId": "d-net",
+  "title": "The firewall: filtering traffic",
+  "order": 4,
+  "estMinutes": 5,
+  "blocks": [
+   {
+    "type": "hook",
+    "md": "You are a security guard at the entrance of an office building. Hundreds of people show up every minute: questioning each one is impossible. So you work from a list of rules — who gets in, who gets out, through which door. Welcome to a firewall's day job."
+   },
+   {
+    "type": "text",
+    "md": "A **firewall** is a device, either software or hardware, that **controls network traffic** according to a set of rules. It sits at the border between two zones (your local network and the Internet, for example) and, for each packet, decides whether to **let it through** or **block it**."
+   },
+   {
+    "type": "predict",
+    "question": "Your firewall blocks all inbound traffic. You open a website: the server's reply is indeed inbound traffic. Does it reach you?",
+    "choices": [
+     {
+      "id": "a",
+      "text": "Yes: the firewall knows it answers a connection you initiated"
+     },
+     {
+      "id": "b",
+      "text": "No: it gets blocked like everything else"
+     },
+     {
+      "id": "c",
+      "text": "Yes: web traffic is never filtered"
+     }
     ],
-    "level": 5
-  },
-  {
-    "id": "l-net-05",
-    "domainId": "d-net",
-    "title": "HTTP vs HTTPS and the role of TLS",
-    "order": 5,
-    "estMinutes": 6,
-    "blocks": [
-      {
-        "type": "text",
-        "md": "**HTTP** (HyperText Transfer Protocol) is the protocol of the web. In its original form, everything travels **in cleartext**: anyone in the middle of the network can read and alter the pages, the passwords, the forms. **HTTPS** (HTTP Secure) solves this problem: it is simply HTTP carried inside **TLS**."
-      },
-      {
-        "type": "text",
-        "md": "**TLS** (Transport Layer Security, the successor to SSL) provides three guarantees: server **authentication**, **confidentiality** (encryption) and **integrity** (detection of any tampering). It works in two stages during the **handshake**:\n\n1. **Asymmetric authentication**: the server presents a **certificate** signed by a certificate authority (**CA**). The client checks that certificate to make sure it is really talking to the right server.\n2. Client and server **then negotiate a symmetric session key**, unique and short-lived, which will encrypt all the exchanges."
-      },
-      {
-        "type": "text",
-        "md": "Why this mix? **Asymmetric** cryptography (two keys, one public and one private) is ideal for authentication and the initial exchange, but slow. **Symmetric** cryptography (a single shared key) is very fast, perfect for encrypting the whole volume of data that follows. TLS combines the best of both."
-      },
-      {
-        "type": "callout",
-        "variant": "warning",
-        "md": "The HTTPS padlock proves that **the connection is encrypted and that the server really is the one for the domain shown**. It does **not** prove that the site is honest: a phishing site can perfectly well have a valid certificate. HTTPS protects the pipe, not what is at the end of it."
-      },
-      {
-        "type": "keyterms",
-        "terms": [
-          {
-            "term": "HTTP",
-            "def": "Web protocol that transmits data in cleartext, with no encryption."
-          },
-          {
-            "term": "HTTPS",
-            "def": "HTTP carried inside TLS: encrypted exchanges and an authenticated server."
-          },
-          {
-            "term": "TLS",
-            "def": "Protocol that authenticates the server, encrypts the data and protects its integrity."
-          },
-          {
-            "term": "Certificate",
-            "def": "Document signed by an authority (CA) that proves the identity of a server."
-          },
-          {
-            "term": "Session key",
-            "def": "Short-lived symmetric key negotiated during the handshake to encrypt the conversation."
-          }
-        ]
-      },
-      {
-        "type": "quickcheck",
-        "questionId": "q-net-05"
-      }
+    "correctId": "a",
+    "reveal": "That is the hallmark of a stateful firewall: it tracks the state of connections and lets replies to the traffic you started come back in."
+   },
+   {
+    "type": "text",
+    "md": "Let's break it down. A traditional firewall decides based on network criteria: **source and destination IP address**, **port**, and **protocol** (TCP, UDP...). There are two kinds:\n\n- **Stateless**: it judges each packet in isolation.\n- **Stateful**: it **tracks the state of connections**. It knows that an inbound packet belongs to a conversation you started yourself, and allows it accordingly.\n\nWe also talk about **ingress** (inbound) and **egress** (outbound) filtering."
+   },
+   {
+    "type": "text",
+    "md": "The best practice is **default deny**: block everything, then open only what is necessary. Next-generation firewalls (**NGFW**) go further and also inspect the application and the content, not just the ports."
+   },
+   {
+    "type": "truefalse",
+    "statement": "A well-configured firewall makes antivirus unnecessary.",
+    "answer": false,
+    "explanation": "Malware you download yourself arrives through an allowed flow (port 443, for instance): the firewall waves it through. Filtering traffic and analyzing files are two different layers — you need both."
+   },
+   {
+    "type": "callout",
+    "variant": "tip",
+    "md": "A firewall filters **where** traffic goes, it does not check **who** you are. It replaces neither authentication, nor encryption, nor antivirus: it is one layer among others."
+   },
+   {
+    "type": "flipcards",
+    "cards": [
+     {
+      "front": "Firewall",
+      "back": "Device that allows or blocks network traffic according to rules."
+     },
+     {
+      "front": "Stateful",
+      "back": "Firewall that tracks the state of connections in order to allow replies to legitimate traffic."
+     },
+     {
+      "front": "Default deny",
+      "back": "Principle of blocking everything by default and opening only what is strictly necessary."
+     },
+     {
+      "front": "Egress / Ingress",
+      "back": "Filtering of traffic leaving (egress) and entering (ingress) a network zone."
+     }
+    ]
+   },
+   {
+    "type": "quickcheck",
+    "questionId": "q-net-04"
+   }
+  ],
+  "level": 5
+ },
+ {
+  "id": "l-net-05",
+  "domainId": "d-net",
+  "title": "HTTP vs HTTPS and the role of TLS",
+  "order": 5,
+  "estMinutes": 6,
+  "blocks": [
+   {
+    "type": "hook",
+    "md": "2010: a simple Firefox extension called Firesheep lets anyone on a coffee shop Wi-Fi steal the Facebook sessions of the other customers. One click, zero technical skill. The culprit: a web that still largely traveled in cleartext."
+   },
+   {
+    "type": "text",
+    "md": "That cleartext web is **HTTP** (HyperText Transfer Protocol), the protocol of the web. In its original form, everything travels **in cleartext**: anyone in the middle of the network can read and alter the pages, the passwords, the forms. **HTTPS** (HTTP Secure) solves this problem: it is simply HTTP carried inside **TLS**."
+   },
+   {
+    "type": "predict",
+    "question": "Your browser connects to your bank's website over HTTPS. What does it check to make sure it is really talking to the genuine server?",
+    "choices": [
+     {
+      "id": "a",
+      "text": "A certificate signed by a trusted authority"
+     },
+     {
+      "id": "b",
+      "text": "The bank's official IP address"
+     },
+     {
+      "id": "c",
+      "text": "A password only the server knows"
+     }
     ],
-    "level": 6
-  },
-  {
-    "id": "l-net-06",
-    "domainId": "d-net",
-    "title": "The VPN: an encrypted tunnel",
-    "order": 6,
-    "estMinutes": 5,
-    "blocks": [
-      {
-        "type": "text",
-        "md": "A **VPN** (Virtual Private Network) creates an **encrypted tunnel** between your device and a VPN server. All your traffic first travels, encrypted, through that tunnel to the server, which then forwards it on to its destination. To the network you are crossing (a coffee shop Wi-Fi, for instance), the content is unreadable."
-      },
-      {
-        "type": "text",
-        "md": "There are two main reasons to use one:\n\n- **Remote access**: an employee connects to the company network from a distance as if they were on site.\n- **Privacy on an untrusted network**: on public Wi-Fi, the VPN stops the other users of the same network from reading your traffic.\n\nThe common modern protocols are **WireGuard**, **OpenVPN** and **IPsec**."
-      },
-      {
-        "type": "callout",
-        "variant": "warning",
-        "md": "A VPN is **not** a cloak of invisibility. It shifts trust onto the VPN provider, who **sees your traffic** where it leaves the tunnel. It does not make you anonymous, it does not remove malware, and it does not replace HTTPS: keep both."
-      },
-      {
-        "type": "keyterms",
-        "terms": [
-          {
-            "term": "VPN",
-            "def": "Virtual private network: encrypted tunnel between a device and a VPN server."
-          },
-          {
-            "term": "Tunnel",
-            "def": "Channel in which traffic is encapsulated and encrypted from one end of the tunnel to the other."
-          },
-          {
-            "term": "Remote access",
-            "def": "Use of a VPN to reach an organization's internal network from a distance."
-          },
-          {
-            "term": "WireGuard / IPsec",
-            "def": "Modern protocols used to establish an encrypted VPN tunnel."
-          }
-        ]
-      },
-      {
-        "type": "quickcheck",
-        "questionId": "q-net-06"
-      }
+    "correctId": "a",
+    "reveal": "The server presents a certificate signed by a certificate authority (CA). Without that verifiable proof, anyone could pose as your bank."
+   },
+   {
+    "type": "text",
+    "md": "That certificate is the first step of a broader mechanism. **TLS** (Transport Layer Security, the successor to SSL) provides three guarantees: server **authentication**, **confidentiality** (encryption) and **integrity** (detection of any tampering). It works in two stages during the **handshake**:\n\n1. **Asymmetric authentication**: the server presents a **certificate** signed by a certificate authority (**CA**). The client checks that certificate to make sure it is really talking to the right server.\n2. Client and server **then negotiate a symmetric session key**, unique and short-lived, which will encrypt all the exchanges."
+   },
+   {
+    "type": "predict",
+    "question": "The server is authenticated. To encrypt the bulk of the exchanges that follow, which kind of encryption does TLS switch to?",
+    "choices": [
+     {
+      "id": "a",
+      "text": "Asymmetric: two keys, it is safer"
+     },
+     {
+      "id": "b",
+      "text": "Symmetric: a shared session key, much faster"
+     }
     ],
-    "level": 6
-  },
-  {
-    "id": "l-net-07",
-    "domainId": "d-net",
-    "title": "Network segmentation, VLANs and DMZ",
-    "order": 7,
-    "estMinutes": 6,
-    "blocks": [
-      {
-        "type": "text",
-        "md": "A completely flat network, where every machine can talk to all the others, is a gift to an attacker: a single compromised machine opens up the entire network. **Segmentation** means **splitting the network into isolated zones**, in order to limit the reach of an intrusion and slow down **lateral movement** (an attacker hopping from machine to machine)."
-      },
-      {
-        "type": "text",
-        "md": "A key tool is the **VLAN** (Virtual LAN). It lets you create several **logically separated** networks on the same physical device (a switch), at **layer 2** of the OSI model. Each frame is tagged (**802.1Q tag**) so you know which VLAN it belongs to. That way you can separate, for example, the workstation VLAN, the voice-over-IP VLAN and the server VLAN, without running any new cables."
-      },
-      {
-        "type": "text",
-        "md": "The **DMZ** (DeMilitarized Zone) is a buffer subnet that **hosts the services exposed to the Internet** (web server, mail server). It is fenced in by firewalls and **isolated from the internal network**: if a public server in the DMZ is hacked, the attacker does not land straight on the sensitive internal network."
-      },
-      {
-        "type": "callout",
-        "variant": "exam",
-        "md": "Sum it up like this: the **VLAN** separates the internal network **logically** into zones; the **DMZ** isolates the services **exposed to the Internet** from the rest. Both reduce the **blast radius** of a compromise."
-      },
-      {
-        "type": "keyterms",
-        "terms": [
-          {
-            "term": "Segmentation",
-            "def": "Splitting a network into isolated zones to limit how far an attack can spread."
-          },
-          {
-            "term": "VLAN",
-            "def": "Virtual LAN: logical separation of several networks on a single switch (layer 2)."
-          },
-          {
-            "term": "DMZ",
-            "def": "Buffer subnet that hosts the services exposed to the Internet, isolated from the internal network."
-          },
-          {
-            "term": "Lateral movement",
-            "def": "An attacker moving from one machine to another inside a network."
-          }
-        ]
-      },
-      {
-        "type": "quickcheck",
-        "questionId": "q-net-07"
-      }
+    "correctId": "b",
+    "reveal": "Symmetric. Asymmetric crypto only served to authenticate and negotiate that session key — from here on, speed takes over."
+   },
+   {
+    "type": "text",
+    "md": "Why this mix? **Asymmetric** cryptography (two keys, one public and one private) is ideal for authentication and the initial exchange, but slow. **Symmetric** cryptography (a single shared key) is very fast, perfect for encrypting the whole volume of data that follows. TLS combines the best of both."
+   },
+   {
+    "type": "truefalse",
+    "statement": "The HTTPS padlock guarantees that the site is trustworthy.",
+    "answer": false,
+    "explanation": "It guarantees an encrypted pipe to the server of the domain shown, nothing more. A phishing site can obtain a perfectly valid certificate."
+   },
+   {
+    "type": "callout",
+    "variant": "warning",
+    "md": "The HTTPS padlock proves that **the connection is encrypted and that the server really is the one for the domain shown**. It does **not** prove that the site is honest: a phishing site can perfectly well have a valid certificate. HTTPS protects the pipe, not what is at the end of it."
+   },
+   {
+    "type": "flipcards",
+    "cards": [
+     {
+      "front": "HTTP",
+      "back": "Web protocol that transmits data in cleartext, with no encryption."
+     },
+     {
+      "front": "HTTPS",
+      "back": "HTTP carried inside TLS: encrypted exchanges and an authenticated server."
+     },
+     {
+      "front": "TLS",
+      "back": "Protocol that authenticates the server, encrypts the data and protects its integrity."
+     },
+     {
+      "front": "Certificate",
+      "back": "Document signed by an authority (CA) that proves the identity of a server."
+     },
+     {
+      "front": "Session key",
+      "back": "Short-lived symmetric key negotiated during the handshake to encrypt the conversation."
+     }
+    ]
+   },
+   {
+    "type": "quickcheck",
+    "questionId": "q-net-05"
+   }
+  ],
+  "level": 6
+ },
+ {
+  "id": "l-net-06",
+  "domainId": "d-net",
+  "title": "The VPN: an encrypted tunnel",
+  "order": 6,
+  "estMinutes": 5,
+  "blocks": [
+   {
+    "type": "hook",
+    "md": "You open your laptop at an airport, free Wi-Fi, and check your email. Three seats away, someone has fired up a traffic analyzer and is watching everything that crosses the network. What they see of you comes down to one thing: a tunnel."
+   },
+   {
+    "type": "predict",
+    "question": "On that public Wi-Fi, you switch on your VPN. What does the snoop watching the network see now?",
+    "choices": [
+     {
+      "id": "a",
+      "text": "All your traffic, same as before"
+     },
+     {
+      "id": "b",
+      "text": "Nothing at all: you have become invisible on the network"
+     },
+     {
+      "id": "c",
+      "text": "A single encrypted flow to one server, its content unreadable"
+     }
     ],
-    "level": 9
-  },
-  {
-    "id": "l-net-08",
-    "domainId": "d-net",
-    "title": "Man-in-the-middle (MITM) attacks and ARP spoofing",
-    "order": 8,
-    "estMinutes": 7,
-    "blocks": [
-      {
-        "type": "text",
-        "md": "In a **man-in-the-middle** attack — **MITM** —, an attacker **slips in between** two parties who believe they are talking to each other directly. Sitting in the middle, they can **eavesdrop**, but also **alter** or **replay** the messages passing through, without the victims noticing a thing."
-      },
-      {
-        "type": "text",
-        "md": "On a local network, the most classic technique for getting into the middle is **ARP spoofing** (also called ARP poisoning). A quick reminder: the **ARP** (Address Resolution Protocol) protocol is used to find, starting from an IP address, the matching **MAC address** (the physical identifier of a network card) on the local network. The catch is that **ARP does not authenticate its replies**: anyone can answer."
-      },
-      {
-        "type": "text",
-        "md": "The attacker takes advantage of this: they send **forged ARP messages** claiming that **their** MAC address matches the IP of the **gateway** (the router). The machines on the network record this false mapping and send their traffic to the attacker, who then forwards it on to the real gateway. They are now in the middle. This is a **local** attack: it only works on the same network segment (layer 2)."
-      },
-      {
-        "type": "callout",
-        "variant": "tip",
-        "md": "Countermeasures: **HTTPS/TLS** protects the content even if the attacker intercepts the traffic (any attempt to decrypt it would trigger a certificate warning), **Dynamic ARP Inspection** on switches blocks forged ARP replies, and a **VPN** encrypts all the traffic inside the tunnel."
-      },
-      {
-        "type": "keyterms",
-        "terms": [
-          {
-            "term": "MITM",
-            "def": "Attack in which a third party slips between two parties to eavesdrop on or tamper with their exchanges."
-          },
-          {
-            "term": "ARP",
-            "def": "Protocol that resolves an IP address to a MAC address on a local network, with no authentication."
-          },
-          {
-            "term": "MAC address",
-            "def": "Unique physical identifier of a network card, used locally (layer 2)."
-          },
-          {
-            "term": "ARP spoofing",
-            "def": "Sending forged ARP replies to divert local network traffic to the attacker."
-          }
-        ]
-      },
-      {
-        "type": "quickcheck",
-        "questionId": "q-net-08"
-      }
+    "correctId": "c",
+    "reveal": "They can see that a tunnel exists and which server it leads to — but everything traveling inside is encrypted, and therefore unreadable."
+   },
+   {
+    "type": "text",
+    "md": "That tunnel is a **VPN** (Virtual Private Network): an **encrypted tunnel** between your device and a VPN server. All your traffic first travels, encrypted, through that tunnel to the server, which then forwards it on to its destination. To the network you are crossing (a coffee shop Wi-Fi, for instance), the content is unreadable."
+   },
+   {
+    "type": "text",
+    "md": "There are two main reasons to use one:\n\n- **Remote access**: an employee connects to the company network from a distance as if they were on site.\n- **Privacy on an untrusted network**: on public Wi-Fi, the VPN stops the other users of the same network from reading your traffic.\n\nThe common modern protocols are **WireGuard**, **OpenVPN** and **IPsec**."
+   },
+   {
+    "type": "truefalse",
+    "statement": "With a VPN, you are anonymous on the Internet.",
+    "answer": false,
+    "explanation": "A VPN shifts trust: your VPN provider sees your traffic leaving the tunnel, and websites can still recognize you (accounts, cookies). It is an encrypted tunnel, not a cloak of invisibility."
+   },
+   {
+    "type": "callout",
+    "variant": "warning",
+    "md": "A VPN is **not** a cloak of invisibility. It shifts trust onto the VPN provider, who **sees your traffic** where it leaves the tunnel. It does not make you anonymous, it does not remove malware, and it does not replace HTTPS: keep both."
+   },
+   {
+    "type": "flipcards",
+    "cards": [
+     {
+      "front": "VPN",
+      "back": "Virtual private network: encrypted tunnel between a device and a VPN server."
+     },
+     {
+      "front": "Tunnel",
+      "back": "Channel in which traffic is encapsulated and encrypted from one end of the tunnel to the other."
+     },
+     {
+      "front": "Remote access",
+      "back": "Use of a VPN to reach an organization's internal network from a distance."
+     },
+     {
+      "front": "WireGuard / IPsec",
+      "back": "Modern protocols used to establish an encrypted VPN tunnel."
+     }
+    ]
+   },
+   {
+    "type": "quickcheck",
+    "questionId": "q-net-06"
+   }
+  ],
+  "level": 6
+ },
+ {
+  "id": "l-net-07",
+  "domainId": "d-net",
+  "title": "Network segmentation, VLANs and DMZ",
+  "order": 7,
+  "estMinutes": 6,
+  "blocks": [
+   {
+    "type": "hook",
+    "md": "Late 2013: attackers break into the US retailer Target through access belonging to… its heating and air-conditioning contractor. From there they work their way to the checkout systems: about 40 million payment card numbers stolen. A poorly partitioned network turns a minor foothold into a disaster."
+   },
+   {
+    "type": "text",
+    "md": "That is the danger of a completely flat network, where every machine can talk to all the others: a gift to an attacker, since a single compromised machine opens up the entire network. **Segmentation** means **splitting the network into isolated zones**, in order to limit the reach of an intrusion and slow down **lateral movement** (an attacker hopping from machine to machine)."
+   },
+   {
+    "type": "predict",
+    "question": "Your company wants to isolate the workstations, the phone system and the servers, without buying new hardware or running new cables. Possible?",
+    "choices": [
+     {
+      "id": "a",
+      "text": "No: each isolated network needs its own hardware"
+     },
+     {
+      "id": "b",
+      "text": "Yes: a single switch can be logically split into several networks"
+     },
+     {
+      "id": "c",
+      "text": "No: only physical separation truly isolates"
+     }
     ],
-    "level": 11
-  }
+    "correctId": "b",
+    "reveal": "That is exactly what a VLAN does: several logically sealed-off networks on the same physical equipment."
+   },
+   {
+    "type": "text",
+    "md": "The **VLAN** (Virtual LAN) indeed lets you create several **logically separated** networks on the same physical device (a switch), at **layer 2** of the OSI model. Each frame is tagged (**802.1Q tag**) so you know which VLAN it belongs to. That way you can separate, for example, the workstation VLAN, the voice-over-IP VLAN and the server VLAN, without running any new cables."
+   },
+   {
+    "type": "predict",
+    "question": "The company hosts its public website. Where should that Internet-facing server go?",
+    "choices": [
+     {
+      "id": "a",
+      "text": "On the internal network, with the other servers"
+     },
+     {
+      "id": "b",
+      "text": "In an isolated buffer zone, between the Internet and the internal network"
+     },
+     {
+      "id": "c",
+      "text": "Straight on the Internet, outside any firewall"
+     }
+    ],
+    "correctId": "b",
+    "reveal": "That buffer zone is the DMZ: if the public server falls, the attacker stays locked in the airlock."
+   },
+   {
+    "type": "text",
+    "md": "The **DMZ** (DeMilitarized Zone) is that buffer subnet which **hosts the services exposed to the Internet** (web server, mail server). It is fenced in by firewalls and **isolated from the internal network**: if a public server in the DMZ is hacked, the attacker does not land straight on the sensitive internal network."
+   },
+   {
+    "type": "callout",
+    "variant": "exam",
+    "md": "Sum it up like this: the **VLAN** separates the internal network **logically** into zones; the **DMZ** isolates the services **exposed to the Internet** from the rest. Both reduce the **blast radius** of a compromise."
+   },
+   {
+    "type": "flipcards",
+    "cards": [
+     {
+      "front": "Segmentation",
+      "back": "Splitting a network into isolated zones to limit how far an attack can spread."
+     },
+     {
+      "front": "VLAN",
+      "back": "Virtual LAN: logical separation of several networks on a single switch (layer 2)."
+     },
+     {
+      "front": "DMZ",
+      "back": "Buffer subnet that hosts the services exposed to the Internet, isolated from the internal network."
+     },
+     {
+      "front": "Lateral movement",
+      "back": "An attacker moving from one machine to another inside a network."
+     }
+    ]
+   },
+   {
+    "type": "quickcheck",
+    "questionId": "q-net-07"
+   }
+  ],
+  "level": 9
+ },
+ {
+  "id": "l-net-08",
+  "domainId": "d-net",
+  "title": "Man-in-the-middle (MITM) attacks and ARP spoofing",
+  "order": 8,
+  "estMinutes": 7,
+  "blocks": [
+   {
+    "type": "hook",
+    "md": "This time, you are the attacker. Sitting in a coffee shop, connected to the same Wi-Fi as everyone else, your goal is simple: route the other customers' traffic through your machine without them suspecting a thing. By the end of this lesson, you will know exactly how it is done — and how to shut it down."
+   },
+   {
+    "type": "text",
+    "md": "That scenario has a name: the **man-in-the-middle** attack — **MITM**. An attacker **slips in between** two parties who believe they are talking to each other directly. Sitting in the middle, they can **eavesdrop**, but also **alter** or **replay** the messages passing through, without the victims noticing a thing."
+   },
+   {
+    "type": "predict",
+    "question": "On the local network, the ARP protocol links IP addresses to MAC addresses. What happens if a machine sends a lying ARP reply?",
+    "choices": [
+     {
+      "id": "a",
+      "text": "It is rejected: ARP verifies the sender's identity"
+     },
+     {
+      "id": "b",
+      "text": "It is accepted: ARP takes everyone at their word"
+     },
+     {
+      "id": "c",
+      "text": "The switch detects it and shuts the port down at once"
+     }
+    ],
+    "correctId": "b",
+    "reveal": "ARP authenticates nothing: the last reply received wins. The entire attack that follows rests on that blind trust."
+   },
+   {
+    "type": "text",
+    "md": "That is precisely the most classic technique for getting into the middle on a local network: **ARP spoofing** (also called ARP poisoning). A quick reminder: the **ARP** (Address Resolution Protocol) protocol is used to find, starting from an IP address, the matching **MAC address** (the physical identifier of a network card) on the local network. The catch is that **ARP does not authenticate its replies**: anyone can answer."
+   },
+   {
+    "type": "text",
+    "md": "The attacker takes advantage of this: they send **forged ARP messages** claiming that **their** MAC address matches the IP of the **gateway** (the router). The machines on the network record this false mapping and send their traffic to the attacker, who then forwards it on to the real gateway. They are now in the middle. This is a **local** attack: it only works on the same network segment (layer 2)."
+   },
+   {
+    "type": "truefalse",
+    "statement": "An attacker in a man-in-the-middle position can read your passwords even on an HTTPS site.",
+    "answer": false,
+    "explanation": "They do intercept the traffic, but the content stays encrypted by TLS. To decrypt it, they would have to present a fake certificate — and your browser would raise the alarm. Hence the countermeasures that follow."
+   },
+   {
+    "type": "callout",
+    "variant": "tip",
+    "md": "Countermeasures: **HTTPS/TLS** protects the content even if the attacker intercepts the traffic (any attempt to decrypt it would trigger a certificate warning), **Dynamic ARP Inspection** on switches blocks forged ARP replies, and a **VPN** encrypts all the traffic inside the tunnel."
+   },
+   {
+    "type": "flipcards",
+    "cards": [
+     {
+      "front": "MITM",
+      "back": "Attack in which a third party slips between two parties to eavesdrop on or tamper with their exchanges."
+     },
+     {
+      "front": "ARP",
+      "back": "Protocol that resolves an IP address to a MAC address on a local network, with no authentication."
+     },
+     {
+      "front": "MAC address",
+      "back": "Unique physical identifier of a network card, used locally (layer 2)."
+     },
+     {
+      "front": "ARP spoofing",
+      "back": "Sending forged ARP replies to divert local network traffic to the attacker."
+     }
+    ]
+   },
+   {
+    "type": "quickcheck",
+    "questionId": "q-net-08"
+   }
+  ],
+  "level": 11
+ }
 ]

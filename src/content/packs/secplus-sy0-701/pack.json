@@ -3,15 +3,63 @@
   "certName": "Security+",
   "examCode": "SY0-701",
   "locale": "fr",
-  "version": 5,
+  "version": 6,
   "domains": [
-    { "id": "d-fond", "code": "1.0", "title": "Fondamentaux & hygiène", "weightPercent": 12, "order": 1 },
-    { "id": "d-net", "code": "2.0", "title": "Réseaux", "weightPercent": 14, "order": 2 },
-    { "id": "d-crypto", "code": "3.0", "title": "Cryptographie", "weightPercent": 14, "order": 3 },
-    { "id": "d-web", "code": "4.0", "title": "Sécurité Web & applications", "weightPercent": 14, "order": 4 },
-    { "id": "d-sys", "code": "5.0", "title": "Systèmes & Active Directory", "weightPercent": 12, "order": 5 },
-    { "id": "d-threats", "code": "6.0", "title": "Menaces & malwares", "weightPercent": 12, "order": 6 },
-    { "id": "d-defense", "code": "7.0", "title": "Défense, SOC & réponse à incident", "weightPercent": 12, "order": 7 },
-    { "id": "d-offensive", "code": "8.0", "title": "Offensive & pentest", "weightPercent": 10, "order": 8 }
+    {
+      "id": "d-fond",
+      "code": "1.0",
+      "title": "Fondamentaux & hygiène",
+      "weightPercent": 12,
+      "order": 1
+    },
+    {
+      "id": "d-net",
+      "code": "2.0",
+      "title": "Réseaux",
+      "weightPercent": 14,
+      "order": 2
+    },
+    {
+      "id": "d-crypto",
+      "code": "3.0",
+      "title": "Cryptographie",
+      "weightPercent": 14,
+      "order": 3
+    },
+    {
+      "id": "d-web",
+      "code": "4.0",
+      "title": "Sécurité Web & applications",
+      "weightPercent": 14,
+      "order": 4
+    },
+    {
+      "id": "d-sys",
+      "code": "5.0",
+      "title": "Systèmes & Active Directory",
+      "weightPercent": 12,
+      "order": 5
+    },
+    {
+      "id": "d-threats",
+      "code": "6.0",
+      "title": "Menaces & malwares",
+      "weightPercent": 12,
+      "order": 6
+    },
+    {
+      "id": "d-defense",
+      "code": "7.0",
+      "title": "Défense, SOC & réponse à incident",
+      "weightPercent": 12,
+      "order": 7
+    },
+    {
+      "id": "d-offensive",
+      "code": "8.0",
+      "title": "Offensive & pentest",
+      "weightPercent": 10,
+      "order": 8
+    }
   ]
 }
