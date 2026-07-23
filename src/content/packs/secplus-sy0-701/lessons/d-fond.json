@@ -12,7 +12,7 @@
    },
    {
     "type": "text",
-    "md": "Votre mot de passe est la première serrure de votre vie numérique. Mais qu'est-ce qui fait vraiment sa solidité ? La réponse surprend la plupart des gens."
+    "md": "Ton mot de passe est la première serrure de ta vie numérique. Mais qu'est-ce qui fait vraiment sa solidité ? La réponse surprend la plupart des gens."
    },
    {
     "type": "predict",
@@ -41,7 +41,7 @@
    },
    {
     "type": "predict",
-    "question": "Un forum où vous aviez un compte se fait pirater. Votre e-mail et votre mot de passe fuitent. Que font les attaquants en premier ?",
+    "question": "Un forum où tu avais un compte se fait pirater. Ton e-mail et ton mot de passe fuitent. Que font les attaquants en premier ?",
     "choices": [
      {
       "id": "a",
@@ -57,17 +57,17 @@
      }
     ],
     "correctId": "b",
-    "reveal": "C'est entièrement automatisé : des robots rejouent les identifiants volés partout. Un seul mot de passe réutilisé, et votre compte le plus sensible tombe."
+    "reveal": "C'est entièrement automatisé : des robots rejouent les identifiants volés partout. Un seul mot de passe réutilisé, et ton compte le plus sensible tombe."
    },
    {
     "type": "text",
-    "md": "Ce rejeu massif a un nom : le **credential stuffing** (rejeu d'identifiants volés). C'est pourquoi l'unicité compte autant que la longueur. Un site sérieux ne conserve d'ailleurs jamais votre mot de passe en clair, mais son **hash** (une empreinte irréversible). Retenir des dizaines de mots de passe uniques est impossible de tête : c'est le rôle du **gestionnaire de mots de passe**, qui les génère, les chiffre et les remplit pour vous."
+    "md": "Ce rejeu massif a un nom : le **credential stuffing** (rejeu d'identifiants volés). C'est pourquoi l'unicité compte autant que la longueur. Un site sérieux ne conserve d'ailleurs jamais ton mot de passe en clair, mais son **hash** (une empreinte irréversible). Retenir des dizaines de mots de passe uniques est impossible de tête : c'est le rôle du **gestionnaire de mots de passe**, qui les génère, les chiffre et les remplit pour toi."
    },
    {
     "type": "truefalse",
-    "statement": "Si vous oubliez votre mot de passe, un site sérieux peut vous le renvoyer par e-mail.",
+    "statement": "Si tu oublies ton mot de passe, un site sérieux peut te le renvoyer par e-mail.",
     "answer": false,
-    "explanation": "Un site sérieux ne stocke que le **hash**, une empreinte irréversible : il ne connaît pas votre mot de passe et ne peut que vous en faire créer un nouveau. Un site capable de vous renvoyer votre mot de passe en clair le stocke mal — méfiance."
+    "explanation": "Un site sérieux ne stocke que le **hash**, une empreinte irréversible : il ne connaît pas ton mot de passe et ne peut que t'en faire créer un nouveau. Un site capable de te renvoyer ton mot de passe en clair le stocke mal — méfiance."
    },
    {
     "type": "flipcards",
@@ -110,7 +110,7 @@
    },
    {
     "type": "text",
-    "md": "Le **phishing** (hameçonnage) est une tentative de vous faire cliquer, ouvrir une pièce jointe ou livrer un mot de passe en se faisant passer pour un tiers de confiance : votre banque, un livreur, un collègue, un service connu. C'est aujourd'hui la porte d'entrée la plus courante des attaques."
+    "md": "Le **phishing** (hameçonnage) est une tentative de te faire cliquer, ouvrir une pièce jointe ou livrer un mot de passe en se faisant passer pour un tiers de confiance : ta banque, un livreur, un collègue, un service connu. C'est aujourd'hui la porte d'entrée la plus courante des attaques."
    },
    {
     "type": "predict",
@@ -134,11 +134,11 @@
    },
    {
     "type": "text",
-    "md": "Les signaux d'alerte se répètent : un **sentiment d'urgence** (« votre compte va être bloqué »), une adresse d'expéditeur bizarre, un lien dont le vrai domaine ne correspond pas au texte, des fautes ou une formule vague (« Cher client »), une demande inhabituelle d'informations ou de paiement. Avant de cliquer, survolez le lien pour voir l'adresse réelle, et vérifiez le **domaine** (le nom juste avant le premier `/` qui suit `https://`, par exemple `banque.fr`)."
+    "md": "Les signaux d'alerte se répètent : un **sentiment d'urgence** (« ton compte va être bloqué »), une adresse d'expéditeur bizarre, un lien dont le vrai domaine ne correspond pas au texte, des fautes ou une formule vague (« Cher client »), une demande inhabituelle d'informations ou de paiement. Avant de cliquer, survole le lien pour voir l'adresse réelle, et vérifie le **domaine** (le nom juste avant le premier `/` qui suit `https://`, par exemple `banque.fr`)."
    },
    {
     "type": "predict",
-    "question": "Un e-mail pressant semble venir de votre banque et vous avez un doute. Le meilleur réflexe ?",
+    "question": "Un e-mail pressant semble venir de ta banque et tu as un doute. Le meilleur réflexe ?",
     "choices": [
      {
       "id": "a",
@@ -150,20 +150,20 @@
      },
      {
       "id": "c",
-      "text": "Ouvrir vous-même le site ou l'app officielle"
+      "text": "Ouvrir toi-même le site ou l'app officielle"
      }
     ],
     "correctId": "c",
-    "reveal": "Ne passez jamais par le canal que l'attaquant contrôle. En ouvrant le site officiel par vos propres moyens, vous coupez court à toute manipulation."
+    "reveal": "Ne passe jamais par le canal que l'attaquant contrôle. En ouvrant le site officiel par tes propres moyens, tu coupes court à toute manipulation."
    },
    {
     "type": "text",
-    "md": "En cas de doute, n'utilisez donc jamais le lien ni le numéro fournis dans le message : allez sur le site officiel par vos propres moyens. Redoublez de prudence quand le message est personnalisé — votre nom, votre poste, vos dossiers en cours : c'est le **spear phishing**, ciblé et bien plus crédible."
+    "md": "En cas de doute, n'utilise donc jamais le lien ni le numéro fournis dans le message : va sur le site officiel par tes propres moyens. Redouble de prudence quand le message est personnalisé — ton nom, ton poste, tes dossiers en cours : c'est le **spear phishing**, ciblé et bien plus crédible."
    },
    {
     "type": "callout",
     "variant": "warning",
-    "md": "L'urgence est une **technique de manipulation**, pas un hasard. Plus un message vous presse d'agir vite, plus il faut ralentir et vérifier par un autre canal (appeler le numéro officiel, ouvrir l'app soi-même)."
+    "md": "L'urgence est une **technique de manipulation**, pas un hasard. Plus un message te presse d'agir vite, plus il faut ralentir et vérifier par un autre canal (appeler le numéro officiel, ouvrir l'app soi-même)."
    },
    {
     "type": "truefalse",
@@ -176,7 +176,7 @@
     "cards": [
      {
       "front": "Phishing (hameçonnage)",
-      "back": "Message frauduleux imitant un tiers de confiance pour vous piéger : clic, pièce jointe ou vol d'identifiants."
+      "back": "Message frauduleux imitant un tiers de confiance pour te piéger : clic, pièce jointe ou vol d'identifiants."
      },
      {
       "front": "Spear phishing",
@@ -208,7 +208,7 @@
    },
    {
     "type": "text",
-    "md": "La **double authentification** ajoute une seconde preuve d'identité en plus du mot de passe. Même si votre mot de passe fuite, l'attaquant reste bloqué à la porte : il lui manque ce second élément. C'est l'une des protections les plus efficaces pour un effort minime."
+    "md": "La **double authentification** ajoute une seconde preuve d'identité en plus du mot de passe. Même si ton mot de passe fuite, l'attaquant reste bloqué à la porte : il lui manque ce second élément. C'est l'une des protections les plus efficaces pour un effort minime."
    },
    {
     "type": "predict",
@@ -220,7 +220,7 @@
      },
      {
       "id": "b",
-      "text": "Mot de passe + code généré sur votre téléphone"
+      "text": "Mot de passe + code généré sur ton téléphone"
      },
      {
       "id": "c",
@@ -228,11 +228,11 @@
      }
     ],
     "correctId": "b",
-    "reveal": "Un vrai MFA combine deux **familles** différentes. Mot de passe et question secrète relèvent tous deux du « savoir » ; empreinte et visage, tous deux de « ce que vous êtes »."
+    "reveal": "Un vrai MFA combine deux **familles** différentes. Mot de passe et question secrète relèvent tous deux du « savoir » ; empreinte et visage, tous deux de « ce que tu es »."
    },
    {
     "type": "text",
-    "md": "On parle de **facteurs**, regroupés en trois familles : ce que vous **savez** (mot de passe), ce que vous **possédez** (téléphone, clé de sécurité) et ce que vous **êtes** (empreinte, visage). Le **MFA** combine au moins deux familles différentes ; le **2FA** en est le cas à deux facteurs."
+    "md": "On parle de **facteurs**, regroupés en trois familles : ce que tu **sais** (mot de passe), ce que tu **possèdes** (téléphone, clé de sécurité) et ce que tu **es** (empreinte, visage). Le **MFA** combine au moins deux familles différentes ; le **2FA** en est le cas à deux facteurs."
    },
    {
     "type": "predict",
@@ -261,7 +261,7 @@
    {
     "type": "callout",
     "variant": "tip",
-    "md": "Quand c'est proposé, préférez une **application d'authentification** ou une **clé de sécurité** au code par SMS. Gardez précieusement vos codes de secours, hors ligne, pour ne pas vous verrouiller dehors."
+    "md": "Quand c'est proposé, préfère une **application d'authentification** ou une **clé de sécurité** au code par SMS. Garde précieusement tes codes de secours, hors ligne, pour ne pas te verrouiller dehors."
    },
    {
     "type": "flipcards",
@@ -280,7 +280,7 @@
      },
      {
       "front": "Facteur",
-      "back": "Élément qui prouve votre identité : quelque chose que vous savez, que vous possédez ou que vous êtes."
+      "back": "Élément qui prouve ton identité : quelque chose que tu sais, que tu possèdes ou que tu es."
      }
     ]
    },
@@ -353,7 +353,7 @@
    {
     "type": "callout",
     "variant": "exam",
-    "md": "Retenez la logique : **faille connue + correctif disponible + système non mis à jour = la cible la plus facile**. Activez les mises à jour automatiques partout où c'est possible."
+    "md": "Retiens la logique : **faille connue + correctif disponible + système non mis à jour = la cible la plus facile**. Active les mises à jour automatiques partout où c'est possible."
    },
    {
     "type": "flipcards",
@@ -392,15 +392,15 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "Lundi, 8 h 04. Votre écran affiche : « Vos fichiers ont été chiffrés. Payez pour les récupérer. » Photos, documents, comptabilité — tout est verrouillé. Une seule question compte encore : existe-t-il une copie que l'attaquant n'a pas pu atteindre ?"
+    "md": "Lundi, 8 h 04. Ton écran affiche : « Tes fichiers ont été chiffrés. Paie pour les récupérer. » Photos, documents, comptabilité — tout est verrouillé. Une seule question compte encore : existe-t-il une copie que l'attaquant n'a pas pu atteindre ?"
    },
    {
     "type": "text",
-    "md": "Une **sauvegarde** est une copie de vos données que vous pouvez restaurer si l'original est perdu. Panne de disque, vol, effacement accidentel, ou **ransomware** (rançongiciel qui chiffre vos fichiers pour exiger une rançon) : sans copie, les données sont perdues pour de bon."
+    "md": "Une **sauvegarde** est une copie de tes données que tu peux restaurer si l'original est perdu. Panne de disque, vol, effacement accidentel, ou **ransomware** (rançongiciel qui chiffre tes fichiers pour exiger une rançon) : sans copie, les données sont perdues pour de bon."
    },
    {
     "type": "predict",
-    "question": "Vous avez trois copies de vos données… toutes rangées dans la même maison. Quel scénario vous fait encore tout perdre ?",
+    "question": "Tu as trois copies de tes données… toutes rangées dans la même maison. Quel scénario te fait encore tout perdre ?",
     "choices": [
      {
       "id": "a",
@@ -420,11 +420,11 @@
    },
    {
     "type": "text",
-    "md": "La **règle 3-2-1** résume une bonne stratégie : **3** copies de vos données au total, sur **2** types de supports différents (ex. disque interne + disque externe), dont **1** conservée **hors site** (dans un autre lieu ou dans le cloud). Les supports différents évitent qu'une même panne ne détruise tout ; la copie hors site protège contre l'incendie, le vol ou une inondation."
+    "md": "La **règle 3-2-1** résume une bonne stratégie : **3** copies de tes données au total, sur **2** types de supports différents (ex. disque interne + disque externe), dont **1** conservée **hors site** (dans un autre lieu ou dans le cloud). Les supports différents évitent qu'une même panne ne détruise tout ; la copie hors site protège contre l'incendie, le vol ou une inondation."
    },
    {
     "type": "predict",
-    "question": "Votre sauvegarde vit sur un disque externe branché en permanence au PC. Un ransomware frappe : qu'arrive-t-il à votre copie ?",
+    "question": "Ta sauvegarde vit sur un disque externe branché en permanence au PC. Un ransomware frappe : qu'arrive-t-il à ta copie ?",
     "choices": [
      {
       "id": "a",
@@ -445,13 +445,13 @@
    {
     "type": "callout",
     "variant": "warning",
-    "md": "Une sauvegarde jamais testée n'est pas une sauvegarde. **Vérifiez régulièrement que vous savez restaurer** un fichier : beaucoup découvrent une copie corrompue ou vide le jour où ils en ont besoin."
+    "md": "Une sauvegarde jamais testée n'est pas une sauvegarde. **Vérifie régulièrement que tu sais restaurer** un fichier : beaucoup découvrent une copie corrompue ou vide le jour où ils en ont besoin."
    },
    {
     "type": "truefalse",
     "statement": "Mes fichiers sont synchronisés dans le cloud, donc j'ai une sauvegarde.",
     "answer": false,
-    "explanation": "La synchronisation réplique aussi vos erreurs : un fichier supprimé ou chiffré par un ransomware est aussitôt écrasé partout. Une vraie sauvegarde est une copie séparée, idéalement avec un historique de versions."
+    "explanation": "La synchronisation réplique aussi tes erreurs : un fichier supprimé ou chiffré par un ransomware est aussitôt écrasé partout. Une vraie sauvegarde est une copie séparée, idéalement avec un historique de versions."
    },
    {
     "type": "flipcards",
@@ -466,7 +466,7 @@
      },
      {
       "front": "Ransomware (rançongiciel)",
-      "back": "Logiciel malveillant qui chiffre vos fichiers et réclame une rançon pour les rendre accessibles."
+      "back": "Logiciel malveillant qui chiffre tes fichiers et réclame une rançon pour les rendre accessibles."
      },
      {
       "front": "Hors site",
@@ -490,11 +490,11 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "Aéroport, une heure d'attente. Votre téléphone détecte « Airport_Free_WiFi » et « WiFi_Airport_Gratuit ». L'un est officiel ; l'autre émet peut-être depuis le sac à dos posé trois sièges plus loin. Rien, à l'écran, ne permet de les distinguer."
+    "md": "Aéroport, une heure d'attente. Ton téléphone détecte « Airport_Free_WiFi » et « WiFi_Airport_Gratuit ». L'un est officiel ; l'autre émet peut-être depuis le sac à dos posé trois sièges plus loin. Rien, à l'écran, ne permet de les distinguer."
    },
    {
     "type": "text",
-    "md": "Le Wi-Fi gratuit d'un café ou d'un aéroport est pratique, mais vous ne contrôlez ni le réseau ni qui y est connecté. Bonne nouvelle : grâce au chiffrement **HTTPS**, on ne peut plus lire aussi facilement le contenu de vos échanges avec les sites. Le vrai danger s'est déplacé ailleurs."
+    "md": "Le Wi-Fi gratuit d'un café ou d'un aéroport est pratique, mais tu ne contrôles ni le réseau ni qui y est connecté. Bonne nouvelle : grâce au chiffrement **HTTPS**, on ne peut plus lire aussi facilement le contenu de tes échanges avec les sites. Le vrai danger s'est déplacé ailleurs."
    },
    {
     "type": "predict",
@@ -502,7 +502,7 @@
     "choices": [
      {
       "id": "a",
-      "text": "Vos mots de passe circulent en clair et se lisent facilement"
+      "text": "Tes mots de passe circulent en clair et se lisent facilement"
      },
      {
       "id": "b",
@@ -510,19 +510,19 @@
      },
      {
       "id": "c",
-      "text": "Le vol de votre bande passante"
+      "text": "Le vol de ta bande passante"
      }
     ],
     "correctId": "b",
-    "reveal": "HTTPS a fermé la porte de l'écoute passive du contenu. L'attaque moderne consiste à devenir le réseau lui-même : vous vous connectez directement chez l'attaquant."
+    "reveal": "HTTPS a fermé la porte de l'écoute passive du contenu. L'attaque moderne consiste à devenir le réseau lui-même : tu te connectes directement chez l'attaquant."
    },
    {
     "type": "text",
-    "md": "Ce **point d'accès malveillant**, ou **evil twin**, est un faux réseau au nom crédible (« Cafe_Gratuit ») créé pour que vous vous y connectiez. L'attaquant peut alors vous rediriger vers de fausses pages de connexion, piéger un **portail captif** (la page d'accueil qui demande d'accepter les conditions) ou exploiter un appareil mal protégé."
+    "md": "Ce **point d'accès malveillant**, ou **evil twin**, est un faux réseau au nom crédible (« Cafe_Gratuit ») créé pour que tu t'y connectes. L'attaquant peut alors te rediriger vers de fausses pages de connexion, piéger un **portail captif** (la page d'accueil qui demande d'accepter les conditions) ou exploiter un appareil mal protégé."
    },
    {
     "type": "predict",
-    "question": "Vous ne visitez que des sites en HTTPS sur ce Wi-Fi. Que voit encore le réseau ?",
+    "question": "Tu ne visites que des sites en HTTPS sur ce Wi-Fi. Que voit encore le réseau ?",
     "choices": [
      {
       "id": "a",
@@ -530,24 +530,24 @@
      },
      {
       "id": "b",
-      "text": "Les noms de domaine que vous visitez"
+      "text": "Les noms de domaine que tu visites"
      },
      {
       "id": "c",
-      "text": "Tout le contenu de vos pages"
+      "text": "Tout le contenu de tes pages"
      }
     ],
     "correctId": "b",
-    "reveal": "Le contenu est chiffré, mais des métadonnées restent visibles — dont les domaines contactés. Le réseau sait où vous allez, pas ce que vous y faites."
+    "reveal": "Le contenu est chiffré, mais des métadonnées restent visibles — dont les domaines contactés. Le réseau sait où tu vas, pas ce que tu y fais."
    },
    {
     "type": "text",
-    "md": "Même via HTTPS, certaines métadonnées restent en effet visibles, comme les **noms de domaine** que vous visitez. Un **VPN** (réseau privé virtuel) crée un tunnel chiffré entre votre appareil et un serveur de confiance, masquant ces traces au réseau local."
+    "md": "Même via HTTPS, certaines métadonnées restent en effet visibles, comme les **noms de domaine** que tu visites. Un **VPN** (réseau privé virtuel) crée un tunnel chiffré entre ton appareil et un serveur de confiance, masquant ces traces au réseau local."
    },
    {
     "type": "callout",
     "variant": "warning",
-    "md": "Vérifiez le **nom exact du réseau (SSID)** auprès du personnel, désactivez la connexion automatique aux Wi-Fi ouverts, et évitez les opérations sensibles si vous n'avez pas de VPN. Un cadenas HTTPS ne prouve pas que le réseau est honnête."
+    "md": "Vérifie le **nom exact du réseau (SSID)** auprès du personnel, désactive la connexion automatique aux Wi-Fi ouverts, et évite les opérations sensibles si tu n'as pas de VPN. Un cadenas HTTPS ne prouve pas que le réseau est honnête."
    },
    {
     "type": "flipcards",
@@ -558,7 +558,7 @@
      },
      {
       "front": "VPN (réseau privé virtuel)",
-      "back": "Tunnel chiffré entre votre appareil et un serveur de confiance, qui protège vos échanges du réseau local."
+      "back": "Tunnel chiffré entre ton appareil et un serveur de confiance, qui protège tes échanges du réseau local."
      },
      {
       "front": "Portail captif",
@@ -586,7 +586,7 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "En 2019, le FBI publie une alerte inhabituelle : ne faites plus confiance au cadenas. Les sites de phishing s'offrent désormais des certificats HTTPS parfaitement valides — précisément parce que le public croit que cadenas = site fiable."
+    "md": "En 2019, le FBI publie une alerte inhabituelle : ne fais plus confiance au cadenas. Les sites de phishing s'offrent désormais des certificats HTTPS parfaitement valides — précisément parce que le public croit que cadenas = site fiable."
    },
    {
     "type": "text",
@@ -614,7 +614,7 @@
    },
    {
     "type": "text",
-    "md": "Le cadenas garantit deux choses. D'abord, la **confidentialité et l'intégrité du transport** : ce qui circule entre vous et le site est chiffré et ne peut pas être lu ou modifié en route. Ensuite, l'**identité du domaine** : grâce à un **certificat** validé par une **autorité de certification**, vous parlez bien au domaine affiché dans la barre d'adresse, pas à un imposteur."
+    "md": "Le cadenas garantit deux choses. D'abord, la **confidentialité et l'intégrité du transport** : ce qui circule entre toi et le site est chiffré et ne peut pas être lu ou modifié en route. Ensuite, l'**identité du domaine** : grâce à un **certificat** validé par une **autorité de certification**, tu parles bien au domaine affiché dans la barre d'adresse, pas à un imposteur."
    },
    {
     "type": "truefalse",
@@ -629,7 +629,7 @@
    {
     "type": "callout",
     "variant": "warning",
-    "md": "Le cadenas n'est **pas** un label de confiance. Vérifiez toujours **le domaine lui-même** : `paypa1.com` peut avoir un cadenas impeccable tout en étant une arnaque."
+    "md": "Le cadenas n'est **pas** un label de confiance. Vérifie toujours **le domaine lui-même** : `paypa1.com` peut avoir un cadenas impeccable tout en étant une arnaque."
    },
    {
     "type": "flipcards",
@@ -668,15 +668,15 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "Votre téléphone vient de glisser de votre poche dans une rame de métro. Dans la main de quelqu'un d'autre, ce rectangle contient vos messages, vos photos, vos e-mails, votre banque — et de quoi réinitialiser presque tous vos mots de passe. La suite dépend de deux réglages."
+    "md": "Ton téléphone vient de glisser de ta poche dans une rame de métro. Dans la main de quelqu'un d'autre, ce rectangle contient tes messages, tes photos, tes e-mails, ta banque — et de quoi réinitialiser presque tous tes mots de passe. La suite dépend de deux réglages."
    },
    {
     "type": "text",
-    "md": "Ces deux réglages, ce sont un bon **verrouillage d'écran** et une gestion sérieuse des **permissions** accordées aux applications. Le premier protège l'appareil lui-même — la clé de votre vie numérique — ; la seconde limite ce que chaque app voit de votre vie."
+    "md": "Ces deux réglages, ce sont un bon **verrouillage d'écran** et une gestion sérieuse des **permissions** accordées aux applications. Le premier protège l'appareil lui-même — la clé de ta vie numérique — ; la seconde limite ce que chaque app voit de ta vie."
    },
    {
     "type": "predict",
-    "question": "Un voleur récupère votre téléphone verrouillé, le démonte et branche la puce mémoire sur son ordinateur. Que peut-il lire ?",
+    "question": "Un voleur récupère ton téléphone verrouillé, le démonte et branche la puce mémoire sur son ordinateur. Que peut-il lire ?",
     "choices": [
      {
       "id": "a",
@@ -696,11 +696,11 @@
    },
    {
     "type": "text",
-    "md": "Le verrouillage n'est en effet pas qu'un rideau visuel. Sur un smartphone moderne, lorsqu'il est verrouillé, les données sont protégées par le **chiffrement au repos** : sans le code, un voleur ne peut pas les lire, même en démontant l'appareil. La biométrie (empreinte, visage) déverrouille commodément la clé, mais c'est votre **code** qui reste le socle de sécurité — choisissez-le long et activez le verrouillage automatique rapide."
+    "md": "Le verrouillage n'est en effet pas qu'un rideau visuel. Sur un smartphone moderne, lorsqu'il est verrouillé, les données sont protégées par le **chiffrement au repos** : sans le code, un voleur ne peut pas les lire, même en démontant l'appareil. La biométrie (empreinte, visage) déverrouille commodément la clé, mais c'est ton **code** qui reste le socle de sécurité — choisis-le long et active le verrouillage automatique rapide."
    },
    {
     "type": "predict",
-    "question": "Une app « lampe torche » demande l'accès à vos contacts et à votre position. Comment faut-il l'interpréter ?",
+    "question": "Une app « lampe torche » demande l'accès à tes contacts et à ta position. Comment faut-il l'interpréter ?",
     "choices": [
      {
       "id": "a",
@@ -712,16 +712,16 @@
      }
     ],
     "correctId": "b",
-    "reveal": "Une demande sans rapport avec la fonction de l'app est le signe qu'on cherche à collecter vos données. La bonne règle a un nom : le moindre privilège."
+    "reveal": "Une demande sans rapport avec la fonction de l'app est le signe qu'on cherche à collecter tes données. La bonne règle a un nom : le moindre privilège."
    },
    {
     "type": "text",
-    "md": "Côté applications, appliquez justement le **principe du moindre privilège** : une lampe torche n'a aucun besoin de vos contacts ni de votre position. Accordez les permissions au compte-gouttes, préférez « autoriser seulement pendant l'utilisation », et révisez régulièrement qui accède à la caméra, au micro ou à la localisation, y compris en arrière-plan."
+    "md": "Côté applications, applique justement le **principe du moindre privilège** : une lampe torche n'a aucun besoin de tes contacts ni de ta position. Accorde les permissions au compte-gouttes, préfère « autoriser seulement pendant l'utilisation », et révise régulièrement qui accède à la caméra, au micro ou à la localisation, y compris en arrière-plan."
    },
    {
     "type": "callout",
     "variant": "tip",
-    "md": "Faites le ménage : révoquez les permissions des applications que vous n'utilisez plus, et activez la **localisation à distance / effacement à distance** pour un téléphone perdu ou volé."
+    "md": "Fais le ménage : révoque les permissions des applications que tu n'utilises plus, et active la **localisation à distance / effacement à distance** pour un téléphone perdu ou volé."
    },
    {
     "type": "flipcards",
