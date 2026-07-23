@@ -20,7 +20,7 @@
    },
    {
     "type": "predict",
-    "question": "Le symétrique bute donc sur un paradoxe : pour échanger la clé secrète, il faudrait déjà un canal sûr. Comment chiffrer un message pour quelqu'un avec qui vous n'avez jamais partagé de secret ?",
+    "question": "Le symétrique bute donc sur un paradoxe : pour échanger la clé secrète, il faudrait déjà un canal sûr. Comment chiffrer un message pour quelqu'un avec qui tu n'as jamais partagé de secret ?",
     "choices": [
      {
       "id": "a",
@@ -75,7 +75,7 @@
    {
     "type": "callout",
     "variant": "tip",
-    "md": "Retenez la répartition des rôles : l'**asymétrique** sert surtout à **établir et authentifier** une clé partagée ; le **symétrique** fait le gros du travail sur les données. Symétrique = rapide, une clé partagée. Asymétrique = plus lent, mais résout l'échange de clé."
+    "md": "Retiens la répartition des rôles : l'**asymétrique** sert surtout à **établir et authentifier** une clé partagée ; le **symétrique** fait le gros du travail sur les données. Symétrique = rapide, une clé partagée. Asymétrique = plus lent, mais résout l'échange de clé."
    },
    {
     "type": "flipcards",
@@ -137,7 +137,7 @@
    {
     "type": "callout",
     "variant": "warning",
-    "md": "Ne confondez jamais **hachage** et **chiffrement** : le hachage est irréversible et sans clé. Par ailleurs, **MD5** et **SHA-1** sont **obsolètes** — on sait fabriquer des collisions. Utilisez la famille **SHA-2** (SHA-256) ou **SHA-3**."
+    "md": "Ne confonds jamais **hachage** et **chiffrement** : le hachage est irréversible et sans clé. Par ailleurs, **MD5** et **SHA-1** sont **obsolètes** — on sait fabriquer des collisions. Utilise la famille **SHA-2** (SHA-256) ou **SHA-3**."
    },
    {
     "type": "predict",
@@ -204,7 +204,7 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "1976 : Whitfield Diffie et Martin Hellman publient « New Directions in Cryptography » et décrivent l'impensable : deux inconnus peuvent fabriquer un secret commun en n'échangeant que des messages publics. Cinquante ans plus tard, votre navigateur rejoue leur idée à chaque connexion HTTPS."
+    "md": "1976 : Whitfield Diffie et Martin Hellman publient « New Directions in Cryptography » et décrivent l'impensable : deux inconnus peuvent fabriquer un secret commun en n'échangeant que des messages publics. Cinquante ans plus tard, ton navigateur rejoue leur idée à chaque connexion HTTPS."
    },
    {
     "type": "text",
@@ -240,7 +240,7 @@
    },
    {
     "type": "predict",
-    "question": "Un attaquant enregistre aujourd'hui tout votre trafic chiffré. Dans un an, il vole la clé privée du serveur. Peut-il déchiffrer vos sessions passées ?",
+    "question": "Un attaquant enregistre aujourd'hui tout ton trafic chiffré. Dans un an, il vole la clé privée du serveur. Peut-il déchiffrer tes sessions passées ?",
     "choices": [
      {
       "id": "a",
@@ -265,7 +265,7 @@
    {
     "type": "callout",
     "variant": "tip",
-    "md": "Schéma à retenir : **asymétrique pour établir + authentifier**, **symétrique pour la session**. Et préférez des suites à clés **éphémères** (ECDHE) pour la **forward secrecy** : TLS 1.3 impose d'ailleurs ce type d'échange."
+    "md": "Schéma à retenir : **asymétrique pour établir + authentifier**, **symétrique pour la session**. Et préfère des suites à clés **éphémères** (ECDHE) pour la **forward secrecy** : TLS 1.3 impose d'ailleurs ce type d'échange."
    },
    {
     "type": "flipcards",
@@ -312,15 +312,15 @@
    },
    {
     "type": "predict",
-    "question": "Vous voulez prouver que c'est bien vous qui avez écrit un message. Vous le « signez » — mais avec quelle clé ?",
+    "question": "Tu veux prouver que c'est bien toi qui as écrit un message. Tu le « signes » — mais avec quelle clé ?",
     "choices": [
      {
       "id": "a",
-      "text": "Votre clé publique : tout le monde doit pouvoir vérifier."
+      "text": "Ta clé publique : tout le monde doit pouvoir vérifier."
      },
      {
       "id": "b",
-      "text": "Votre clé privée : vous seul pouvez produire la signature."
+      "text": "Ta clé privée : toi seul peux produire la signature."
      },
      {
       "id": "c",
@@ -346,7 +346,7 @@
    },
    {
     "type": "predict",
-    "question": "Vous recevez la clé publique de ma-banque.fr. Comment savoir qu'elle appartient vraiment à la banque, et pas à un attaquant interposé ?",
+    "question": "Tu reçois la clé publique de ma-banque.fr. Comment savoir qu'elle appartient vraiment à la banque, et pas à un attaquant interposé ?",
     "choices": [
      {
       "id": "a",
@@ -362,11 +362,11 @@
      }
     ],
     "correctId": "b",
-    "reveal": "C'est tout l'édifice de la PKI : des autorités de certification signent des certificats, et votre navigateur leur fait confiance."
+    "reveal": "C'est tout l'édifice de la PKI : des autorités de certification signent des certificats, et ton navigateur leur fait confiance."
    },
    {
     "type": "text",
-    "md": "C'est le rôle de la **PKI** (Public Key Infrastructure) et des **autorités de certification** (CA, Certificate Authority). Une CA vérifie une identité puis émet un **certificat** qui **lie une identité à une clé publique**, le tout **signé par la CA**. Votre navigateur fait confiance à une liste de **CA racines** (le **trust store**). On obtient une **chaîne de confiance** : certificat du site → CA intermédiaire → CA racine de confiance."
+    "md": "C'est le rôle de la **PKI** (Public Key Infrastructure) et des **autorités de certification** (CA, Certificate Authority). Une CA vérifie une identité puis émet un **certificat** qui **lie une identité à une clé publique**, le tout **signé par la CA**. Ton navigateur fait confiance à une liste de **CA racines** (le **trust store**). On obtient une **chaîne de confiance** : certificat du site → CA intermédiaire → CA racine de confiance."
    },
    {
     "type": "text",
@@ -422,7 +422,7 @@
    },
    {
     "type": "predict",
-    "question": "Votre base fuite. Les mots de passe sont hachés en SHA-256, chacun avec son sel. Verdict ?",
+    "question": "Ta base fuite. Les mots de passe sont hachés en SHA-256, chacun avec son sel. Verdict ?",
     "choices": [
      {
       "id": "a",
@@ -475,7 +475,7 @@
    {
     "type": "callout",
     "variant": "exam",
-    "md": "À retenir : **jamais** de mot de passe stocké avec un simple **MD5 / SHA-1 / SHA-256**, même salé. Utilisez une KDF lente : **Argon2id** (recommandé), sinon **scrypt** ou **bcrypt**. **PBKDF2** dépanne mais n'est **pas memory-hard**."
+    "md": "À retenir : **jamais** de mot de passe stocké avec un simple **MD5 / SHA-1 / SHA-256**, même salé. Utilise une KDF lente : **Argon2id** (recommandé), sinon **scrypt** ou **bcrypt**. **PBKDF2** dépanne mais n'est **pas memory-hard**."
    },
    {
     "type": "flipcards",
@@ -526,7 +526,7 @@
    },
    {
     "type": "predict",
-    "question": "Vous chiffrez une image en AES mode ECB (chaque bloc chiffré indépendamment, avec la même clé). À quoi ressemble le résultat ?",
+    "question": "Tu chiffres une image en AES mode ECB (chaque bloc chiffré indépendamment, avec la même clé). À quoi ressemble le résultat ?",
     "choices": [
      {
       "id": "a",
@@ -681,7 +681,7 @@
    {
     "type": "callout",
     "variant": "exam",
-    "md": "Défense : n'utilisez **pas** de CBC non authentifié. Préférez un **chiffrement authentifié** (**AEAD** comme **AES-GCM**), ou à défaut **Encrypt-then-MAC** (on vérifie un MAC **avant** de déchiffrer et de retirer le padding). Renvoyez une **erreur unique** et **à temps constant**, sans distinguer « padding invalide » d'une autre erreur."
+    "md": "Défense : n'utilise **pas** de CBC non authentifié. Préfère un **chiffrement authentifié** (**AEAD** comme **AES-GCM**), ou à défaut **Encrypt-then-MAC** (on vérifie un MAC **avant** de déchiffrer et de retirer le padding). Renvoie une **erreur unique** et **à temps constant**, sans distinguer « padding invalide » d'une autre erreur."
    },
    {
     "type": "flipcards",
@@ -783,7 +783,7 @@
    {
     "type": "callout",
     "variant": "warning",
-    "md": "Règle d'or : **ne comparez jamais un secret (MAC, token, mot de passe haché) avec une comparaison qui s'arrête au premier écart**. Utilisez une **comparaison à temps constant**, évitez tout **branchement** ou **accès mémoire dépendant d'un secret**, et privilégiez les instructions matérielles dédiées (**AES-NI**), conçues pour être constant-time."
+    "md": "Règle d'or : **ne compare jamais un secret (MAC, token, mot de passe haché) avec une comparaison qui s'arrête au premier écart**. Utilise une **comparaison à temps constant**, évite tout **branchement** ou **accès mémoire dépendant d'un secret**, et privilégie les instructions matérielles dédiées (**AES-NI**), conçues pour être constant-time."
    },
    {
     "type": "flipcards",

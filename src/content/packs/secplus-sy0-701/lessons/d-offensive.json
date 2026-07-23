@@ -284,7 +284,7 @@
       {
         "type": "callout",
         "variant": "warning",
-        "md": "La meilleure défense découle directement de la définition : **un exploit a besoin d'une vulnérabilité pour exister**. Supprimez la faille, et l'exploit n'a plus de prise. D'où l'importance du **patch management** (application régulière des correctifs) et de la **réduction de la surface d'attaque** : moins de logiciels exposés, moins de failles potentielles."
+        "md": "La meilleure défense découle directement de la définition : **un exploit a besoin d'une vulnérabilité pour exister**. Supprime la faille, et l'exploit n'a plus de prise. D'où l'importance du **patch management** (application régulière des correctifs) et de la **réduction de la surface d'attaque** : moins de logiciels exposés, moins de failles potentielles."
       },
       {
         "type": "flipcards",
@@ -602,7 +602,7 @@
       {
         "type": "callout",
         "variant": "exam",
-        "md": "À retenir : **red = attaque**, **blue = défense**, **purple = collaboration** des deux pour améliorer la détection. Et rappelez-vous que la valeur d'un rapport réside dans ses **recommandations de remédiation priorisées**, pas dans le nombre de vulnérabilités trouvées."
+        "md": "À retenir : **red = attaque**, **blue = défense**, **purple = collaboration** des deux pour améliorer la détection. Et rappelle-toi que la valeur d'un rapport réside dans ses **recommandations de remédiation priorisées**, pas dans le nombre de vulnérabilités trouvées."
       },
       {
         "type": "flipcards",

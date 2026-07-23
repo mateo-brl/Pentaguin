@@ -28,7 +28,7 @@
     "correct": [
       "c"
     ],
-    "explanation": "La résistance vient surtout de la longueur et de l'imprévisibilité, et l'unicité évite qu'une fuite ne compromette tous vos comptes.",
+    "explanation": "La résistance vient surtout de la longueur et de l'imprévisibilité, et l'unicité évite qu'une fuite ne compromette tous tes comptes.",
     "difficulty": 1,
     "level": 1,
     "tags": [
@@ -42,7 +42,7 @@
       "l-fond-02"
     ],
     "type": "single",
-    "stem": "Un e-mail de votre « banque » vous presse de cliquer un lien pour « éviter le blocage de votre compte ». Quel est le meilleur réflexe ?",
+    "stem": "Un e-mail de ta « banque » te presse de cliquer un lien pour « éviter le blocage de ton compte ». Quel est le meilleur réflexe ?",
     "choices": [
       {
         "id": "a",
@@ -78,7 +78,7 @@
       "l-fond-03"
     ],
     "type": "single",
-    "stem": "Pourquoi la double authentification protège-t-elle même si votre mot de passe fuite ?",
+    "stem": "Pourquoi la double authentification protège-t-elle même si ton mot de passe fuite ?",
     "choices": [
       {
         "id": "a",
@@ -86,7 +86,7 @@
       },
       {
         "id": "b",
-        "text": "Elle chiffre votre connexion Internet"
+        "text": "Elle chiffre ta connexion Internet"
       },
       {
         "id": "c",
@@ -190,25 +190,25 @@
     "choices": [
       {
         "id": "a",
-        "text": "Un faux point d'accès (evil twin) qui imite le réseau du lieu pour vous piéger"
+        "text": "Un faux point d'accès (evil twin) qui imite le réseau du lieu pour te piéger"
       },
       {
         "id": "b",
-        "text": "Le HTTPS cesse de chiffrer vos données dès qu'il y a du Wi-Fi"
+        "text": "Le HTTPS cesse de chiffrer tes données dès qu'il y a du Wi-Fi"
       },
       {
         "id": "c",
-        "text": "N'importe qui peut lire votre mot de passe bancaire même sur un site HTTPS"
+        "text": "N'importe qui peut lire ton mot de passe bancaire même sur un site HTTPS"
       },
       {
         "id": "d",
-        "text": "Le Wi-Fi public efface automatiquement vos fichiers"
+        "text": "Le Wi-Fi public efface automatiquement tes fichiers"
       }
     ],
     "correct": [
       "a"
     ],
-    "explanation": "HTTPS protège le contenu échangé, mais un faux point d'accès reste une menace concrète car il contrôle le réseau auquel vous vous connectez.",
+    "explanation": "HTTPS protège le contenu échangé, mais un faux point d'accès reste une menace concrète car il contrôle le réseau auquel tu te connectes.",
     "difficulty": 1,
     "level": 3,
     "tags": [
@@ -238,7 +238,7 @@
       },
       {
         "id": "d",
-        "text": "Que la connexion est chiffrée et que vous parlez bien au domaine affiché"
+        "text": "Que la connexion est chiffrée et que tu parles bien au domaine affiché"
       }
     ],
     "correct": [

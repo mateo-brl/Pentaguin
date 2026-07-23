@@ -30,11 +30,11 @@
   {
     "id": "pl-01-10",
     "difficulty": 1,
-    "stem": "Un ami vous envoie un message étrange contenant un lien, sans aucune explication. Quel réflexe adopter ?",
+    "stem": "Un ami t'envoie un message étrange contenant un lien, sans aucune explication. Quel réflexe adopter ?",
     "choices": [
       {
         "id": "a",
-        "text": "Saisir vos identifiants sur la page qui s'ouvre"
+        "text": "Saisir tes identifiants sur la page qui s'ouvre"
       },
       {
         "id": "b",
@@ -58,11 +58,11 @@
   {
     "id": "pl-01-11",
     "difficulty": 1,
-    "stem": "Vous recevez un SMS : « Votre colis est bloqué, payez 2 € ici : [lien] ». De quoi s'agit-il le plus probablement ?",
+    "stem": "Tu reçois un SMS : « Ton colis est bloqué, paie 2 € ici : [lien] ». De quoi s'agit-il le plus probablement ?",
     "choices": [
       {
         "id": "a",
-        "text": "D'un message normal de votre facteur"
+        "text": "D'un message normal de ton facteur"
       },
       {
         "id": "b",
@@ -70,15 +70,15 @@
       },
       {
         "id": "c",
-        "text": "D'une tentative d'arnaque (phishing) pour voler votre argent"
+        "text": "D'une tentative d'arnaque (phishing) pour voler ton argent"
       },
       {
         "id": "d",
-        "text": "D'une mise à jour de votre téléphone"
+        "text": "D'une mise à jour de ton téléphone"
       }
     ],
     "correct": "c",
-    "explanation": "Ces SMS de faux colis servent à voler vos données bancaires : n'y répondez pas.",
+    "explanation": "Ces SMS de faux colis servent à voler tes données bancaires : n'y réponds pas.",
     "tags": [
       "placement-v1"
     ]
@@ -86,7 +86,7 @@
   {
     "id": "pl-01-12",
     "difficulty": 1,
-    "stem": "Pourquoi est-il conseillé d'installer les mises à jour de votre téléphone ?",
+    "stem": "Pourquoi est-il conseillé d'installer les mises à jour de ton téléphone ?",
     "choices": [
       {
         "id": "a",
@@ -94,7 +94,7 @@
       },
       {
         "id": "b",
-        "text": "Pour supprimer toutes vos photos"
+        "text": "Pour supprimer toutes tes photos"
       },
       {
         "id": "c",
@@ -122,7 +122,7 @@
       },
       {
         "id": "b",
-        "text": "Une protection supplémentaire si votre mot de passe est volé"
+        "text": "Une protection supplémentaire si ton mot de passe est volé"
       },
       {
         "id": "c",
@@ -134,7 +134,7 @@
       }
     ],
     "correct": "b",
-    "explanation": "Même avec votre mot de passe, un pirate ne peut pas se connecter sans le second code.",
+    "explanation": "Même avec ton mot de passe, un pirate ne peut pas se connecter sans le second code.",
     "tags": [
       "placement-v1"
     ]
@@ -142,23 +142,23 @@
   {
     "id": "pl-01-14",
     "difficulty": 1,
-    "stem": "Un site inconnu vous réclame le mot de passe de votre boîte mail pour « vérifier votre identité ». Que faites-vous ?",
+    "stem": "Un site inconnu te réclame le mot de passe de ta boîte mail pour « vérifier ton identité ». Que fais-tu ?",
     "choices": [
       {
         "id": "a",
-        "text": "Vous refusez : aucun site sérieux ne demande cela"
+        "text": "Tu refuses : aucun site sérieux ne demande cela"
       },
       {
         "id": "b",
-        "text": "Vous donnez un mot de passe proche mais différent"
+        "text": "Tu donnes un mot de passe proche mais différent"
       },
       {
         "id": "c",
-        "text": "Vous le donnez pour gagner du temps"
+        "text": "Tu le donnes pour gagner du temps"
       },
       {
         "id": "d",
-        "text": "Vous le saisissez en majuscules dans le formulaire"
+        "text": "Tu le saisis en majuscules dans le formulaire"
       }
     ],
     "correct": "a",
@@ -170,7 +170,7 @@
   {
     "id": "pl-01-15",
     "difficulty": 1,
-    "stem": "Quel signe doit vous faire soupçonner un e-mail de phishing ?",
+    "stem": "Quel signe doit te faire soupçonner un e-mail de phishing ?",
     "choices": [
       {
         "id": "a",
@@ -178,7 +178,7 @@
       },
       {
         "id": "b",
-        "text": "Il est rédigé dans votre langue"
+        "text": "Il est rédigé dans ta langue"
       },
       {
         "id": "c",
@@ -206,7 +206,7 @@
       },
       {
         "id": "b",
-        "text": "À retenir et générer des mots de passe forts à votre place"
+        "text": "À retenir et générer des mots de passe forts à ta place"
       },
       {
         "id": "c",
@@ -218,7 +218,7 @@
       }
     ],
     "correct": "b",
-    "explanation": "Il stocke en sécurité des mots de passe uniques et solides sans que vous les mémorisiez.",
+    "explanation": "Il stocke en sécurité des mots de passe uniques et solides sans que tu les mémorises.",
     "tags": [
       "placement-v1"
     ]
@@ -226,7 +226,7 @@
   {
     "id": "pl-01-17",
     "difficulty": 1,
-    "stem": "Publier en ligne la photo de votre carte d'embarquement ou de votre carte bancaire, c'est…",
+    "stem": "Publier en ligne la photo de ta carte d'embarquement ou de ta carte bancaire, c'est…",
     "choices": [
       {
         "id": "a",
@@ -310,7 +310,7 @@
   {
     "id": "pl-01-2",
     "difficulty": 1,
-    "stem": "Un e-mail « Votre banque : cliquez vite pour débloquer votre compte » contient un lien. Quel est le bon réflexe ?",
+    "stem": "Un e-mail « Ta banque : clique vite pour débloquer ton compte » contient un lien. Quel est le bon réflexe ?",
     "choices": [
       {
         "id": "a",
@@ -338,11 +338,11 @@
   {
     "id": "pl-01-20",
     "difficulty": 1,
-    "stem": "Un appel vous presse de payer immédiatement sous peine de sanction. Quel est le bon réflexe ?",
+    "stem": "Un appel te presse de payer immédiatement sous peine de sanction. Quel est le bon réflexe ?",
     "choices": [
       {
         "id": "a",
-        "text": "Communiquer votre numéro de carte par téléphone"
+        "text": "Communiquer ton numéro de carte par téléphone"
       },
       {
         "id": "b",
@@ -358,7 +358,7 @@
       }
     ],
     "correct": "d",
-    "explanation": "L'urgence est une technique de manipulation : prenez le temps de vérifier.",
+    "explanation": "L'urgence est une technique de manipulation : prends le temps de vérifier.",
     "tags": [
       "placement-v1"
     ]
@@ -366,11 +366,11 @@
   {
     "id": "pl-01-21",
     "difficulty": 1,
-    "stem": "Sur un ordinateur public (bibliothèque), que faire après avoir consulté votre messagerie ?",
+    "stem": "Sur un ordinateur public (bibliothèque), que faire après avoir consulté ta messagerie ?",
     "choices": [
       {
         "id": "a",
-        "text": "Noter votre mot de passe sur un papier près de l'écran"
+        "text": "Noter ton mot de passe sur un papier près de l'écran"
       },
       {
         "id": "b",
@@ -386,7 +386,7 @@
       }
     ],
     "correct": "b",
-    "explanation": "Se déconnecter empêche la personne suivante d'accéder à votre compte.",
+    "explanation": "Se déconnecter empêche la personne suivante d'accéder à ton compte.",
     "tags": [
       "placement-v1"
     ]
@@ -394,7 +394,7 @@
   {
     "id": "pl-01-22",
     "difficulty": 1,
-    "stem": "Un e-mail de votre « banque » vous demande de confirmer votre code secret et votre numéro de carte. Que faut-il en penser ?",
+    "stem": "Un e-mail de ta « banque » te demande de confirmer ton code secret et ton numéro de carte. Que faut-il en penser ?",
     "choices": [
       {
         "id": "a",
@@ -414,7 +414,7 @@
       }
     ],
     "correct": "d",
-    "explanation": "Une banque ne réclame jamais votre code secret ni votre numéro de carte par e-mail.",
+    "explanation": "Une banque ne réclame jamais ton code secret ni ton numéro de carte par e-mail.",
     "tags": [
       "placement-v1"
     ]
@@ -422,7 +422,7 @@
   {
     "id": "pl-01-23",
     "difficulty": 1,
-    "stem": "Vos photos importantes n'existent que sur votre téléphone. Que faire pour ne pas les perdre ?",
+    "stem": "Tes photos importantes n'existent que sur ton téléphone. Que faire pour ne pas les perdre ?",
     "choices": [
       {
         "id": "a",
@@ -442,7 +442,7 @@
       }
     ],
     "correct": "c",
-    "explanation": "Une seconde copie protège vos souvenirs en cas de perte ou de casse du téléphone.",
+    "explanation": "Une seconde copie protège tes souvenirs en cas de perte ou de casse du téléphone.",
     "tags": [
       "placement-v1"
     ]
@@ -450,23 +450,23 @@
   {
     "id": "pl-01-24",
     "difficulty": 1,
-    "stem": "Un e-mail semble venir d'un service connu, mais l'adresse d'expéditeur est étrange (ex. service@arnaque-xyz.info). Que faites-vous ?",
+    "stem": "Un e-mail semble venir d'un service connu, mais l'adresse d'expéditeur est étrange (ex. service@arnaque-xyz.info). Que fais-tu ?",
     "choices": [
       {
         "id": "a",
-        "text": "Vous répondez en indiquant votre mot de passe"
+        "text": "Tu réponds en indiquant ton mot de passe"
       },
       {
         "id": "b",
-        "text": "Vous faites confiance au logo affiché"
+        "text": "Tu fais confiance au logo affiché"
       },
       {
         "id": "c",
-        "text": "Vous cliquez sur tous les liens pour vérifier"
+        "text": "Tu cliques sur tous les liens pour vérifier"
       },
       {
         "id": "d",
-        "text": "Vous vous méfiez : l'adresse d'expéditeur ne correspond pas"
+        "text": "Tu te méfies : l'adresse d'expéditeur ne correspond pas"
       }
     ],
     "correct": "d",
@@ -478,7 +478,7 @@
   {
     "id": "pl-01-25",
     "difficulty": 1,
-    "stem": "Votre meilleur ami vous demande le mot de passe de votre compte en ligne. Quelle est la meilleure attitude ?",
+    "stem": "Ton meilleur ami te demande le mot de passe de ton compte en ligne. Quelle est la meilleure attitude ?",
     "choices": [
       {
         "id": "a",
@@ -506,27 +506,27 @@
   {
     "id": "pl-01-26",
     "difficulty": 1,
-    "stem": "Un réseau Wi-Fi ouvert nommé « Wifi_Gratuit_Rapide » n'a aucun mot de passe. Que faites-vous ?",
+    "stem": "Un réseau Wi-Fi ouvert nommé « Wifi_Gratuit_Rapide » n'a aucun mot de passe. Que fais-tu ?",
     "choices": [
       {
         "id": "a",
-        "text": "Vous vous y connectez et réglez vos achats en ligne"
+        "text": "Tu t'y connectes et règles tes achats en ligne"
       },
       {
         "id": "b",
-        "text": "Vous partagez le réseau à toute votre famille"
+        "text": "Tu partages le réseau à toute ta famille"
       },
       {
         "id": "c",
-        "text": "Vous y saisissez tous vos mots de passe"
+        "text": "Tu y saisis tous tes mots de passe"
       },
       {
         "id": "d",
-        "text": "Vous restez prudent et évitez les opérations sensibles"
+        "text": "Tu restes prudent et évites les opérations sensibles"
       }
     ],
     "correct": "d",
-    "explanation": "Un Wi-Fi ouvert peut être surveillé : évitez d'y transmettre des données sensibles.",
+    "explanation": "Un Wi-Fi ouvert peut être surveillé : évite d'y transmettre des données sensibles.",
     "tags": [
       "placement-v1"
     ]
@@ -562,7 +562,7 @@
   {
     "id": "pl-01-28",
     "difficulty": 1,
-    "stem": "Un message annonce que vous avez gagné un iPhone à une loterie à laquelle vous n'avez jamais joué. De quoi s'agit-il ?",
+    "stem": "Un message annonce que tu as gagné un iPhone à une loterie à laquelle tu n'as jamais joué. De quoi s'agit-il ?",
     "choices": [
       {
         "id": "a",
@@ -646,27 +646,27 @@
   {
     "id": "pl-01-30",
     "difficulty": 1,
-    "stem": "Au téléphone, un inconnu se dit « technicien » et demande à prendre le contrôle de votre ordinateur à distance. Que faites-vous ?",
+    "stem": "Au téléphone, un inconnu se dit « technicien » et demande à prendre le contrôle de ton ordinateur à distance. Que fais-tu ?",
     "choices": [
       {
         "id": "a",
-        "text": "Vous refusez et raccrochez"
+        "text": "Tu refuses et raccroches"
       },
       {
         "id": "b",
-        "text": "Vous payez la « réparation » par carte bancaire"
+        "text": "Tu paies la « réparation » par carte bancaire"
       },
       {
         "id": "c",
-        "text": "Vous acceptez et installez le logiciel qu'il indique"
+        "text": "Tu acceptes et installes le logiciel qu'il indique"
       },
       {
         "id": "d",
-        "text": "Vous lui communiquez vos identifiants"
+        "text": "Tu lui communiques tes identifiants"
       }
     ],
     "correct": "a",
-    "explanation": "Ce faux support technique cherche à prendre la main sur votre appareil : raccrochez.",
+    "explanation": "Ce faux support technique cherche à prendre la main sur ton appareil : raccroche.",
     "tags": [
       "placement-v1"
     ]
@@ -674,7 +674,7 @@
   {
     "id": "pl-01-4",
     "difficulty": 1,
-    "stem": "Vous recevez un e-mail d'un inconnu avec une pièce jointe que vous n'attendiez pas. Quel est le bon réflexe ?",
+    "stem": "Tu reçois un e-mail d'un inconnu avec une pièce jointe que tu n'attendais pas. Quel est le bon réflexe ?",
     "choices": [
       {
         "id": "a",
@@ -682,11 +682,11 @@
       },
       {
         "id": "b",
-        "text": "Répondre en donnant votre adresse postale"
+        "text": "Répondre en donnant ton adresse postale"
       },
       {
         "id": "c",
-        "text": "La transférer à tous vos contacts"
+        "text": "La transférer à tous tes contacts"
       },
       {
         "id": "d",
@@ -714,7 +714,7 @@
       },
       {
         "id": "c",
-        "text": "Pour empêcher quelqu'un d'accéder à vos données en cas de perte"
+        "text": "Pour empêcher quelqu'un d'accéder à tes données en cas de perte"
       },
       {
         "id": "d",
@@ -722,7 +722,7 @@
       }
     ],
     "correct": "c",
-    "explanation": "Le verrouillage protège vos informations si le téléphone est perdu ou volé.",
+    "explanation": "Le verrouillage protège tes informations si le téléphone est perdu ou volé.",
     "tags": [
       "placement-v1"
     ]
@@ -734,7 +734,7 @@
     "choices": [
       {
         "id": "a",
-        "text": "Parce que si un site est piraté, tous vos comptes deviennent vulnérables"
+        "text": "Parce que si un site est piraté, tous tes comptes deviennent vulnérables"
       },
       {
         "id": "b",
@@ -742,7 +742,7 @@
       },
       {
         "id": "c",
-        "text": "Parce que cela ralentit votre ordinateur"
+        "text": "Parce que cela ralentit ton ordinateur"
       },
       {
         "id": "d",
@@ -786,7 +786,7 @@
   {
     "id": "pl-01-8",
     "difficulty": 1,
-    "stem": "À quoi sert une sauvegarde de vos fichiers ?",
+    "stem": "À quoi sert une sauvegarde de tes fichiers ?",
     "choices": [
       {
         "id": "a",
@@ -802,7 +802,7 @@
       },
       {
         "id": "d",
-        "text": "À retrouver vos données si votre appareil est perdu ou en panne"
+        "text": "À retrouver tes données si ton appareil est perdu ou en panne"
       }
     ],
     "correct": "d",
@@ -814,27 +814,27 @@
   {
     "id": "pl-01-9",
     "difficulty": 1,
-    "stem": "Un correspondant se présentant comme votre banque vous demande le code reçu par SMS pour « valider ». Que faites-vous ?",
+    "stem": "Un correspondant se présentant comme ta banque te demande le code reçu par SMS pour « valider ». Que fais-tu ?",
     "choices": [
       {
         "id": "a",
-        "text": "Vous ne communiquez jamais ce code, à personne"
+        "text": "Tu ne communiques jamais ce code, à personne"
       },
       {
         "id": "b",
-        "text": "Vous le dictez lentement pour éviter les erreurs"
+        "text": "Tu le dictes lentement pour éviter les erreurs"
       },
       {
         "id": "c",
-        "text": "Vous donnez le code puisque c'est la banque"
+        "text": "Tu donnes le code puisque c'est la banque"
       },
       {
         "id": "d",
-        "text": "Vous donnez seulement les premiers chiffres"
+        "text": "Tu donnes seulement les premiers chiffres"
       }
     ],
     "correct": "a",
-    "explanation": "Une vraie banque ne demande jamais ce code : ne le partagez avec personne.",
+    "explanation": "Une vraie banque ne demande jamais ce code : ne le partage avec personne.",
     "tags": [
       "placement-v1"
     ]
@@ -870,7 +870,7 @@
   {
     "id": "pl-02-10",
     "difficulty": 2,
-    "stem": "Une application de lampe torche demande l'accès à vos contacts. Quelle réaction est la plus prudente ?",
+    "stem": "Une application de lampe torche demande l'accès à tes contacts. Quelle réaction est la plus prudente ?",
     "choices": [
       {
         "id": "a",
@@ -1010,7 +1010,7 @@
   {
     "id": "pl-02-15",
     "difficulty": 2,
-    "stem": "Vous recevez une pièce jointe inattendue d'un expéditeur inconnu. Que faire ?",
+    "stem": "Tu reçois une pièce jointe inattendue d'un expéditeur inconnu. Que faire ?",
     "choices": [
       {
         "id": "a",
@@ -1198,7 +1198,7 @@
       }
     ],
     "correct": "d",
-    "explanation": "Le master password déverrouille tout le coffre : il doit être fort et connu de vous seul.",
+    "explanation": "Le master password déverrouille tout le coffre : il doit être fort et connu de toi seul.",
     "tags": [
       "placement-v1"
     ]
@@ -1578,7 +1578,7 @@
       },
       {
         "id": "b",
-        "text": "Cela applique les correctifs sans dépendre de votre vigilance"
+        "text": "Cela applique les correctifs sans dépendre de ta vigilance"
       },
       {
         "id": "c",
@@ -1586,7 +1586,7 @@
       },
       {
         "id": "d",
-        "text": "Cela chiffre tous vos fichiers personnels"
+        "text": "Cela chiffre tous tes fichiers personnels"
       }
     ],
     "correct": "b",
@@ -1630,7 +1630,7 @@
     "choices": [
       {
         "id": "a",
-        "text": "Il retient pour vous un mot de passe différent par service"
+        "text": "Il retient pour toi un mot de passe différent par service"
       },
       {
         "id": "b",
@@ -1638,7 +1638,7 @@
       },
       {
         "id": "c",
-        "text": "Il vous dispense d'avoir un antivirus"
+        "text": "Il te dispense d'avoir un antivirus"
       },
       {
         "id": "d",
@@ -1718,7 +1718,7 @@
       },
       {
         "id": "b",
-        "text": "Tout logiciel conçu pour nuire ou agir à votre insu"
+        "text": "Tout logiciel conçu pour nuire ou agir à ton insu"
       },
       {
         "id": "c",
@@ -1738,7 +1738,7 @@
   {
     "id": "pl-03-11",
     "difficulty": 3,
-    "stem": "Un logiciel qui chiffre vos fichiers puis réclame une rançon est appelé…",
+    "stem": "Un logiciel qui chiffre tes fichiers puis réclame une rançon est appelé…",
     "choices": [
       {
         "id": "a",
@@ -1758,7 +1758,7 @@
       }
     ],
     "correct": "d",
-    "explanation": "Le ransomware bloque vos données et exige un paiement pour les libérer.",
+    "explanation": "Le ransomware bloque tes données et exige un paiement pour les libérer.",
     "tags": [
       "placement-v1"
     ]
@@ -1794,7 +1794,7 @@
   {
     "id": "pl-03-13",
     "difficulty": 3,
-    "stem": "Par quel moyen courant un malware peut-il arriver sur votre appareil ?",
+    "stem": "Par quel moyen courant un malware peut-il arriver sur ton appareil ?",
     "choices": [
       {
         "id": "a",
@@ -1822,7 +1822,7 @@
   {
     "id": "pl-03-14",
     "difficulty": 3,
-    "stem": "Un message surgit : « Votre ordinateur est infecté, appelez ce numéro Microsoft ». Que faire ?",
+    "stem": "Un message surgit : « Ton ordinateur est infecté, appelle ce numéro Microsoft ». Que faire ?",
     "choices": [
       {
         "id": "a",
@@ -1842,7 +1842,7 @@
       }
     ],
     "correct": "c",
-    "explanation": "Ces pop-ups alarmistes sont de faux supports techniques cherchant à vous piéger.",
+    "explanation": "Ces pop-ups alarmistes sont de faux supports techniques cherchant à te piéger.",
     "tags": [
       "placement-v1"
     ]
@@ -1854,7 +1854,7 @@
     "choices": [
       {
         "id": "a",
-        "text": "Elle propose de vous rembourser sans aucune condition"
+        "text": "Elle propose de te rembourser sans aucune condition"
       },
       {
         "id": "b",
@@ -1870,7 +1870,7 @@
       }
     ],
     "correct": "b",
-    "explanation": "Le faux support joue sur la peur pour obtenir de l'argent ou un accès à votre appareil.",
+    "explanation": "Le faux support joue sur la peur pour obtenir de l'argent ou un accès à ton appareil.",
     "tags": [
       "placement-v1"
     ]
@@ -1878,7 +1878,7 @@
   {
     "id": "pl-03-16",
     "difficulty": 3,
-    "stem": "Vous recevez : « Vous avez gagné un iPhone, cliquez pour le recevoir ». De quoi s'agit-il probablement ?",
+    "stem": "Tu reçois : « Tu as gagné un iPhone, clique pour le recevoir ». De quoi s'agit-il probablement ?",
     "choices": [
       {
         "id": "a",
@@ -1906,7 +1906,7 @@
   {
     "id": "pl-03-17",
     "difficulty": 3,
-    "stem": "Votre « banque » vous appelle et vous demande de virer vos fonds vers un « compte sécurisé ». Que faire ?",
+    "stem": "Ta « banque » t'appelle et te demande de virer tes fonds vers un « compte sécurisé ». Que faire ?",
     "choices": [
       {
         "id": "a",
@@ -1922,7 +1922,7 @@
       },
       {
         "id": "d",
-        "text": "Communiquer votre code de validation"
+        "text": "Communiquer ton code de validation"
       }
     ],
     "correct": "c",
@@ -1934,7 +1934,7 @@
   {
     "id": "pl-03-18",
     "difficulty": 3,
-    "stem": "Un e-mail imite votre banque et demande vos identifiants via un lien. Comment appelle-t-on cela ?",
+    "stem": "Un e-mail imite ta banque et demande tes identifiants via un lien. Comment appelle-t-on cela ?",
     "choices": [
       {
         "id": "a",
@@ -1954,7 +1954,7 @@
       }
     ],
     "correct": "d",
-    "explanation": "Le phishing usurpe une entité de confiance pour voler vos identifiants.",
+    "explanation": "Le phishing usurpe une entité de confiance pour voler tes identifiants.",
     "tags": [
       "placement-v1"
     ]
@@ -1962,7 +1962,7 @@
   {
     "id": "pl-03-19",
     "difficulty": 3,
-    "stem": "Que fait réellement la navigation privée de votre navigateur ?",
+    "stem": "Que fait réellement la navigation privée de ton navigateur ?",
     "choices": [
       {
         "id": "a",
@@ -1974,15 +1974,15 @@
       },
       {
         "id": "c",
-        "text": "Elle vous rend totalement anonyme sur Internet"
+        "text": "Elle te rend totalement anonyme sur Internet"
       },
       {
         "id": "d",
-        "text": "Elle empêche tout piratage de vos comptes"
+        "text": "Elle empêche tout piratage de tes comptes"
       }
     ],
     "correct": "b",
-    "explanation": "La navigation privée efface surtout les traces locales, sans vous rendre anonyme.",
+    "explanation": "La navigation privée efface surtout les traces locales, sans te rendre anonyme.",
     "tags": [
       "placement-v1"
     ]
@@ -2018,15 +2018,15 @@
   {
     "id": "pl-03-20",
     "difficulty": 3,
-    "stem": "En navigation privée, qui peut malgré tout voir les sites que vous visitez ?",
+    "stem": "En navigation privée, qui peut malgré tout voir les sites que tu visites ?",
     "choices": [
       {
         "id": "a",
-        "text": "Uniquement vous, jamais les sites visités"
+        "text": "Uniquement toi, jamais les sites visités"
       },
       {
         "id": "b",
-        "text": "Votre fournisseur d'accès et votre employeur ou réseau"
+        "text": "Ton fournisseur d'accès et ton employeur ou réseau"
       },
       {
         "id": "c",
@@ -2038,7 +2038,7 @@
       }
     ],
     "correct": "b",
-    "explanation": "La navigation privée ne cache pas votre activité au réseau ni au fournisseur d'accès.",
+    "explanation": "La navigation privée ne cache pas ton activité au réseau ni au fournisseur d'accès.",
     "tags": [
       "placement-v1"
     ]
@@ -2046,7 +2046,7 @@
   {
     "id": "pl-03-21",
     "difficulty": 3,
-    "stem": "La navigation privée masque-t-elle votre adresse IP aux sites que vous visitez ?",
+    "stem": "La navigation privée masque-t-elle ton adresse IP aux sites que tu visites ?",
     "choices": [
       {
         "id": "a",
@@ -2058,15 +2058,15 @@
       },
       {
         "id": "c",
-        "text": "Oui, votre adresse IP devient invisible"
+        "text": "Oui, ton adresse IP devient invisible"
       },
       {
         "id": "d",
-        "text": "Non, les sites voient toujours votre adresse IP"
+        "text": "Non, les sites voient toujours ton adresse IP"
       }
     ],
     "correct": "d",
-    "explanation": "La navigation privée n'anonymise pas votre adresse IP auprès des sites visités.",
+    "explanation": "La navigation privée n'anonymise pas ton adresse IP auprès des sites visités.",
     "tags": [
       "placement-v1"
     ]
@@ -2082,7 +2082,7 @@
       },
       {
         "id": "b",
-        "text": "Le partager avec vos contacts pour avis"
+        "text": "Le partager avec tes contacts pour avis"
       },
       {
         "id": "c",
@@ -2130,7 +2130,7 @@
   {
     "id": "pl-03-24",
     "difficulty": 3,
-    "stem": "Avant de saisir votre mot de passe, quel réflexe aide à éviter le phishing ?",
+    "stem": "Avant de saisir ton mot de passe, quel réflexe aide à éviter le phishing ?",
     "choices": [
       {
         "id": "a",
@@ -2186,7 +2186,7 @@
   {
     "id": "pl-03-26",
     "difficulty": 3,
-    "stem": "Votre navigateur affiche « Non sécurisé » avant l'adresse d'un site de paiement. Que faire ?",
+    "stem": "Ton navigateur affiche « Non sécurisé » avant l'adresse d'un site de paiement. Que faire ?",
     "choices": [
       {
         "id": "a",
@@ -2242,7 +2242,7 @@
   {
     "id": "pl-03-28",
     "difficulty": 3,
-    "stem": "Quel signe doit vous alerter dans une demande de paiement urgente reçue par e-mail ?",
+    "stem": "Quel signe doit t'alerter dans une demande de paiement urgente reçue par e-mail ?",
     "choices": [
       {
         "id": "a",
@@ -2270,7 +2270,7 @@
   {
     "id": "pl-03-29",
     "difficulty": 3,
-    "stem": "Que fait un antivirus lors d'une « analyse » (scan) de votre appareil ?",
+    "stem": "Que fait un antivirus lors d'une « analyse » (scan) de ton appareil ?",
     "choices": [
       {
         "id": "a",
@@ -2278,11 +2278,11 @@
       },
       {
         "id": "b",
-        "text": "Il supprime toutes vos photos"
+        "text": "Il supprime toutes tes photos"
       },
       {
         "id": "c",
-        "text": "Il change vos mots de passe automatiquement"
+        "text": "Il change tes mots de passe automatiquement"
       },
       {
         "id": "d",
@@ -2310,11 +2310,11 @@
       },
       {
         "id": "c",
-        "text": "Que vos données ne seront jamais revendues"
+        "text": "Que tes données ne seront jamais revendues"
       },
       {
         "id": "d",
-        "text": "Que la connexion entre votre navigateur et le site est chiffrée"
+        "text": "Que la connexion entre ton navigateur et le site est chiffrée"
       }
     ],
     "correct": "d",
@@ -2326,7 +2326,7 @@
   {
     "id": "pl-03-30",
     "difficulty": 3,
-    "stem": "En navigation privée, les fichiers que vous téléchargez…",
+    "stem": "En navigation privée, les fichiers que tu télécharges…",
     "choices": [
       {
         "id": "a",
@@ -2342,7 +2342,7 @@
       },
       {
         "id": "d",
-        "text": "Restent enregistrés sur votre appareil"
+        "text": "Restent enregistrés sur ton appareil"
       }
     ],
     "correct": "d",
@@ -2386,7 +2386,7 @@
     "choices": [
       {
         "id": "a",
-        "text": "Seulement la date de votre visite"
+        "text": "Seulement la date de ta visite"
       },
       {
         "id": "b",
@@ -2418,11 +2418,11 @@
       },
       {
         "id": "b",
-        "text": "Sauvegarder vos fichiers importants"
+        "text": "Sauvegarder tes fichiers importants"
       },
       {
         "id": "c",
-        "text": "Accélérer votre connexion Internet"
+        "text": "Accélérer ta connexion Internet"
       },
       {
         "id": "d",
@@ -2470,7 +2470,7 @@
     "choices": [
       {
         "id": "a",
-        "text": "Créer des mots de passe pour vos comptes"
+        "text": "Créer des mots de passe pour tes comptes"
       },
       {
         "id": "b",
@@ -2482,7 +2482,7 @@
       },
       {
         "id": "d",
-        "text": "Chiffrer toutes vos communications Internet"
+        "text": "Chiffrer toutes tes communications Internet"
       }
     ],
     "correct": "c",
@@ -3446,7 +3446,7 @@
   {
     "id": "pl-05-12",
     "difficulty": 5,
-    "stem": "Un VPN protège-t-il contre un site web frauduleux (phishing) auquel vous confiez volontairement votre mot de passe ?",
+    "stem": "Un VPN protège-t-il contre un site web frauduleux (phishing) auquel tu confies volontairement ton mot de passe ?",
     "choices": [
       {
         "id": "a",
@@ -3530,7 +3530,7 @@
   {
     "id": "pl-05-15",
     "difficulty": 5,
-    "stem": "Face à un ransomware ayant chiffré vos fichiers, quelle mesure permet de récupérer les données sans payer ?",
+    "stem": "Face à un ransomware ayant chiffré tes fichiers, quelle mesure permet de récupérer les données sans payer ?",
     "choices": [
       {
         "id": "a",
@@ -3558,7 +3558,7 @@
   {
     "id": "pl-05-16",
     "difficulty": 5,
-    "stem": "Un e-mail prétend venir de votre banque et demande de « confirmer » votre mot de passe via un lien. De quelle attaque s'agit-il ?",
+    "stem": "Un e-mail prétend venir de ta banque et demande de « confirmer » ton mot de passe via un lien. De quelle attaque s'agit-il ?",
     "choices": [
       {
         "id": "a",
@@ -3742,7 +3742,7 @@
       },
       {
         "id": "d",
-        "text": "Il chiffre votre trafic pour empêcher un tiers sur le même réseau de l'intercepter en clair"
+        "text": "Il chiffre ton trafic pour empêcher un tiers sur le même réseau de l'intercepter en clair"
       }
     ],
     "correct": "d",
@@ -3882,7 +3882,7 @@
       },
       {
         "id": "d",
-        "text": "Non, il masque votre adresse IP mais le fournisseur VPN et vos connexions à des comptes peuvent vous identifier"
+        "text": "Non, il masque ton adresse IP mais le fournisseur VPN et tes connexions à des comptes peuvent t'identifier"
       }
     ],
     "correct": "d",
