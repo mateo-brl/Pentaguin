@@ -2,7 +2,12 @@ import { describe, expect, it } from '@jest/globals';
 
 import type { MonetizationConfig } from '@/config/monetization';
 
-import { canShowSpontaneousUpsell, isCrucialUpsellMoment, UPSELL_MIN_LESSONS } from '../upsell';
+import {
+  canShowSpontaneousUpsell,
+  isCrucialUpsellMoment,
+  isEndOfFreeTheme,
+  UPSELL_MIN_LESSONS,
+} from '../upsell';
 
 const config: MonetizationConfig = {
   enabled: true,
@@ -40,5 +45,37 @@ describe('isCrucialUpsellMoment', () => {
   it('autorise une fois le palier d’engagement atteint', () => {
     expect(isCrucialUpsellMoment(UPSELL_MIN_LESSONS)).toBe(true);
     expect(isCrucialUpsellMoment(UPSELL_MIN_LESSONS + 5)).toBe(true);
+  });
+});
+
+describe('isEndOfFreeTheme', () => {
+  const themed = [
+    { id: 'a', unlocked: true },
+    { id: 'b', unlocked: true },
+    { id: 'c', unlocked: false },
+  ];
+
+  it('faux tant qu’une leçon gratuite du thème n’est pas terminée', () => {
+    expect(isEndOfFreeTheme(themed, new Set(['a']))).toBe(false);
+  });
+
+  it('vrai quand tout le gratuit est fait et qu’il reste du Pro à débloquer', () => {
+    expect(isEndOfFreeTheme(themed, new Set(['a', 'b']))).toBe(true);
+  });
+
+  it('faux si le thème n’a rien de verrouillé (rien à proposer)', () => {
+    const allFree = [
+      { id: 'a', unlocked: true },
+      { id: 'b', unlocked: true },
+    ];
+    expect(isEndOfFreeTheme(allFree, new Set(['a', 'b']))).toBe(false);
+  });
+
+  it('faux si le thème est entièrement Pro (aucune leçon gratuite explorée)', () => {
+    const allPro = [
+      { id: 'a', unlocked: false },
+      { id: 'b', unlocked: false },
+    ];
+    expect(isEndOfFreeTheme(allPro, new Set())).toBe(false);
   });
 });
