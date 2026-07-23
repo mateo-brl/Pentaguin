@@ -8,7 +8,7 @@
     "blocks": [
       {
         "type": "hook",
-        "md": "Tu es responsable de la sécurité d'une entreprise. Ton pare-feu est le meilleur du marché — et ce matin, un employé branche une clé USB trouvée sur le parking. Le pare-feu n'a rien vu passer. Qu'est-ce qui protège encore ton réseau ?"
+        "md": "Tu es responsable de la sécurité d'une entreprise. Ton pare-feu est le meilleur du marché, et ce matin, un employé branche une clé USB trouvée sur le parking. Le pare-feu n'a rien vu passer. Qu'est-ce qui protège encore ton réseau ?"
       },
       {
         "type": "predict",
@@ -19,7 +19,7 @@
           { "id": "c", "text": "Tout miser sur la formation des employés" }
         ],
         "correctId": "b",
-        "reveal": "Aucune barrière n'est parfaite. Plusieurs couches indépendantes obligent l'attaquant à toutes les franchir — et chaque couche est une occasion de plus de le détecter."
+        "reveal": "Aucune barrière n'est parfaite. Plusieurs couches indépendantes obligent l'attaquant à toutes les franchir, et chaque couche est une occasion de plus de le détecter."
       },
       {
         "type": "text",
@@ -38,7 +38,7 @@
           { "id": "c", "text": "La disponibilité" }
         ],
         "correctId": "c",
-        "reveal": "Les dossiers ne sont ni divulgués ni falsifiés — ils sont devenus inaccessibles au moment où on en a besoin. C'est la disponibilité qui tombe."
+        "reveal": "Les dossiers ne sont ni divulgués ni falsifiés : ils sont devenus inaccessibles au moment où on en a besoin. C'est la disponibilité qui tombe."
       },
       {
         "type": "text",
@@ -90,7 +90,7 @@
       },
       {
         "type": "text",
-        "md": "Un **SIEM** (Security Information and Event Management) est la plateforme centrale d'un **SOC** (Security Operations Center, le centre de supervision de la sécurité). Son rôle : **collecter, centraliser et corréler les journaux** (logs) produits par une multitude de sources — pare-feu, serveurs, postes de travail, applications, antivirus — afin de repérer des activités suspectes qu'aucune source ne révélerait seule."
+        "md": "Un **SIEM** (Security Information and Event Management) est la plateforme centrale d'un **SOC** (Security Operations Center, le centre de supervision de la sécurité). Son rôle : **collecter, centraliser et corréler les journaux** (logs) produits par une multitude de sources (pare-feu, serveurs, postes de travail, applications, antivirus) afin de repérer des activités suspectes qu'aucune source ne révélerait seule."
       },
       {
         "type": "predict",
@@ -101,7 +101,7 @@
           { "id": "c", "text": "Installer un antivirus plus récent sur le serveur" }
         ],
         "correctId": "b",
-        "reveal": "Aucune source ne raconte l'histoire complète. C'est en croisant les événements — la corrélation — que le scénario d'attaque apparaît."
+        "reveal": "Aucune source ne raconte l'histoire complète. C'est en croisant les événements, la corrélation, que le scénario d'attaque apparaît."
       },
       {
         "type": "text",
@@ -111,12 +111,12 @@
         "type": "truefalse",
         "statement": "Quand un SIEM détecte une attaque en cours, il bloque lui-même la connexion malveillante.",
         "answer": false,
-        "explanation": "Le SIEM observe, corrèle et alerte, mais n'agit pas sur le trafic. Le blocage revient à d'autres outils — pare-feu, IPS, EDR — ou aux analystes qu'il a prévenus."
+        "explanation": "Le SIEM observe, corrèle et alerte, mais n'agit pas sur le trafic. Le blocage revient à d'autres outils (pare-feu, IPS, EDR) ou aux analystes qu'il a prévenus."
       },
       {
         "type": "callout",
         "variant": "warning",
-        "md": "Un SIEM **n'agit pas** sur le trafic : il **agrège et alerte**, il ne bloque rien de lui-même. Il ne **remplace donc pas** le pare-feu, l'antivirus ou l'EDR — il les observe et met en relation ce qu'ils produisent."
+        "md": "Un SIEM **n'agit pas** sur le trafic : il **agrège et alerte**, il ne bloque rien de lui-même. Il ne **remplace donc pas** le pare-feu, l'antivirus ou l'EDR : il les observe et met en relation ce qu'ils produisent."
       },
       {
         "type": "flipcards",
@@ -155,7 +155,7 @@
     "blocks": [
       {
         "type": "hook",
-        "md": "3 h 12, tu es d'astreinte. Une sonde repère un scan agressif suivi d'une tentative d'exploitation sur un serveur : elle a tout vu, tout journalisé, tout horodaté… et n'a rien bloqué. Défaut de l'équipement ? Non — c'est exactement le rôle qu'on lui a donné."
+        "md": "3 h 12, tu es d'astreinte. Une sonde repère un scan agressif suivi d'une tentative d'exploitation sur un serveur : elle a tout vu, tout journalisé, tout horodaté… et n'a rien bloqué. Défaut de l'équipement ? Non : c'est exactement le rôle qu'on lui a donné."
       },
       {
         "type": "text",
@@ -184,7 +184,7 @@
           { "id": "b", "text": "La détection par anomalie" }
         ],
         "correctId": "b",
-        "reveal": "Une signature décrit une attaque déjà connue : face à l'inédit, elle est aveugle. Seule la détection d'écarts par rapport au comportement normal peut repérer l'inconnu — au prix de faux positifs."
+        "reveal": "Une signature décrit une attaque déjà connue : face à l'inédit, elle est aveugle. Seule la détection d'écarts par rapport au comportement normal peut repérer l'inconnu, au prix de faux positifs."
       },
       {
         "type": "text",
@@ -251,7 +251,7 @@
           { "id": "c", "text": "Réinstaller le poste pour repartir proprement" }
         ],
         "correctId": "b",
-        "reveal": "D'abord stopper la propagation : c'est le confinement. Supprimer ou réinstaller trop tôt détruit des preuves — et pendant ce temps, le malware continue de se répandre ailleurs."
+        "reveal": "D'abord stopper la propagation : c'est le confinement. Supprimer ou réinstaller trop tôt détruit des preuves, et pendant ce temps, le malware continue de se répandre ailleurs."
       },
       {
         "type": "text",
@@ -259,18 +259,18 @@
       },
       {
         "type": "text",
-        "md": "Puis viennent :\n\n- **Éradication** (eradication) : **supprimer la cause** — malware, comptes créés par l'attaquant, vulnérabilité exploitée.\n- **Rétablissement** (recovery) : remettre les systèmes en production **proprement** et les **surveiller** pour vérifier que la menace ne revient pas.\n- **Leçons apprises** (lessons learned) : réunion et rapport **post-incident** pour comprendre ce qui s'est passé et **améliorer** la préparation. La boucle se referme."
+        "md": "Puis viennent :\n\n- **Éradication** (eradication) : **supprimer la cause** (malware, comptes créés par l'attaquant, vulnérabilité exploitée).\n- **Rétablissement** (recovery) : remettre les systèmes en production **proprement** et les **surveiller** pour vérifier que la menace ne revient pas.\n- **Leçons apprises** (lessons learned) : réunion et rapport **post-incident** pour comprendre ce qui s'est passé et **améliorer** la préparation."
       },
       {
         "type": "truefalse",
         "statement": "Une fois les systèmes rétablis et l'attaquant évincé, la réponse à incident est terminée.",
         "answer": false,
-        "explanation": "Il reste la phase de leçons apprises : comprendre ce qui s'est passé et renforcer la préparation. C'est elle qui rend l'équipe meilleure au prochain incident — la boucle se referme sur la préparation."
+        "explanation": "Il reste la phase de leçons apprises : comprendre ce qui s'est passé et renforcer la préparation. C'est elle qui rend l'équipe meilleure au prochain incident : la boucle se referme sur la préparation."
       },
       {
         "type": "callout",
         "variant": "tip",
-        "md": "On **confine avant d'éradiquer** : d'abord stopper la propagation (isoler), puis seulement retirer la cause. Et pendant tout l'incident, on **préserve les preuves** — utiles pour l'analyse et d'éventuelles suites juridiques."
+        "md": "On **confine avant d'éradiquer** : d'abord stopper la propagation (isoler), puis seulement retirer la cause. Et pendant tout l'incident, on **préserve les preuves**, utiles pour l'analyse et d'éventuelles suites juridiques."
       },
       {
         "type": "flipcards",
@@ -313,7 +313,7 @@
     "blocks": [
       {
         "type": "hook",
-        "md": "Tu arrives dans la salle serveur : la machine compromise est encore allumée, l'attaquant peut-être encore connecté. Ton collègue tend la main vers le câble d'alimentation — « on coupe tout ? ». Chaque seconde compte, mais un mauvais geste peut détruire des preuves à jamais."
+        "md": "Tu arrives dans la salle serveur : la machine compromise est encore allumée, l'attaquant peut-être encore connecté. Ton collègue tend la main vers le câble d'alimentation : « on coupe tout ? ». Chaque seconde compte, mais un mauvais geste peut détruire des preuves à jamais."
       },
       {
         "type": "predict",
@@ -324,7 +324,7 @@
           { "id": "c", "text": "Rien : on éteint d'abord la machine pour figer la scène" }
         ],
         "correctId": "b",
-        "reveal": "La RAM et les connexions actives s'évaporent dès l'extinction ; le disque, lui, ne bouge pas. On capture toujours le plus volatil en premier — et on n'éteint surtout pas."
+        "reveal": "La RAM et les connexions actives s'évaporent dès l'extinction ; le disque, lui, ne bouge pas. On capture toujours le plus volatil en premier, et on n'éteint surtout pas."
       },
       {
         "type": "text",
@@ -332,7 +332,7 @@
       },
       {
         "type": "text",
-        "md": "Une donnée **volatile** disparaît vite ; une donnée **persistante** reste. On collecte donc **du plus volatil au moins volatil**, avant qu'une information ne s'efface :\n\n1. Registres et **caches** du processeur.\n2. **Mémoire vive (RAM)** — perdue dès l'extinction.\n3. État du réseau (connexions, tables) et processus en cours.\n4. **Disque dur** (fichiers, systèmes de fichiers).\n5. Journaux archivés et **sauvegardes** hors ligne.\n\nAutrement dit : **la RAM se capture avant le disque**, car elle s'évapore à l'arrêt de la machine."
+        "md": "Une donnée **volatile** disparaît vite ; une donnée **persistante** reste. On collecte donc **du plus volatil au moins volatil**, avant qu'une information ne s'efface :\n\n1. Registres et **caches** du processeur.\n2. **Mémoire vive (RAM)** : perdue dès l'extinction.\n3. État du réseau (connexions, tables) et processus en cours.\n4. **Disque dur** (fichiers, systèmes de fichiers).\n5. Journaux archivés et **sauvegardes** hors ligne.\n\nAutrement dit : **la RAM se capture avant le disque**, car elle s'évapore à l'arrêt de la machine."
       },
       {
         "type": "predict",
@@ -342,7 +342,7 @@
           { "id": "b", "text": "Sur la copie bit à bit, après vérification par empreinte (hash)" }
         ],
         "correctId": "b",
-        "reveal": "On ne travaille jamais sur l'original. Si les empreintes avant et après correspondent, la copie est parfaitement fidèle — et l'original reste intact pour d'éventuelles suites juridiques."
+        "reveal": "On ne travaille jamais sur l'original. Si les empreintes avant et après correspondent, la copie est parfaitement fidèle, et l'original reste intact pour d'éventuelles suites juridiques."
       },
       {
         "type": "text",
@@ -394,11 +394,11 @@
     "blocks": [
       {
         "type": "hook",
-        "md": "Fin 2020, l'équipe sécurité de FireEye repère un second téléphone tout juste enregistré pour le MFA d'un employé. Détail anodin ? Elle vérifie quand même — et remonte jusqu'à la campagne d'espionnage SolarWinds, l'une des plus vastes de la décennie. Aucune alerte critique n'avait sonné."
+        "md": "Fin 2020, l'équipe sécurité de FireEye repère un second téléphone tout juste enregistré pour le MFA d'un employé. Détail anodin ? Elle vérifie quand même, et remonte jusqu'à la campagne d'espionnage SolarWinds, l'une des plus vastes de la décennie. Aucune alerte critique n'avait sonné."
       },
       {
         "type": "text",
-        "md": "C'est tout l'esprit du **threat hunting** (chasse aux menaces), démarche **proactive** : au lieu d'attendre qu'une alerte se déclenche, l'analyste **part à la recherche** d'attaquants **déjà présents** dans le système et passés sous le radar des détections automatiques. Il adopte la posture **« assume breach »** — supposer qu'une compromission a déjà eu lieu — et cherche à la prouver ou à l'écarter."
+        "md": "C'est tout l'esprit du **threat hunting** (chasse aux menaces), démarche **proactive** : au lieu d'attendre qu'une alerte se déclenche, l'analyste **part à la recherche** d'attaquants **déjà présents** dans le système et passés sous le radar des détections automatiques. Il adopte la posture **« assume breach »** (supposer qu'une compromission a déjà eu lieu) et cherche à la prouver ou à l'écarter."
       },
       {
         "type": "predict",
@@ -409,7 +409,7 @@
           { "id": "c", "text": "Attendre qu'une alerte du SIEM donne un point de départ" }
         ],
         "correctId": "b",
-        "reveal": "Chercher sans hypothèse, c'est chercher une aiguille sans savoir à quoi elle ressemble. La chasse part d'une hypothèse — souvent tirée des TTP connus — puis la confronte aux données."
+        "reveal": "Chercher sans hypothèse, c'est chercher une aiguille sans savoir à quoi elle ressemble. La chasse part d'une hypothèse, souvent tirée des TTP connus, puis la confronte aux données."
       },
       {
         "type": "text",
@@ -427,7 +427,7 @@
       },
       {
         "type": "text",
-        "md": "D'où la distinction entre les **IoC** (Indicators of Compromise) — traces figées comme une adresse IP ou l'empreinte d'un fichier malveillant — et les **comportements** (IoA, Indicators of Attack), plus difficiles à maquiller. Le hunting s'intéresse beaucoup aux comportements, car un attaquant change facilement d'outil mais plus difficilement de **méthode**."
+        "md": "D'où la distinction entre les **IoC** (Indicators of Compromise), traces figées comme une adresse IP ou l'empreinte d'un fichier malveillant, et les **comportements** (IoA, Indicators of Attack), plus difficiles à maquiller. Le hunting s'intéresse beaucoup aux comportements, car un attaquant change facilement d'outil mais plus difficilement de **méthode**."
       },
       {
         "type": "truefalse",
@@ -481,7 +481,7 @@
     "blocks": [
       {
         "type": "hook",
-        "md": "Il est 2 h du matin dans ton SOC. La file affiche 300 alertes non traitées, et chacune réclame les mêmes gestes : vérifier l'URL, isoler le poste, désactiver le compte, ouvrir un ticket. Ton analyste de nuit n'en traitera qu'une fraction. Il n'est pas trop lent — c'est le processus qui l'est."
+        "md": "Il est 2 h du matin dans ton SOC. La file affiche 300 alertes non traitées, et chacune réclame les mêmes gestes : vérifier l'URL, isoler le poste, désactiver le compte, ouvrir un ticket. Ton analyste de nuit n'en traitera qu'une fraction. Il n'est pas trop lent : c'est le processus qui l'est."
       },
       {
         "type": "text",
@@ -554,7 +554,7 @@
     "blocks": [
       {
         "type": "hook",
-        "md": "Décembre 2021 : la faille Log4Shell (CVE-2021-44228) reçoit un score CVSS de 10 sur 10 — le maximum. Des millions de serveurs exposés, des équipes de sécurité en cellule de crise pendant les fêtes. Mais que mesure exactement ce « 10 » ? Moins de choses qu'on ne le croit."
+        "md": "Décembre 2021 : la faille Log4Shell (CVE-2021-44228) reçoit un score CVSS de 10 sur 10, le maximum. Des millions de serveurs exposés, des équipes de sécurité en cellule de crise pendant les fêtes. Mais que mesure exactement ce « 10 » ? Moins de choses qu'on ne le croit."
       },
       {
         "type": "predict",
@@ -573,7 +573,7 @@
       },
       {
         "type": "text",
-        "md": "Pour prioriser, on s'appuie sur le **CVSS** (Common Vulnerability Scoring System), qui attribue à une faille un **score de gravité de 0 à 10**. Les tranches usuelles : **0** nulle, **0,1–3,9** faible, **4,0–6,9** moyenne, **7,0–8,9** élevée, **9,0–10** critique. À ne pas confondre avec le **CVE** (Common Vulnerabilities and Exposures), qui n'est que l'**identifiant** unique d'une vulnérabilité (ex. CVE-2021-44228)."
+        "md": "Pour prioriser, on s'appuie sur le **CVSS** (Common Vulnerability Scoring System), qui attribue à une faille un **score de gravité de 0 à 10**. Les tranches usuelles : **0** nulle, **0,1 à 3,9** faible, **4,0 à 6,9** moyenne, **7,0 à 8,9** élevée, **9,0 à 10** critique. À ne pas confondre avec le **CVE** (Common Vulnerabilities and Exposures), qui n'est que l'**identifiant** unique d'une vulnérabilité (ex. CVE-2021-44228)."
       },
       {
         "type": "predict",
@@ -592,7 +592,7 @@
       {
         "type": "callout",
         "variant": "exam",
-        "md": "Piège classique : le **CVSS est un score de gravité (0 à 10), pas une probabilité d'exploitation**. Une faille au CVSS de 9 n'est pas forcément exploitée dans la nature — c'est l'**EPSS** ou le catalogue **KEV** qui renseignent sur la probabilité et l'exploitation réelle."
+        "md": "Piège classique : le **CVSS est un score de gravité (0 à 10), pas une probabilité d'exploitation**. Une faille au CVSS de 9 n'est pas forcément exploitée dans la nature : c'est l'**EPSS** ou le catalogue **KEV** qui renseignent sur la probabilité et l'exploitation réelle."
       },
       {
         "type": "flipcards",

@@ -8,7 +8,7 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "1963, at the height of the Cold War. The Washington–Moscow “red telephone” is encrypted with one-time keys — delivered physically, by diplomatic pouch. For centuries, this was cryptography’s Achilles heel: before you can encrypt anything, you first have to share a secret."
+    "md": "1963, at the height of the Cold War. The Washington-Moscow “red telephone” is encrypted with one-time keys delivered physically, by diplomatic pouch. For centuries, this was cryptography’s Achilles heel: before you can encrypt anything, you first have to share a secret."
    },
    {
     "type": "text",
@@ -40,7 +40,7 @@
    },
    {
     "type": "text",
-    "md": "That is exactly the principle behind **asymmetric encryption**: a **key pair** linked mathematically — a **public key** (which anyone may know) and a **private key** (kept secret). For confidentiality, you encrypt with the recipient’s **public** key; only they can decrypt with their **private** key. Examples: **RSA**, **ECC** (elliptic curves). This solves the key exchange problem, but it is **far slower** than symmetric encryption."
+    "md": "That is exactly the principle behind **asymmetric encryption**: a **key pair** linked mathematically: a **public key** (which anyone may know) and a **private key** (kept secret). For confidentiality, you encrypt with the recipient’s **public** key; only they can decrypt with their **private** key. Examples: **RSA**, **ECC** (elliptic curves). This solves the key exchange problem, but it is **far slower** than symmetric encryption."
    },
    {
     "type": "predict",
@@ -68,9 +68,9 @@
    },
    {
     "type": "truefalse",
-    "statement": "Asymmetric encryption is “stronger” than symmetric encryption — that’s why TLS uses it.",
+    "statement": "Asymmetric encryption is “stronger” than symmetric encryption, that’s why TLS uses it.",
     "answer": false,
-    "explanation": "Neither stronger nor weaker: it solves a different problem. AES remains unbroken in practice; asymmetric crypto is there because it solves key exchange — and it is far slower."
+    "explanation": "Neither stronger nor weaker: it solves a different problem. AES remains unbroken in practice; asymmetric crypto is there because it solves key exchange, and it is far slower."
    },
    {
     "type": "callout",
@@ -118,7 +118,7 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "2012: LinkedIn had 6.5 million password digests stolen. They were SHA-1, unsalted — a large share fell within days. Understanding why is what this lesson is about."
+    "md": "2012: LinkedIn had 6.5 million password digests stolen. They were SHA-1, unsalted, and a large share fell within days. Understanding why is what this lesson is about."
    },
    {
     "type": "text",
@@ -137,7 +137,7 @@
    {
     "type": "callout",
     "variant": "warning",
-    "md": "Never confuse **hashing** with **encryption**: hashing is irreversible and keyless. Also, **MD5** and **SHA-1** are **obsolete** — collisions can now be produced at will. Use the **SHA-2** family (SHA-256) or **SHA-3**."
+    "md": "Never confuse **hashing** with **encryption**: hashing is irreversible and keyless. **MD5** and **SHA-1** are **obsolete**: collisions can now be produced at will. Use the **SHA-2** family (SHA-256) or **SHA-3**."
    },
    {
     "type": "predict",
@@ -145,11 +145,11 @@
     "choices": [
      {
       "id": "a",
-      "text": "Two identical digests — and they can look that digest up in precomputed tables."
+      "text": "Two identical digests, and they can look that digest up in precomputed tables."
      },
      {
       "id": "b",
-      "text": "Two different digests — the hash automatically mixes in the username."
+      "text": "Two different digests: the hash automatically mixes in the username."
      },
      {
       "id": "c",
@@ -161,7 +161,7 @@
    },
    {
     "type": "text",
-    "md": "To store passwords, you never record the password in the clear: you store its digest. But a bare digest is still vulnerable to **rainbow tables** (precomputed digest tables). The countermeasure is the **salt**: a **random value, unique per password**, added before hashing. The salt is **not secret** — it is stored alongside the digest. It ensures that two users with the same password end up with **different** digests, and it makes rainbow tables useless. Careful: a salt alone is not enough for passwords — you also need a **slow** function (see the lesson on bcrypt, scrypt, Argon2)."
+    "md": "To store passwords, you never record the password in the clear: you store its digest. But a bare digest is still vulnerable to **rainbow tables** (precomputed digest tables). The countermeasure is the **salt**: a **random value, unique per password**, added before hashing. The salt is **not secret**: it is stored alongside the digest. It ensures that two users with the same password end up with **different** digests, and it makes rainbow tables useless. Careful: a salt alone is not enough for passwords, you also need a **slow** function (see the lesson on bcrypt, scrypt, Argon2)."
    },
    {
     "type": "flipcards",
@@ -208,7 +208,7 @@
    },
    {
     "type": "text",
-    "md": "**TLS** (Transport Layer Security, formerly SSL) is the protocol that secures communications over the Internet — it is the **S** in **HTTPS**. It provides three guarantees: **confidentiality** (nobody reads the traffic), **integrity** (nobody modifies it undetected) and **authentication** (you really are talking to the right server)."
+    "md": "**TLS** (Transport Layer Security, formerly SSL) is the protocol that secures communications over the Internet: it is the **S** in **HTTPS**. It provides three guarantees: **confidentiality** (nobody reads the traffic), **integrity** (nobody modifies it undetected) and **authentication** (you really are talking to the right server)."
    },
    {
     "type": "text",
@@ -216,7 +216,7 @@
    },
    {
     "type": "predict",
-    "question": "During the handshake, client and server must agree on a shared secret — while an attacker may be reading everything in transit. How is that even possible?",
+    "question": "During the handshake, client and server must agree on a shared secret, while an attacker may be reading everything in transit. How is that even possible?",
     "choices": [
      {
       "id": "a",
@@ -232,11 +232,11 @@
      }
     ],
     "correctId": "b",
-    "reveal": "That is Diffie-Hellman’s tour de force: the secret is never transmitted — each party computes it locally."
+    "reveal": "That is Diffie-Hellman’s tour de force: the secret is never transmitted, each party computes it locally."
    },
    {
     "type": "text",
-    "md": "Indeed, at the heart of modern key agreement is **Diffie-Hellman** (often over elliptic curves: **ECDHE**). Its strength: both parties compute the **same shared secret** while exchanging only public values — the secret is **never transmitted** over the network."
+    "md": "Indeed, at the heart of modern key agreement is **Diffie-Hellman** (often over elliptic curves: **ECDHE**). Its strength: both parties compute the **same shared secret** while exchanging only public values: the secret is **never transmitted** over the network."
    },
    {
     "type": "predict",
@@ -312,7 +312,7 @@
    },
    {
     "type": "predict",
-    "question": "You want to prove that you are the one who wrote a message. You “sign” it — but with which key?",
+    "question": "You want to prove that you are the one who wrote a message. You “sign” it, but with which key?",
     "choices": [
      {
       "id": "a",
@@ -328,7 +328,7 @@
      }
     ],
     "correctId": "b",
-    "reveal": "You sign with the private key — only its holder can — and anyone verifies with the public key. It is the reverse of encryption for confidentiality."
+    "reveal": "You sign with the private key (only its holder can) and anyone verifies with the public key. It is the reverse of encryption for confidentiality."
    },
    {
     "type": "text",
@@ -342,7 +342,7 @@
     "type": "truefalse",
     "statement": "A digitally signed message is also confidential: the signature encrypts it.",
     "answer": false,
-    "explanation": "Signing is not encrypting: the message may travel in the clear. A signature guarantees origin, integrity and non-repudiation — for confidentiality, you must also encrypt."
+    "explanation": "Signing is not encrypting: the message may travel in the clear. A signature guarantees origin, integrity and non-repudiation. For confidentiality, you must also encrypt."
    },
    {
     "type": "predict",
@@ -375,7 +375,7 @@
    {
     "type": "callout",
     "variant": "warning",
-    "md": "All the security rests on keeping the **private key** secret: **the private key signs, the public key verifies**. If a private key leaks, an attacker can impersonate the corresponding identity — hence the importance of revocation."
+    "md": "All the security rests on keeping the **private key** secret: **the private key signs, the public key verifies**. If a private key leaks, an attacker can impersonate the corresponding identity, hence the importance of revocation."
    },
    {
     "type": "flipcards",
@@ -418,7 +418,7 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "2009: the RockYou website had 32 million passwords stolen — stored in plaintext. The list still circulates today as `rockyou.txt`, the default weapon of anyone cracking passwords. Storing plaintext is unforgivable; hashing badly is hardly better."
+    "md": "2009: the RockYou website had 32 million passwords stolen, stored in plaintext. The list still circulates today as `rockyou.txt`, the default weapon of anyone cracking passwords. Storing plaintext is unforgivable; hashing badly is hardly better."
    },
    {
     "type": "predict",
@@ -442,7 +442,7 @@
    },
    {
     "type": "text",
-    "md": "Indeed, general-purpose hash functions like **SHA-256** are designed to be **very fast** — perfect for checking a file, but **disastrous for passwords**. Passwords have little **entropy** (low randomness), and an attacker who steals the database can test **billions of candidates per second** on **GPUs** or **ASICs**."
+    "md": "Indeed, general-purpose hash functions like **SHA-256** are designed to be **very fast**: perfect for checking a file, but **disastrous for passwords**. Passwords have little **entropy** (low randomness), and an attacker who steals the database can test **billions of candidates per second** on **GPUs** or **ASICs**."
    },
    {
     "type": "text",
@@ -546,7 +546,7 @@
    },
    {
     "type": "text",
-    "md": "**ECB** (Electronic Codebook) encrypts each block **independently** with the same key. The consequence: **two identical plaintext blocks produce two identical ciphertext blocks**. The ciphertext **leaks the patterns** of the plaintext — the penguin image, still recognizable after encryption, is the famous example. **ECB must never be used** for real data."
+    "md": "**ECB** (Electronic Codebook) encrypts each block **independently** with the same key. The consequence: **two identical plaintext blocks produce two identical ciphertext blocks**. The ciphertext **leaks the patterns** of the plaintext: the penguin image, still recognizable after encryption, is the famous example. **ECB must never be used** for real data."
    },
    {
     "type": "text",
@@ -628,7 +628,7 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "September 2010: two researchers, Juliano Rizzo and Thai Duong, show that data on millions of ASP.NET websites can be decrypted without knowing the key — simply by watching padding errors. Microsoft ships an emergency out-of-band patch. Meet the oracle."
+    "md": "September 2010: two researchers, Juliano Rizzo and Thai Duong, show that data on millions of ASP.NET websites can be decrypted without knowing the key, simply by watching padding errors. Microsoft ships an emergency out-of-band patch. Meet the oracle."
    },
    {
     "type": "text",
@@ -648,11 +648,11 @@
      }
     ],
     "correctId": "b",
-    "reveal": "That bit — padding valid or not — turns the server into an “oracle”, which can be queried as many times as you like."
+    "reveal": "That bit, padding valid or not, turns the server into an “oracle” that can be queried as many times as you like."
    },
    {
     "type": "text",
-    "md": "A **padding oracle** is **any system that reveals, directly or indirectly, whether the padding of a decrypted message is valid or not**. That signal may be explicit (a “bad padding” error message distinct from other errors) or implicit (a **difference in response time**). This single bit of information — padding valid or not — is enough to break everything."
+    "md": "A **padding oracle** is **any system that reveals, directly or indirectly, whether the padding of a decrypted message is valid or not**. That signal may be explicit (a “bad padding” error message distinct from other errors) or implicit (a **difference in response time**). This single bit of information, padding valid or not, is enough to break everything."
    },
    {
     "type": "predict",
@@ -676,7 +676,7 @@
    },
    {
     "type": "text",
-    "md": "The full mechanism: the attacker **modifies the previous block `C_{i-1}` byte by byte** and submits the result to the oracle. By searching for the value that makes the padding valid, they deduce the **intermediate value** `D_K(C_i)`, then, through a simple XOR, **the corresponding plaintext** — all of it **without ever knowing the key**. Repeating this on each byte and then each block, they **decrypt the entire message**. Famous attacks: **POODLE** and **Lucky Thirteen**."
+    "md": "The full mechanism: the attacker **modifies the previous block `C_{i-1}` byte by byte** and submits the result to the oracle. By searching for the value that makes the padding valid, they deduce the **intermediate value** `D_K(C_i)`, then, through a simple XOR, **the corresponding plaintext**, all of it **without ever knowing the key**. Repeating this on each byte and then each block, they **decrypt the entire message**. Famous attacks: **POODLE** and **Lucky Thirteen**."
    },
    {
     "type": "callout",
@@ -724,7 +724,7 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "January 2018: Spectre and Meltdown reveal that nearly every modern processor leaks secrets through its cache and speculative execution. No algorithm was broken — the culprit was the hardware running them."
+    "md": "January 2018: Spectre and Meltdown reveal that nearly every modern processor leaks secrets through its cache and speculative execution. No algorithm was broken: the culprit was the hardware running them."
    },
    {
     "type": "truefalse",
@@ -734,7 +734,7 @@
    },
    {
     "type": "text",
-    "md": "A **side-channel attack** does not attack the **mathematics** of the algorithm, but its **implementation**: it exploits whatever **leaks** during execution — computation **time**, **power consumption**, **electromagnetic emanations** or the behavior of the processor **cache**. An algorithm can be flawless on paper and still be vulnerable because of the code or the hardware running it."
+    "md": "A **side-channel attack** does not attack the **mathematics** of the algorithm, but its **implementation**: it exploits whatever **leaks** during execution: computation **time**, **power consumption**, **electromagnetic emanations** or the behavior of the processor **cache**. An algorithm can be flawless on paper and still be vulnerable because of the code or the hardware running it."
    },
    {
     "type": "predict",
@@ -758,7 +758,7 @@
    },
    {
     "type": "text",
-    "md": "**Timing attacks** exploit precisely the fact that **execution time depends on a secret**. The classic example: comparing a MAC or a password with a `==` that **stops at the first differing byte**. The longer the comparison takes, the more of the guessed prefix is correct — the attacker rebuilds the secret byte by byte. The countermeasure is **constant-time comparison**, which examines **every** byte no matter what."
+    "md": "**Timing attacks** exploit precisely the fact that **execution time depends on a secret**. The classic example: comparing a MAC or a password with a `==` that **stops at the first differing byte**. The longer the comparison takes, the more of the guessed prefix is correct: the attacker rebuilds the secret byte by byte. The countermeasure is **constant-time comparison**, which examines **every** byte no matter what."
    },
    {
     "type": "predict",

@@ -8,7 +8,7 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "In 2012, LinkedIn had its password **hashes** stolen. The true scale only surfaced in 2016: 117 million accounts up for sale on the black market — followed by a cascade of break-ins on other sites, wherever victims had reused the same password."
+    "md": "In 2012, LinkedIn had its password **hashes** stolen. The true scale only surfaced in 2016: 117 million accounts up for sale on the black market, followed by a cascade of break-ins on other sites, wherever victims had reused the same password."
    },
    {
     "type": "text",
@@ -20,11 +20,11 @@
     "choices": [
      {
       "id": "a",
-      "text": "P@ss1 — short but packed with symbols"
+      "text": "P@ss1, short but packed with symbols"
      },
      {
       "id": "b",
-      "text": "turtle beach windmill cactus — long but perfectly plain"
+      "text": "turtle beach windmill cactus, long but perfectly plain"
      }
     ],
     "correctId": "b",
@@ -32,7 +32,7 @@
    },
    {
     "type": "text",
-    "md": "A good password really has nothing to do with fancy symbols: what matters is that it be **long, unpredictable and unique** to every account. An attacker churning through billions of combinations needs far longer to break a four-word phrase than `P@ss1`."
+    "md": "A good password has nothing to do with fancy symbols: it needs to be **long, unpredictable and unique** to every account. An attacker churning through billions of combinations needs far longer to break a four-word phrase than `P@ss1`."
    },
    {
     "type": "callout",
@@ -61,13 +61,13 @@
    },
    {
     "type": "text",
-    "md": "That mass replay has a name: **credential stuffing**. It is why uniqueness matters just as much as length. A serious site never stores your password in the clear anyway, only its **hash** (an irreversible fingerprint). Remembering dozens of unique passwords is impossible: that is exactly what a **password manager** is for, generating them, encrypting them and filling them in for you."
+    "md": "That mass replay has a name: **credential stuffing**. It is why uniqueness matters just as much as length. A serious site never stores your password in the clear, only its **hash** (an irreversible fingerprint). Remembering dozens of unique passwords is impossible: that is exactly what a **password manager** is for, generating them, encrypting them and filling them in for you."
    },
    {
     "type": "truefalse",
     "statement": "If you forget your password, a serious site can simply email it back to you.",
     "answer": false,
-    "explanation": "A serious site only stores the **hash**, an irreversible fingerprint: it does not know your password and can only let you create a new one. A site able to send your password back in the clear is storing it badly — be wary."
+    "explanation": "A serious site only stores the **hash**, an irreversible fingerprint: it does not know your password and can only let you create a new one. A site able to send your password back in the clear is storing it badly. Be wary."
    },
    {
     "type": "flipcards",
@@ -106,7 +106,7 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "Between 2013 and 2015, a Lithuanian scammer emailed fake invoices to Google and Facebook. Both tech giants paid — more than 100 million dollars in total. If their teams can be fooled by a simple email, nobody is too smart for phishing."
+    "md": "Between 2013 and 2015, a Lithuanian scammer emailed fake invoices to Google and Facebook. Both tech giants paid, more than 100 million dollars in total. If their teams can be fooled by a simple email, nobody is too smart for phishing."
    },
    {
     "type": "text",
@@ -130,7 +130,7 @@
      }
     ],
     "correctId": "b",
-    "reveal": "Typos and logos are easy to fix — fraudulent messages are often flawless. The domain is the one thing that cannot be the real one: that is where the imposture shows."
+    "reveal": "Typos and logos are easy to fix: fraudulent messages are often flawless. The domain is the one thing that cannot be the real one: that is where the imposture shows."
    },
    {
     "type": "text",
@@ -158,7 +158,7 @@
    },
    {
     "type": "text",
-    "md": "So when in doubt, never use the link or the phone number provided in the message: go to the official site under your own steam. Be extra careful when the message is personalized — your name, your job, your ongoing projects: that is **spear phishing**, targeted and far more believable."
+    "md": "So when in doubt, never use the link or the phone number provided in the message: go to the official site under your own steam. Be extra careful when the message is personalized (your name, your job, your ongoing projects): that is **spear phishing**, targeted and far more believable."
    },
    {
     "type": "callout",
@@ -328,7 +328,7 @@
    },
    {
     "type": "text",
-    "md": "Here is the key point: the moment a fix ships, the flaw becomes **public**. Attackers now know exactly what to aim at, and they scan the Internet looking for devices that have not been updated."
+    "md": "The moment a fix ships, the flaw becomes **public**. Attackers now know exactly what to aim at, and they scan the Internet looking for devices that have not been updated."
    },
    {
     "type": "predict",
@@ -348,7 +348,7 @@
    },
    {
     "type": "text",
-    "md": "The vast majority of intrusions indeed do not exploit secret flaws but vulnerabilities that are **already fixed** and that the victims simply never installed. A flaw still unknown to the vendor, with no fix available, is called a **zero-day**: rarer, and far more expensive for the attacker. End-of-life software, which no longer receives patches, stays vulnerable forever."
+    "md": "The vast majority of intrusions target vulnerabilities that are **already fixed** and that victims simply never installed, not secret flaws. A flaw still unknown to the vendor, with no fix available, is called a **zero-day**: rarer, and far more expensive for the attacker. End-of-life software, which no longer receives patches, stays vulnerable forever."
    },
    {
     "type": "callout",
@@ -392,7 +392,7 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "Monday, 8:04 am. Your screen reads: “Your files have been encrypted. Pay to get them back.” Photos, documents, accounting — everything is locked. Only one question still matters: is there a copy the attacker could not reach?"
+    "md": "Monday, 8:04 am. Your screen reads: “Your files have been encrypted. Pay to get them back.” Photos, documents, accounting: everything is locked. Only one question still matters: is there a copy the attacker could not reach?"
    },
    {
     "type": "text",
@@ -424,7 +424,7 @@
    },
    {
     "type": "predict",
-    "question": "Your backup lives on an external drive permanently plugged into the PC. Ransomware strikes — what happens to your copy?",
+    "question": "Your backup lives on an external drive permanently plugged into the PC. Ransomware strikes: what happens to your copy?",
     "choices": [
      {
       "id": "a",
@@ -436,7 +436,7 @@
      }
     ],
     "correctId": "b",
-    "reveal": "Ransomware encrypts everything the machine can reach — external drives and network shares included. A copy that is always plugged in is not isolated."
+    "reveal": "Ransomware encrypts everything the machine can reach, external drives and network shares included. A copy that is always plugged in is not isolated."
    },
    {
     "type": "text",
@@ -494,7 +494,7 @@
    },
    {
     "type": "text",
-    "md": "The free Wi-Fi in a café or an airport is convenient, but you control neither the network nor who else is connected to it. The good news: thanks to **HTTPS** encryption, the content of your exchanges with websites can no longer be read so easily. The real danger has moved elsewhere."
+    "md": "The free Wi-Fi in a café or an airport is convenient, but you control neither the network nor who else is connected to it. The good news: thanks to **HTTPS** encryption, the content of your exchanges with websites can no longer be read so easily. The danger has moved elsewhere."
    },
    {
     "type": "predict",
@@ -538,11 +538,11 @@
      }
     ],
     "correctId": "b",
-    "reveal": "The content is encrypted, but some metadata stays visible — including the domains you contact. The network knows where you go, not what you do there."
+    "reveal": "The content is encrypted, but some metadata stays visible, including the domains you contact. The network knows where you go, not what you do there."
    },
    {
     "type": "text",
-    "md": "Indeed, even over HTTPS some metadata stays visible, such as the **domain names** you visit. A **VPN** (virtual private network) creates an encrypted tunnel between your device and a trusted server, hiding those traces from the local network."
+    "md": "Even over HTTPS, some metadata stays visible, such as the **domain names** you visit. A **VPN** (virtual private network) creates an encrypted tunnel between your device and a trusted server, and hides those traces from the local network."
    },
    {
     "type": "callout",
@@ -586,7 +586,7 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "In 2019, the FBI issued an unusual alert: stop trusting the padlock. Phishing sites now sport perfectly valid HTTPS certificates — precisely because the public believes padlock = trustworthy site."
+    "md": "In 2019, the FBI issued an unusual alert: stop trusting the padlock. Phishing sites now sport perfectly valid HTTPS certificates, precisely because the public believes padlock = trustworthy site."
    },
    {
     "type": "text",
@@ -610,7 +610,7 @@
      }
     ],
     "correctId": "b",
-    "reveal": "The padlock speaks about the **connection**, not the site. Encrypted transport and domain identity: nothing more — and that is already a lot."
+    "reveal": "The padlock speaks about the **connection**, not the site. Encrypted transport and domain identity: nothing more."
    },
    {
     "type": "text",
@@ -618,9 +618,9 @@
    },
    {
     "type": "truefalse",
-    "statement": "Getting an HTTPS certificate is expensive and requires deep vetting — out of a scammer's reach.",
+    "statement": "Getting an HTTPS certificate is expensive and requires deep vetting: out of a scammer's reach.",
     "answer": false,
-    "explanation": "Some authorities issue free certificates within minutes, on simple proof that you control the domain. That is excellent for the web's security — and says nothing about a site's honesty."
+    "explanation": "Some authorities issue free certificates within minutes, on simple proof that you control the domain. That is excellent for the web's security, but says nothing about a site's honesty."
    },
    {
     "type": "text",
@@ -668,11 +668,11 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "Your phone has just slipped out of your pocket on the metro. In someone else's hand, that slab holds your messages, your photos, your email, your banking — and everything needed to reset almost all your passwords. What happens next comes down to two settings."
+    "md": "Your phone has just slipped out of your pocket on the metro. In someone else's hand, that slab holds your messages, your photos, your email, your banking, and everything needed to reset almost all your passwords. What happens next comes down to two settings."
    },
    {
     "type": "text",
-    "md": "Those two settings are a solid **screen lock** and serious management of the **permissions** you grant to apps. The first protects the device itself — the key to your digital life; the second limits what each app gets to see of it."
+    "md": "Those two settings are a solid **screen lock** and serious management of the **permissions** you grant to apps. The first protects the device itself (the key to your digital life); the second limits what each app gets to see of it."
    },
    {
     "type": "predict",
@@ -692,11 +692,11 @@
      }
     ],
     "correctId": "b",
-    "reveal": "While locked, a modern smartphone keeps its data encrypted. Without the passcode, the memory yields nothing but unreadable gibberish — even pulled out of the device."
+    "reveal": "While locked, a modern smartphone keeps its data encrypted. Without the passcode, the memory yields nothing but unreadable gibberish, even pulled out of the device."
    },
    {
     "type": "text",
-    "md": "The lock screen really is more than a visual curtain. On a modern smartphone, while it is locked the data is protected by **encryption at rest**: without the passcode, a thief cannot read it, even by taking the device apart. Biometrics (fingerprint, face) conveniently unlock the key, but your **passcode** remains the foundation of that security — make it long and set the screen to lock quickly on its own."
+    "md": "The lock screen is more than a visual curtain. On a modern smartphone, while it is locked the data is protected by **encryption at rest**: without the passcode, a thief cannot read it, even by taking the device apart. Biometrics (fingerprint, face) conveniently unlock the key, but your **passcode** remains the foundation of that security: make it long and set the screen to lock quickly on its own."
    },
    {
     "type": "predict",

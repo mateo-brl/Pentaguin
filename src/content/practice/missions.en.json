@@ -5,14 +5,14 @@
     "title": "The first line of defense",
     "level": 3,
     "tagline": "Recognize, react, recover, protect: the essential reflexes.",
-    "intro": "Welcome. Before the sophisticated attacks, most compromises begin with a single booby-trapped email. I am going to hand you four everyday situations: first you will learn to unmask a spoofed sender, then to keep a cool head in front of an alarmist message, to regain control of an already-hacked account, and finally to shut the door on known vulnerabilities. These are the reflexes that make the difference.",
+    "intro": "Welcome. Before the sophisticated attacks, most compromises begin with a single booby-trapped email. I am going to hand you four everyday situations: first you will learn to unmask a spoofed sender, then to keep a cool head in front of an alarmist message, to regain control of an already-hacked account, and finally to shut the door on known vulnerabilities.",
     "steps": [
       "fond-anal",
       "fond-scen",
       "fond-order",
       "fond-term"
     ],
-    "debrief": "You now hold the fundamentals: the domain matters more than the display name, urgency is a warning sign, a compromised account is reclaimed in the right order, and an up-to-date system closes known holes. Everything else is built on these foundations."
+    "debrief": "You now hold the fundamentals: the domain matters more than the display name, urgency is a warning sign, a compromised account is reclaimed in the right order, and an up-to-date system closes known holes."
   },
   {
     "id": "m-net",
@@ -20,14 +20,14 @@
     "title": "On the trail of a suspicious machine",
     "level": 6,
     "tagline": "From public Wi-Fi to a reverse shell: follow the trail across the network.",
-    "intro": "You join the network team. A machine has been acting strangely since it came back from a trip. Before diving in, you lay the groundwork: how a domain name becomes an IP address. Then you follow the thread — the public Wi-Fi where it all began, the outbound connection that gives away a reverse shell, and finally a full read-only network diagnosis.",
+    "intro": "You join the network team. A machine has been acting strangely since it came back from a trip. Before diving in, you lay the groundwork: how a domain name becomes an IP address. Then you follow the thread: the public Wi-Fi where it all began, the outbound connection that gives away a reverse shell, and finally a full read-only network diagnosis.",
     "steps": [
       "net-order",
       "net-scen",
       "net-anal",
       "net-term"
     ],
-    "debrief": "Investigation wrapped up: you know how a DNS query walks down the hierarchy, why a rogue access point is a trap, what an outbound C2 channel looks like, and how to diagnose a network chain without breaking anything. The network holds no more blind spots for you."
+    "debrief": "Investigation wrapped up: you know how a DNS query walks down the hierarchy, why a rogue access point is a trap, what an outbound C2 channel looks like, and how to diagnose a network chain without breaking anything."
   },
   {
     "id": "m-crypto",
@@ -35,14 +35,14 @@
     "title": "The application under cryptographic guard",
     "level": 9,
     "tagline": "Passwords, code, TLS, certificates: crypto from end to end.",
-    "intro": "You are handed the cryptographic security of an application. You start with password storage — the first line of defense the day a leak happens — then review an encryption routine, hunting for a mode flaw. Next you retrace the TLS handshake that protects data in transit, before inspecting a certificate yourself and verifying a fingerprint with openssl.",
+    "intro": "You are handed the cryptographic security of an application. You start with password storage, the first line of defense the day a leak happens, then review an encryption routine, hunting for a mode flaw. Next you retrace the TLS handshake that protects data in transit, before inspecting a certificate yourself and verifying a fingerprint with openssl.",
     "steps": [
       "crypto-scen",
       "crypto-anal",
       "crypto-order",
       "crypto-term"
     ],
-    "debrief": "The takeaway: a password is hashed with a slow, salted KDF, block encryption is never done in ECB, TLS negotiates asymmetrically then encrypts symmetrically, and a certificate can be read and verified by hand. You have mastered crypto, from rest to transit."
+    "debrief": "The takeaway: a password is hashed with a slow, salted KDF, block encryption is never done in ECB, TLS negotiates asymmetrically then encrypts symmetrically, and a certificate can be read and verified by hand."
   },
   {
     "id": "m-web",
@@ -50,14 +50,14 @@
     "title": "Guardian of the web app",
     "level": 9,
     "tagline": "XSS, IDOR, OAuth, headers: defending an app end to end.",
-    "intro": "You watch over a web application exposed on the Internet. First you flush out an XSS attack buried in the access log, then you stumble on an IDOR flaw that has to be handled properly, by the book. Next you put the OAuth 2.0 flow back in order — the one that delegates access without handing over the password — before checking the site's HTTP security headers yourself ahead of go-live.",
+    "intro": "You watch over a web application exposed on the Internet. First you flush out an XSS attack buried in the access log, then you stumble on an IDOR flaw that has to be handled properly. Next you put the OAuth 2.0 flow back in order, the one that delegates access without handing over the password, before checking the site's HTTP security headers yourself ahead of go-live.",
     "steps": [
       "web-anal",
       "web-scen",
       "web-order",
       "web-term"
     ],
-    "debrief": "You have covered the whole web chain: recognizing a reflected XSS, reporting a flaw through responsible disclosure, understanding the OAuth Authorization Code flow, and hardening a site with HSTS and CSP. From attack to hardening, the Web holds no more secrets."
+    "debrief": "You have covered the whole web chain: recognizing a reflected XSS, reporting a flaw through responsible disclosure, understanding the OAuth Authorization Code flow, and hardening a site with HSTS and CSP."
   },
   {
     "id": "m-sys",
@@ -65,44 +65,44 @@
     "title": "From file to domain: the climb through privileges",
     "level": 10,
     "tagline": "Permissions, SUID, Kerberos, Domain Admin: the hunt for privileges.",
-    "intro": "You are hardening a Linux estate and an Active Directory. First you spot one permission too many in a provisioning script, then you audit a server's local escalation surface, read-only. Next you retrace how a Kerberos authentication unfolds, to see how a domain issues its tickets — right before you find yourself, on an authorized test, Domain Admin far too soon, with the right decisions to make.",
+    "intro": "You are hardening a Linux estate and an Active Directory. First you spot one permission too many in a provisioning script, then you audit a server's local escalation surface, read-only. Next you retrace how a Kerberos authentication unfolds, to see how a domain issues its tickets, right before you find yourself, on an authorized test, Domain Admin far too soon: it is up to you to make the right calls.",
     "steps": [
       "sys-anal",
       "sys-term",
       "sys-order",
       "sys-scen"
     ],
-    "debrief": "From file to domain, you followed the thread of privileges: a lax permission opens a leak, a misplaced SUID binary leads to root, Kerberos orchestrates access through the KDC, and Domain Admin access on a pentest is documented without ever straying outside the scope. Privilege escalation holds no more mystery."
+    "debrief": "From file to domain, you followed the thread of privileges: a lax permission opens a leak, a misplaced SUID binary leads to root, Kerberos orchestrates access through the KDC, and Domain Admin access on a pentest is documented without ever straying outside the scope."
   },
   {
     "id": "m-threats",
     "domainId": "d-threats",
     "title": "Anatomy of an attack",
     "level": 8,
-    "tagline": "From the kill chain to the ransom note: understand, detect, dissect, respond.",
-    "intro": "You are a threat analyst. You begin with the theory of the field — the seven stages of the Cyber Kill Chain that every attacker follows. Then you move to the hunt: an indicator of compromise hidden in the DNS logs gives away a C2 channel, and an “invoice.pdf” attachment actually hides an executable that you dissect without ever running it. When the ransomware finally fires on a workstation, it is your turn to respond.",
+    "tagline": "From the kill chain to the ransom note: detect, dissect, respond.",
+    "intro": "You are a threat analyst. You begin with the theory: the seven stages of the Cyber Kill Chain that every attacker follows. Then you move to the hunt: an indicator of compromise hidden in the DNS logs gives away a C2 channel, and an “invoice.pdf” attachment hides an executable that you dissect without ever running it. When the ransomware finally fires on a workstation, it is your turn to respond.",
     "steps": [
       "threats-order",
       "threats-anal",
       "threats-term",
       "threats-scen"
     ],
-    "debrief": "You followed an attack end to end: the kill chain that structures it, the DGA domain that betrays the C2, the static triage that unmasks a disguised ransomware, and the response that isolates, alerts and restores without ever paying. Understanding the attacker is already half the battle."
+    "debrief": "You followed an attack end to end: the kill chain that structures it, the DGA domain that betrays the C2, the static triage that unmasks a disguised ransomware, and the response that isolates, alerts and restores without ever paying."
   },
   {
     "id": "m-defense",
     "domainId": "d-defense",
     "title": "Night shift at the SOC",
     "level": 11,
-    "tagline": "Detect, investigate, methodize, respond: a night on watch at the SOC.",
-    "intro": "You take your shift at the SOC. First, a critical event hides in the SIEM noise: a login that succeeded where everyone else sees only alerts. You then dive into the logs to reconstruct an SSH brute-force, before setting the method straight — the six phases of incident response — and applying it for real to a ransomware spreading live.",
+    "tagline": "Detect, investigate, respond: a night on watch at the SOC.",
+    "intro": "You take your shift at the SOC. First, a critical event hides in the SIEM noise: a login that succeeded where everyone else sees only alerts. You then dive into the logs to reconstruct an SSH brute-force, before setting the method straight, the six phases of incident response, and applying it for real to a ransomware spreading live.",
     "steps": [
       "defense-anal",
       "defense-term",
       "defense-order",
       "defense-scen"
     ],
-    "debrief": "A shift well handled: you spotted the successful compromise the SIEM was drowning out, reconstructed an SSH intrusion line by line, ordered the incident response cycle and ran it under pressure without giving in to blackmail. Detect, investigate, contain, restore: the blue-team reflex is in place."
+    "debrief": "A shift well handled: you spotted the successful compromise the SIEM was drowning out, reconstructed an SSH intrusion line by line, ordered the incident response cycle and ran it under pressure without giving in to blackmail."
   },
   {
     "id": "m-off",
@@ -110,13 +110,13 @@
     "title": "Pentest under mandate",
     "level": 11,
     "tagline": "From the legal framework to the flaw: running a penetration test by the book.",
-    "intro": "A client hires you for a penetration test. It all starts with the framework: written authorization, scope, decisions that keep you on the right side of the law. You then review the ordered methodology of a pentest, before moving to action — read-only reconnaissance and enumeration on an authorized target. Finally, in a configuration file you recover, one line makes the server exploitable without even a credential: it is up to you to find it.",
+    "intro": "A client hires you for a penetration test. It all starts with the framework: written authorization, scope, decisions that keep you on the right side of the law. You then review the ordered methodology of a pentest, before moving to action: read-only reconnaissance and enumeration on an authorized target. Finally, in a configuration file you recover, one line makes the server exploitable without even a credential: it is up to you to find it.",
     "steps": [
       "off-scen",
       "off-order",
       "off-term",
       "off-anal"
     ],
-    "debrief": "A mission run by the book: nothing without written authorization and a scope, a methodology that runs from scoping to reporting, a non-intrusive reconnaissance and a configuration flaw flushed out. Ethical pentesting is as much legal rigor as it is technique."
+    "debrief": "A mission run by the book: nothing without written authorization and a scope, a methodology that runs from scoping to reporting, a non-intrusive reconnaissance and a configuration flaw flushed out."
   }
 ]

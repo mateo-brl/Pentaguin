@@ -8,7 +8,7 @@
     "blocks": [
       {
         "type": "hook",
-        "md": "You run security for a company. Your firewall is the best money can buy — and this morning, an employee plugs in a USB stick found in the parking lot. The firewall never saw a thing. What is still protecting your network?"
+        "md": "You run security for a company. Your firewall is the best money can buy, and this morning, an employee plugs in a USB stick found in the parking lot. The firewall never saw a thing. What is still protecting your network?"
       },
       {
         "type": "predict",
@@ -19,7 +19,7 @@
           { "id": "c", "text": "Betting everything on employee training" }
         ],
         "correctId": "b",
-        "reveal": "No barrier is perfect. Several independent layers force the attacker to get through all of them — and every layer is one more chance to spot them."
+        "reveal": "No barrier is perfect. Several independent layers force the attacker to get through all of them, and every layer is one more chance to spot them."
       },
       {
         "type": "text",
@@ -38,7 +38,7 @@
           { "id": "c", "text": "Availability" }
         ],
         "correctId": "c",
-        "reveal": "The records are neither leaked nor tampered with — they have become unreachable exactly when they are needed. It is availability that goes down."
+        "reveal": "The records are neither leaked nor tampered with: they have become unreachable exactly when they are needed. It is availability that goes down."
       },
       {
         "type": "text",
@@ -86,11 +86,11 @@
     "blocks": [
       {
         "type": "hook",
-        "md": "In late 2013, during the breach that would cost Target 40 million payment card numbers, its detection tools did raise the alarm. The alerts, drowned in the noise, went unhandled. Collecting logs is not enough — you have to make them talk."
+        "md": "In late 2013, during the breach that would cost Target 40 million payment card numbers, its detection tools did raise the alarm. The alerts, drowned in the noise, went unhandled. Collecting logs is not enough: you have to make them talk."
       },
       {
         "type": "text",
-        "md": "A **SIEM** (Security Information and Event Management) is the central platform of a **SOC** (Security Operations Center, the team that monitors security around the clock). Its job: **collect, centralize and correlate the logs** produced by a multitude of sources — firewalls, servers, workstations, applications, antivirus — in order to surface suspicious activity that no single source would reveal on its own."
+        "md": "A **SIEM** (Security Information and Event Management) is the central platform of a **SOC** (Security Operations Center, the team that monitors security around the clock). Its job: **collect, centralize and correlate the logs** produced by a multitude of sources (firewalls, servers, workstations, applications, antivirus) in order to surface suspicious activity that no single source would reveal on its own."
       },
       {
         "type": "predict",
@@ -101,7 +101,7 @@
           { "id": "c", "text": "Installing a newer antivirus on the server" }
         ],
         "correctId": "b",
-        "reveal": "No single source tells the whole story. It is by cross-referencing the events — correlation — that the attack scenario emerges."
+        "reveal": "No single source tells the whole story. It is by cross-referencing the events, correlation, that the attack scenario emerges."
       },
       {
         "type": "text",
@@ -111,12 +111,12 @@
         "type": "truefalse",
         "statement": "When a SIEM detects an attack in progress, it blocks the malicious connection itself.",
         "answer": false,
-        "explanation": "The SIEM observes, correlates and alerts, but does not act on traffic. Blocking is up to other tools — firewall, IPS, EDR — or to the analysts it has notified."
+        "explanation": "The SIEM observes, correlates and alerts, but does not act on traffic. Blocking is up to other tools (firewall, IPS, EDR) or to the analysts it has notified."
       },
       {
         "type": "callout",
         "variant": "warning",
-        "md": "A SIEM **does not act** on traffic: it **aggregates and alerts**, it blocks nothing by itself. So it does **not replace** the firewall, the antivirus or the EDR — it watches them and connects the dots between what they produce."
+        "md": "A SIEM **does not act** on traffic: it **aggregates and alerts**, it blocks nothing by itself. So it does **not replace** the firewall, the antivirus or the EDR: it watches them and connects the dots between what they produce."
       },
       {
         "type": "flipcards",
@@ -155,7 +155,7 @@
     "blocks": [
       {
         "type": "hook",
-        "md": "3:12 a.m., you are on call. A sensor spots an aggressive scan followed by an exploitation attempt against a server: it saw everything, logged everything, timestamped everything… and blocked nothing. A faulty device? No — that is exactly the job it was given."
+        "md": "3:12 a.m., you are on call. A sensor spots an aggressive scan followed by an exploitation attempt against a server: it saw everything, logged everything, timestamped everything… and blocked nothing. A faulty device? No: that is exactly the job it was given."
       },
       {
         "type": "text",
@@ -184,7 +184,7 @@
           { "id": "b", "text": "Anomaly-based detection" }
         ],
         "correctId": "b",
-        "reveal": "A signature describes an attack that is already known: against something brand new, it is blind. Only spotting deviations from normal behavior can catch the unknown — at the cost of false positives."
+        "reveal": "A signature describes an attack that is already known: against something brand new, it is blind. Only spotting deviations from normal behavior can catch the unknown, at the cost of false positives."
       },
       {
         "type": "text",
@@ -193,7 +193,7 @@
       {
         "type": "callout",
         "variant": "exam",
-        "md": "Remember: **IDS = detects and alerts** (passive, out-of-band); **IPS = blocks inline** (active, in the traffic path). Because the IPS sits in the traffic path, a **false positive** can cut off **legitimate** traffic — hence the importance of careful tuning."
+        "md": "Remember: **IDS = detects and alerts** (passive, out-of-band); **IPS = blocks inline** (active, in the traffic path). Because the IPS sits in the traffic path, a **false positive** can cut off **legitimate** traffic: hence the importance of careful tuning."
       },
       {
         "type": "flipcards",
@@ -251,7 +251,7 @@
           { "id": "c", "text": "Reinstall the workstation for a clean start" }
         ],
         "correctId": "b",
-        "reveal": "First stop the spread: that is containment. Removing or reinstalling too early destroys evidence — and meanwhile, the malware keeps spreading elsewhere."
+        "reveal": "First stop the spread: that is containment. Removing or reinstalling too early destroys evidence, and meanwhile, the malware keeps spreading elsewhere."
       },
       {
         "type": "text",
@@ -259,18 +259,18 @@
       },
       {
         "type": "text",
-        "md": "Then come:\n\n- **Eradication**: **removing the cause** — malware, accounts created by the attacker, the exploited vulnerability.\n- **Recovery**: bringing systems back into production **cleanly** and **monitoring** them to make sure the threat does not come back.\n- **Lessons learned**: a **post-incident** meeting and report to understand what happened and **improve** preparation. The loop closes."
+        "md": "Then come:\n\n- **Eradication**: **removing the cause** (malware, accounts created by the attacker, the exploited vulnerability).\n- **Recovery**: bringing systems back into production **cleanly** and **monitoring** them to make sure the threat does not come back.\n- **Lessons learned**: a **post-incident** meeting and report to understand what happened and **improve** preparation."
       },
       {
         "type": "truefalse",
         "statement": "Once the systems are restored and the attacker is out, the incident response is over.",
         "answer": false,
-        "explanation": "The lessons-learned phase remains: understanding what happened and strengthening preparation. It is what makes the team better at the next incident — the loop closes back on preparation."
+        "explanation": "The lessons-learned phase remains: understanding what happened and strengthening preparation. It is what makes the team better at the next incident: the loop closes back on preparation."
       },
       {
         "type": "callout",
         "variant": "tip",
-        "md": "**Contain before you eradicate**: first stop the spread (isolate), and only then remove the cause. And throughout the incident, **preserve the evidence** — it is valuable for the analysis and for any legal follow-up."
+        "md": "**Contain before you eradicate**: first stop the spread (isolate), and only then remove the cause. And throughout the incident, **preserve the evidence**, it is valuable for the analysis and for any legal follow-up."
       },
       {
         "type": "flipcards",
@@ -313,7 +313,7 @@
     "blocks": [
       {
         "type": "hook",
-        "md": "You walk into the server room: the compromised machine is still running, the attacker possibly still connected. Your colleague reaches for the power cable — \"shall we pull the plug?\". Every second counts, but one wrong move can destroy evidence forever."
+        "md": "You walk into the server room: the compromised machine is still running, the attacker possibly still connected. Your colleague reaches for the power cable: \"shall we pull the plug?\". Every second counts, but one wrong move can destroy evidence forever."
       },
       {
         "type": "predict",
@@ -324,7 +324,7 @@
           { "id": "c", "text": "Nothing: power the machine off first to freeze the scene" }
         ],
         "correctId": "b",
-        "reveal": "RAM and active connections evaporate the moment the power goes off; the disk is not going anywhere. You always capture the most volatile first — and you certainly do not power off."
+        "reveal": "RAM and active connections evaporate the moment the power goes off; the disk is not going anywhere. You always capture the most volatile first, and you certainly do not power off."
       },
       {
         "type": "text",
@@ -332,7 +332,7 @@
       },
       {
         "type": "text",
-        "md": "**Volatile** data disappears fast; **persistent** data stays. So you collect **from the most volatile to the least volatile**, before anything is lost:\n\n1. CPU registers and **caches**.\n2. **Memory (RAM)** — gone the moment the machine is powered off.\n3. Network state (connections, tables) and running processes.\n4. **Hard drive** (files, file systems).\n5. Archived logs and offline **backups**.\n\nIn other words: **capture RAM before disk**, because it evaporates when the machine goes down."
+        "md": "**Volatile** data disappears fast; **persistent** data stays. So you collect **from the most volatile to the least volatile**, before anything is lost:\n\n1. CPU registers and **caches**.\n2. **Memory (RAM)**: gone the moment the machine is powered off.\n3. Network state (connections, tables) and running processes.\n4. **Hard drive** (files, file systems).\n5. Archived logs and offline **backups**.\n\nIn other words: **capture RAM before disk**, because it evaporates when the machine goes down."
       },
       {
         "type": "predict",
@@ -342,7 +342,7 @@
           { "id": "b", "text": "The bit-for-bit copy, once verified with a hash" }
         ],
         "correctId": "b",
-        "reveal": "You never work on the original. If the before-and-after hashes match, the copy is perfectly faithful — and the original stays intact for any legal proceedings."
+        "reveal": "You never work on the original. If the before-and-after hashes match, the copy is perfectly faithful, and the original stays intact for any legal proceedings."
       },
       {
         "type": "text",
@@ -394,11 +394,11 @@
     "blocks": [
       {
         "type": "hook",
-        "md": "In late 2020, FireEye's security team spotted a second phone freshly enrolled for an employee's MFA. A harmless detail? They checked anyway — and unraveled the SolarWinds espionage campaign, one of the largest of the decade. No critical alert had ever fired."
+        "md": "In late 2020, FireEye's security team spotted a second phone freshly enrolled for an employee's MFA. A harmless detail? They checked anyway, and unraveled the SolarWinds espionage campaign, one of the largest of the decade. No critical alert had ever fired."
       },
       {
         "type": "text",
-        "md": "That is the whole spirit of **threat hunting**, a **proactive** practice: instead of waiting for an alert to fire, the analyst **goes looking** for attackers **already inside** the environment who slipped past automated detection. The mindset is **\"assume breach\"** — assume a compromise has already happened — and then try to prove it or rule it out."
+        "md": "That is the whole spirit of **threat hunting**, a **proactive** practice: instead of waiting for an alert to fire, the analyst **goes looking** for attackers **already inside** the environment who slipped past automated detection. The mindset is **\"assume breach\"** (assume a compromise has already happened) and then try to prove it or rule it out."
       },
       {
         "type": "predict",
@@ -409,7 +409,7 @@
           { "id": "c", "text": "Waiting for a SIEM alert to provide a starting point" }
         ],
         "correctId": "b",
-        "reveal": "Searching without a hypothesis is hunting for a needle without knowing what it looks like. A hunt starts from a hypothesis — often drawn from known TTPs — and then tests it against the data."
+        "reveal": "Searching without a hypothesis is hunting for a needle without knowing what it looks like. A hunt starts from a hypothesis, often drawn from known TTPs, and then tests it against the data."
       },
       {
         "type": "text",
@@ -427,7 +427,7 @@
       },
       {
         "type": "text",
-        "md": "Hence the distinction between **IoCs** (Indicators of Compromise) — fixed artifacts such as an IP address or the hash of a malicious file — and **behaviors** (IoAs, Indicators of Attack), which are much harder to disguise. Hunting leans heavily on behavior, because an attacker can swap tools easily but changes **method** far less readily."
+        "md": "Hence the distinction between **IoCs** (Indicators of Compromise), fixed artifacts such as an IP address or the hash of a malicious file, and **behaviors** (IoAs, Indicators of Attack), which are much harder to disguise. Hunting leans heavily on behavior, because an attacker can swap tools easily but changes **method** far less readily."
       },
       {
         "type": "truefalse",
@@ -481,7 +481,7 @@
     "blocks": [
       {
         "type": "hook",
-        "md": "It is 2 a.m. in your SOC. The queue shows 300 unhandled alerts, and every one of them calls for the same steps: check the URL, isolate the workstation, disable the account, open a ticket. Your night-shift analyst will get through a fraction of them. They are not too slow — the process is."
+        "md": "It is 2 a.m. in your SOC. The queue shows 300 unhandled alerts, and every one of them calls for the same steps: check the URL, isolate the workstation, disable the account, open a ticket. Your night-shift analyst will get through a fraction of them. They are not too slow: the process is."
       },
       {
         "type": "text",
@@ -554,7 +554,7 @@
     "blocks": [
       {
         "type": "hook",
-        "md": "December 2021: the Log4Shell flaw (CVE-2021-44228) is assigned a CVSS score of 10 out of 10 — the maximum. Millions of servers exposed, security teams in crisis mode through the holidays. But what does that \"10\" actually measure? Less than you might think."
+        "md": "December 2021: the Log4Shell flaw (CVE-2021-44228) is assigned a CVSS score of 10 out of 10, the maximum. Millions of servers exposed, security teams in crisis mode through the holidays. But what does that \"10\" actually measure? Less than you might think."
       },
       {
         "type": "predict",
@@ -573,7 +573,7 @@
       },
       {
         "type": "text",
-        "md": "To prioritize, you rely on **CVSS** (Common Vulnerability Scoring System), which gives a flaw a **severity score from 0 to 10**. The usual bands: **0** none, **0.1–3.9** low, **4.0–6.9** medium, **7.0–8.9** high, **9.0–10** critical. Do not confuse it with a **CVE** (Common Vulnerabilities and Exposures), which is only the unique **identifier** of a vulnerability (e.g. CVE-2021-44228)."
+        "md": "To prioritize, you rely on **CVSS** (Common Vulnerability Scoring System), which gives a flaw a **severity score from 0 to 10**. The usual bands: **0** none, **0.1 to 3.9** low, **4.0 to 6.9** medium, **7.0 to 8.9** high, **9.0 to 10** critical. Do not confuse it with a **CVE** (Common Vulnerabilities and Exposures), which is only the unique **identifier** of a vulnerability (e.g. CVE-2021-44228)."
       },
       {
         "type": "predict",
@@ -592,7 +592,7 @@
       {
         "type": "callout",
         "variant": "exam",
-        "md": "Classic trap: **CVSS is a severity score (0 to 10), not a probability of exploitation**. A flaw with a CVSS of 9 is not necessarily exploited in the wild — **EPSS** and the **KEV** catalog are what tell you about likelihood and real-world exploitation."
+        "md": "Classic trap: **CVSS is a severity score (0 to 10), not a probability of exploitation**. A flaw with a CVSS of 9 is not necessarily exploited in the wild: **EPSS** and the **KEV** catalog are what tell you about likelihood and real-world exploitation."
       },
       {
         "type": "flipcards",
