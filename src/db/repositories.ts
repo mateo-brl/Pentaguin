@@ -130,6 +130,15 @@ export function getTotalXp(): number {
   return row?.total ?? 0;
 }
 
+/** XP gagné aujourd'hui (pour l'objectif quotidien). */
+export function getTodayXp(): number {
+  const row = getDb().getFirstSync<{ xp: number }>(
+    'SELECT xp FROM daily_activity WHERE date = ?',
+    [localDateKey()],
+  );
+  return row?.xp ?? 0;
+}
+
 // — Clé/valeur ----------------------------------------------------------------
 
 export function getKv(key: string): string | null {
