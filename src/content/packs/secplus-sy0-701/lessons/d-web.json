@@ -8,11 +8,11 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "Octobre 2015 : l'opérateur britannique **TalkTalk** se fait dérober les données de plus de 150 000 clients — et écope d'une amende record de 400 000 £. L'arme du crime ? Une **injection SQL**, une technique déjà vieille de quinze ans, exploitée notamment par un adolescent. Voyons pourquoi cette faille refuse de mourir."
+    "md": "Octobre 2015 : l'opérateur britannique **TalkTalk** se fait dérober les données de plus de 150 000 clients, et écope d'une amende record de 400 000 £. L'arme du crime ? Une **injection SQL**, une technique déjà vieille de quinze ans, exploitée notamment par un adolescent. Voyons pourquoi cette faille refuse de mourir."
    },
    {
     "type": "text",
-    "md": "Une **injection SQL** (*SQL injection*, ou **SQLi**) survient quand une application insère une saisie utilisateur directement dans une requête envoyée à sa base de données. L'attaquant écrit alors du **SQL** (le langage d'interrogation des bases de données) dans un champ ordinaire — un login, une recherche — et détourne la requête pour lire, modifier ou supprimer des données qui ne le concernent pas."
+    "md": "Une **injection SQL** (*SQL injection*, ou **SQLi**) survient quand une application insère une saisie utilisateur directement dans une requête envoyée à sa base de données. L'attaquant écrit alors du **SQL** (le langage d'interrogation des bases de données) dans un champ ordinaire (un login, une recherche) et détourne la requête pour lire, modifier ou supprimer des données qui ne le concernent pas."
    },
    {
     "type": "predict",
@@ -24,7 +24,7 @@
      },
      {
       "id": "b",
-      "text": "La condition devient toujours vraie — la requête peut renvoyer tous les comptes"
+      "text": "La condition devient toujours vraie, la requête peut renvoyer tous les comptes"
      },
      {
       "id": "c",
@@ -60,12 +60,12 @@
    },
    {
     "type": "text",
-    "md": "La **requête paramétrée** (*parameterized query* / *prepared statement*, requête préparée) fonctionne ainsi : on envoie d'abord au moteur la **structure** de la requête avec des emplacements réservés (`WHERE login = ?`), puis les **valeurs** séparément. Le moteur traite alors la saisie **toujours** comme une donnée, jamais comme du code exécutable — même si elle contient des apostrophes ou des mots-clés SQL. La faille disparaît par construction."
+    "md": "La **requête paramétrée** (*parameterized query* / *prepared statement*, requête préparée) fonctionne ainsi : on envoie d'abord au moteur la **structure** de la requête avec des emplacements réservés (`WHERE login = ?`), puis les **valeurs** séparément. Le moteur traite alors la saisie **toujours** comme une donnée, jamais comme du code exécutable, même si elle contient des apostrophes ou des mots-clés SQL. La faille disparaît par construction."
    },
    {
     "type": "callout",
     "variant": "warning",
-    "md": "Ne compte pas sur le seul **échappement** (*escaping*) des caractères spéciaux : c'est fragile, dépendant du contexte et facile à contourner (encodages, types numériques, jeux de caractères). Les **requêtes paramétrées** — ou un ORM qui les utilise sous le capot — sont la défense de référence. L'échappement ne vient qu'en complément quand on ne peut vraiment pas paramétrer."
+    "md": "Ne compte pas sur le seul **échappement** (*escaping*) des caractères spéciaux : c'est fragile, dépendant du contexte et facile à contourner (encodages, types numériques, jeux de caractères). Les **requêtes paramétrées** (ou un ORM qui les utilise sous le capot) sont la défense de référence. L'échappement ne vient qu'en complément quand on ne peut vraiment pas paramétrer."
    },
    {
     "type": "flipcards",
@@ -80,7 +80,7 @@
      },
      {
       "front": "Prepared statement",
-      "back": "Requête préparée à l'avance par le moteur, à laquelle on fournit ensuite les paramètres — mécanisme concret des requêtes paramétrées."
+      "back": "Requête préparée à l'avance par le moteur, à laquelle on fournit ensuite les paramètres (mécanisme concret des requêtes paramétrées)."
      }
     ]
    },
@@ -128,7 +128,7 @@
    },
    {
     "type": "text",
-    "md": "Détaillons ces trois types. Le **XSS réfléchi** (*reflected*) : la charge est dans la requête (souvent l'URL) et **renvoyée immédiatement** dans la réponse — il faut piéger la victime pour qu'elle clique un lien. Le **XSS stocké** (*stored*) : la charge est **enregistrée** côté serveur (commentaire, profil) puis re-servie à **tous** les visiteurs — le plus dangereux. Le **XSS basé sur le DOM** (*DOM-based*) : la faille est dans le **JavaScript de la page**, qui écrit une donnée non fiable dans le **DOM** (la structure de la page en mémoire) ; le serveur ne voit parfois jamais la charge."
+    "md": "Détaillons ces trois types. Le **XSS réfléchi** (*reflected*) : la charge est dans la requête (souvent l'URL) et **renvoyée immédiatement** dans la réponse. Il faut piéger la victime pour qu'elle clique un lien. Le **XSS stocké** (*stored*) : la charge est **enregistrée** côté serveur (commentaire, profil) puis re-servie à **tous** les visiteurs : c'est le plus dangereux. Le **XSS basé sur le DOM** (*DOM-based*) : la faille est dans le **JavaScript de la page**, qui écrit une donnée non fiable dans le **DOM** (la structure de la page en mémoire) ; le serveur ne voit parfois jamais la charge."
    },
    {
     "type": "truefalse",
@@ -154,7 +154,7 @@
      },
      {
       "front": "Stored XSS",
-      "back": "Charge enregistrée côté serveur puis re-servie à tous les visiteurs — le type le plus dangereux."
+      "back": "Charge enregistrée côté serveur puis re-servie à tous les visiteurs : le type le plus dangereux."
      },
      {
       "front": "DOM-based XSS",
@@ -182,7 +182,7 @@
    },
    {
     "type": "text",
-    "md": "Le **CSRF** (*Cross-Site Request Forgery*, falsification de requête inter-sites) force le **navigateur d'une victime déjà authentifiée** à envoyer une requête non désirée vers un site où elle est connectée — par exemple changer son email ou effectuer un virement. L'attaquant héberge une page piégée (un formulaire, une image) qui déclenche la requête vers le site cible dès que la victime la visite."
+    "md": "Le **CSRF** (*Cross-Site Request Forgery*, falsification de requête inter-sites) force le **navigateur d'une victime déjà authentifiée** à envoyer une requête non désirée vers un site où elle est connectée, par exemple changer son email ou effectuer un virement. L'attaquant héberge une page piégée (un formulaire, une image) qui déclenche la requête vers le site cible dès que la victime la visite."
    },
    {
     "type": "predict",
@@ -210,18 +210,18 @@
    },
    {
     "type": "truefalse",
-    "statement": "Grâce au CSRF, l'attaquant peut aussi lire tes données — solde, messages — dans la réponse du site.",
+    "statement": "Grâce au CSRF, l'attaquant peut aussi lire tes données (solde, messages) dans la réponse du site.",
     "answer": false,
     "explanation": "L'attaquant déclenche la requête mais ne peut pas lire la réponse : la Same-Origin Policy l'en empêche. Le CSRF vise les actions qui changent un état, pas la lecture de données."
    },
    {
     "type": "text",
-    "md": "Retiens cette limite : la *Same-Origin Policy* empêche la page piégée de **lire la réponse**. Le CSRF sert donc à **agir** (virer de l'argent, changer un email), pas à **exfiltrer** des données — c'est ce qui le distingue d'un vol d'information classique."
+    "md": "Retiens cette limite : la *Same-Origin Policy* empêche la page piégée de **lire la réponse**. Le CSRF sert donc à **agir** (virer de l'argent, changer un email), pas à **exfiltrer** des données, ce qui le distingue d'un vol d'information classique."
    },
    {
     "type": "callout",
     "variant": "tip",
-    "md": "Deux défenses se combinent. Le **token anti-CSRF** (*synchronizer token*) : une valeur secrète et imprévisible, liée à la session, exigée dans chaque formulaire sensible — l'attaquant ne peut pas la deviner. Et l'attribut de cookie **SameSite** (`Lax` ou `Strict`), qui empêche le navigateur d'envoyer le cookie de session sur les requêtes **cross-site**, coupant l'attaque à la racine."
+    "md": "Deux défenses se combinent. Le **token anti-CSRF** (*synchronizer token*) : une valeur secrète et imprévisible, liée à la session, exigée dans chaque formulaire sensible : l'attaquant ne peut pas la deviner. Et l'attribut de cookie **SameSite** (`Lax` ou `Strict`), qui empêche le navigateur d'envoyer le cookie de session sur les requêtes **cross-site** et coupe l'attaque à la racine."
    },
    {
     "type": "flipcards",
@@ -256,11 +256,11 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "2010 : l'extension Firefox **Firesheep** transforme n'importe qui en pirate. Sur un Wi-Fi ouvert, un clic suffisait pour **voler la session Facebook ou Twitter** des voisins de café — leurs cookies circulaient en clair. Le scandale a poussé les grands sites vers le HTTPS permanent. La leçon : tout repose sur un petit cookie."
+    "md": "2010 : l'extension Firefox **Firesheep** transforme n'importe qui en pirate. Sur un Wi-Fi ouvert, un clic suffisait pour **voler la session Facebook ou Twitter** des voisins de café : leurs cookies circulaient en clair. Le scandale a poussé les grands sites vers le HTTPS permanent. La leçon : tout repose sur un petit cookie."
    },
    {
     "type": "text",
-    "md": "Après une connexion réussie, le serveur ne veut pas redemander le mot de passe à chaque page. Il ouvre une **session** : un identifiant de session (*session ID*) est déposé dans un **cookie** (un petit fichier renvoyé par le navigateur à chaque requête). Ce cookie prouve « je suis bien la personne qui s'est connectée ». Le voler ou le prédire revient à **usurper la session** — d'où l'importance de bien le protéger."
+    "md": "Après une connexion réussie, le serveur ne veut pas redemander le mot de passe à chaque page. Il ouvre une **session** : un identifiant de session (*session ID*) est déposé dans un **cookie** (un petit fichier renvoyé par le navigateur à chaque requête). Ce cookie prouve « je suis bien la personne qui s'est connectée ». Le voler ou le prédire revient à **usurper la session**, d'où l'importance de bien le protéger."
    },
    {
     "type": "truefalse",
@@ -290,7 +290,7 @@
    },
    {
     "type": "text",
-    "md": "Trois attributs durcissent le cookie de session. **HttpOnly** : le cookie devient **invisible pour le JavaScript** de la page (`document.cookie` ne le lit plus), ce qui bloque son vol via XSS. **Secure** : le cookie n'est **envoyé qu'en HTTPS**, jamais en clair — l'attribut qui aurait neutralisé Firesheep. **SameSite** (`Strict`, `Lax` ou `None`) : contrôle l'envoi du cookie sur les requêtes **cross-site**, principale défense contre le CSRF. On combine idéalement les trois."
+    "md": "Trois attributs durcissent le cookie de session. **HttpOnly** : le cookie devient **invisible pour le JavaScript** de la page (`document.cookie` ne le lit plus), ce qui bloque son vol via XSS. **Secure** : le cookie n'est **envoyé qu'en HTTPS**, jamais en clair (l'attribut qui aurait neutralisé Firesheep). **SameSite** (`Strict`, `Lax` ou `None`) : contrôle l'envoi du cookie sur les requêtes **cross-site**, principale défense contre le CSRF. On combine idéalement les trois."
    },
    {
     "type": "callout",
@@ -334,11 +334,11 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "2009 : le chercheur Moxie Marlinspike présente **sslstrip**, un outil qui intercepte les connexions sur un réseau et rabat discrètement les victimes du HTTPS vers du HTTP en clair — mots de passe capturés à la volée, sans aucune alerte. La riposte du web tient en quelques **en-têtes HTTP** que le serveur envoie au navigateur."
+    "md": "2009 : le chercheur Moxie Marlinspike présente **sslstrip**, un outil qui intercepte les connexions sur un réseau et rabat discrètement les victimes du HTTPS vers du HTTP en clair : mots de passe capturés à la volée, sans aucune alerte. La riposte du web tient en quelques **en-têtes HTTP** que le serveur envoie au navigateur."
    },
    {
     "type": "text",
-    "md": "Un **en-tête de sécurité HTTP** (*security header*) est une instruction que le serveur ajoute à sa réponse pour demander au **navigateur** d'appliquer une protection. Le code de l'application n'est pas modifié : c'est le navigateur qui fait respecter la règle. Deux en-têtes sont incontournables : **CSP** et **HSTS**."
+    "md": "Un **en-tête de sécurité HTTP** (*security header*) est une instruction que le serveur ajoute à sa réponse pour demander au **navigateur** d'appliquer une protection. Le code de l'application n'est pas modifié : c'est le navigateur qui fait respecter la règle. Deux en-têtes comptent avant tout : **CSP** et **HSTS**."
    },
    {
     "type": "predict",
@@ -391,7 +391,7 @@
    {
     "type": "callout",
     "variant": "tip",
-    "md": "Retiens la division du travail : **CSP limite les sources de script** (et réduit l'impact du XSS) ; **HSTS impose HTTPS** (et protège le transport). Elles ne se substituent pas aux corrections applicatives — ce sont des couches supplémentaires, pas la seule ligne de défense."
+    "md": "Retiens la division du travail : **CSP limite les sources de script** (et réduit l'impact du XSS) ; **HSTS impose HTTPS** (et protège le transport). Elles ne se substituent pas aux corrections applicatives : ce sont des couches supplémentaires, pas la seule ligne de défense."
    },
    {
     "type": "flipcards",
@@ -458,7 +458,7 @@
    },
    {
     "type": "text",
-    "md": "Dans l'**édition 2021**, le n°1 est donc le **Broken Access Control** (contrôle d'accès défaillant : un utilisateur accède à des données ou actions qui ne lui sont pas destinées). Suivent notamment les **Cryptographic Failures** (échecs cryptographiques), l'**Injection** — qui regroupe désormais la SQLi **et** le XSS —, l'**Insecure Design**, la **Security Misconfiguration**, les composants vulnérables, les échecs d'authentification, et, en n°10, le **SSRF** (*Server-Side Request Forgery*)."
+    "md": "Dans l'**édition 2021**, le n°1 est donc le **Broken Access Control** (contrôle d'accès défaillant : un utilisateur accède à des données ou actions qui ne lui sont pas destinées). Suivent notamment les **Cryptographic Failures** (échecs cryptographiques), l'**Injection** (qui regroupe désormais la SQLi **et** le XSS), l'**Insecure Design**, la **Security Misconfiguration**, les composants vulnérables, les échecs d'authentification, et, en n°10, le **SSRF** (*Server-Side Request Forgery*)."
    },
    {
     "type": "truefalse",
@@ -552,7 +552,7 @@
    },
    {
     "type": "text",
-    "md": "C'est là tout l'intérêt pour l'attaquant : le serveur est **à l'intérieur** du réseau. Il peut donc atteindre des services **non exposés sur Internet** — panneaux d'administration internes, bases de données, `http://localhost`. Cible emblématique dans le cloud : l'**endpoint de métadonnées** `http://169.254.169.254/`, qui peut livrer des **identifiants temporaires** de l'instance et ouvrir la voie à une compromission bien plus large — le scénario Capital One. Le serveur sert alors de **proxy** involontaire."
+    "md": "C'est là tout l'intérêt pour l'attaquant : le serveur est **à l'intérieur** du réseau. Il peut donc atteindre des services **non exposés sur Internet** : panneaux d'administration internes, bases de données, `http://localhost`. Cible emblématique dans le cloud : l'**endpoint de métadonnées** `http://169.254.169.254/`, qui peut livrer des **identifiants temporaires** de l'instance et ouvrir la voie à une compromission bien plus large (le scénario Capital One). Le serveur sert alors de **proxy** involontaire."
    },
    {
     "type": "callout",
@@ -592,17 +592,17 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "2015 : le chercheur Tim McLean révèle que de nombreuses librairies **JWT** populaires, tous langages confondus, laissent forger des jetons d'authentification **sans connaître la moindre clé**. Des API en production acceptaient des badges « admin » fabriqués de toutes pièces. Deux pièges étaient en cause — et ils se comprennent très bien."
+    "md": "2015 : le chercheur Tim McLean révèle que de nombreuses librairies **JWT** populaires, tous langages confondus, laissent forger des jetons d'authentification **sans connaître la moindre clé**. Des API en production acceptaient des badges « admin » fabriqués de toutes pièces. Deux pièges étaient en cause, et tous deux se comprennent bien."
    },
    {
     "type": "text",
-    "md": "Un **JWT** (*JSON Web Token*) est un jeton d'authentification très utilisé par les **API**. Il se compose de trois parties séparées par des points, encodées en **base64url** : un **header** (qui déclare l'algorithme via le champ `alg`), un **payload** (les *claims*, c'est-à-dire les affirmations : identifiant, rôle, expiration) et une **signature**. La signature garantit que le jeton n'a pas été modifié — à condition que le serveur la **vérifie correctement**."
+    "md": "Un **JWT** (*JSON Web Token*) est un jeton d'authentification très utilisé par les **API**. Il se compose de trois parties séparées par des points, encodées en **base64url** : un **header** (qui déclare l'algorithme via le champ `alg`), un **payload** (les *claims*, c'est-à-dire les affirmations : identifiant, rôle, expiration) et une **signature**. La signature garantit que le jeton n'a pas été modifié, à condition que le serveur la **vérifie correctement**."
    },
    {
     "type": "truefalse",
     "statement": "Le payload d'un JWT signé est chiffré : impossible d'en lire le contenu sans la clé.",
     "answer": false,
-    "explanation": "Un JWT signé est encodé, pas chiffré : n'importe qui peut décoder le base64url et lire les claims. La signature garantit l'intégrité du jeton, pas sa confidentialité — n'y mets jamais de secret."
+    "explanation": "Un JWT signé est encodé, pas chiffré : n'importe qui peut décoder le base64url et lire les claims. La signature garantit l'intégrité du jeton, pas sa confidentialité. N'y mets jamais de secret."
    },
    {
     "type": "predict",
@@ -622,7 +622,7 @@
      }
     ],
     "correctId": "b",
-    "reveal": "« none » signifie littéralement « pas de signature à vérifier ». Le serveur qui l'accepte valide n'importe quel contenu — role admin compris."
+    "reveal": "« none » signifie littéralement « pas de signature à vérifier ». Le serveur qui l'accepte valide n'importe quel contenu, role admin compris."
    },
    {
     "type": "text",
@@ -650,7 +650,7 @@
    },
    {
     "type": "text",
-    "md": "C'est la **confusion RS256/HS256** (*algorithm confusion*), le second piège. **HS256** repose sur **HMAC** (un code d'authentification calculé avec une **clé secrète partagée**) : la **même clé** signe et vérifie. L'attaquant bascule donc le header sur **HS256** et signe le token en utilisant la **clé publique** RSA — qui est publique ! — comme secret HMAC. Un serveur qui laisse la librairie choisir l'algorithme d'après le header vérifie alors avec cette même clé publique et **accepte le jeton forgé**."
+    "md": "C'est la **confusion RS256/HS256** (*algorithm confusion*), le second piège. **HS256** repose sur **HMAC** (un code d'authentification calculé avec une **clé secrète partagée**) : la **même clé** signe et vérifie. L'attaquant bascule donc le header sur **HS256** et signe le token en utilisant la **clé publique** RSA (qui est publique !) comme secret HMAC. Un serveur qui laisse la librairie choisir l'algorithme d'après le header vérifie alors avec cette même clé publique et **accepte le jeton forgé**."
    },
    {
     "type": "callout",

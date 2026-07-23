@@ -8,11 +8,11 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "October 2015: UK telecom provider **TalkTalk** has the data of over 150,000 customers stolen — and gets hit with a record £400,000 fine. The weapon? A **SQL injection**, a technique already fifteen years old at the time, wielded in part by a teenager. Let's see why this flaw refuses to die."
+    "md": "October 2015: UK telecom provider **TalkTalk** has the data of over 150,000 customers stolen, and gets hit with a record £400,000 fine. The weapon? A **SQL injection**, a technique already fifteen years old at the time, wielded in part by a teenager. Let's see why this flaw refuses to die."
    },
    {
     "type": "text",
-    "md": "A **SQL injection** (**SQLi**) happens when an application drops user input straight into a query sent to its database. The attacker writes **SQL** — the language databases are queried with — into an ordinary field such as a login box or a search bar, and hijacks the query to read, modify or delete data that was never meant for them."
+    "md": "A **SQL injection** (**SQLi**) happens when an application drops user input straight into a query sent to its database. The attacker writes **SQL** (the language databases are queried with) into an ordinary field such as a login box or a search bar, and hijacks the query to read, modify or delete data that was never meant for them."
    },
    {
     "type": "predict",
@@ -24,7 +24,7 @@
      },
      {
       "id": "b",
-      "text": "The condition becomes always true — the query may return every account"
+      "text": "The condition becomes always true, and the query may return every account"
      },
      {
       "id": "c",
@@ -40,7 +40,7 @@
    },
    {
     "type": "predict",
-    "question": "What is the genuine fix — the one that eliminates the flaw rather than papering over it?",
+    "question": "What is the genuine fix, the one that eliminates the flaw rather than papering over it?",
     "choices": [
      {
       "id": "a",
@@ -60,12 +60,12 @@
    },
    {
     "type": "text",
-    "md": "The **parameterized query** (also called a **prepared statement**) works like this: you first send the engine the **structure** of the query with placeholders (`WHERE login = ?`), then the **values** separately. From that point on the engine treats the input **always** as data, never as executable code — even when it contains quotes or SQL keywords. The flaw disappears by design."
+    "md": "The **parameterized query** (also called a **prepared statement**) works like this: you first send the engine the **structure** of the query with placeholders (`WHERE login = ?`), then the **values** separately. From that point on the engine treats the input **always** as data, never as executable code, even when it contains quotes or SQL keywords. The flaw disappears by design."
    },
    {
     "type": "callout",
     "variant": "warning",
-    "md": "Do not rely on **escaping** special characters alone: it is brittle, context-dependent and easy to bypass (encodings, numeric types, character sets). **Parameterized queries** — or an ORM that uses them under the hood — are the reference defense. Escaping is only a complement for the rare cases where parameterization is genuinely impossible."
+    "md": "Do not rely on **escaping** special characters alone: it is brittle, context-dependent and easy to bypass (encodings, numeric types, character sets). **Parameterized queries** (or an ORM that uses them under the hood) are the reference defense. Escaping is only a complement for the rare cases where parameterization is genuinely impossible."
    },
    {
     "type": "flipcards",
@@ -80,7 +80,7 @@
      },
      {
       "front": "Prepared statement",
-      "back": "A query the engine prepares ahead of time and to which parameters are then supplied — the concrete mechanism behind parameterized queries."
+      "back": "A query the engine prepares ahead of time and to which parameters are then supplied (the concrete mechanism behind parameterized queries)."
      }
     ]
    },
@@ -128,7 +128,7 @@
    },
    {
     "type": "text",
-    "md": "Let's break the three types down. **Reflected XSS**: the payload travels in the request (usually the URL) and is **echoed straight back** in the response — the victim has to be lured into clicking a link. **Stored XSS**: the payload is **saved** on the server (a comment, a profile) and then served back to **every** visitor — the most dangerous of the three. **DOM-based XSS**: the flaw sits in the **page's own JavaScript**, which writes untrusted data into the **DOM** (the in-memory structure of the page); sometimes the server never even sees the payload."
+    "md": "Let's break the three types down. **Reflected XSS**: the payload travels in the request (usually the URL) and is **echoed straight back** in the response. The victim has to be lured into clicking a link. **Stored XSS**: the payload is **saved** on the server (a comment, a profile) and then served back to **every** visitor: the most dangerous of the three. **DOM-based XSS**: the flaw sits in the **page's own JavaScript**, which writes untrusted data into the **DOM** (the in-memory structure of the page); sometimes the server never even sees the payload."
    },
    {
     "type": "truefalse",
@@ -154,7 +154,7 @@
      },
      {
       "front": "Stored XSS",
-      "back": "Payload saved on the server and then served back to every visitor — the most dangerous type."
+      "back": "Payload saved on the server and then served back to every visitor: the most dangerous type."
      },
      {
       "front": "DOM-based XSS",
@@ -182,7 +182,7 @@
    },
    {
     "type": "text",
-    "md": "**CSRF** (*Cross-Site Request Forgery*) forces the **browser of an already authenticated victim** to send an unwanted request to a site they are logged into — changing their email address, for instance, or transferring money. The attacker hosts a booby-trapped page (a form, an image) that fires the request at the target site as soon as the victim visits it."
+    "md": "**CSRF** (*Cross-Site Request Forgery*) forces the **browser of an already authenticated victim** to send an unwanted request to a site they are logged into, for instance changing their email address or transferring money. The attacker hosts a booby-trapped page (a form, an image) that fires the request at the target site as soon as the victim visits it."
    },
    {
     "type": "predict",
@@ -206,22 +206,22 @@
    },
    {
     "type": "text",
-    "md": "That is what makes the attack so elegant: it rides on normal browser behavior — the browser **automatically attaches cookies**, including the **session** cookie, to **every** request bound for that domain. The forged request therefore arrives **authenticated**, without the attacker ever knowing the password or the cookie."
+    "md": "That is what makes the attack so elegant: it rides on normal browser behavior: the browser **automatically attaches cookies**, including the **session** cookie, to **every** request bound for that domain. The forged request therefore arrives **authenticated**, without the attacker ever knowing the password or the cookie."
    },
    {
     "type": "truefalse",
-    "statement": "With CSRF, the attacker can also read your data — balance, messages — from the site's response.",
+    "statement": "With CSRF, the attacker can also read your data (balance, messages) from the site's response.",
     "answer": false,
     "explanation": "The attacker triggers the request but cannot read the response: the Same-Origin Policy prevents it. CSRF targets actions that change state, not the retrieval of data."
    },
    {
     "type": "text",
-    "md": "Keep that limit in mind: the *Same-Origin Policy* stops the booby-trapped page from **reading the response**. CSRF is therefore about **acting** (transferring money, changing an email address), not **exfiltrating** data — which is what sets it apart from classic information theft."
+    "md": "Keep that limit in mind: the *Same-Origin Policy* stops the booby-trapped page from **reading the response**. CSRF is therefore about **acting** (transferring money, changing an email address), not **exfiltrating** data, which is what sets it apart from classic information theft."
    },
    {
     "type": "callout",
     "variant": "tip",
-    "md": "Two defenses work together. The **anti-CSRF token** (*synchronizer token*): a secret, unpredictable value tied to the session and required in every sensitive form — the attacker cannot guess it. And the **SameSite** cookie attribute (`Lax` or `Strict`), which stops the browser from sending the session cookie on **cross-site** requests, cutting the attack off at the root."
+    "md": "Two defenses work together. The **anti-CSRF token** (*synchronizer token*): a secret, unpredictable value tied to the session and required in every sensitive form: the attacker cannot guess it. And the **SameSite** cookie attribute (`Lax` or `Strict`), which stops the browser from sending the session cookie on **cross-site** requests and cuts the attack off at the root."
    },
    {
     "type": "flipcards",
@@ -256,11 +256,11 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "2010: the Firefox extension **Firesheep** turned anyone into a hacker. On open Wi-Fi, one click was enough to **hijack the Facebook or Twitter session** of the person at the next café table — their cookies were traveling in cleartext. The scandal pushed major sites toward always-on HTTPS. The lesson: everything hangs on one small cookie."
+    "md": "2010: the Firefox extension **Firesheep** turned anyone into a hacker. On open Wi-Fi, one click was enough to **hijack the Facebook or Twitter session** of the person at the next café table: their cookies were traveling in cleartext. The scandal pushed major sites toward always-on HTTPS. The lesson: everything hangs on one small cookie."
    },
    {
     "type": "text",
-    "md": "After a successful login, the server does not want to ask for the password again on every page. It opens a **session**: a session identifier (*session ID*) is placed in a **cookie** (a small piece of data the browser sends back with every request). That cookie is the proof that \"I really am the person who logged in\". Stealing it or predicting it amounts to **hijacking the session** — which is why it has to be protected properly."
+    "md": "After a successful login, the server does not want to ask for the password again on every page. It opens a **session**: a session identifier (*session ID*) is placed in a **cookie** (a small piece of data the browser sends back with every request). That cookie is the proof that \"I really am the person who logged in\". Stealing it or predicting it amounts to **hijacking the session**, which is why it has to be protected properly."
    },
    {
     "type": "truefalse",
@@ -290,7 +290,7 @@
    },
    {
     "type": "text",
-    "md": "Three attributes harden the session cookie. **HttpOnly**: the cookie becomes **invisible to the page's JavaScript** (`document.cookie` can no longer read it), which blocks its theft via XSS. **Secure**: the cookie is **only sent over HTTPS**, never in the clear — the attribute that would have neutralized Firesheep. **SameSite** (`Strict`, `Lax` or `None`): controls whether the cookie is sent on **cross-site** requests, the main defense against CSRF. Ideally you combine all three."
+    "md": "Three attributes harden the session cookie. **HttpOnly**: the cookie becomes **invisible to the page's JavaScript** (`document.cookie` can no longer read it), which blocks its theft via XSS. **Secure**: the cookie is **only sent over HTTPS**, never in the clear (the attribute that would have neutralized Firesheep). **SameSite** (`Strict`, `Lax` or `None`): controls whether the cookie is sent on **cross-site** requests, the main defense against CSRF. Ideally you combine all three."
    },
    {
     "type": "callout",
@@ -334,11 +334,11 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "2009: researcher Moxie Marlinspike unveils **sslstrip**, a tool that intercepts connections on a network and quietly downgrades victims from HTTPS to cleartext HTTP — passwords harvested on the fly, with no warning whatsoever. The web's counterpunch fits in a handful of **HTTP headers** the server sends to the browser."
+    "md": "2009: researcher Moxie Marlinspike unveils **sslstrip**, a tool that intercepts connections on a network and quietly downgrades victims from HTTPS to cleartext HTTP: passwords harvested on the fly, with no warning whatsoever. The web's counterpunch fits in a handful of **HTTP headers** the server sends to the browser."
    },
    {
     "type": "text",
-    "md": "An **HTTP security header** is an instruction the server adds to its response asking the **browser** to enforce a protection. The application code itself is untouched: the browser is what enforces the rule. Two headers are essential: **CSP** and **HSTS**."
+    "md": "An **HTTP security header** is an instruction the server adds to its response asking the **browser** to enforce a protection. The application code itself is untouched: the browser is what enforces the rule. Two headers matter most: **CSP** and **HSTS**."
    },
    {
     "type": "predict",
@@ -391,7 +391,7 @@
    {
     "type": "callout",
     "variant": "tip",
-    "md": "Remember the division of labor: **CSP restricts script sources** (and reduces the impact of XSS); **HSTS enforces HTTPS** (and protects the transport). Neither is a substitute for fixing the application itself — they are extra layers, not the only line of defense."
+    "md": "Remember the division of labor: **CSP restricts script sources** (and reduces the impact of XSS); **HSTS enforces HTTPS** (and protects the transport). Neither is a substitute for fixing the application itself: they are extra layers, not the only line of defense."
    },
    {
     "type": "flipcards",
@@ -426,7 +426,7 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "You're the first security hire at a startup. Day one: the audit lands — **200 vulnerabilities** in the web application. There is no way to fix everything before next quarter. Where do you start? That is exactly the question the **OWASP Top 10** answers."
+    "md": "You're the first security hire at a startup. Day one: the audit lands, **200 vulnerabilities** in the web application. There is no way to fix everything before next quarter. Where do you start? That is exactly the question the **OWASP Top 10** answers."
    },
    {
     "type": "text",
@@ -458,7 +458,7 @@
    },
    {
     "type": "text",
-    "md": "So in the **2021 edition**, number one is **Broken Access Control** (a user reaches data or actions that were never meant for them). Next come **Cryptographic Failures**, **Injection** — which now covers both SQLi **and** XSS — **Insecure Design**, **Security Misconfiguration**, vulnerable components, authentication failures and, at number ten, **SSRF** (*Server-Side Request Forgery*)."
+    "md": "So in the **2021 edition**, number one is **Broken Access Control** (a user reaches data or actions that were never meant for them). Next come **Cryptographic Failures**, **Injection** (which now covers both SQLi **and** XSS), **Insecure Design**, **Security Misconfiguration**, vulnerable components, authentication failures and, at number ten, **SSRF** (*Server-Side Request Forgery*)."
    },
    {
     "type": "truefalse",
@@ -524,7 +524,7 @@
      }
     ],
     "correctId": "b",
-    "reveal": "That is the whole trick of SSRF: the attacker never breaks into the network — they talk the server into sending the request for them."
+    "reveal": "That is the whole trick of SSRF: the attacker never breaks into the network: they talk the server into sending the request for them."
    },
    {
     "type": "text",
@@ -552,7 +552,7 @@
    },
    {
     "type": "text",
-    "md": "That is the entire appeal for the attacker: the server sits **inside** the network. It can therefore reach services that are **not exposed to the Internet** — internal admin panels, databases, `http://localhost`. The emblematic cloud target is the **metadata endpoint** `http://169.254.169.254/`, which can hand over the instance's **temporary credentials** and open the way to a far wider compromise — the Capital One scenario. The server then acts as an unwitting **proxy**."
+    "md": "That is the entire appeal for the attacker: the server sits **inside** the network. It can therefore reach services that are **not exposed to the Internet**: internal admin panels, databases, `http://localhost`. The emblematic cloud target is the **metadata endpoint** `http://169.254.169.254/`, which can hand over the instance's **temporary credentials** and open the way to a far wider compromise (the Capital One scenario). The server then acts as an unwitting **proxy**."
    },
    {
     "type": "callout",
@@ -592,17 +592,17 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "2015: researcher Tim McLean reveals that many popular **JWT** libraries, across every language, let attackers forge authentication tokens **without knowing a single key**. Production APIs were accepting \"admin\" badges made up out of thin air. Two traps were to blame — and both are very much worth understanding."
+    "md": "2015: researcher Tim McLean reveals that many popular **JWT** libraries, across every language, let attackers forge authentication tokens **without knowing a single key**. Production APIs were accepting \"admin\" badges made up out of thin air. Two traps were to blame, and both are very much worth understanding."
    },
    {
     "type": "text",
-    "md": "A **JWT** (*JSON Web Token*) is an authentication token widely used by **APIs**. It is made of three parts separated by dots and encoded in **base64url**: a **header** (which declares the algorithm in the `alg` field), a **payload** (the *claims*, that is to say the assertions: identifier, role, expiry) and a **signature**. The signature guarantees that the token has not been altered — provided the server actually **verifies it properly**."
+    "md": "A **JWT** (*JSON Web Token*) is an authentication token widely used by **APIs**. It is made of three parts separated by dots and encoded in **base64url**: a **header** (which declares the algorithm in the `alg` field), a **payload** (the *claims*, that is to say the assertions: identifier, role, expiry) and a **signature**. The signature guarantees that the token has not been altered, provided the server actually **verifies it properly**."
    },
    {
     "type": "truefalse",
     "statement": "The payload of a signed JWT is encrypted: impossible to read its contents without the key.",
     "answer": false,
-    "explanation": "A signed JWT is encoded, not encrypted: anyone can decode the base64url and read the claims. The signature guarantees the token's integrity, not its confidentiality — never put a secret in there."
+    "explanation": "A signed JWT is encoded, not encrypted: anyone can decode the base64url and read the claims. The signature guarantees the token's integrity, not its confidentiality. Never put a secret in there."
    },
    {
     "type": "predict",
@@ -622,7 +622,7 @@
      }
     ],
     "correctId": "b",
-    "reveal": "\"none\" literally means \"no signature to verify\". A server that accepts it validates any content whatsoever — admin role included."
+    "reveal": "\"none\" literally means \"no signature to verify\". A server that accepts it validates any content whatsoever, admin role included."
    },
    {
     "type": "text",
@@ -650,7 +650,7 @@
    },
    {
     "type": "text",
-    "md": "This is **RS256/HS256 confusion** (*algorithm confusion*), the second trap. **HS256** relies on **HMAC** (an authentication code computed with a **shared secret key**): the **same key** both signs and verifies. So the attacker switches the header to **HS256** and signs the token using the RSA **public key** — which is public! — as the HMAC secret. A server that lets the library pick the algorithm from the header then verifies with that very same public key and **accepts the forged token**."
+    "md": "This is **RS256/HS256 confusion** (*algorithm confusion*), the second trap. **HS256** relies on **HMAC** (an authentication code computed with a **shared secret key**): the **same key** both signs and verifies. So the attacker switches the header to **HS256** and signs the token using the RSA **public key** (which is public!) as the HMAC secret. A server that lets the library pick the algorithm from the header then verifies with that very same public key and **accepts the forged token**."
    },
    {
     "type": "callout",

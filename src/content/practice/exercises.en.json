@@ -76,7 +76,7 @@
   "kind": "order",
   "title": "Responding to a compromised account",
   "level": 3,
-  "brief": "Too late: one of your online accounts has been hacked, and unknown logins are showing up on it. You have to regain control without making things worse — put the response steps back in the right order.",
+  "brief": "Too late: one of your online accounts has been hacked, and unknown logins are showing up on it. You have to regain control without making things worse. Put the response steps back in the right order.",
   "prompt": "Order the actions to regain control of the account and limit the damage.",
   "items": [
    {
@@ -107,7 +107,7 @@
    "d",
    "e"
   ],
-  "explanation": "You first regain control by changing the password from a trusted device (a), then you kill the attacker's still-open sessions (b). Next you add two-factor authentication to lock access down (c). You then make sure the attacker left no backdoor behind — an altered forwarding rule or recovery address (d). Finally, you warn your contacts and the provider to contain the damage (e).",
+  "explanation": "You first regain control by changing the password from a trusted device (a), then you kill the attacker's still-open sessions (b). Next you add two-factor authentication to lock access down (c). You then make sure the attacker left no backdoor behind, such as an altered forwarding rule or recovery address (d). Finally, you warn your contacts and the provider to contain the damage (e).",
   "tags": [
    "practice-v1"
   ]
@@ -172,7 +172,7 @@
     ]
    }
   ],
-  "success": "Nicely done: your system is up to date. Installing updates regularly closes known vulnerabilities — an essential piece of everyday security hygiene.",
+  "success": "Nicely done: your system is up to date. Installing updates regularly closes known vulnerabilities, a basic piece of everyday security hygiene.",
   "tags": [
    "practice-v1"
   ]
@@ -193,7 +193,7 @@
       "to": "n2"
      },
      {
-      "text": "I join “CafeCentral_Free” — it's easier and it's free",
+      "text": "I join “CafeCentral_Free”, it's easier and it's free",
       "to": "bad1"
      },
      {
@@ -203,7 +203,7 @@
     ]
    },
    "n2": {
-    "text": "The staff confirm it: the real network is “CafeCentral_WiFi” (WPA2). There is no official “Free” network — it is almost certainly an evil twin set up by an attacker. You join the right network. Now, what about your bank?",
+    "text": "The staff confirm it: the real network is “CafeCentral_WiFi” (WPA2). There is no official “Free” network: it is almost certainly an evil twin set up by an attacker. You join the right network. Now, what about your bank?",
     "choices": [
      {
       "text": "I check my bank's exact URL and the HTTPS padlock (or I use the app over 4G/5G)",
@@ -233,7 +233,7 @@
     "outcome": "good"
    },
    "bad1": {
-    "text": "“CafeCentral_Free” is an evil twin: an attacker cloned the café's name on an open access point. All your unencrypted traffic flows through them — credential capture, DNS spoofing, booby-trapped captive portal. Never join an unverified open Wi-Fi network for anything sensitive.",
+    "text": "“CafeCentral_Free” is an evil twin: an attacker cloned the café's name on an open access point. All your unencrypted traffic flows through them: credential capture, DNS spoofing, booby-trapped captive portal. Never join an unverified open Wi-Fi network for anything sensitive.",
     "outcome": "bad"
    },
    "bad2": {
@@ -351,7 +351,7 @@
   ],
   "question": "Which connection corresponds to a reverse shell (command-and-control channel)?",
   "correctLine": 3,
-  "explanation": "`bash` has no reason to open an outbound connection to the Internet. Here it establishes a session to 185.220.101.47:4444: port 4444 is Metasploit's default and the IP belongs to a well-known range of Tor exit nodes — this is a reverse shell. The other lines are legitimate: outbound HTTPS (443) from firefox and thunderbird, inbound SSH (22) from the LAN, and 443 served by nginx to a machine on the local network.",
+  "explanation": "`bash` has no reason to open an outbound connection to the Internet. Here it establishes a session to 185.220.101.47:4444: port 4444 is Metasploit's default and the IP belongs to a well-known range of Tor exit nodes. This is a reverse shell. The other lines are legitimate: outbound HTTPS (443) from firefox and thunderbird, inbound SSH (22) from the LAN, and 443 served by nginx to a machine on the local network.",
   "tags": [
    "practice-v1"
   ]
@@ -414,7 +414,7 @@
     ]
    }
   ],
-  "success": "Diagnosis complete: DNS resolves `intranet.exemple.lan` → 10.20.30.40 (answer from the resolver on port 53), an HTTPS session (443) is properly established, and traceroute confirms a short, healthy path (3 hops, < 2 ms). On the network side everything is nominal — the slowness is most likely in the application (server or browser), not the network.",
+  "success": "Diagnosis complete: DNS resolves `intranet.exemple.lan` → 10.20.30.40 (answer from the resolver on port 53), an HTTPS session (443) is properly established, and traceroute confirms a short, healthy path (3 hops, < 2 ms). On the network side everything is nominal: the slowness is most likely in the application (server or browser), not the network.",
   "tags": [
    "practice-v1"
   ]
@@ -446,7 +446,7 @@
   "kind": "scenario",
   "title": "Ransomware detected on a workstation",
   "level": 7,
-  "brief": "A user calls you in a panic: a ransom note is showing and their files now carry the `.locked` extension. Ransomware has encrypted the machine and every second counts — make the right calls.",
+  "brief": "A user calls you in a panic: a ransom note is showing and their files now carry the `.locked` extension. Ransomware has encrypted the machine and every second counts. Make the right calls.",
   "start": "n1",
   "nodes": {
    "n1": {
@@ -594,7 +594,7 @@
    "auth",
    "return"
   ],
-  "explanation": "Recursive DNS resolution: the client checks its local cache first, then hands the query off to the recursive resolver. With nothing cached, the resolver walks down the hierarchy — root → TLD (.com) → authoritative server — which supplies the A record. The resolver caches it for the TTL, then returns the IP. DNS listens on port 53 (UDP, falling back to TCP for large responses).",
+  "explanation": "Recursive DNS resolution: the client checks its local cache first, then hands the query off to the recursive resolver. With nothing cached, the resolver walks down the hierarchy, root → TLD (.com) → authoritative server, which supplies the A record. The resolver caches it for the TTL, then returns the IP. DNS listens on port 53 (UDP, falling back to TCP for large responses).",
   "tags": [
    "practice-v1"
   ]
@@ -605,7 +605,7 @@
   "title": "One permission too many",
   "level": 8,
   "artifactKind": "code",
-  "brief": "You are reviewing a provisioning script that sets up database backups on a Linux server. One line introduces a file permissions misconfiguration — catch it before it ships to production.",
+  "brief": "You are reviewing a provisioning script that sets up database backups on a Linux server. One line introduces a file permissions misconfiguration: catch it before it ships to production.",
   "lines": [
    "#!/usr/bin/env bash",
    "useradd -r -s /usr/sbin/nologin svc-backup",
@@ -617,7 +617,7 @@
   ],
   "question": "Which line introduces a dangerous file permissions misconfiguration?",
   "correctLine": 6,
-  "explanation": "`chmod 777` grants read + write + execute rights to everyone (`rwxrwxrwx`). On a database dump — sensitive data — that lets any local user READ the data (leak) and MODIFY it (tampering with the backup). You should restrict it instead: `chmod 600` (owner only), or `640` with a dedicated group, keeping `svc-backup` as the owner. Rule: least privilege on sensitive files.",
+  "explanation": "`chmod 777` grants read + write + execute rights to everyone (`rwxrwxrwx`). On a database dump (sensitive data), that lets any local user READ the data (leak) and MODIFY it (tampering with the backup). You should restrict it instead: `chmod 600` (owner only), or `640` with a dedicated group, keeping `svc-backup` as the owner. Rule: least privilege on sensitive files.",
   "tags": [
    "practice-v1"
   ]
@@ -713,7 +713,7 @@
   ],
   "question": "Which line signals a successful compromise (and not just an alert)?",
   "correctLine": 5,
-  "explanation": "The three WARN lines (Event ID 4625) are only failed logons: noisy, but harmless as long as they keep failing. The genuinely critical line is the INFO Event ID 4624 with status=success: from the SAME external IP 203.0.113.66 and right after the three failures, the \"administrateur\" account logs on successfully this time, with LogonType=10 (RemoteInteractive / RDP). This is an RDP brute-force that worked — the real breach. A classic trap: the most serious event is not the noisiest one, and it comes through as INFO.",
+  "explanation": "The three WARN lines (Event ID 4625) are only failed logons: noisy, but harmless as long as they keep failing. The genuinely critical line is the INFO Event ID 4624 with status=success: from the SAME external IP 203.0.113.66 and right after the three failures, the \"administrateur\" account logs on successfully this time, with LogonType=10 (RemoteInteractive / RDP). This is an RDP brute-force that worked: the real breach. A classic trap: the most serious event is not the noisiest one, and it comes through as INFO.",
   "tags": [
    "practice-v1"
   ]
@@ -774,7 +774,7 @@
     "outcome": "good"
    },
    "bad1": {
-    "text": "A verbal agreement carries no evidentiary weight. Without written authorization defining the scope, any access to a system you do not own is unauthorized access — a criminal offense (in France, Article 323-1 of the French Criminal Code). Nothing gets touched before the signature.",
+    "text": "A verbal agreement carries no evidentiary weight. Without written authorization defining the scope, any access to a system you do not own is unauthorized access, a criminal offense (in France, Article 323-1 of the French Criminal Code). Nothing gets touched before the signature.",
     "outcome": "bad"
    },
    "bad2": {
@@ -855,7 +855,7 @@
     ]
    }
   ],
-  "success": "Audit findings: the `audit` account can run `find` as root without a password (`sudo -l`) AND `find` is one of the SUID binaries. Since `find` can execute arbitrary commands (`find . -exec /bin/sh \\; -quit`), that is a path to root and should be fixed as a priority (remove the sudo entry, strip the SUID bit). These reconnaissance commands — `id`, `sudo -l`, `find -perm -4000` — are non-destructive and form the basis of a local privilege audit.",
+  "success": "Audit findings: the `audit` account can run `find` as root without a password (`sudo -l`) AND `find` is one of the SUID binaries. Since `find` can execute arbitrary commands (`find . -exec /bin/sh \\; -quit`), that is a path to root and should be fixed as a priority (remove the sudo entry, strip the SUID bit). These reconnaissance commands (`id`, `sudo -l`, `find -perm -4000`) are non-destructive and form the basis of a local privilege audit.",
   "tags": [
    "practice-v1"
   ]
@@ -882,7 +882,7 @@
    },
    {
     "id": "delivery",
-    "text": "Delivery: get the weapon to the target — email, USB, website"
+    "text": "Delivery: get the weapon to the target via email, USB or a website"
    },
    {
     "id": "actions",
@@ -906,7 +906,7 @@
    "c2",
    "actions"
   ],
-  "explanation": "Cyber Kill Chain (Lockheed Martin): Reconnaissance → Weaponization → Delivery → Exploitation → Installation → Command & Control (C2) → Actions on Objectives. Why it matters defensively: the earlier you break the chain, the less the attacker achieves — every stage is an opportunity for detection and blocking.",
+  "explanation": "Cyber Kill Chain (Lockheed Martin): Reconnaissance → Weaponization → Delivery → Exploitation → Installation → Command & Control (C2) → Actions on Objectives. Why it matters defensively: the earlier you break the chain, the less the attacker achieves: every stage is an opportunity for detection and blocking.",
   "tags": [
    "practice-v1"
   ]
@@ -979,7 +979,7 @@
     ]
    }
   ],
-  "success": "Nicely done. You confirmed two key protections: HSTS (a long max-age plus includeSubDomains and preload) forces the browser to use HTTPS only, and the CSP `default-src 'self'; script-src 'self'` restricts scripts to the site's own domain, one more barrier against XSS. curl -I only read the headers: no data was modified.",
+  "success": "Nicely done. You confirmed two protections: HSTS (a long max-age plus includeSubDomains and preload) forces the browser to use HTTPS only, and the CSP `default-src 'self'; script-src 'self'` restricts scripts to the site's own domain, one more barrier against XSS. curl -I only read the headers: no data was modified.",
   "tags": [
    "practice-v1"
   ]
@@ -1045,27 +1045,27 @@
   "items": [
    {
     "id": "erad",
-    "text": "Eradication — remove the root cause: malware, compromised accounts, attacker access"
+    "text": "Eradication: remove the root cause (malware, compromised accounts, attacker access)"
    },
    {
     "id": "prep",
-    "text": "Preparation — team, tools, playbooks and backups ready before any incident"
+    "text": "Preparation: team, tools, playbooks and backups ready before any incident"
    },
    {
     "id": "lecons",
-    "text": "Lessons learned — post-mortem, updating procedures and defenses"
+    "text": "Lessons learned: post-mortem, updating procedures and defenses"
    },
    {
     "id": "confine",
-    "text": "Containment — isolate to stop the spread (segmentation, network cut-off)"
+    "text": "Containment: isolate to stop the spread (segmentation, network cut-off)"
    },
    {
     "id": "ident",
-    "text": "Identification — detect, qualify and delimit the perimeter of the incident"
+    "text": "Identification: detect, qualify and delimit the perimeter of the incident"
    },
    {
     "id": "retab",
-    "text": "Recovery — restore, bring back into production and monitor the return to normal"
+    "text": "Recovery: restore, bring back into production and monitor the return to normal"
    }
   ],
   "correctOrder": [
@@ -1122,7 +1122,7 @@
    "postexploit",
    "reporting"
   ],
-  "explanation": "Scoping & authorization first (the legal foundation) → Reconnaissance → Scanning & enumeration → Exploitation (targeting a specific vuln) → Post-exploitation (measuring the real impact: privileges, pivoting) → Reporting, which delivers the true value to the client. You don't scan before you have the scope, and you don't wrap up until everything is documented.",
+  "explanation": "Scoping & authorization first (the legal foundation) → Reconnaissance → Scanning & enumeration → Exploitation (targeting a specific vuln) → Post-exploitation (measuring the real impact: privileges, pivoting) → Reporting, which delivers the value to the client. You don't scan before you have the scope, and you don't wrap up until everything is documented.",
   "tags": [
    "practice-v1"
   ]
@@ -1245,7 +1245,7 @@
   "kind": "scenario",
   "title": "Ransomware in progress: incident response decisions",
   "level": 11,
-  "brief": "08:14. Your EDR reports mass file encryption on a file server, and the alert is reaching other workstations. A ransomware deployment is under way — chain the right decisions together.",
+  "brief": "08:14. Your EDR reports mass file encryption on a file server, and the alert is reaching other workstations. A ransomware deployment is under way. Chain the right decisions together.",
   "start": "n1",
   "nodes": {
    "n1": {
@@ -1269,7 +1269,7 @@
     "text": "Good call: network isolation stops the spread while preserving the machines. They are still powered on. You want to collect the evidence before cleaning up. In what order?",
     "choices": [
      {
-      "text": "Capture volatile memory (RAM) first, then the disk image — order of volatility",
+      "text": "Capture volatile memory (RAM) first, then the disk image (order of volatility)",
       "to": "n3"
      },
      {
@@ -1300,7 +1300,7 @@
     "outcome": "good"
    },
    "bad_off": {
-    "text": "Abruptly cutting the power stops the encryption but destroys all volatile memory — and the encryption keys sometimes live there — and it can corrupt files that are mid-write. Best practice is to isolate from the network without powering off, so you contain the incident while preserving the evidence.",
+    "text": "Abruptly cutting the power stops the encryption but destroys all volatile memory (and the encryption keys sometimes live there) and it can corrupt files that are mid-write. Best practice is to isolate from the network without powering off, so you contain the incident while preserving the evidence.",
     "outcome": "bad"
    },
    "bad_wait": {
@@ -1329,7 +1329,7 @@
   "kind": "terminal",
   "title": "Reconnaissance & enumeration of an authorized target",
   "level": 11,
-  "brief": "Authorized engagement, target in scope. Objective: READ-only reconnaissance and enumeration — map the attack surface without a single intrusive action. Every output is already interpreted for you.",
+  "brief": "Authorized engagement, target in scope. Objective: READ-only reconnaissance and enumeration, mapping the attack surface without a single intrusive action. Every output is already interpreted for you.",
   "shell": "pentester@kali:~$",
   "steps": [
    {
@@ -1429,7 +1429,7 @@
   "kind": "order",
   "title": "How a Kerberos authentication unfolds",
   "level": 11,
-  "brief": "A user signs in to a service in an Active Directory domain, and Kerberos takes the stage. Put the exchanges back in order — KDC → TGT → TGS → service.",
+  "brief": "A user signs in to a service in an Active Directory domain, and Kerberos takes the stage. Put the exchanges back in order: KDC → TGT → TGS → service.",
   "prompt": "Tap the exchanges in the protocol's chronological order.",
   "items": [
    {
@@ -1475,7 +1475,7 @@
   "kind": "terminal",
   "title": "Static triage of a suspicious sample",
   "level": 11,
-  "brief": "An `invoice.pdf` attachment received by a user looks fishy. In an isolated lab, run a STATIC, defensive triage: you never execute the sample, you only observe it — identify what it really is, compute its hash and extract its strings.",
+  "brief": "An `invoice.pdf` attachment received by a user looks fishy. In an isolated lab, run a STATIC, defensive triage: you never execute the sample, you only observe it. Identify what it really is, compute its hash and extract its strings.",
   "shell": "analyst@lab:~$",
   "steps": [
    {
@@ -1527,7 +1527,7 @@
     ]
    }
   ],
-  "success": "Triage done. `file` unmasked a PE32 executable hiding behind a `.pdf` extension; the SHA-256 lets you query threat intel without sharing the binary; `strings` turned up telling IOCs — a hard-coded C2 URL, the `CryptEncrypt` call and a ransom note with the `.locked` extension: the signature of ransomware. Purely static analysis, in an isolated environment — you never execute the sample.",
+  "success": "Triage done. `file` unmasked a PE32 executable hiding behind a `.pdf` extension; the SHA-256 lets you query threat intel without sharing the binary; `strings` turned up telling IOCs: a hard-coded C2 URL, the `CryptEncrypt` call and a ransom note with the `.locked` extension, the signature of ransomware. Purely static analysis, in an isolated environment: you never execute the sample.",
   "tags": [
    "practice-v1"
   ]
@@ -1537,7 +1537,7 @@
   "kind": "terminal",
   "title": "Inspect a certificate with openssl",
   "level": 12,
-  "brief": "You are handed a server's TLS certificate (server.crt) and a freshly downloaded ISO image. Using openssl in read-only mode, inspect the certificate, then verify the file's integrity — you change nothing.",
+  "brief": "You are handed a server's TLS certificate (server.crt) and a freshly downloaded ISO image. Using openssl in read-only mode, inspect the certificate, then verify the file's integrity. You change nothing.",
   "shell": "user@pc:~$",
   "steps": [
    {

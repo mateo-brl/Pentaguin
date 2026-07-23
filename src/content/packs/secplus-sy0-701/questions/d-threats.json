@@ -100,7 +100,7 @@
     "correct": [
       "d"
     ],
-    "explanation": "Le baiting repose sur un appât physique ou numérique attractif — ici une clé USB — que la victime utilise elle-même, ce qui déclenche l'infection.",
+    "explanation": "Le baiting repose sur un appât physique ou numérique attractif (ici une clé USB) que la victime utilise elle-même, ce qui déclenche l'infection.",
     "difficulty": 1,
     "level": 5,
     "tags": [

@@ -8,7 +8,7 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "November 2019: RIPE NCC, Europe's Internet registry, hands out the very last available IPv4 addresses. The address pool designed back in the 1980s is officially exhausted — and yet the Internet keeps on growing. This lesson explains the sleight of hand that makes it possible."
+    "md": "November 2019: RIPE NCC, Europe's Internet registry, hands out the very last available IPv4 addresses. The address pool designed back in the 1980s is officially exhausted, and yet the Internet keeps on growing. This lesson explains the sleight of hand that makes it possible."
    },
    {
     "type": "text",
@@ -32,7 +32,7 @@
      }
     ],
     "correctId": "b",
-    "reveal": "Just one: the router's. Your devices use private addresses, invisible from the Internet — which is what allowed us to survive the IPv4 shortage."
+    "reveal": "Just one: the router's. Your devices use private addresses, invisible from the Internet, which is what allowed us to survive the IPv4 shortage."
    },
    {
     "type": "text",
@@ -42,7 +42,7 @@
     "type": "truefalse",
     "statement": "Your public IP address precisely identifies your device on the Internet.",
     "answer": false,
-    "explanation": "It identifies your router: every device in the household shares the same public address. A mechanism takes care of routing each reply back to the right device — we look at it next."
+    "explanation": "It identifies your router: every device in the household shares the same public address. A mechanism takes care of routing each reply back to the right device."
    },
    {
     "type": "text",
@@ -94,7 +94,7 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "October 21, 2016: Twitter, Netflix, Spotify and Reddit seem to vanish from the Internet for hours. Their servers are running just fine. It is their directory that has been knocked out: the Mirai botnet is hammering Dyn, a major DNS provider — and without the directory, nobody can find the addresses."
+    "md": "October 21, 2016: Twitter, Netflix, Spotify and Reddit seem to vanish from the Internet for hours. Their servers are running just fine. It is their directory that has been knocked out: the Mirai botnet is hammering Dyn, a major DNS provider. Without the directory, nobody can find the addresses."
    },
    {
     "type": "text",
@@ -180,7 +180,7 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "May 12, 2017: the WannaCry ransomware cripples British hospitals and spreads to 150 countries within days. Its hunting method? Scanning the Internet for machines exposing a single port: 445. One little number — and it is the whole subject of this lesson."
+    "md": "May 12, 2017: the WannaCry ransomware cripples British hospitals and spreads to 150 countries within days. Its hunting method? Scanning the Internet for machines exposing a single port: 445. One little number, and it is the whole subject of this lesson."
    },
    {
     "type": "text",
@@ -208,11 +208,11 @@
      }
     ],
     "correctId": "b",
-    "reveal": "443, the default port of the encrypted web. Port 80 is the cleartext web — same service, two different doors."
+    "reveal": "443, the default port of the encrypted web. Port 80 is the cleartext web: same service, two different doors."
    },
    {
     "type": "text",
-    "md": "Every **protocol**, meaning a standardized language for exchanges, has a well-known default port like this. Absolute must-knows:\n\n- **22 — SSH**: **encrypted** remote administration and login.\n- **25 — SMTP**: sending email between servers.\n- **53 — DNS**: domain name resolution.\n- **80 — HTTP**: web **in cleartext**.\n- **443 — HTTPS**: **encrypted** web (HTTP + TLS).\n- **3389 — RDP**: Windows remote desktop (Remote Desktop Protocol)."
+    "md": "Every **protocol**, meaning a standardized language for exchanges, has a well-known default port like this. Absolute must-knows:\n\n- **22, SSH**: **encrypted** remote administration and login.\n- **25, SMTP**: sending email between servers.\n- **53, DNS**: domain name resolution.\n- **80, HTTP**: web **in cleartext**.\n- **443, HTTPS**: **encrypted** web (HTTP + TLS).\n- **3389, RDP**: Windows remote desktop (Remote Desktop Protocol)."
    },
    {
     "type": "text",
@@ -270,7 +270,7 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "You are a security guard at the entrance of an office building. Hundreds of people show up every minute: questioning each one is impossible. So you work from a list of rules — who gets in, who gets out, through which door. Welcome to a firewall's day job."
+    "md": "You are a security guard at the entrance of an office building. Hundreds of people show up every minute: questioning each one is impossible. So you work from a list of rules: who gets in, who gets out, through which door. Welcome to a firewall's day job."
    },
    {
     "type": "text",
@@ -308,7 +308,7 @@
     "type": "truefalse",
     "statement": "A well-configured firewall makes antivirus unnecessary.",
     "answer": false,
-    "explanation": "Malware you download yourself arrives through an allowed flow (port 443, for instance): the firewall waves it through. Filtering traffic and analyzing files are two different layers — you need both."
+    "explanation": "Malware you download yourself arrives through an allowed flow (port 443, for instance): the firewall waves it through. Filtering traffic and analyzing files are two different layers: you need both."
    },
    {
     "type": "callout",
@@ -396,7 +396,7 @@
      }
     ],
     "correctId": "b",
-    "reveal": "Symmetric. Asymmetric crypto only served to authenticate and negotiate that session key — from here on, speed takes over."
+    "reveal": "Symmetric. Asymmetric crypto only served to authenticate and negotiate that session key. From here on, speed takes over."
    },
    {
     "type": "text",
@@ -474,7 +474,7 @@
      }
     ],
     "correctId": "c",
-    "reveal": "They can see that a tunnel exists and which server it leads to — but everything traveling inside is encrypted, and therefore unreadable."
+    "reveal": "They can see that a tunnel exists and which server it leads to, but everything traveling inside is encrypted, and therefore unreadable."
    },
    {
     "type": "text",
@@ -628,11 +628,11 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "This time, you are the attacker. Sitting in a coffee shop, connected to the same Wi-Fi as everyone else, your goal is simple: route the other customers' traffic through your machine without them suspecting a thing. By the end of this lesson, you will know exactly how it is done — and how to shut it down."
+    "md": "This time, you are the attacker. Sitting in a coffee shop, connected to the same Wi-Fi as everyone else, your goal is simple: route the other customers' traffic through your machine without them suspecting a thing. By the end of this lesson, you will know exactly how it is done, and how to shut it down."
    },
    {
     "type": "text",
-    "md": "That scenario has a name: the **man-in-the-middle** attack — **MITM**. An attacker **slips in between** two parties who believe they are talking to each other directly. Sitting in the middle, they can **eavesdrop**, but also **alter** or **replay** the messages passing through, without the victims noticing a thing."
+    "md": "That scenario has a name: the **man-in-the-middle** attack, or **MITM**. An attacker **slips in between** two parties who believe they are talking to each other directly. Sitting in the middle, they can **eavesdrop**, but also **alter** or **replay** the messages passing through, without the victims noticing a thing."
    },
    {
     "type": "predict",
@@ -666,7 +666,7 @@
     "type": "truefalse",
     "statement": "An attacker in a man-in-the-middle position can read your passwords even on an HTTPS site.",
     "answer": false,
-    "explanation": "They do intercept the traffic, but the content stays encrypted by TLS. To decrypt it, they would have to present a fake certificate — and your browser would raise the alarm. Hence the countermeasures that follow."
+    "explanation": "They do intercept the traffic, but the content stays encrypted by TLS. To decrypt it, they would have to present a fake certificate, and your browser would raise the alarm. Hence the countermeasures that follow."
    },
    {
     "type": "callout",

@@ -8,11 +8,11 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "November 1988. A program written by a student named Robert Morris spread from machine to machine entirely on its own, infecting roughly 10% of the computers connected to the Internet within hours — to the point of making them unusable. Nobody clicked anything: the program traveled unaided. Not all malware has that power — and that is precisely what lets us classify it."
+    "md": "November 1988. A program written by a student named Robert Morris spread from machine to machine entirely on its own, infecting roughly 10% of the computers connected to the Internet within hours, to the point of making them unusable. Nobody clicked anything: the program traveled unaided. Not all malware has that power, and that is what lets us classify it."
    },
    {
     "type": "text",
-    "md": "**Malware** (short for *malicious software*) is any program built to do harm: steal data, damage a system, or take control of it. Malware is sorted into **families** according to how it spreads and how it behaves — and Morris's program belonged to one very specific family. One caveat: these families are not mutually exclusive — a single piece of malware can combine several behaviors."
+    "md": "**Malware** (short for *malicious software*) is any program built to do harm: steal data, damage a system, or take control of it. Malware is sorted into **families** according to how it spreads and how it behaves, and Morris's program belonged to one very specific family. One caveat: these families are not mutually exclusive. A single piece of malware can combine several behaviors."
    },
    {
     "type": "predict",
@@ -52,7 +52,7 @@
      }
     ],
     "correctId": "b",
-    "reveal": "Just like the horse in the myth, it's all in the disguise: it doesn't replicate and doesn't force anything — the victim invites it in."
+    "reveal": "Just like the horse in the myth, it's all in the disguise: it doesn't replicate and doesn't force anything: the victim invites it in."
    },
    {
     "type": "text",
@@ -67,7 +67,7 @@
     "type": "truefalse",
     "statement": "“Virus” is the correct umbrella term for any malicious software.",
     "answer": false,
-    "explanation": "The umbrella term is “malware.” A virus is just one family among several — the one that attaches to a host file. Calling everything a virus is cybersecurity's most widespread misnomer."
+    "explanation": "The umbrella term is “malware.” A virus is just one family among several, the one that attaches to a host file. Calling everything a virus is cybersecurity's most widespread misnomer."
    },
    {
     "type": "flipcards",
@@ -130,7 +130,7 @@
      }
     ],
     "correctId": "b",
-    "reveal": "No destruction, no resale: a hostage-taking. The files are still there, just unreadable — that is the whole idea of ransomware."
+    "reveal": "No destruction, no resale: a hostage-taking. The files are still there, just unreadable: that is the whole idea of ransomware."
    },
    {
     "type": "text",
@@ -164,7 +164,7 @@
     "type": "truefalse",
     "statement": "Paying the ransom guarantees you get your files back.",
     "answer": false,
-    "explanation": "Nothing forces the attacker's hand once they are paid — not delivering the key, not deleting the stolen data, not staying away. And every payment funds the next attack."
+    "explanation": "Nothing forces the attacker's hand once they are paid: not delivering the key, not deleting the stolen data, not staying away. And every payment funds the next attack."
    },
    {
     "type": "text",
@@ -212,7 +212,7 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "Between 2013 and 2015, one man talked Google and Facebook out of more than 100 million dollars — without writing a single line of code. He sent fake invoices while posing as a real Asian supplier of both giants, and their accounting departments paid up. His weapon: trust."
+    "md": "Between 2013 and 2015, one man talked Google and Facebook out of more than 100 million dollars without writing a single line of code. He sent fake invoices while posing as a real Asian supplier of both giants, and their accounting departments paid up. His weapon: trust."
    },
    {
     "type": "predict",
@@ -232,7 +232,7 @@
      }
     ],
     "correctId": "c",
-    "reveal": "Why force an armored door when someone will open it from the inside? The human is the most accessible target — and this approach has a name."
+    "reveal": "Why force an armored door when someone will open it from the inside? The human is the most accessible target, and this approach has a name."
    },
    {
     "type": "text",
@@ -256,11 +256,11 @@
      }
     ],
     "correctId": "b",
-    "reveal": "A timeless classic: curiosity gets the drive plugged in, and the drive runs the malicious payload. The technique is called baiting — and it has cousins."
+    "reveal": "A timeless classic: curiosity gets the drive plugged in, and the drive runs the malicious payload. The technique is called baiting, and it has cousins."
    },
    {
     "type": "text",
-    "md": "Three classic techniques:\n\n- **Pretexting**: the attacker invents a believable **pretext** (a fake technician, a fake colleague, a fake survey) to build trust and extract information.\n- **Baiting**: they dangle a **lure** — a USB drive “forgotten” in a parking lot, a free download — that the victim goes on to use, triggering the infection.\n- **Quid pro quo** (“something for something”): they offer a **service in exchange** for information or access, for example a fake IT help desk that “helps” an employee in return for their password."
+    "md": "Three classic techniques:\n\n- **Pretexting**: the attacker invents a believable **pretext** (a fake technician, a fake colleague, a fake survey) to build trust and extract information.\n- **Baiting**: they dangle a **lure** (a USB drive “forgotten” in a parking lot, a free download) that the victim goes on to use, which triggers the infection.\n- **Quid pro quo** (“something for something”): they offer a **service in exchange** for information or access, for example a fake IT help desk that “helps” an employee in return for their password."
    },
    {
     "type": "callout",
@@ -271,7 +271,7 @@
     "type": "truefalse",
     "statement": "Only naive or non-technical people fall for social engineering tricks.",
     "answer": false,
-    "explanation": "The levers it pulls — authority, urgency, reciprocity — are universal. Engineers, accountants at multinationals, and even security professionals have been caught out."
+    "explanation": "The levers it pulls (authority, urgency, reciprocity) are universal. Engineers, accountants at multinationals, and even security professionals have been caught out."
    },
    {
     "type": "flipcards",
@@ -310,7 +310,7 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "October 2016. An army of hundreds of thousands of infected security cameras and routers — the **Mirai** botnet — hammered the DNS infrastructure of a company called Dyn. The result: Twitter, Netflix, Spotify, and Reddit unreachable for hours across much of the United States. The cameras' owners never noticed a thing."
+    "md": "October 2016. An army of hundreds of thousands of infected security cameras and routers, the **Mirai** botnet, hammered the DNS infrastructure of a company called Dyn. The result: Twitter, Netflix, Spotify, and Reddit unreachable for hours across much of the United States. The cameras' owners never noticed a thing."
    },
    {
     "type": "predict",
@@ -334,7 +334,7 @@
    },
    {
     "type": "text",
-    "md": "A **botnet** is a network of compromised machines — called **bots** or **zombies** — controlled remotely by an attacker. Each machine (computer, server, connected device) keeps working normally for its owner while secretly obeying the orders of the **botmaster**."
+    "md": "A **botnet** is a network of compromised machines (called **bots** or **zombies**) controlled remotely by an attacker. Each machine (computer, server, connected device) keeps working normally for its owner while secretly obeying the orders of the **botmaster**."
    },
    {
     "type": "predict",
@@ -358,7 +358,7 @@
    },
    {
     "type": "text",
-    "md": "The brain of the botnet is the **C2** (command and control) infrastructure: one or more servers that issue instructions and receive the stolen data. Bots contact the C2 at regular intervals — a periodic signal known as **beaconing** — to ask for their orders. Attackers make the C2 hard to take down:\n\n- **Centralized architecture** (IRC, HTTP/HTTPS): simple, but a single point to dismantle.\n- **P2P architecture** (peer-to-peer): the bots relay orders to each other, with no central server.\n- **DGA** (Domain Generation Algorithm): the bots generate thousands of candidate domain names every day to find the C2 again, which makes blocking far harder."
+    "md": "The brain of the botnet is the **C2** (command and control) infrastructure: one or more servers that issue instructions and receive the stolen data. Bots contact the C2 at regular intervals (a periodic signal known as **beaconing**) to ask for their orders. Attackers make the C2 hard to take down:\n\n- **Centralized architecture** (IRC, HTTP/HTTPS): simple, but a single point to dismantle.\n- **P2P architecture** (peer-to-peer): the bots relay orders to each other, with no central server.\n- **DGA** (Domain Generation Algorithm): the bots generate thousands of candidate domain names every day to find the C2 again, which makes blocking far harder."
    },
    {
     "type": "text",
@@ -410,11 +410,11 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "2010. At Iran's Natanz plant, uranium-enrichment centrifuges start mysteriously tearing themselves apart — while every control screen shows normal readings. The culprit: **Stuxnet**, a custom-built piece of malware that stayed invisible for months. That level of operation has a name."
+    "md": "2010. At Iran's Natanz plant, uranium-enrichment centrifuges start mysteriously tearing themselves apart, while every control screen shows normal readings. The culprit: **Stuxnet**, a custom-built piece of malware that stayed invisible for months. That level of operation has a name."
    },
    {
     "type": "text",
-    "md": "An **APT** (Advanced Persistent Threat) is a highly organized, well-funded attacker — often a state-sponsored group — that goes after a specific target and aims to stay inside **for a long time and unnoticed**. Break the acronym down: **Advanced** (sophisticated techniques), **Persistent** (a lasting presence, long-term objectives), **Threat** (a determined human adversary, not opportunistic malware)."
+    "md": "An **APT** (Advanced Persistent Threat) is a highly organized, well-funded attacker, often a state-sponsored group, that goes after a specific target and aims to stay inside **for a long time and unnoticed**. Break the acronym down: **Advanced** (sophisticated techniques), **Persistent** (a lasting presence, long-term objectives), **Threat** (a determined human adversary, not opportunistic malware)."
    },
    {
     "type": "predict",
@@ -506,7 +506,7 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "You are an analyst in a SOC. An intrusion has just been detected, and your manager asks you to describe what the attacker is doing in a language the whole team — and the tooling — can understand. Good news: that shared vocabulary exists, it is public, and the entire world uses it."
+    "md": "You are an analyst in a SOC. An intrusion has just been detected, and your manager asks you to describe what the attacker is doing in a language the whole team and the tooling can understand. Good news: that shared vocabulary exists, it is public, and the entire world uses it."
    },
    {
     "type": "text",
@@ -526,15 +526,15 @@
      }
     ],
     "correctId": "b",
-    "reveal": "Phishing is a means — the how, cataloged as T1566 — serving an objective such as initial access. That distinction is the heart of ATT&CK."
+    "reveal": "Phishing is a means (the how, cataloged as T1566) serving an objective such as initial access. That distinction is the basis of ATT&CK."
    },
    {
     "type": "text",
-    "md": "Two notions you must never confuse:\n\n- **Tactic**: the **why** — the attacker's objective at a given moment. Examples: *Initial Access*, *Persistence*, *Privilege Escalation*, *Exfiltration*.\n- **Technique**: the **how** — the method used to achieve that tactic. Every technique carries an identifier, e.g. **T1566 – Phishing**. A technique can be broken down into **sub-techniques** (e.g. T1566.001 – spearphishing attachment)."
+    "md": "Two notions you must never confuse:\n\n- **Tactic**: the **why**, the attacker's objective at a given moment. Examples: *Initial Access*, *Persistence*, *Privilege Escalation*, *Exfiltration*.\n- **Technique**: the **how**, the method used to achieve that tactic. Every technique carries an identifier, e.g. **T1566** (Phishing). A technique can be broken down into **sub-techniques** (e.g. T1566.001, spearphishing attachment)."
    },
    {
     "type": "predict",
-    "question": "Can a single technique — phishing, say — serve several tactics?",
+    "question": "Can a single technique like phishing serve several tactics?",
     "choices": [
      {
       "id": "a",
@@ -598,7 +598,7 @@
   "blocks": [
    {
     "type": "hook",
-    "md": "You are a SOC analyst. This morning, a partner company sends over its blocklist: three file hashes, two IP addresses, one domain name — everything it logged during the attack it just suffered. These little traces have a name, a science… and a hierarchy that will surprise you."
+    "md": "You are a SOC analyst. This morning, a partner company sends over its blocklist: three file hashes, two IP addresses, one domain name, everything it logged during the attack it just suffered. These little traces have a name and a hierarchy that will surprise you."
    },
    {
     "type": "predict",
@@ -642,15 +642,15 @@
      },
      {
       "id": "c",
-      "text": "Their TTPs — their working habits"
+      "text": "Their TTPs, their working habits"
      }
     ],
     "correctId": "c",
-    "reveal": "Counterintuitive but central: a hash changes in a second, an IP in an hour — working habits, only at great cost. A famous model turns this into a pyramid."
+    "reveal": "Counterintuitive but central: a hash changes in a second, an IP in an hour, working habits only at great cost. A famous model turns this into a pyramid."
    },
    {
     "type": "text",
-    "md": "Not all indicators are worth the same. The **Pyramid of Pain** (David Bianco) ranks IOCs by how hard they are for the attacker to change: a **hash** can be altered in a second (barely an inconvenience), whereas their **TTPs** (Tactics, Techniques, and Procedures — their working habits) are very costly to change. Blocking indicators from the top of the pyramid therefore hurts the attacker far more."
+    "md": "Not all indicators are worth the same. The **Pyramid of Pain** (David Bianco) ranks IOCs by how hard they are for the attacker to change: a **hash** can be altered in a second (barely an inconvenience), whereas their **TTPs** (Tactics, Techniques, and Procedures, their working habits) are very costly to change. Blocking indicators from the top of the pyramid therefore hurts the attacker far more."
    },
    {
     "type": "callout",
@@ -718,11 +718,11 @@
      }
     ],
     "correctId": "b",
-    "reveal": "The lower it takes hold, the more it controls what the layers above can see — to the point of lying to the OS and the antivirus."
+    "reveal": "The lower it takes hold, the more it controls what the layers above can see, to the point of lying to the OS and the antivirus."
    },
    {
     "type": "text",
-    "md": "Rootkits are classified by the **level** at which they take hold — the lower, the more powerful and the harder to detect:\n\n- **User-mode**: intercepts application calls; the simplest kind, and the easiest to spot.\n- **Kernel-mode**: installs itself in the system **kernel** (through a driver), with the highest privileges; it can lie to the operating system itself.\n- **Bootkit**: infects the boot process (bootloader, **UEFI**) and loads **before** the operating system.\n- **Firmware / hardware**: the lowest level of all; it survives even a full reinstall."
+    "md": "Rootkits are classified by the **level** at which they take hold. The lower, the more powerful and the harder to detect:\n\n- **User-mode**: intercepts application calls; the simplest kind, and the easiest to spot.\n- **Kernel-mode**: installs itself in the system **kernel** (through a driver), with the highest privileges; it can lie to the operating system itself.\n- **Bootkit**: infects the boot process (bootloader, **UEFI**) and loads **before** the operating system.\n- **Firmware / hardware**: the lowest level of all; it survives even a full reinstall."
    },
    {
     "type": "truefalse",
@@ -744,7 +744,7 @@
      }
     ],
     "correctId": "b",
-    "reveal": "Surviving a reboot is an art of its own — and it counts far more than one technique."
+    "reveal": "Surviving a reboot is an art of its own, and it counts far more than one technique."
    },
    {
     "type": "text",
