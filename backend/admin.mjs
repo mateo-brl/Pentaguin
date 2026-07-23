@@ -142,9 +142,12 @@ const COMMANDS = {
   }),
   // Suppression COMPLÈTE des utilisateurs : comptes + joueurs + XP + codes liés.
   // Repart d'un backend vierge. Ne touche pas error_reports (diagnostics).
-  'wipe-users': () => confirmReset('Suppression de tous les utilisateurs (comptes + joueurs + XP)', (db) => {
+  'wipe-users': () => confirmReset('Suppression de tous les utilisateurs (comptes + joueurs + XP + sauvegardes)', (db) => {
     let n = 0;
-    for (const table of ['daily_xp', 'reset_codes', 'email_verifications', 'players', 'users']) {
+    // `progress` = sauvegarde cloud liée au compte : la vider évite qu'une
+    // progression survive à la suppression du compte (ou qu'un nouveau compte
+    // réutilisant un id hérite d'une ancienne sauvegarde).
+    for (const table of ['daily_xp', 'reset_codes', 'email_verifications', 'progress', 'players', 'users']) {
       n += db.prepare(`DELETE FROM ${table}`).run().changes;
     }
     return n;
