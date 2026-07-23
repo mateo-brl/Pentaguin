@@ -1,5 +1,7 @@
 import { Stack } from 'expo-router';
+import { useEffect } from 'react';
 
+import { installCloudSave, pullMergeProgress } from '@/features/sync/cloud-save';
 import { useTheme } from '@/hooks/use-theme';
 
 // Toute l'app « déverrouillée » vit dans ce groupe. La garde de session
@@ -7,6 +9,15 @@ import { useTheme } from '@/hooks/use-theme';
 // ET qu'un pseudo a été choisi — voir src/features/account/session.tsx.
 export default function AppLayout() {
   const theme = useTheme();
+
+  // Compte connecté : on restaure la progression depuis le serveur (utile après
+  // une réinstallation ou sur un nouvel appareil), puis on sauvegarde à chaque
+  // passage en arrière-plan. Tout est non bloquant et offline-first.
+  useEffect(() => {
+    void pullMergeProgress();
+    return installCloudSave();
+  }, []);
+
   return (
     <Stack
       screenOptions={{
