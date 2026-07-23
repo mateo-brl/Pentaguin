@@ -10,6 +10,7 @@
  *   ssh mateobrl 'node --experimental-sqlite /opt/pentaguin-api/admin.mjs reset-xp --yes'
  *   ssh mateobrl 'node --experimental-sqlite /opt/pentaguin-api/admin.mjs reset-ranks --yes'
  *   ssh mateobrl 'node --experimental-sqlite /opt/pentaguin-api/admin.mjs reset-all --yes'
+ *   ssh mateobrl 'node --experimental-sqlite /opt/pentaguin-api/admin.mjs wipe-users --yes'
  */
 import { DatabaseSync } from 'node:sqlite';
 
@@ -138,6 +139,15 @@ const COMMANDS = {
     const a = db.prepare('DELETE FROM daily_xp').run().changes;
     const b = db.prepare('UPDATE players SET rank = NULL').run().changes;
     return a + b;
+  }),
+  // Suppression COMPLÈTE des utilisateurs : comptes + joueurs + XP + codes liés.
+  // Repart d'un backend vierge. Ne touche pas error_reports (diagnostics).
+  'wipe-users': () => confirmReset('Suppression de tous les utilisateurs (comptes + joueurs + XP)', (db) => {
+    let n = 0;
+    for (const table of ['daily_xp', 'reset_codes', 'email_verifications', 'players', 'users']) {
+      n += db.prepare(`DELETE FROM ${table}`).run().changes;
+    }
+    return n;
   }),
 };
 
