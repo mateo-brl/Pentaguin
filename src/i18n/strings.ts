@@ -8,6 +8,16 @@ export type Locale = (typeof locales)[number];
 const LOCALE_KEY = 'locale';
 
 const fr = {
+  retention: {
+    dailyGoal: 'Objectif du jour',
+    goalDone: 'Objectif atteint',
+    freezeOne: 'bouclier',
+    freezeMany: 'boucliers',
+    freezeHint: 'Un bouclier protège ta série si tu rates un jour.',
+    milestoneTitle: 'Série en feu !',
+    milestoneBody: '{days} jours d’affilée. Rien ne t’arrête.',
+    milestoneCta: 'Génial',
+  },
   common: {
     notFoundTitle: 'Introuvable',
     notFoundBody: 'Ce contenu n’est pas disponible. Il a peut-être été mis à jour.',
@@ -369,6 +379,16 @@ const fr = {
 export type Strings = typeof fr;
 
 const en: Strings = {
+  retention: {
+    dailyGoal: 'Daily goal',
+    goalDone: 'Goal reached',
+    freezeOne: 'streak freeze',
+    freezeMany: 'streak freezes',
+    freezeHint: 'A freeze protects your streak if you miss a day.',
+    milestoneTitle: 'Streak on fire!',
+    milestoneBody: '{days} days in a row. Nothing stops you.',
+    milestoneCta: 'Awesome',
+  },
   common: {
     notFoundTitle: 'Not found',
     notFoundBody: 'This content isn’t available. It may have been updated.',

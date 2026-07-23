@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Penguin, StreakFlame } from '@/components/mascot/penguin';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { ProgressRing } from '@/components/ui/progress-ring';
 import { rankLabel } from '@/components/ui/rank-badge';
 import { BottomTabInset, MaxContentWidth, Radius, Spacing, Stroke } from '@/theme';
 import { DEFAULT_PACK_ID, getDefaultPack, lessonsByDomain } from '@/content';
@@ -16,7 +17,8 @@ import {
   DAILY_CHALLENGE_KV_KEY,
   dailyChallengeQuestions,
 } from '@/features/gamification/daily-challenge';
-import { useStreak } from '@/features/gamification/use-streak';
+import { MilestoneCelebration } from '@/features/gamification/milestone-celebration';
+import { useRetention } from '@/features/gamification/use-retention';
 import { getPseudo } from '@/features/leaderboard/identity';
 import { isLessonUnlockedNow, useEntitlements } from '@/features/monetization';
 import { useQuizSession } from '@/features/quiz/session';
@@ -31,8 +33,13 @@ export default function HomeScreen() {
   const theme = useTheme();
   const entitlements = useEntitlements();
   const rank = useRank();
-  const { current } = useStreak();
+  const { current, freezes, goal, celebrate } = useRetention();
   const { me } = useSession();
+
+  // Célébration d'un palier : `celebrate` est stable pendant un focus (le hook
+  // le remet à null au focus suivant). On la masque une fois fermée, sans effet.
+  const [dismissed, setDismissed] = useState<number | null>(null);
+  const celebrating = celebrate != null && celebrate !== dismissed ? celebrate : null;
 
   const [completed, setCompleted] = useState<Set<string>>(new Set());
   const [totalXp, setTotalXp] = useState(0);
@@ -96,6 +103,38 @@ export default function HomeScreen() {
               <ThemedText type="small" themeColor="textSecondary">
                 {t.home.ready}
               </ThemedText>
+            </View>
+          </View>
+
+          {/* Objectif du jour : le rendez-vous quotidien. Atteint = un bouclier gagné. */}
+          <View style={[styles.goalCard, { backgroundColor: theme.backgroundElement, borderColor: theme.border }]}>
+            <ProgressRing
+              ratio={goal.ratio}
+              size={64}
+              color={goal.done ? theme.success : theme.accent}>
+              {goal.done ? (
+                <Ionicons name="checkmark" size={26} color={theme.success} />
+              ) : (
+                <ThemedText type="mono" style={{ fontSize: 15 }}>
+                  {Math.round(goal.ratio * 100)}
+                </ThemedText>
+              )}
+            </ProgressRing>
+            <View style={styles.goalText}>
+              <ThemedText type="smallBold" style={{ color: goal.done ? theme.success : theme.text }}>
+                {goal.done ? t.retention.goalDone : t.retention.dailyGoal}
+              </ThemedText>
+              <ThemedText type="small" themeColor="textSecondary">
+                {goal.current} / {goal.goal} XP
+              </ThemedText>
+              {freezes > 0 && (
+                <View style={styles.freezeRow}>
+                  <Ionicons name="shield-checkmark" size={14} color={theme.accent} />
+                  <ThemedText type="small" style={{ color: theme.accent }}>
+                    {freezes} {freezes > 1 ? t.retention.freezeMany : t.retention.freezeOne}
+                  </ThemedText>
+                </View>
+              )}
             </View>
           </View>
 
@@ -220,6 +259,9 @@ export default function HomeScreen() {
             </Pressable>
           )}
         </ScrollView>
+        {celebrating != null && (
+          <MilestoneCelebration days={celebrating} onClose={() => setDismissed(celebrating)} />
+        )}
       </SafeAreaView>
     </ThemedView>
   );
@@ -242,6 +284,16 @@ const styles = StyleSheet.create({
   wordmark: { fontSize: 13, letterSpacing: 3 },
   streakChip: { flexDirection: 'row', alignItems: 'center', gap: Spacing.xs },
   hero: { flexDirection: 'row', alignItems: 'center', gap: Spacing.base },
+  goalCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.base,
+    borderRadius: Radius.lg,
+    borderWidth: Stroke.hair,
+    padding: Spacing.base,
+  },
+  goalText: { flex: 1, gap: 2 },
+  freezeRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.xs, marginTop: 2 },
   heroText: { flex: 1, gap: Spacing.xs },
   heroTitle: { fontSize: 26, lineHeight: 32 },
   resumeCard: {
