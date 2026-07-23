@@ -467,7 +467,7 @@
    {
     "type": "callout",
     "variant": "exam",
-    "md": "Ne confondez pas les deux modèles : la **cyber kill chain** (Lockheed Martin) est une séquence **linéaire** d'étapes d'attaque. **MITRE ATT&CK** est une **matrice** de tactiques et techniques réellement observées, ni linéaire ni séquentielle."
+    "md": "Ne confonds pas les deux modèles : la **cyber kill chain** (Lockheed Martin) est une séquence **linéaire** d'étapes d'attaque. **MITRE ATT&CK** est une **matrice** de tactiques et techniques réellement observées, ni linéaire ni séquentielle."
    },
    {
     "type": "flipcards",
@@ -555,7 +555,7 @@
    {
     "type": "callout",
     "variant": "exam",
-    "md": "Piège d'examen : la **kill chain** (Lockheed Martin) est **linéaire** ; **ATT&CK** est une **matrice** non séquentielle fondée sur des techniques observées. Retenez : *tactique = objectif (pourquoi)*, *technique = méthode (comment)*."
+    "md": "Piège d'examen : la **kill chain** (Lockheed Martin) est **linéaire** ; **ATT&CK** est une **matrice** non séquentielle fondée sur des techniques observées. Retiens : *tactique = objectif (pourquoi)*, *technique = méthode (comment)*."
    },
    {
     "type": "flipcards",

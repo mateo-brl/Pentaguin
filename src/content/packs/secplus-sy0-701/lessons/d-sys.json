@@ -53,7 +53,7 @@
       {
         "type": "callout",
         "variant": "exam",
-        "md": "Piège classique : sur un **dossier**, le bit `x` ne veut pas dire « exécuter un programme ». Il autorise à **traverser** le dossier, c'est-à-dire y entrer et atteindre un fichier par son nom. Sans `x` sur un dossier, même avec `r`, vous ne pouvez pas accéder à son contenu ; avec `r` seul, vous pouvez lister les noms mais pas y descendre."
+        "md": "Piège classique : sur un **dossier**, le bit `x` ne veut pas dire « exécuter un programme ». Il autorise à **traverser** le dossier, c'est-à-dire y entrer et atteindre un fichier par son nom. Sans `x` sur un dossier, même avec `r`, tu ne peux pas accéder à son contenu ; avec `r` seul, tu peux lister les noms mais pas y descendre."
       },
       {
         "type": "flipcards",
@@ -107,11 +107,11 @@
           { "id": "c", "text": "Les droits SYSTEM, encore au-dessus de l'administrateur" }
         ],
         "correctId": "b",
-        "reveal": "Contre-intuitif mais vrai : même en admin, vos programmes tournent par défaut avec des droits standard, via un jeton filtré. C'est le rôle de l'UAC."
+        "reveal": "Contre-intuitif mais vrai : même en admin, tes programmes tournent par défaut avec des droits standard, via un jeton filtré. C'est le rôle de l'UAC."
       },
       {
         "type": "text",
-        "md": "C'est là qu'intervient l'**UAC (User Account Control, contrôle de compte d'utilisateur)**. Même connecté avec un compte administrateur, votre session reçoit par défaut un **jeton filtré (filtered token)** aux droits standard : vos programmes s'exécutent avec des privilèges limités. Quand une action réclame les droits d'administrateur, l'UAC affiche une **demande d'élévation**. Techniquement, un compte admin possède un **jeton double (split token)** — un jeton complet et un jeton filtré — et l'élévation bascule vers le jeton complet. Cela limite les dégâts d'un malware lancé dans votre session normale."
+        "md": "C'est là qu'intervient l'**UAC (User Account Control, contrôle de compte d'utilisateur)**. Même connecté avec un compte administrateur, ta session reçoit par défaut un **jeton filtré (filtered token)** aux droits standard : tes programmes s'exécutent avec des privilèges limités. Quand une action réclame les droits d'administrateur, l'UAC affiche une **demande d'élévation**. Techniquement, un compte admin possède un **jeton double (split token)** — un jeton complet et un jeton filtré — et l'élévation bascule vers le jeton complet. Cela limite les dégâts d'un malware lancé dans ta session normale."
       },
       {
         "type": "truefalse",
@@ -121,12 +121,12 @@
       },
       {
         "type": "text",
-        "md": "Point essentiel de nuance : Microsoft indique officiellement que **l'UAC est une commodité, pas une frontière de sécurité**. Des **contournements (UAC bypass)** connus existent — binaires qui s'auto-élèvent, détournement de DLL, etc. L'UAC relève le niveau et force un clic conscient, mais un code malveillant local déterminé peut parfois s'élever sans afficher d'invite. Ne comptez jamais sur l'UAC comme unique protection."
+        "md": "Point essentiel de nuance : Microsoft indique officiellement que **l'UAC est une commodité, pas une frontière de sécurité**. Des **contournements (UAC bypass)** connus existent — binaires qui s'auto-élèvent, détournement de DLL, etc. L'UAC relève le niveau et force un clic conscient, mais un code malveillant local déterminé peut parfois s'élever sans afficher d'invite. Ne compte jamais sur l'UAC comme unique protection."
       },
       {
         "type": "callout",
         "variant": "warning",
-        "md": "**L'UAC n'est pas une frontière de sécurité absolue.** C'est un garde-fou qui force un consentement explicite et limite les élévations involontaires, mais des contournements existent. Combinez-le toujours avec un **compte standard** au quotidien et le principe du **moindre privilège**."
+        "md": "**L'UAC n'est pas une frontière de sécurité absolue.** C'est un garde-fou qui force un consentement explicite et limite les élévations involontaires, mais des contournements existent. Combine-le toujours avec un **compte standard** au quotidien et le principe du **moindre privilège**."
       },
       {
         "type": "flipcards",
@@ -290,7 +290,7 @@
       {
         "type": "callout",
         "variant": "tip",
-        "md": "Pour durcir un parc, ne partez pas d'une page blanche : appliquez une **baseline** reconnue (Microsoft Security Baseline, CIS Benchmark) via GPO, puis testez-la sur un périmètre restreint (une **OU pilote**) avant de généraliser. Une GPO mal réglée peut casser la production aussi vite qu'elle protège."
+        "md": "Pour durcir un parc, ne pars pas d'une page blanche : applique une **baseline** reconnue (Microsoft Security Baseline, CIS Benchmark) via GPO, puis teste-la sur un périmètre restreint (une **OU pilote**) avant de généraliser. Une GPO mal réglée peut casser la production aussi vite qu'elle protège."
       },
       {
         "type": "flipcards",
@@ -375,7 +375,7 @@
       {
         "type": "callout",
         "variant": "exam",
-        "md": "Associez chaque protection : **DEP/NX** empêche l'**exécution de code en zone de données** (pile, tas) ; **ASLR** **randomise les adresses** mémoire ; le **stack canary** détecte l'écrasement de la pile avant le retour de fonction. Le dépassement de tampon, lui, **écrase des données de contrôle** — au premier chef l'adresse de retour."
+        "md": "Associe chaque protection : **DEP/NX** empêche l'**exécution de code en zone de données** (pile, tas) ; **ASLR** **randomise les adresses** mémoire ; le **stack canary** détecte l'écrasement de la pile avant le retour de fonction. Le dépassement de tampon, lui, **écrase des données de contrôle** — au premier chef l'adresse de retour."
       },
       {
         "type": "flipcards",
@@ -539,7 +539,7 @@
       {
         "type": "callout",
         "variant": "tip",
-        "md": "Retenez la complémentarité : les **logs** disent **ce qui s'est passé** (l'après-coup), tandis que l'**EDR** ajoute la **détection comportementale** en temps réel et la **réponse** (isoler la machine, tuer le processus). L'un ne remplace pas l'autre : centralisez les journaux (SIEM) **et** déployez un EDR."
+        "md": "Retiens la complémentarité : les **logs** disent **ce qui s'est passé** (l'après-coup), tandis que l'**EDR** ajoute la **détection comportementale** en temps réel et la **réponse** (isoler la machine, tuer le processus). L'un ne remplace pas l'autre : centralise les journaux (SIEM) **et** déploie un EDR."
       },
       {
         "type": "flipcards",

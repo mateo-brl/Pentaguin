@@ -65,7 +65,7 @@
    {
     "type": "callout",
     "variant": "warning",
-    "md": "Ne comptez pas sur le seul **échappement** (*escaping*) des caractères spéciaux : c'est fragile, dépendant du contexte et facile à contourner (encodages, types numériques, jeux de caractères). Les **requêtes paramétrées** — ou un ORM qui les utilise sous le capot — sont la défense de référence. L'échappement ne vient qu'en complément quand on ne peut vraiment pas paramétrer."
+    "md": "Ne compte pas sur le seul **échappement** (*escaping*) des caractères spéciaux : c'est fragile, dépendant du contexte et facile à contourner (encodages, types numériques, jeux de caractères). Les **requêtes paramétrées** — ou un ORM qui les utilise sous le capot — sont la défense de référence. L'échappement ne vient qu'en complément quand on ne peut vraiment pas paramétrer."
    },
    {
     "type": "flipcards",
@@ -216,7 +216,7 @@
    },
    {
     "type": "text",
-    "md": "Retenez cette limite : la *Same-Origin Policy* empêche la page piégée de **lire la réponse**. Le CSRF sert donc à **agir** (virer de l'argent, changer un email), pas à **exfiltrer** des données — c'est ce qui le distingue d'un vol d'information classique."
+    "md": "Retiens cette limite : la *Same-Origin Policy* empêche la page piégée de **lire la réponse**. Le CSRF sert donc à **agir** (virer de l'argent, changer un email), pas à **exfiltrer** des données — c'est ce qui le distingue d'un vol d'information classique."
    },
    {
     "type": "callout",
@@ -295,7 +295,7 @@
    {
     "type": "callout",
     "variant": "exam",
-    "md": "Réflexe : associez chaque attribut à sa menace. **HttpOnly → XSS** (empêche le vol du cookie par script). **SameSite → CSRF** (empêche l'envoi cross-site). **Secure → interception réseau** (impose HTTPS). Un attribut ne remplace pas les autres : leurs rôles ne se recouvrent pas."
+    "md": "Réflexe : associe chaque attribut à sa menace. **HttpOnly → XSS** (empêche le vol du cookie par script). **SameSite → CSRF** (empêche l'envoi cross-site). **Secure → interception réseau** (impose HTTPS). Un attribut ne remplace pas les autres : leurs rôles ne se recouvrent pas."
    },
    {
     "type": "flipcards",
@@ -391,7 +391,7 @@
    {
     "type": "callout",
     "variant": "tip",
-    "md": "Retenez la division du travail : **CSP limite les sources de script** (et réduit l'impact du XSS) ; **HSTS impose HTTPS** (et protège le transport). Elles ne se substituent pas aux corrections applicatives — ce sont des couches supplémentaires, pas la seule ligne de défense."
+    "md": "Retiens la division du travail : **CSP limite les sources de script** (et réduit l'impact du XSS) ; **HSTS impose HTTPS** (et protège le transport). Elles ne se substituent pas aux corrections applicatives — ce sont des couches supplémentaires, pas la seule ligne de défense."
    },
    {
     "type": "flipcards",
@@ -469,7 +469,7 @@
    {
     "type": "callout",
     "variant": "exam",
-    "md": "Points de repère utiles : le **Broken Access Control** est passé **n°1** en 2021 ; le **XSS** n'a plus sa propre catégorie et fait partie de l'**Injection** ; le **SSRF** a fait son entrée dans le Top 10. Souvenez-vous que le Top 10 est un **document d'awareness évolutif**, pas une checklist figée de conformité."
+    "md": "Points de repère utiles : le **Broken Access Control** est passé **n°1** en 2021 ; le **XSS** n'a plus sa propre catégorie et fait partie de l'**Injection** ; le **SSRF** a fait son entrée dans le Top 10. Souviens-toi que le Top 10 est un **document d'awareness évolutif**, pas une checklist figée de conformité."
    },
    {
     "type": "flipcards",
@@ -557,7 +557,7 @@
    {
     "type": "callout",
     "variant": "warning",
-    "md": "Ne confondez pas SSRF et CSRF. Dans le **CSRF**, c'est le **navigateur de la victime** qui envoie la requête (en profitant de ses cookies). Dans le **SSRF**, c'est le **serveur** qui l'envoie, pour atteindre le réseau interne. Défenses : **allowlist** stricte des destinations, blocage des plages d'adresses internes (RFC 1918, loopback, lien-local), restriction des schémas d'URL, et pour le cloud, **IMDSv2**."
+    "md": "Ne confonds pas SSRF et CSRF. Dans le **CSRF**, c'est le **navigateur de la victime** qui envoie la requête (en profitant de ses cookies). Dans le **SSRF**, c'est le **serveur** qui l'envoie, pour atteindre le réseau interne. Défenses : **allowlist** stricte des destinations, blocage des plages d'adresses internes (RFC 1918, loopback, lien-local), restriction des schémas d'URL, et pour le cloud, **IMDSv2**."
    },
    {
     "type": "flipcards",
@@ -602,7 +602,7 @@
     "type": "truefalse",
     "statement": "Le payload d'un JWT signé est chiffré : impossible d'en lire le contenu sans la clé.",
     "answer": false,
-    "explanation": "Un JWT signé est encodé, pas chiffré : n'importe qui peut décoder le base64url et lire les claims. La signature garantit l'intégrité du jeton, pas sa confidentialité — n'y mettez jamais de secret."
+    "explanation": "Un JWT signé est encodé, pas chiffré : n'importe qui peut décoder le base64url et lire les claims. La signature garantit l'intégrité du jeton, pas sa confidentialité — n'y mets jamais de secret."
    },
    {
     "type": "predict",
@@ -655,7 +655,7 @@
    {
     "type": "callout",
     "variant": "tip",
-    "md": "Défense côté serveur : **n'ayez jamais confiance dans le champ `alg` du token**. Fixez (*pin*) l'algorithme attendu dans le code de vérification, refusez `none`, et n'utilisez jamais la même librairie pour vérifier des algorithmes asymétriques et symétriques sans distinction. Côté API, complétez par un contrôle d'accès par objet (contre l'IDOR/BOLA) et une limitation de débit (*rate limiting*)."
+    "md": "Défense côté serveur : **n'aie jamais confiance dans le champ `alg` du token**. Fixe (*pin*) l'algorithme attendu dans le code de vérification, refuse `none`, et n'utilise jamais la même librairie pour vérifier des algorithmes asymétriques et symétriques sans distinction. Côté API, complète par un contrôle d'accès par objet (contre l'IDOR/BOLA) et une limitation de débit (*rate limiting*)."
    },
    {
     "type": "flipcards",
