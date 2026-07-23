@@ -47,7 +47,7 @@
       {
         "type": "callout",
         "variant": "warning",
-        "md": "**Pas d'autorisation écrite = infraction pénale**, même pour un simple scan de ports ou un test « pour voir ». Le consentement verbal d'un interlocuteur qui n'a pas autorité sur le système ne suffit pas : il faut un mandat signé par le bon responsable, définissant clairement le périmètre."
+        "md": "**Pas d'autorisation écrite = tu t'exposes à des poursuites pénales**, même pour un simple scan de ports ou un test « pour voir ». Le consentement verbal d'un interlocuteur qui n'a pas autorité sur le système ne suffit pas : il faut un mandat signé par le bon responsable, définissant clairement le périmètre."
       },
       {
         "type": "flipcards",

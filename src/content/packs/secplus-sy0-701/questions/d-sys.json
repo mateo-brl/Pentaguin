@@ -172,7 +172,7 @@
     "correct": [
       "b"
     ],
-    "explanation": "DEP/NX rend la pile et le tas non exécutables : le processeur refuse d'exécuter un shellcode déposé dans ces zones de données. La réponse a décrit l'ASLR et la c le stack canary.",
+    "explanation": "DEP/NX rend la pile et le tas non exécutables : le processeur refuse d'exécuter un shellcode déposé dans ces zones de données. Le choix a décrit l'ASLR, et le choix c le stack canary.",
     "difficulty": 2,
     "level": 10,
     "tags": [
