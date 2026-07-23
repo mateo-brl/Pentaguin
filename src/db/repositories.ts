@@ -152,3 +152,68 @@ export function setKv(key: string, value: string): void {
     [key, value],
   );
 }
+
+// — Synchronisation : lecture/écriture en masse (cloud save) ------------------
+
+export function getAllKv(): Record<string, string> {
+  const rows = getDb().getAllSync<{ key: string; value: string }>('SELECT key, value FROM kv');
+  const out: Record<string, string> = {};
+  for (const row of rows) out[row.key] = row.value;
+  return out;
+}
+
+export function getAllLessonProgress(): { pack_id: string; lesson_id: string; completed_at: number }[] {
+  return getDb().getAllSync('SELECT pack_id, lesson_id, completed_at FROM lesson_progress');
+}
+
+export function getAllQuestionStats(): {
+  pack_id: string;
+  question_id: string;
+  seen: number;
+  correct: number;
+  last_seen_at: number | null;
+  last_wrong_at: number | null;
+}[] {
+  return getDb().getAllSync(
+    'SELECT pack_id, question_id, seen, correct, last_seen_at, last_wrong_at FROM question_stat',
+  );
+}
+
+/** Fusion locale sans régression : conserve la première complétion. */
+export function mergeLessonProgress(packId: string, lessonId: string, completedAt: number): void {
+  getDb().runSync(
+    `INSERT INTO lesson_progress (pack_id, lesson_id, status, completed_at)
+     VALUES (?, ?, 'done', ?)
+     ON CONFLICT(pack_id, lesson_id) DO UPDATE SET completed_at = MIN(completed_at, excluded.completed_at)`,
+    [packId, lessonId, completedAt],
+  );
+}
+
+export function mergeQuestionStat(
+  packId: string,
+  questionId: string,
+  seen: number,
+  correct: number,
+  lastSeen: number | null,
+  lastWrong: number | null,
+): void {
+  getDb().runSync(
+    `INSERT INTO question_stat (pack_id, question_id, seen, correct, last_seen_at, last_wrong_at)
+     VALUES (?, ?, ?, ?, ?, ?)
+     ON CONFLICT(pack_id, question_id) DO UPDATE SET
+       seen = MAX(seen, excluded.seen),
+       correct = MAX(correct, excluded.correct),
+       last_seen_at = NULLIF(MAX(COALESCE(last_seen_at, 0), COALESCE(excluded.last_seen_at, 0)), 0),
+       last_wrong_at = NULLIF(MAX(COALESCE(last_wrong_at, 0), COALESCE(excluded.last_wrong_at, 0)), 0)`,
+    [packId, questionId, seen, correct, lastSeen, lastWrong],
+  );
+}
+
+/** Fusion de l'XP d'un jour : garde le max (jamais de régression). */
+export function mergeDailyActivity(date: string, xp: number): void {
+  getDb().runSync(
+    `INSERT INTO daily_activity (date, xp) VALUES (?, ?)
+     ON CONFLICT(date) DO UPDATE SET xp = MAX(xp, excluded.xp)`,
+    [date, xp],
+  );
+}

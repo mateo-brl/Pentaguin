@@ -18,6 +18,8 @@ import { existsSync, readFileSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { DatabaseSync } from 'node:sqlite';
 
+import { emptySnapshot, mergeSnapshots } from './progress.mjs';
+
 import {
   generateTotpSecret,
   hashPassword,
@@ -104,6 +106,11 @@ db.exec(`
     context    TEXT
   );
   CREATE INDEX IF NOT EXISTS idx_error_reports_created ON error_reports(created_at);
+  CREATE TABLE IF NOT EXISTS progress (
+    user_id    INTEGER PRIMARY KEY,
+    data       TEXT NOT NULL,
+    updated_at INTEGER NOT NULL
+  );
 `);
 try {
   db.exec('ALTER TABLE players ADD COLUMN user_id TEXT');
@@ -483,6 +490,33 @@ function handleLeaderboard(res, url) {
       xp: row.xp,
     })),
   });
+}
+
+// — Cloud save : sauvegarde/restauration de la progression liée au compte -----
+function handleGetProgress(req, res) {
+  const userId = authUserId(req);
+  if (!userId) return send(res, 401, { error: 'non connecté' });
+  const row = db.prepare('SELECT data FROM progress WHERE user_id = ?').get(userId);
+  return send(res, 200, row ? JSON.parse(row.data) : emptySnapshot());
+}
+
+async function handlePutProgress(req, res) {
+  const userId = authUserId(req);
+  if (!userId) return send(res, 401, { error: 'non connecté' });
+  let incoming;
+  try {
+    incoming = await readJson(req);
+  } catch {
+    return send(res, 400, { error: 'requête invalide' });
+  }
+  const row = db.prepare('SELECT data FROM progress WHERE user_id = ?').get(userId);
+  const stored = row ? JSON.parse(row.data) : emptySnapshot();
+  const merged = mergeSnapshots(stored, incoming ?? {});
+  db.prepare(
+    `INSERT INTO progress (user_id, data, updated_at) VALUES (?, ?, ?)
+     ON CONFLICT(user_id) DO UPDATE SET data = excluded.data, updated_at = excluded.updated_at`,
+  ).run(userId, JSON.stringify(merged), Date.now());
+  return send(res, 200, merged);
 }
 
 async function handleSync(req, res) {
@@ -880,6 +914,8 @@ const server = createServer(async (req, res) => {
     if (req.method === 'GET' && url.pathname === '/v1/leaderboard')
       return handleLeaderboard(res, url);
     if (req.method === 'POST' && url.pathname === '/v1/sync') return await handleSync(req, res);
+    if (req.method === 'GET' && url.pathname === '/v1/progress') return handleGetProgress(req, res);
+    if (req.method === 'PUT' && url.pathname === '/v1/progress') return await handlePutProgress(req, res);
     if (req.method === 'POST' && url.pathname === '/v1/auth/register')
       return await handleRegister(req, res);
     if (req.method === 'POST' && url.pathname === '/v1/auth/login')
