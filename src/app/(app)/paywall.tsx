@@ -8,15 +8,19 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { rankLabel } from '@/components/ui/rank-badge';
 import { purchasesConfig } from '@/config/monetization';
 import { Radius, Spacing } from '@/theme';
 import { DEFAULT_PACK_ID, getDefaultPack } from '@/content';
+import { getCompletedLessonIds } from '@/db/repositories';
 import {
   activeProvider,
+  lockedContentSummary,
   packEntitlement,
   useEntitlements,
   type ProOffer,
 } from '@/features/monetization';
+import { useRank } from '@/features/rank/ranks';
 import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
 
@@ -43,6 +47,10 @@ export default function PaywallScreen() {
   const insets = useSafeAreaInsets();
   const entitlements = useEntitlements();
   const isPro = entitlements.has(packEntitlement(pack.id));
+  const rank = useRank();
+  // Lecture unique à l'ouverture (modal) : de quoi personnaliser le pitch.
+  const [completedCount] = useState(() => getCompletedLessonIds(DEFAULT_PACK_ID).size);
+  const locked = lockedContentSummary(entitlements);
 
   const [offer, setOffer] = useState<ProOffer | null>(null);
   const [offerLoading, setOfferLoading] = useState(true);
@@ -132,8 +140,21 @@ export default function PaywallScreen() {
           </Card>
         ) : (
           <>
+            {/* Pitch personnalisé : ce que tu as accompli (valorisant), puis ce
+                qui t'attend (concret), au lieu d'une liste générique. */}
+            {completedCount > 0 && rank != null && (
+              <ThemedText type="smallBold" style={styles.pitch}>
+                {t.paywall.statLine
+                  .replace('{lessons}', String(completedCount))
+                  .replace('{rank}', rankLabel(rank, t))}
+              </ThemedText>
+            )}
             <ThemedText type="small" themeColor="textSecondary" style={styles.pitch}>
-              {t.paywall.pitch}
+              {locked.lockedThemes > 0
+                ? t.paywall.remainLine
+                    .replace('{themes}', String(locked.lockedThemes))
+                    .replace('{lessons}', String(locked.lockedLessons))
+                : t.paywall.pitch}
             </ThemedText>
 
             <Card style={styles.bullets}>
@@ -147,9 +168,18 @@ export default function PaywallScreen() {
               ))}
             </Card>
 
-            <ThemedText type="small" themeColor="textSecondary" style={styles.oneTime}>
-              {t.paywall.oneTime}
-            </ThemedText>
+            {/* Achat unique mis en avant : l'argument de confiance clé. */}
+            <Card background={theme.accentSoft} style={styles.oneTimeCard}>
+              <Ionicons name="infinite" size={20} color={theme.accent} />
+              <View style={styles.oneTimeTextWrap}>
+                <ThemedText type="smallBold" style={{ color: theme.accent }}>
+                  {t.paywall.oneTimeTitle}
+                </ThemedText>
+                <ThemedText type="small" themeColor="textSecondary">
+                  {t.paywall.oneTimeBody}
+                </ThemedText>
+              </View>
+            </Card>
 
             {offerLoading ? (
               <ActivityIndicator style={styles.loading} color={theme.accent} />
@@ -224,8 +254,14 @@ const styles = StyleSheet.create({
   bulletText: {
     flex: 1,
   },
-  oneTime: {
-    textAlign: 'center',
+  oneTimeCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.sm,
+    borderColor: 'transparent',
+  },
+  oneTimeTextWrap: {
+    flex: 1,
   },
   note: {
     textAlign: 'center',

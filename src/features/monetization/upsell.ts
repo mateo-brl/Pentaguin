@@ -37,3 +37,19 @@ export function getUpsellShownCount(): number {
 export function markUpsellShown(): void {
   setKv(SHOWN_COUNT_KEY, String(getUpsellShownCount() + 1));
 }
+
+/**
+ * L'utilisateur vient-il d'épuiser le contenu GRATUIT d'un thème ? (toutes les
+ * leçons gratuites du thème terminées, alors qu'il reste des leçons Pro). C'est
+ * un pic de satisfaction naturel : le bon moment pour proposer la suite, une
+ * seule fois. Fonction pure. `domainLessons` = les leçons du thème concerné.
+ */
+export function isEndOfFreeTheme(
+  domainLessons: readonly { id: string; unlocked: boolean }[],
+  completedIds: ReadonlySet<string>,
+): boolean {
+  const hasLocked = domainLessons.some((l) => !l.unlocked);
+  if (!hasLocked) return false; // rien de plus à débloquer dans ce thème
+  const free = domainLessons.filter((l) => l.unlocked);
+  return free.length > 0 && free.every((l) => completedIds.has(l.id));
+}

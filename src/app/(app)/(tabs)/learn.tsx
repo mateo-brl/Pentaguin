@@ -52,10 +52,10 @@ export default function LearnScreen() {
   const heroUnlocked = hero ? isLessonUnlockedNow(hero, entitlements) : false;
   const teaser = hero ? lessonTeaser(hero) : null;
 
-  const openLesson = (lesson: Lesson, unlocked: boolean) =>
-    unlocked
-      ? router.push({ pathname: '/lesson/[id]', params: { id: lesson.id } })
-      : router.push('/paywall');
+  // Toujours ouvrir la leçon : si elle est Pro, l'écran leçon affiche un aperçu
+  // « eau à la bouche » puis l'invitation (plus de mur vers le paywall à froid).
+  const openLesson = (lesson: Lesson) =>
+    router.push({ pathname: '/lesson/[id]', params: { id: lesson.id } });
 
   return (
     <ThemedView style={styles.container}>
@@ -74,7 +74,7 @@ export default function LearnScreen() {
             <>
               {/* Carte héros : la leçon à faire maintenant, mise en scène. */}
               <Pressable
-                onPress={() => openLesson(hero, heroUnlocked)}
+                onPress={() => openLesson(hero)}
                 style={({ pressed }) => [
                   styles.heroCard,
                   { borderColor: heroHue.base, backgroundColor: theme.backgroundElement },
@@ -138,7 +138,7 @@ export default function LearnScreen() {
                             <Ionicons name="lock-closed" size={15} color={theme.textSecondary} />
                           )
                         }
-                        onPress={() => openLesson(lesson, unlocked)}
+                        onPress={() => openLesson(lesson)}
                       />
                     );
                   })}
