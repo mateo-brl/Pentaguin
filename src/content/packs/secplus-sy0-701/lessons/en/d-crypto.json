@@ -1,466 +1,820 @@
 [
-  {
-    "id": "l-crypto-01",
-    "domainId": "d-crypto",
-    "title": "Symmetric vs. asymmetric encryption",
-    "order": 1,
-    "estMinutes": 6,
-    "blocks": [
-      {
-        "type": "text",
-        "md": "**Encryption** turns a readable message into an unreadable one for anyone who doesn’t hold the right **key**. The original message is called the **plaintext**; the encrypted result is the **ciphertext**. The **key** is the secret that drives the transformation."
-      },
-      {
-        "type": "text",
-        "md": "**Symmetric encryption** uses **a single shared key**: the same key both encrypts **and** decrypts. The reference algorithm is **AES** (Advanced Encryption Standard). It is very **fast**, ideal for large volumes of data. Its weak point: both parties must first **share the same secret key** without a third party intercepting it."
-      },
-      {
-        "type": "text",
-        "md": "**Asymmetric encryption** uses a **key pair** linked mathematically: a **public key** (which anyone may know) and a **private key** (kept secret). For confidentiality, you encrypt with the recipient’s **public** key; only they can decrypt with their **private** key. Examples: **RSA**, **ECC** (elliptic curves). This solves the key exchange problem, but it is **far slower** than symmetric encryption."
-      },
-      {
-        "type": "text",
-        "md": "In practice, the two are combined: this is **hybrid encryption**. Asymmetric crypto (slow but convenient) is used only to **exchange a symmetric key**, then all the data is encrypted with that symmetric key (fast). This is exactly what **HTTPS / TLS** does on every connection."
-      },
-      {
-        "type": "callout",
-        "variant": "tip",
-        "md": "Remember how the roles split up: **asymmetric** crypto mainly serves to **establish and authenticate** a shared key; **symmetric** crypto does the heavy lifting on the data. Symmetric = fast, one shared key. Asymmetric = slower, but it solves key exchange."
-      },
-      {
-        "type": "keyterms",
-        "terms": [
-          {
-            "term": "Plaintext",
-            "def": "The readable message, in the clear, before encryption."
-          },
-          {
-            "term": "Ciphertext",
-            "def": "The encrypted message, unreadable without the right key."
-          },
-          {
-            "term": "Symmetric encryption",
-            "def": "A single shared key both encrypts and decrypts (e.g. AES); very fast."
-          },
-          {
-            "term": "Asymmetric encryption",
-            "def": "A public key / private key pair; you encrypt with one and decrypt with the other (e.g. RSA, ECC)."
-          },
-          {
-            "term": "Hybrid encryption",
-            "def": "Asymmetric crypto to exchange a key, then symmetric crypto for the data (e.g. TLS)."
-          }
-        ]
-      },
-      {
-        "type": "quickcheck",
-        "questionId": "q-crypto-01"
-      }
+ {
+  "id": "l-crypto-01",
+  "domainId": "d-crypto",
+  "title": "Symmetric vs. asymmetric encryption",
+  "order": 1,
+  "estMinutes": 6,
+  "blocks": [
+   {
+    "type": "hook",
+    "md": "1963, at the height of the Cold War. The Washington–Moscow “red telephone” is encrypted with one-time keys — delivered physically, by diplomatic pouch. For centuries, this was cryptography’s Achilles heel: before you can encrypt anything, you first have to share a secret."
+   },
+   {
+    "type": "text",
+    "md": "**Encryption** turns a readable message into an unreadable one for anyone who doesn’t hold the right **key**. The original message is called the **plaintext**; the encrypted result is the **ciphertext**. The **key** is the secret that drives the transformation."
+   },
+   {
+    "type": "text",
+    "md": "**Symmetric encryption** uses **a single shared key**: the same key both encrypts **and** decrypts. The reference algorithm is **AES** (Advanced Encryption Standard). It is very **fast**, ideal for large volumes of data. Its weak point: both parties must first **share the same secret key** without a third party intercepting it."
+   },
+   {
+    "type": "predict",
+    "question": "So symmetric crypto runs into a paradox: to exchange the secret key, you would already need a secure channel. How do you encrypt a message for someone you have never shared a secret with?",
+    "choices": [
+     {
+      "id": "a",
+      "text": "You can’t: you have to meet, or use a secure channel at least once."
+     },
+     {
+      "id": "b",
+      "text": "You use two linked keys: a public one to encrypt, a private one to decrypt."
+     },
+     {
+      "id": "c",
+      "text": "You encrypt the secret key with itself before sending it."
+     }
     ],
-    "level": 5
-  },
-  {
-    "id": "l-crypto-02",
-    "domainId": "d-crypto",
-    "title": "Hash functions and salt",
-    "order": 2,
-    "estMinutes": 6,
-    "blocks": [
-      {
-        "type": "text",
-        "md": "A **hash function** takes an input of any size and produces a **digest** (hash) of **fixed size**: 256 bits for **SHA-256**, for example. It is **deterministic** (the same input always yields the same digest) but **one-way**: you cannot recover the input from the digest."
-      },
-      {
-        "type": "text",
-        "md": "A hash is **not encryption**: there is **no key** and **no way to decrypt**. The properties expected of a good cryptographic hash function:\n- **Preimage resistance**: given a digest, it is infeasible to find a matching input.\n- **Collision resistance**: it is infeasible in practice to find two different inputs with the same digest.\n- **Avalanche effect**: flipping a single bit of the input changes the entire digest."
-      },
-      {
-        "type": "callout",
-        "variant": "warning",
-        "md": "Never confuse **hashing** with **encryption**: hashing is irreversible and keyless. Also, **MD5** and **SHA-1** are **obsolete** — collisions can now be produced at will. Use the **SHA-2** family (SHA-256) or **SHA-3**."
-      },
-      {
-        "type": "text",
-        "md": "To store passwords, you never record the password in the clear: you store its digest. But a bare digest is still vulnerable to **rainbow tables** (precomputed digest tables). The countermeasure is the **salt**: a **random value, unique per password**, added before hashing. The salt is **not secret** — it is stored alongside the digest. It ensures that two users with the same password end up with **different** digests, and it makes rainbow tables useless. Careful: a salt alone is not enough for passwords — you also need a **slow** function (see the lesson on bcrypt, scrypt, Argon2)."
-      },
-      {
-        "type": "keyterms",
-        "terms": [
-          {
-            "term": "Hash function",
-            "def": "A one-way, keyless function producing a fixed-size digest that cannot be reversed."
-          },
-          {
-            "term": "Preimage resistance",
-            "def": "The practical impossibility of recovering an input from its digest."
-          },
-          {
-            "term": "Collision",
-            "def": "Two different inputs producing the same digest; a good function makes this infeasible."
-          },
-          {
-            "term": "Salt",
-            "def": "A unique random value added before hashing, stored in the clear, to defeat rainbow tables."
-          },
-          {
-            "term": "Rainbow table",
-            "def": "A table of precomputed digests used to quickly recover an unsalted password."
-          }
-        ]
-      },
-      {
-        "type": "quickcheck",
-        "questionId": "q-crypto-02"
-      }
+    "correctId": "b",
+    "reveal": "That is the idea that revolutionized cryptography in the 1970s: separating the key that encrypts from the key that decrypts."
+   },
+   {
+    "type": "text",
+    "md": "That is exactly the principle behind **asymmetric encryption**: a **key pair** linked mathematically — a **public key** (which anyone may know) and a **private key** (kept secret). For confidentiality, you encrypt with the recipient’s **public** key; only they can decrypt with their **private** key. Examples: **RSA**, **ECC** (elliptic curves). This solves the key exchange problem, but it is **far slower** than symmetric encryption."
+   },
+   {
+    "type": "predict",
+    "question": "HTTPS has to encrypt gigabytes of data, fast. Asymmetric crypto is slow; symmetric crypto needs a key that is already shared. What does TLS do?",
+    "choices": [
+     {
+      "id": "a",
+      "text": "Everything asymmetric: security before speed."
+     },
+     {
+      "id": "b",
+      "text": "Everything symmetric: a key comes pre-installed in the browser."
+     },
+     {
+      "id": "c",
+      "text": "Asymmetric just to exchange a key, then symmetric for everything else."
+     }
     ],
-    "level": 7
-  },
-  {
-    "id": "l-crypto-03",
-    "domainId": "d-crypto",
-    "title": "The TLS handshake: establishing a session key",
-    "order": 3,
-    "estMinutes": 7,
-    "blocks": [
-      {
-        "type": "text",
-        "md": "**TLS** (Transport Layer Security, formerly SSL) is the protocol that secures communications over the Internet — it is the **S** in **HTTPS**. It provides three guarantees: **confidentiality** (nobody reads the traffic), **integrity** (nobody modifies it undetected) and **authentication** (you really are talking to the right server)."
-      },
-      {
-        "type": "text",
-        "md": "Before exchanging any data, client and server run a **handshake**. In simplified form:\n1. The client sends a **ClientHello** (supported versions and algorithms, random value).\n2. The server replies (**ServerHello**) and sends its **certificate**, which contains its **public key** signed by a trusted authority.\n3. Both parties agree on a **shared secret**, then derive a **session key** from it."
-      },
-      {
-        "type": "text",
-        "md": "At the heart of modern key agreement is **Diffie-Hellman** (often over elliptic curves: **ECDHE**). Its strength: both parties compute the **same shared secret** while exchanging only public values — the secret is **never transmitted** over the network. When those Diffie-Hellman keys are **ephemeral** (thrown away after each session, the “E” in ECDHE), you get **forward secrecy**: even if the server’s private key leaks later, past sessions stay unreadable."
-      },
-      {
-        "type": "text",
-        "md": "Once the **session key** is established, the handshake is over: **all data** is then encrypted **symmetrically** (e.g. **AES-GCM**), which is fast. In other words, **asymmetric** crypto only serves to **authenticate the server and establish the key**; **symmetric** crypto then does all the work. The certificate, for its part, guarantees that you establish that key with the real server and not an impostor (protection against **man-in-the-middle** attacks)."
-      },
-      {
-        "type": "callout",
-        "variant": "tip",
-        "md": "The picture to remember: **asymmetric to establish + authenticate**, **symmetric for the session**. And prefer cipher suites with **ephemeral** keys (ECDHE) for **forward secrecy**: TLS 1.3 in fact mandates this kind of exchange."
-      },
-      {
-        "type": "keyterms",
-        "terms": [
-          {
-            "term": "TLS",
-            "def": "The protocol securing communications (the S in HTTPS): confidentiality, integrity, authentication."
-          },
-          {
-            "term": "Handshake",
-            "def": "The initial negotiation phase where client and server authenticate and agree on a key."
-          },
-          {
-            "term": "Session key",
-            "def": "A temporary symmetric key derived during the handshake, used to encrypt the session’s data."
-          },
-          {
-            "term": "Diffie-Hellman",
-            "def": "A key agreement method where both parties compute a shared secret without ever transmitting it."
-          },
-          {
-            "term": "Forward secrecy",
-            "def": "A property (via ephemeral keys): compromising the private key does not expose past sessions."
-          }
-        ]
-      },
-      {
-        "type": "quickcheck",
-        "questionId": "q-crypto-03"
-      }
+    "correctId": "c",
+    "reveal": "The best of both worlds: each family does what it is good at. This is hybrid encryption."
+   },
+   {
+    "type": "text",
+    "md": "This combination is called **hybrid encryption**. Asymmetric crypto (slow but convenient) is used only to **exchange a symmetric key**, then all the data is encrypted with that symmetric key (fast). This is exactly what **HTTPS / TLS** does on every connection."
+   },
+   {
+    "type": "truefalse",
+    "statement": "Asymmetric encryption is “stronger” than symmetric encryption — that’s why TLS uses it.",
+    "answer": false,
+    "explanation": "Neither stronger nor weaker: it solves a different problem. AES remains unbroken in practice; asymmetric crypto is there because it solves key exchange — and it is far slower."
+   },
+   {
+    "type": "callout",
+    "variant": "tip",
+    "md": "Remember how the roles split up: **asymmetric** crypto mainly serves to **establish and authenticate** a shared key; **symmetric** crypto does the heavy lifting on the data. Symmetric = fast, one shared key. Asymmetric = slower, but it solves key exchange."
+   },
+   {
+    "type": "flipcards",
+    "cards": [
+     {
+      "front": "Plaintext",
+      "back": "The readable message, in the clear, before encryption."
+     },
+     {
+      "front": "Ciphertext",
+      "back": "The encrypted message, unreadable without the right key."
+     },
+     {
+      "front": "Symmetric encryption",
+      "back": "A single shared key both encrypts and decrypts (e.g. AES); very fast."
+     },
+     {
+      "front": "Asymmetric encryption",
+      "back": "A public key / private key pair; you encrypt with one and decrypt with the other (e.g. RSA, ECC)."
+     },
+     {
+      "front": "Hybrid encryption",
+      "back": "Asymmetric crypto to exchange a key, then symmetric crypto for the data (e.g. TLS)."
+     }
+    ]
+   },
+   {
+    "type": "quickcheck",
+    "questionId": "q-crypto-01"
+   }
+  ],
+  "level": 5
+ },
+ {
+  "id": "l-crypto-02",
+  "domainId": "d-crypto",
+  "title": "Hash functions and salt",
+  "order": 2,
+  "estMinutes": 6,
+  "blocks": [
+   {
+    "type": "hook",
+    "md": "2012: LinkedIn had 6.5 million password digests stolen. They were SHA-1, unsalted — a large share fell within days. Understanding why is what this lesson is about."
+   },
+   {
+    "type": "text",
+    "md": "A **hash function** takes an input of any size and produces a **digest** (hash) of **fixed size**: 256 bits for **SHA-256**, for example. It is **deterministic** (the same input always yields the same digest) but **one-way**: you cannot recover the input from the digest."
+   },
+   {
+    "type": "truefalse",
+    "statement": "Hashing is encrypting: with the right key, you can recover the original message from its digest.",
+    "answer": false,
+    "explanation": "There is no key and no way back: a hash is a one-way function. This is the single most common mix-up in all of crypto."
+   },
+   {
+    "type": "text",
+    "md": "So a hash is **not encryption**: there is **no key** and **no way to decrypt**. The properties expected of a good cryptographic hash function:\n- **Preimage resistance**: given a digest, it is infeasible to find a matching input.\n- **Collision resistance**: it is infeasible in practice to find two different inputs with the same digest.\n- **Avalanche effect**: flipping a single bit of the input changes the entire digest."
+   },
+   {
+    "type": "callout",
+    "variant": "warning",
+    "md": "Never confuse **hashing** with **encryption**: hashing is irreversible and keyless. Also, **MD5** and **SHA-1** are **obsolete** — collisions can now be produced at will. Use the **SHA-2** family (SHA-256) or **SHA-3**."
+   },
+   {
+    "type": "predict",
+    "question": "Two users pick the same password. In a database that stores plain SHA-256 digests, what does someone who steals the database see?",
+    "choices": [
+     {
+      "id": "a",
+      "text": "Two identical digests — and they can look that digest up in precomputed tables."
+     },
+     {
+      "id": "b",
+      "text": "Two different digests — the hash automatically mixes in the username."
+     },
+     {
+      "id": "c",
+      "text": "Nothing usable: a digest cannot be reversed."
+     }
     ],
-    "level": 9
-  },
-  {
-    "id": "l-crypto-04",
-    "domainId": "d-crypto",
-    "title": "Digital signatures and PKI",
-    "order": 4,
-    "estMinutes": 7,
-    "blocks": [
-      {
-        "type": "text",
-        "md": "A **digital signature** proves **who** produced a message and that it has **not been modified**. The principle is the reverse of encryption for confidentiality: you **sign with the private key** (which only the signer holds) and **anyone verifies with the matching public key**."
-      },
-      {
-        "type": "text",
-        "md": "In practice, you don’t sign the whole message but its **digest** (hash): you compute the hash of the message, then sign it with the private key. To verify, the recipient recomputes the hash of the received message and checks the signature with the public key. A valid signature provides:\n- **Authenticity**: the message really comes from the holder of the private key.\n- **Integrity**: the message has not been altered.\n- **Non-repudiation**: the signer cannot deny having signed."
-      },
-      {
-        "type": "text",
-        "md": "But how can you be sure a public key really belongs to `my-bank.com`? That is the job of the **PKI** (Public Key Infrastructure) and of **certificate authorities** (CAs). A CA verifies an identity, then issues a **certificate** that **binds an identity to a public key**, all of it **signed by the CA**. Your browser trusts a list of **root CAs** (the **trust store**). The result is a **chain of trust**: site certificate → intermediate CA → trusted root CA."
-      },
-      {
-        "type": "text",
-        "md": "A certificate has an **expiration date** and can be **revoked** early (for instance if the key is compromised) through mechanisms such as **CRLs** (certificate revocation lists) or **OCSP**. Verifying a certificate therefore means checking its **signature** (the chain up to a trusted root), its **validity period** and the fact that it has **not been revoked**."
-      },
-      {
-        "type": "callout",
-        "variant": "warning",
-        "md": "All the security rests on keeping the **private key** secret: **the private key signs, the public key verifies**. If a private key leaks, an attacker can impersonate the corresponding identity — hence the importance of revocation."
-      },
-      {
-        "type": "keyterms",
-        "terms": [
-          {
-            "term": "Digital signature",
-            "def": "Proof of origin and integrity: you sign the digest with the private key and verify with the public key."
-          },
-          {
-            "term": "Non-repudiation",
-            "def": "The signer cannot deny being the author of the signature."
-          },
-          {
-            "term": "Certificate",
-            "def": "A document binding an identity to a public key, signed by a certificate authority."
-          },
-          {
-            "term": "Certificate authority (CA)",
-            "def": "A trusted third party that verifies an identity and then issues and signs certificates."
-          },
-          {
-            "term": "Chain of trust",
-            "def": "A series of certificates linking a certificate to a trusted root CA."
-          }
-        ]
-      },
-      {
-        "type": "quickcheck",
-        "questionId": "q-crypto-04"
-      }
+    "correctId": "a",
+    "reveal": "Same input, same digest: determinism works for the attacker here. The countermeasure is a unique random value: the salt."
+   },
+   {
+    "type": "text",
+    "md": "To store passwords, you never record the password in the clear: you store its digest. But a bare digest is still vulnerable to **rainbow tables** (precomputed digest tables). The countermeasure is the **salt**: a **random value, unique per password**, added before hashing. The salt is **not secret** — it is stored alongside the digest. It ensures that two users with the same password end up with **different** digests, and it makes rainbow tables useless. Careful: a salt alone is not enough for passwords — you also need a **slow** function (see the lesson on bcrypt, scrypt, Argon2)."
+   },
+   {
+    "type": "flipcards",
+    "cards": [
+     {
+      "front": "Hash function",
+      "back": "A one-way, keyless function producing a fixed-size digest that cannot be reversed."
+     },
+     {
+      "front": "Preimage resistance",
+      "back": "The practical impossibility of recovering an input from its digest."
+     },
+     {
+      "front": "Collision",
+      "back": "Two different inputs producing the same digest; a good function makes this infeasible."
+     },
+     {
+      "front": "Salt",
+      "back": "A unique random value added before hashing, stored in the clear, to defeat rainbow tables."
+     },
+     {
+      "front": "Rainbow table",
+      "back": "A table of precomputed digests used to quickly recover an unsalted password."
+     }
+    ]
+   },
+   {
+    "type": "quickcheck",
+    "questionId": "q-crypto-02"
+   }
+  ],
+  "level": 7
+ },
+ {
+  "id": "l-crypto-03",
+  "domainId": "d-crypto",
+  "title": "The TLS handshake: establishing a session key",
+  "order": 3,
+  "estMinutes": 7,
+  "blocks": [
+   {
+    "type": "hook",
+    "md": "1976: Whitfield Diffie and Martin Hellman publish “New Directions in Cryptography” and describe the unthinkable: two strangers can build a shared secret while exchanging only public messages. Fifty years later, your browser replays their idea on every HTTPS connection."
+   },
+   {
+    "type": "text",
+    "md": "**TLS** (Transport Layer Security, formerly SSL) is the protocol that secures communications over the Internet — it is the **S** in **HTTPS**. It provides three guarantees: **confidentiality** (nobody reads the traffic), **integrity** (nobody modifies it undetected) and **authentication** (you really are talking to the right server)."
+   },
+   {
+    "type": "text",
+    "md": "Before exchanging any data, client and server run a **handshake**. In simplified form:\n1. The client sends a **ClientHello** (supported versions and algorithms, random value).\n2. The server replies (**ServerHello**) and sends its **certificate**, which contains its **public key** signed by a trusted authority.\n3. Both parties agree on a **shared secret**, then derive a **session key** from it."
+   },
+   {
+    "type": "predict",
+    "question": "During the handshake, client and server must agree on a shared secret — while an attacker may be reading everything in transit. How is that even possible?",
+    "choices": [
+     {
+      "id": "a",
+      "text": "The secret is sent encrypted with a key agreed in advance."
+     },
+     {
+      "id": "b",
+      "text": "Each side sends only public values, and computes the same secret on its own."
+     },
+     {
+      "id": "c",
+      "text": "The secret travels in the clear, but split into fragments across several packets."
+     }
     ],
-    "level": 11
-  },
-  {
-    "id": "l-crypto-05",
-    "domainId": "d-crypto",
-    "title": "Slow key derivation functions: bcrypt, scrypt, Argon2",
-    "order": 5,
-    "estMinutes": 7,
-    "blocks": [
-      {
-        "type": "text",
-        "md": "General-purpose hash functions like **SHA-256** are designed to be **very fast** — perfect for checking a file, but **disastrous for passwords**. Passwords have little **entropy** (low randomness), and an attacker who steals the database can test **billions of candidates per second** on **GPUs** or **ASICs**."
-      },
-      {
-        "type": "text",
-        "md": "The solution: a **KDF** (Key Derivation Function) that is **deliberately slow** and **tunable**, with a built-in **salt**. You set a **work factor**: slow enough to hold the attacker back (tens to hundreds of milliseconds per attempt), fast enough for the legitimate user. You can raise it over the years as hardware gets faster."
-      },
-      {
-        "type": "text",
-        "md": "The three recommended families:\n- **bcrypt**: based on Blowfish, with an adjustable **cost factor**; solid and battle-tested (careful: it truncates beyond about 72 bytes).\n- **scrypt**: **memory-hard**, meaning it demands a lot of **RAM**, which cancels out the GPU/ASIC advantage.\n- **Argon2**: winner of the **Password Hashing Competition** (2015), also **memory-hard** and the most modern; the **Argon2id** variant is today the **recommended default choice**."
-      },
-      {
-        "type": "callout",
-        "variant": "exam",
-        "md": "Remember: **never** store a password with plain **MD5 / SHA-1 / SHA-256**, even salted. Use a slow KDF: **Argon2id** (recommended), otherwise **scrypt** or **bcrypt**. **PBKDF2** will do in a pinch but is **not memory-hard**."
-      },
-      {
-        "type": "keyterms",
-        "terms": [
-          {
-            "term": "KDF",
-            "def": "A slow, tunable derivation function, with a salt, for hashing passwords in a resistant way."
-          },
-          {
-            "term": "Work factor",
-            "def": "The parameter setting how slow the KDF is; you raise it over time."
-          },
-          {
-            "term": "Memory-hard",
-            "def": "A property requiring a lot of memory, cancelling out the GPU/ASIC advantage (scrypt, Argon2)."
-          },
-          {
-            "term": "bcrypt",
-            "def": "A battle-tested password KDF with a cost factor (truncates beyond about 72 bytes)."
-          },
-          {
-            "term": "Argon2",
-            "def": "A modern memory-hard KDF, 2015 competition winner; the Argon2id variant is the recommended default."
-          }
-        ]
-      },
-      {
-        "type": "quickcheck",
-        "questionId": "q-crypto-05"
-      }
+    "correctId": "b",
+    "reveal": "That is Diffie-Hellman’s tour de force: the secret is never transmitted — each party computes it locally."
+   },
+   {
+    "type": "text",
+    "md": "Indeed, at the heart of modern key agreement is **Diffie-Hellman** (often over elliptic curves: **ECDHE**). Its strength: both parties compute the **same shared secret** while exchanging only public values — the secret is **never transmitted** over the network."
+   },
+   {
+    "type": "predict",
+    "question": "An attacker records all your encrypted traffic today. A year from now, they steal the server’s private key. Can they decrypt your past sessions?",
+    "choices": [
+     {
+      "id": "a",
+      "text": "Yes: the private key is the master key to all the traffic."
+     },
+     {
+      "id": "b",
+      "text": "No, as long as the key exchange used ephemeral keys, discarded after each session."
+     }
     ],
-    "level": 12
-  },
-  {
-    "id": "l-crypto-06",
-    "domainId": "d-crypto",
-    "title": "Block cipher modes: ECB, CBC, GCM and the IV/nonce",
-    "order": 6,
-    "estMinutes": 8,
-    "blocks": [
-      {
-        "type": "text",
-        "md": "A **block cipher** such as **AES** only encrypts one **fixed-size block** at a time (128 bits for AES). To encrypt a longer message, you apply a **mode of operation** that describes how to chain the blocks together. The choice of mode changes everything: some are **dangerous**, others provide **integrity** as a bonus."
-      },
-      {
-        "type": "text",
-        "md": "**ECB** (Electronic Codebook) encrypts each block **independently** with the same key. The consequence: **two identical plaintext blocks produce two identical ciphertext blocks**. The ciphertext **leaks the patterns** of the plaintext — the famous example is the “ECB penguin” image, still recognizable after encryption. **ECB must never be used** for real data."
-      },
-      {
-        "type": "text",
-        "md": "**CBC** (Cipher Block Chaining) fixes this by **chaining**: each plaintext block is combined with the **previous ciphertext block** using **XOR** before being encrypted. The very first block uses an **IV** (Initialization Vector), which must be **random and unpredictable**. CBC hides patterns well, **but** it only provides **confidentiality**: **no integrity, no authentication**. An attacker can tamper with the ciphertext (bit-flipping) or mount a **padding oracle** attack."
-      },
-      {
-        "type": "text",
-        "md": "**GCM** (Galois/Counter Mode) is an **authenticated encryption** mode (**AEAD**: Authenticated Encryption with Associated Data). It combines counter-mode encryption with an **authentication tag**: you get **confidentiality + integrity + authenticity** in a single operation. GCM uses a **nonce** (number used once) that must be **unique** for a given key."
-      },
-      {
-        "type": "callout",
-        "variant": "warning",
-        "md": "**Reusing a nonce in GCM with the same key is catastrophic**: the keystream repeats (the XOR of two plaintexts leaks) **and** it can allow the authentication subkey to be recovered, making it possible to **forge** messages. In GCM, a nonce is used **once and only once** per key, no exceptions."
-      },
-      {
-        "type": "keyterms",
-        "terms": [
-          {
-            "term": "Block cipher",
-            "def": "An algorithm encrypting fixed-size blocks (AES: 128 bits); a mode chains the blocks together."
-          },
-          {
-            "term": "ECB",
-            "def": "A mode where each block is encrypted independently; it leaks patterns and must be avoided."
-          },
-          {
-            "term": "CBC",
-            "def": "A chained mode with a random IV; confidentiality only, without integrity."
-          },
-          {
-            "term": "GCM / AEAD",
-            "def": "Authenticated encryption: confidentiality + integrity + authenticity, via a tag and a nonce."
-          },
-          {
-            "term": "IV / nonce",
-            "def": "An initialization value: random and unpredictable for CBC, unique per key for GCM."
-          }
-        ]
-      },
-      {
-        "type": "quickcheck",
-        "questionId": "q-crypto-06"
-      }
+    "correctId": "b",
+    "reveal": "That is forward secrecy: ephemeral exchange keys leave nothing to steal after the fact."
+   },
+   {
+    "type": "text",
+    "md": "When those Diffie-Hellman keys are **ephemeral** (thrown away after each session, the “E” in ECDHE), you get **forward secrecy**: even if the server’s private key leaks later, past sessions stay unreadable."
+   },
+   {
+    "type": "text",
+    "md": "Once the **session key** is established, the handshake is over: **all data** is then encrypted **symmetrically** (e.g. **AES-GCM**), which is fast. In other words, **asymmetric** crypto only serves to **authenticate the server and establish the key**; **symmetric** crypto then does all the work. The certificate, for its part, guarantees that you establish that key with the real server and not an impostor (protection against **man-in-the-middle** attacks)."
+   },
+   {
+    "type": "callout",
+    "variant": "tip",
+    "md": "The picture to remember: **asymmetric to establish + authenticate**, **symmetric for the session**. And prefer cipher suites with **ephemeral** keys (ECDHE) for **forward secrecy**: TLS 1.3 in fact mandates this kind of exchange."
+   },
+   {
+    "type": "flipcards",
+    "cards": [
+     {
+      "front": "TLS",
+      "back": "The protocol securing communications (the S in HTTPS): confidentiality, integrity, authentication."
+     },
+     {
+      "front": "Handshake",
+      "back": "The initial negotiation phase where client and server authenticate and agree on a key."
+     },
+     {
+      "front": "Session key",
+      "back": "A temporary symmetric key derived during the handshake, used to encrypt the session’s data."
+     },
+     {
+      "front": "Diffie-Hellman",
+      "back": "A key agreement method where both parties compute a shared secret without ever transmitting it."
+     },
+     {
+      "front": "Forward secrecy",
+      "back": "A property (via ephemeral keys): compromising the private key does not expose past sessions."
+     }
+    ]
+   },
+   {
+    "type": "quickcheck",
+    "questionId": "q-crypto-03"
+   }
+  ],
+  "level": 9
+ },
+ {
+  "id": "l-crypto-04",
+  "domainId": "d-crypto",
+  "title": "Digital signatures and PKI",
+  "order": 4,
+  "estMinutes": 7,
+  "blocks": [
+   {
+    "type": "hook",
+    "md": "2011: DigiNotar, a Dutch certificate authority, is hacked. Fraudulent certificates for `*.google.com` are used to spy on Iranian users; the company goes bankrupt within a month. When trust is the infrastructure, losing it is fatal."
+   },
+   {
+    "type": "predict",
+    "question": "You want to prove that you are the one who wrote a message. You “sign” it — but with which key?",
+    "choices": [
+     {
+      "id": "a",
+      "text": "Your public key: everyone must be able to verify it."
+     },
+     {
+      "id": "b",
+      "text": "Your private key: only you can produce the signature."
+     },
+     {
+      "id": "c",
+      "text": "The recipient’s public key, as for encryption."
+     }
     ],
-    "level": 13
-  },
-  {
-    "id": "l-crypto-07",
-    "domainId": "d-crypto",
-    "title": "Padding oracle attack (CBC)",
-    "order": 7,
-    "estMinutes": 8,
-    "blocks": [
-      {
-        "type": "text",
-        "md": "A reminder about **CBC**: on decryption, a plaintext block is `P_i = D_K(C_i) XOR C_{i-1}`, where `D_K` is the decryption of a block under the key, `C_i` the current ciphertext block and `C_{i-1}` the previous one (the IV for the very first block). Since the message has to fill whole blocks, the last block is completed with **padding**, typically **PKCS#7**: if `n` bytes are missing, you append `n` bytes all equal to `n`."
-      },
-      {
-        "type": "text",
-        "md": "A **padding oracle** is **any system that reveals, directly or indirectly, whether the padding of a decrypted message is valid or not**. That signal may be explicit (a “bad padding” error message distinct from other errors) or implicit (a **difference in response time**). This single bit of information — padding valid or not — is enough to break everything."
-      },
-      {
-        "type": "text",
-        "md": "How it works: the attacker **modifies the previous block `C_{i-1}` byte by byte** and submits the result to the oracle. By searching for the value that makes the padding valid, they deduce the **intermediate value** `D_K(C_i)`, then, through a simple XOR, **the corresponding plaintext** — all of it **without ever knowing the key**. Repeating this on each byte and then each block, they **decrypt the entire message**. Famous attacks: **POODLE** and **Lucky Thirteen**."
-      },
-      {
-        "type": "callout",
-        "variant": "exam",
-        "md": "Defense: do **not** use unauthenticated CBC. Prefer **authenticated encryption** (**AEAD** such as **AES-GCM**), or failing that **Encrypt-then-MAC** (the MAC is verified **before** decrypting and stripping the padding). Return a **single** error, in **constant time**, without distinguishing “bad padding” from any other error."
-      },
-      {
-        "type": "keyterms",
-        "terms": [
-          {
-            "term": "Padding (PKCS#7)",
-            "def": "Filler completing the last block; in PKCS#7, n missing bytes all take the value n."
-          },
-          {
-            "term": "Padding oracle",
-            "def": "A system that reveals whether the decrypted padding is valid, handing the attacker an exploitable bit."
-          },
-          {
-            "term": "Intermediate value",
-            "def": "The result D_K(C_i) of decrypting a block, before the XOR; recovering it yields the plaintext."
-          },
-          {
-            "term": "AEAD",
-            "def": "Authenticated encryption that rejects any tampered ciphertext, shutting down the oracle (e.g. AES-GCM)."
-          },
-          {
-            "term": "Encrypt-then-MAC",
-            "def": "You encrypt, then compute a MAC; the MAC is verified before decrypting, which cuts off the oracle."
-          }
-        ]
-      },
-      {
-        "type": "quickcheck",
-        "questionId": "q-crypto-07"
-      }
+    "correctId": "b",
+    "reveal": "You sign with the private key — only its holder can — and anyone verifies with the public key. It is the reverse of encryption for confidentiality."
+   },
+   {
+    "type": "text",
+    "md": "A **digital signature** proves **who** produced a message and that it has **not been modified**. The principle is the reverse of encryption for confidentiality: you **sign with the private key** (which only the signer holds) and **anyone verifies with the matching public key**."
+   },
+   {
+    "type": "text",
+    "md": "In practice, you don’t sign the whole message but its **digest** (hash): you compute the hash of the message, then sign it with the private key. To verify, the recipient recomputes the hash of the received message and checks the signature with the public key. A valid signature provides:\n- **Authenticity**: the message really comes from the holder of the private key.\n- **Integrity**: the message has not been altered.\n- **Non-repudiation**: the signer cannot deny having signed."
+   },
+   {
+    "type": "truefalse",
+    "statement": "A digitally signed message is also confidential: the signature encrypts it.",
+    "answer": false,
+    "explanation": "Signing is not encrypting: the message may travel in the clear. A signature guarantees origin, integrity and non-repudiation — for confidentiality, you must also encrypt."
+   },
+   {
+    "type": "predict",
+    "question": "You receive the public key of my-bank.com. How do you know it really belongs to the bank, and not to an attacker sitting in between?",
+    "choices": [
+     {
+      "id": "a",
+      "text": "You can’t from a distance: you would have to check at a branch."
+     },
+     {
+      "id": "b",
+      "text": "A trusted third party has verified the identity and signed a certificate binding the key to the bank."
+     },
+     {
+      "id": "c",
+      "text": "The key contains the domain name: that is proof enough."
+     }
     ],
-    "level": 15
-  },
-  {
-    "id": "l-crypto-08",
-    "domainId": "d-crypto",
-    "title": "Side-channel attacks (timing, cache)",
-    "order": 8,
-    "estMinutes": 8,
-    "blocks": [
-      {
-        "type": "text",
-        "md": "A **side-channel attack** does not attack the **mathematics** of the algorithm, but its **implementation**: it exploits whatever **leaks** during execution — computation **time**, **power consumption**, **electromagnetic emanations** or the behavior of the processor **cache**. An algorithm can be flawless on paper and still be vulnerable because of the code or the hardware running it."
-      },
-      {
-        "type": "text",
-        "md": "**Timing attacks** exploit the fact that **execution time depends on a secret**. The classic example: comparing a MAC or a password with a `==` that **stops at the first differing byte**. The longer the comparison takes, the more of the guessed prefix is correct — the attacker rebuilds the secret byte by byte. The countermeasure is **constant-time comparison**, which examines **every** byte no matter what."
-      },
-      {
-        "type": "text",
-        "md": "**Cache attacks** exploit the processor’s **shared memory**. Many AES implementations use **lookup tables** (S-boxes) whose accessed **address** depends on the key. By observing which cache lines are **hot** (fast access) or **cold** (slow access), an attacker on the same machine deduces information about the key. Well-known techniques: **Flush+Reload**, **Prime+Probe**."
-      },
-      {
-        "type": "callout",
-        "variant": "warning",
-        "md": "Golden rule: **never compare a secret (MAC, token, hashed password) with a comparison that stops at the first difference**. Use a **constant-time comparison**, avoid any **branch** or **memory access that depends on a secret**, and favor dedicated hardware instructions (**AES-NI**), which are designed to be constant-time."
-      },
-      {
-        "type": "keyterms",
-        "terms": [
-          {
-            "term": "Side-channel",
-            "def": "Information leaking through the implementation (time, cache, power, EM), not through the mathematics."
-          },
-          {
-            "term": "Timing attack",
-            "def": "Deducing a secret from variations in execution time."
-          },
-          {
-            "term": "Cache attack",
-            "def": "Exploiting shared memory accesses (e.g. AES S-boxes) via Flush+Reload or Prime+Probe."
-          },
-          {
-            "term": "Constant-time",
-            "def": "Code whose timing and memory accesses do not depend on secret data."
-          },
-          {
-            "term": "AES-NI",
-            "def": "Hardware AES instructions, fast and designed to resist side-channel attacks."
-          }
-        ]
-      },
-      {
-        "type": "quickcheck",
-        "questionId": "q-crypto-08"
-      }
+    "correctId": "b",
+    "reveal": "That is the whole edifice of PKI: certificate authorities sign certificates, and your browser trusts them."
+   },
+   {
+    "type": "text",
+    "md": "That is the job of the **PKI** (Public Key Infrastructure) and of **certificate authorities** (CAs). A CA verifies an identity, then issues a **certificate** that **binds an identity to a public key**, all of it **signed by the CA**. Your browser trusts a list of **root CAs** (the **trust store**). The result is a **chain of trust**: site certificate → intermediate CA → trusted root CA."
+   },
+   {
+    "type": "text",
+    "md": "A certificate has an **expiration date** and can be **revoked** early (for instance if the key is compromised) through mechanisms such as **CRLs** (certificate revocation lists) or **OCSP**. Verifying a certificate therefore means checking its **signature** (the chain up to a trusted root), its **validity period** and the fact that it has **not been revoked**."
+   },
+   {
+    "type": "callout",
+    "variant": "warning",
+    "md": "All the security rests on keeping the **private key** secret: **the private key signs, the public key verifies**. If a private key leaks, an attacker can impersonate the corresponding identity — hence the importance of revocation."
+   },
+   {
+    "type": "flipcards",
+    "cards": [
+     {
+      "front": "Digital signature",
+      "back": "Proof of origin and integrity: you sign the digest with the private key and verify with the public key."
+     },
+     {
+      "front": "Non-repudiation",
+      "back": "The signer cannot deny being the author of the signature."
+     },
+     {
+      "front": "Certificate",
+      "back": "A document binding an identity to a public key, signed by a certificate authority."
+     },
+     {
+      "front": "Certificate authority (CA)",
+      "back": "A trusted third party that verifies an identity and then issues and signs certificates."
+     },
+     {
+      "front": "Chain of trust",
+      "back": "A series of certificates linking a certificate to a trusted root CA."
+     }
+    ]
+   },
+   {
+    "type": "quickcheck",
+    "questionId": "q-crypto-04"
+   }
+  ],
+  "level": 11
+ },
+ {
+  "id": "l-crypto-05",
+  "domainId": "d-crypto",
+  "title": "Slow key derivation functions: bcrypt, scrypt, Argon2",
+  "order": 5,
+  "estMinutes": 7,
+  "blocks": [
+   {
+    "type": "hook",
+    "md": "2009: the RockYou website had 32 million passwords stolen — stored in plaintext. The list still circulates today as `rockyou.txt`, the default weapon of anyone cracking passwords. Storing plaintext is unforgivable; hashing badly is hardly better."
+   },
+   {
+    "type": "predict",
+    "question": "Your database leaks. The passwords are hashed with SHA-256, each with its own salt. Verdict?",
+    "choices": [
+     {
+      "id": "a",
+      "text": "Safe: SHA-256 has never been broken."
+     },
+     {
+      "id": "b",
+      "text": "In danger: SHA-256 is so fast that a GPU tests billions of candidates per second."
+     },
+     {
+      "id": "c",
+      "text": "In danger: the salt can be reversed."
+     }
     ],
-    "level": 15
-  }
+    "correctId": "b",
+    "reveal": "The problem is not SHA-256’s strength, it is its speed. Against low-entropy passwords, fast means crackable."
+   },
+   {
+    "type": "text",
+    "md": "Indeed, general-purpose hash functions like **SHA-256** are designed to be **very fast** — perfect for checking a file, but **disastrous for passwords**. Passwords have little **entropy** (low randomness), and an attacker who steals the database can test **billions of candidates per second** on **GPUs** or **ASICs**."
+   },
+   {
+    "type": "text",
+    "md": "The solution: a **KDF** (Key Derivation Function) that is **deliberately slow** and **tunable**, with a built-in **salt**. You set a **work factor**: slow enough to hold the attacker back (tens to hundreds of milliseconds per attempt), fast enough for the legitimate user. You can raise it over the years as hardware gets faster."
+   },
+   {
+    "type": "predict",
+    "question": "Attackers line up GPUs with thousands of cores. How would you design a hash function that cancels out that hardware advantage?",
+    "choices": [
+     {
+      "id": "a",
+      "text": "Make it even slower in pure computation."
+     },
+     {
+      "id": "b",
+      "text": "Demand a lot of RAM: a GPU’s cores share little memory, so the parallelism collapses."
+     },
+     {
+      "id": "c",
+      "text": "Switch algorithms for every password."
+     }
+    ],
+    "correctId": "b",
+    "reveal": "That is the memory-hard idea: memory, unlike computation, parallelizes poorly and costs real money."
+   },
+   {
+    "type": "text",
+    "md": "Hence the three recommended families:\n- **bcrypt**: based on Blowfish, with an adjustable **cost factor**; solid and battle-tested (careful: it truncates beyond about 72 bytes).\n- **scrypt**: **memory-hard**, meaning it demands a lot of **RAM**, which cancels out the GPU/ASIC advantage.\n- **Argon2**: winner of the **Password Hashing Competition** (2015), also **memory-hard** and the most modern; the **Argon2id** variant is today the **recommended default choice**."
+   },
+   {
+    "type": "callout",
+    "variant": "exam",
+    "md": "Remember: **never** store a password with plain **MD5 / SHA-1 / SHA-256**, even salted. Use a slow KDF: **Argon2id** (recommended), otherwise **scrypt** or **bcrypt**. **PBKDF2** will do in a pinch but is **not memory-hard**."
+   },
+   {
+    "type": "flipcards",
+    "cards": [
+     {
+      "front": "KDF",
+      "back": "A slow, tunable derivation function, with a salt, for hashing passwords in a resistant way."
+     },
+     {
+      "front": "Work factor",
+      "back": "The parameter setting how slow the KDF is; you raise it over time."
+     },
+     {
+      "front": "Memory-hard",
+      "back": "A property requiring a lot of memory, cancelling out the GPU/ASIC advantage (scrypt, Argon2)."
+     },
+     {
+      "front": "bcrypt",
+      "back": "A battle-tested password KDF with a cost factor (truncates beyond about 72 bytes)."
+     },
+     {
+      "front": "Argon2",
+      "back": "A modern memory-hard KDF, 2015 competition winner; the Argon2id variant is the recommended default."
+     }
+    ]
+   },
+   {
+    "type": "quickcheck",
+    "questionId": "q-crypto-05"
+   }
+  ],
+  "level": 12
+ },
+ {
+  "id": "l-crypto-06",
+  "domainId": "d-crypto",
+  "title": "Block cipher modes: ECB, CBC, GCM and the IV/nonce",
+  "order": 6,
+  "estMinutes": 8,
+  "blocks": [
+   {
+    "type": "hook",
+    "md": "2013: Adobe had over 150 million accounts stolen. The passwords were encrypted with 3DES in **ECB** mode: identical passwords produced identical ciphertexts, and with the password hints stored in the clear, the Internet turned the leak into a giant crossword puzzle. The mode of operation changes everything."
+   },
+   {
+    "type": "text",
+    "md": "A **block cipher** such as **AES** only encrypts one **fixed-size block** at a time (128 bits for AES). To encrypt a longer message, you apply a **mode of operation** that describes how to chain the blocks together. The choice of mode changes everything: some are **dangerous**, others provide **integrity** as a bonus."
+   },
+   {
+    "type": "predict",
+    "question": "You encrypt an image with AES in ECB mode (each block encrypted independently, with the same key). What does the result look like?",
+    "choices": [
+     {
+      "id": "a",
+      "text": "Noise: it’s AES, considered unbreakable."
+     },
+     {
+      "id": "b",
+      "text": "The outlines of the image remain recognizable: identical blocks, identical ciphertexts."
+     },
+     {
+      "id": "c",
+      "text": "Noise, but the file size gives away the content."
+     }
+    ],
+    "correctId": "b",
+    "reveal": "That is the famous “ECB penguin”: the algorithm is solid, but the mode leaks the patterns."
+   },
+   {
+    "type": "text",
+    "md": "**ECB** (Electronic Codebook) encrypts each block **independently** with the same key. The consequence: **two identical plaintext blocks produce two identical ciphertext blocks**. The ciphertext **leaks the patterns** of the plaintext — the penguin image, still recognizable after encryption, is the famous example. **ECB must never be used** for real data."
+   },
+   {
+    "type": "text",
+    "md": "**CBC** (Cipher Block Chaining) fixes this by **chaining**: each plaintext block is combined with the **previous ciphertext block** using **XOR** before being encrypted. The very first block uses an **IV** (Initialization Vector), which must be **random and unpredictable**. CBC hides patterns well, **but** it only provides **confidentiality**: **no integrity, no authentication**. An attacker can tamper with the ciphertext (bit-flipping) or mount a **padding oracle** attack."
+   },
+   {
+    "type": "truefalse",
+    "statement": "A message encrypted with CBC cannot be usefully modified by an attacker who doesn’t have the key.",
+    "answer": false,
+    "explanation": "CBC provides no integrity: bit-flipping allows targeted changes to the plaintext, and a padding oracle can go as far as decrypting everything. Encrypted does not mean tamper-proof."
+   },
+   {
+    "type": "predict",
+    "question": "CBC hides patterns but does not detect tampering. What would it take to get confidentiality AND integrity in a single operation?",
+    "choices": [
+     {
+      "id": "a",
+      "text": "Encrypt twice, with two different keys."
+     },
+     {
+      "id": "b",
+      "text": "An authenticated encryption mode, which adds a verification tag to the ciphertext."
+     },
+     {
+      "id": "c",
+      "text": "Compress the data before encrypting it."
+     }
+    ],
+    "correctId": "b",
+    "reveal": "That is AEAD: the authentication tag causes any tampered ciphertext to be rejected. GCM is its most widespread representative."
+   },
+   {
+    "type": "text",
+    "md": "**GCM** (Galois/Counter Mode) is precisely that **authenticated encryption** mode (**AEAD**: Authenticated Encryption with Associated Data). It combines counter-mode encryption with an **authentication tag**: you get **confidentiality + integrity + authenticity** in a single operation. GCM uses a **nonce** (number used once) that must be **unique** for a given key."
+   },
+   {
+    "type": "callout",
+    "variant": "warning",
+    "md": "**Reusing a nonce in GCM with the same key is catastrophic**: the keystream repeats (the XOR of two plaintexts leaks) **and** it can allow the authentication subkey to be recovered, making it possible to **forge** messages. In GCM, a nonce is used **once and only once** per key, no exceptions."
+   },
+   {
+    "type": "flipcards",
+    "cards": [
+     {
+      "front": "Block cipher",
+      "back": "An algorithm encrypting fixed-size blocks (AES: 128 bits); a mode chains the blocks together."
+     },
+     {
+      "front": "ECB",
+      "back": "A mode where each block is encrypted independently; it leaks patterns and must be avoided."
+     },
+     {
+      "front": "CBC",
+      "back": "A chained mode with a random IV; confidentiality only, without integrity."
+     },
+     {
+      "front": "GCM / AEAD",
+      "back": "Authenticated encryption: confidentiality + integrity + authenticity, via a tag and a nonce."
+     },
+     {
+      "front": "IV / nonce",
+      "back": "An initialization value: random and unpredictable for CBC, unique per key for GCM."
+     }
+    ]
+   },
+   {
+    "type": "quickcheck",
+    "questionId": "q-crypto-06"
+   }
+  ],
+  "level": 13
+ },
+ {
+  "id": "l-crypto-07",
+  "domainId": "d-crypto",
+  "title": "Padding oracle attack (CBC)",
+  "order": 7,
+  "estMinutes": 8,
+  "blocks": [
+   {
+    "type": "hook",
+    "md": "September 2010: two researchers, Juliano Rizzo and Thai Duong, show that data on millions of ASP.NET websites can be decrypted without knowing the key — simply by watching padding errors. Microsoft ships an emergency out-of-band patch. Meet the oracle."
+   },
+   {
+    "type": "text",
+    "md": "A reminder about **CBC**: on decryption, a plaintext block is `P_i = D_K(C_i) XOR C_{i-1}`, where `D_K` is the decryption of a block under the key, `C_i` the current ciphertext block and `C_{i-1}` the previous one (the IV for the very first block). Since the message has to fill whole blocks, the last block is completed with **padding**, typically **PKCS#7**: if `n` bytes are missing, you append `n` bytes all equal to `n`."
+   },
+   {
+    "type": "predict",
+    "question": "A server decrypts CBC traffic. Invalid padding: it replies “padding error”. Any other problem: “content error”. Is this implementation detail serious?",
+    "choices": [
+     {
+      "id": "a",
+      "text": "No: without the key, the attacker gets nothing from those messages."
+     },
+     {
+      "id": "b",
+      "text": "Yes: that single bit of information is enough to decrypt the whole message, without the key."
+     }
+    ],
+    "correctId": "b",
+    "reveal": "That bit — padding valid or not — turns the server into an “oracle”, which can be queried as many times as you like."
+   },
+   {
+    "type": "text",
+    "md": "A **padding oracle** is **any system that reveals, directly or indirectly, whether the padding of a decrypted message is valid or not**. That signal may be explicit (a “bad padding” error message distinct from other errors) or implicit (a **difference in response time**). This single bit of information — padding valid or not — is enough to break everything."
+   },
+   {
+    "type": "predict",
+    "question": "The attacker wants to decrypt block C_i. Remember: P_i = D_K(C_i) XOR C_{i-1}. What will they tamper with?",
+    "choices": [
+     {
+      "id": "a",
+      "text": "They modify C_i itself, until they hit valid padding."
+     },
+     {
+      "id": "b",
+      "text": "They modify the previous block C_{i-1}, byte by byte."
+     },
+     {
+      "id": "c",
+      "text": "They get the server to re-encrypt the message with known padding."
+     }
+    ],
+    "correctId": "b",
+    "reveal": "Touching C_{i-1} directly changes the plaintext P_i through the XOR: that is the lever of the whole attack."
+   },
+   {
+    "type": "text",
+    "md": "The full mechanism: the attacker **modifies the previous block `C_{i-1}` byte by byte** and submits the result to the oracle. By searching for the value that makes the padding valid, they deduce the **intermediate value** `D_K(C_i)`, then, through a simple XOR, **the corresponding plaintext** — all of it **without ever knowing the key**. Repeating this on each byte and then each block, they **decrypt the entire message**. Famous attacks: **POODLE** and **Lucky Thirteen**."
+   },
+   {
+    "type": "callout",
+    "variant": "exam",
+    "md": "Defense: do **not** use unauthenticated CBC. Prefer **authenticated encryption** (**AEAD** such as **AES-GCM**), or failing that **Encrypt-then-MAC** (the MAC is verified **before** decrypting and stripping the padding). Return a **single** error, in **constant time**, without distinguishing “bad padding” from any other error."
+   },
+   {
+    "type": "flipcards",
+    "cards": [
+     {
+      "front": "Padding (PKCS#7)",
+      "back": "Filler completing the last block; in PKCS#7, n missing bytes all take the value n."
+     },
+     {
+      "front": "Padding oracle",
+      "back": "A system that reveals whether the decrypted padding is valid, handing the attacker an exploitable bit."
+     },
+     {
+      "front": "Intermediate value",
+      "back": "The result D_K(C_i) of decrypting a block, before the XOR; recovering it yields the plaintext."
+     },
+     {
+      "front": "AEAD",
+      "back": "Authenticated encryption that rejects any tampered ciphertext, shutting down the oracle (e.g. AES-GCM)."
+     },
+     {
+      "front": "Encrypt-then-MAC",
+      "back": "You encrypt, then compute a MAC; the MAC is verified before decrypting, which cuts off the oracle."
+     }
+    ]
+   },
+   {
+    "type": "quickcheck",
+    "questionId": "q-crypto-07"
+   }
+  ],
+  "level": 15
+ },
+ {
+  "id": "l-crypto-08",
+  "domainId": "d-crypto",
+  "title": "Side-channel attacks (timing, cache)",
+  "order": 8,
+  "estMinutes": 8,
+  "blocks": [
+   {
+    "type": "hook",
+    "md": "January 2018: Spectre and Meltdown reveal that nearly every modern processor leaks secrets through its cache and speculative execution. No algorithm was broken — the culprit was the hardware running them."
+   },
+   {
+    "type": "truefalse",
+    "statement": "If the algorithm is mathematically solid (AES, properly sized RSA), the system using it is safe.",
+    "answer": false,
+    "explanation": "The implementation leaks: computation time, power draw, cache… A side-channel attack goes around the mathematics and targets the execution."
+   },
+   {
+    "type": "text",
+    "md": "A **side-channel attack** does not attack the **mathematics** of the algorithm, but its **implementation**: it exploits whatever **leaks** during execution — computation **time**, **power consumption**, **electromagnetic emanations** or the behavior of the processor **cache**. An algorithm can be flawless on paper and still be vulnerable because of the code or the hardware running it."
+   },
+   {
+    "type": "predict",
+    "question": "A server compares a secret token using a == that stops at the first differing byte. What can a remote attacker get out of that?",
+    "choices": [
+     {
+      "id": "a",
+      "text": "Nothing: nanosecond differences are invisible across a network."
+     },
+     {
+      "id": "b",
+      "text": "The entire secret, byte by byte, by measuring response times."
+     },
+     {
+      "id": "c",
+      "text": "Only the length of the secret."
+     }
+    ],
+    "correctId": "b",
+    "reveal": "By averaging thousands of measurements, even tiny differences rise out of the noise. That is a timing attack."
+   },
+   {
+    "type": "text",
+    "md": "**Timing attacks** exploit precisely the fact that **execution time depends on a secret**. The classic example: comparing a MAC or a password with a `==` that **stops at the first differing byte**. The longer the comparison takes, the more of the guessed prefix is correct — the attacker rebuilds the secret byte by byte. The countermeasure is **constant-time comparison**, which examines **every** byte no matter what."
+   },
+   {
+    "type": "predict",
+    "question": "In the cloud, two VMs belonging to different customers share the same physical processor. Can one spy on the other’s cryptographic keys?",
+    "choices": [
+     {
+      "id": "a",
+      "text": "No: the hypervisor strictly isolates each VM’s memory."
+     },
+     {
+      "id": "b",
+      "text": "Yes: by observing access times to shared cache lines."
+     }
+    ],
+    "correctId": "b",
+    "reveal": "Memory isolation does not isolate the cache’s side effects: this is exactly where Flush+Reload and Prime+Probe operate."
+   },
+   {
+    "type": "text",
+    "md": "**Cache attacks** exploit the processor’s **shared memory**. Many AES implementations use **lookup tables** (S-boxes) whose accessed **address** depends on the key. By observing which cache lines are **hot** (fast access) or **cold** (slow access), an attacker on the same machine deduces information about the key. Well-known techniques: **Flush+Reload**, **Prime+Probe**."
+   },
+   {
+    "type": "callout",
+    "variant": "warning",
+    "md": "Golden rule: **never compare a secret (MAC, token, hashed password) with a comparison that stops at the first difference**. Use a **constant-time comparison**, avoid any **branch** or **memory access that depends on a secret**, and favor dedicated hardware instructions (**AES-NI**), which are designed to be constant-time."
+   },
+   {
+    "type": "flipcards",
+    "cards": [
+     {
+      "front": "Side-channel",
+      "back": "Information leaking through the implementation (time, cache, power, EM), not through the mathematics."
+     },
+     {
+      "front": "Timing attack",
+      "back": "Deducing a secret from variations in execution time."
+     },
+     {
+      "front": "Cache attack",
+      "back": "Exploiting shared memory accesses (e.g. AES S-boxes) via Flush+Reload or Prime+Probe."
+     },
+     {
+      "front": "Constant-time",
+      "back": "Code whose timing and memory accesses do not depend on secret data."
+     },
+     {
+      "front": "AES-NI",
+      "back": "Hardware AES instructions, fast and designed to resist side-channel attacks."
+     }
+    ]
+   },
+   {
+    "type": "quickcheck",
+    "questionId": "q-crypto-08"
+   }
+  ],
+  "level": 15
+ }
 ]

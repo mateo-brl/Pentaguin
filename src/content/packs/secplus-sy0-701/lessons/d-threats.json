@@ -7,16 +7,41 @@
     "estMinutes": 5,
     "blocks": [
       {
-        "type": "text",
-        "md": "Un **malware** (malicious software, littéralement « logiciel malveillant ») est tout programme conçu pour nuire : voler des données, endommager un système ou en prendre le contrôle. On classe les malwares en **familles** selon leur façon de se propager et d'agir. Attention : ces familles ne s'excluent pas — un même malware peut cumuler plusieurs comportements."
+        "type": "hook",
+        "md": "Novembre 1988. Un programme écrit par un étudiant, Robert Morris, se propage tout seul de machine en machine et infecte en quelques heures environ 10 % des ordinateurs connectés à Internet, au point de les rendre inutilisables. Personne n'a rien cliqué : le programme voyageait sans aide. Tous les malwares n'ont pas ce pouvoir — et c'est précisément ce qui permet de les classer."
       },
       {
         "type": "text",
-        "md": "Deux familles se ressemblent mais diffèrent sur un point clé, la propagation :\n\n- **Virus** (virus) : il s'**attache à un fichier ou un programme hôte**. Pour se répliquer, il a besoin que l'utilisateur exécute cet hôte (ouvrir une pièce jointe, lancer un logiciel). Sans action humaine, il reste inerte.\n- **Ver** (worm) : il se **propage seul**, de machine en machine, en exploitant des failles réseau. Il n'a besoin ni d'hôte ni d'action de l'utilisateur, ce qui lui permet de se répandre très vite."
+        "md": "Un **malware** (malicious software, littéralement « logiciel malveillant ») est tout programme conçu pour nuire : voler des données, endommager un système ou en prendre le contrôle. On classe les malwares en **familles** selon leur façon de se propager et d'agir — et le programme de Morris appartenait à une famille bien précise. Attention : ces familles ne s'excluent pas — un même malware peut cumuler plusieurs comportements."
+      },
+      {
+        "type": "predict",
+        "question": "Un malware se propage tout seul de machine en machine, sans qu'aucun utilisateur ne clique. C'est la signature de quelle famille ?",
+        "choices": [
+          { "id": "a", "text": "Un virus" },
+          { "id": "b", "text": "Un ver (worm)" }
+        ],
+        "correctId": "b",
+        "reveal": "C'est un ver : la propagation autonome est sa marque de fabrique. Le programme de Morris était d'ailleurs le tout premier ver de l'histoire d'Internet."
       },
       {
         "type": "text",
-        "md": "Les autres familles se définissent par leur objectif plutôt que par leur mode de réplication :\n\n- **Cheval de Troie** (Trojan) : il se **déguise** en logiciel légitime pour tromper l'utilisateur ; il ne se réplique pas seul.\n- **Spyware** (logiciel espion) : il **collecte discrètement** des informations (frappes clavier, historique, identifiants).\n- **Rootkit** : il **dissimule sa présence** et maintient un accès privilégié durable sur la machine."
+        "md": "La nuance est exactement là. Deux familles se ressemblent mais diffèrent sur un point clé, la propagation :\n\n- **Virus** (virus) : il s'**attache à un fichier ou un programme hôte**. Pour se répliquer, il a besoin que l'utilisateur exécute cet hôte (ouvrir une pièce jointe, lancer un logiciel). Sans action humaine, il reste inerte.\n- **Ver** (worm) : il se **propage seul**, de machine en machine, en exploitant des failles réseau. Il n'a besoin ni d'hôte ni d'action de l'utilisateur, ce qui lui permet de se répandre très vite."
+      },
+      {
+        "type": "predict",
+        "question": "Et le cheval de Troie (Trojan) : qu'est-ce qui en fait un cheval de Troie ?",
+        "choices": [
+          { "id": "a", "text": "Il se réplique à toute vitesse" },
+          { "id": "b", "text": "Il se fait passer pour un logiciel légitime" },
+          { "id": "c", "text": "Il chiffre les fichiers de la victime" }
+        ],
+        "correctId": "b",
+        "reveal": "Comme le cheval du mythe, tout est dans le déguisement : il ne se réplique pas et ne force rien — c'est la victime qui l'invite à entrer."
+      },
+      {
+        "type": "text",
+        "md": "Les autres familles se définissent en effet par leur objectif plutôt que par leur mode de réplication :\n\n- **Cheval de Troie** (Trojan) : il se **déguise** en logiciel légitime pour tromper l'utilisateur ; il ne se réplique pas seul.\n- **Spyware** (logiciel espion) : il **collecte discrètement** des informations (frappes clavier, historique, identifiants).\n- **Rootkit** : il **dissimule sa présence** et maintient un accès privilégié durable sur la machine."
       },
       {
         "type": "callout",
@@ -24,27 +49,33 @@
         "md": "Un cheval de Troie n'est **pas** un virus : contrairement au virus, il ne se réplique pas. Son arme, c'est la **tromperie**, pas la propagation automatique."
       },
       {
-        "type": "keyterms",
-        "terms": [
+        "type": "truefalse",
+        "statement": "« Virus » est le terme générique correct pour désigner n'importe quel logiciel malveillant.",
+        "answer": false,
+        "explanation": "Le terme générique, c'est « malware ». Le virus n'est qu'une famille parmi d'autres — celle qui s'attache à un fichier hôte. Dire « virus » pour tout est l'abus de langage le plus répandu de la cybersécurité."
+      },
+      {
+        "type": "flipcards",
+        "cards": [
           {
-            "term": "Malware",
-            "def": "Logiciel malveillant (malicious software) conçu pour nuire, voler ou prendre le contrôle d'un système."
+            "front": "Malware",
+            "back": "Logiciel malveillant (malicious software) conçu pour nuire, voler ou prendre le contrôle d'un système."
           },
           {
-            "term": "Virus",
-            "def": "Malware qui s'attache à un fichier hôte et a besoin que l'utilisateur l'exécute pour se répliquer."
+            "front": "Virus",
+            "back": "Malware qui s'attache à un fichier hôte et a besoin que l'utilisateur l'exécute pour se répliquer."
           },
           {
-            "term": "Ver (worm)",
-            "def": "Malware autonome qui se propage seul sur le réseau, sans hôte ni action de l'utilisateur."
+            "front": "Ver (worm)",
+            "back": "Malware autonome qui se propage seul sur le réseau, sans hôte ni action de l'utilisateur."
           },
           {
-            "term": "Cheval de Troie (Trojan)",
-            "def": "Malware déguisé en logiciel légitime pour tromper l'utilisateur ; il ne se réplique pas seul."
+            "front": "Cheval de Troie (Trojan)",
+            "back": "Malware déguisé en logiciel légitime pour tromper l'utilisateur ; il ne se réplique pas seul."
           },
           {
-            "term": "Spyware",
-            "def": "Logiciel espion qui collecte discrètement des informations sur la victime."
+            "front": "Spyware",
+            "back": "Logiciel espion qui collecte discrètement des informations sur la victime."
           }
         ]
       },
@@ -63,12 +94,44 @@
     "estMinutes": 5,
     "blocks": [
       {
+        "type": "hook",
+        "md": "Mai 2017. Le ransomware **WannaCry** se répand dans 150 pays en quelques jours et paralyse notamment le système de santé britannique (NHS) : des milliers de rendez-vous et d'opérations annulés, des ambulances déroutées. Le tout pour une rançon de quelques centaines de dollars par machine."
+      },
+      {
+        "type": "predict",
+        "question": "Concrètement, qu'est-ce que WannaCry a fait aux machines infectées ?",
+        "choices": [
+          { "id": "a", "text": "Il a effacé les disques durs" },
+          { "id": "b", "text": "Il a chiffré les fichiers et exigé une rançon" },
+          { "id": "c", "text": "Il a volé les dossiers médicaux pour les revendre" }
+        ],
+        "correctId": "b",
+        "reveal": "Ni destruction ni revente : une prise d'otage. Les fichiers sont toujours là, mais illisibles — c'est tout le principe du ransomware."
+      },
+      {
         "type": "text",
         "md": "Un **ransomware** (rançongiciel) est un malware qui **chiffre** les fichiers de la victime, les rendant illisibles, puis exige une **rançon** (souvent en cryptomonnaie) en échange de la clé de déchiffrement. C'est aujourd'hui l'une des menaces les plus coûteuses pour les organisations."
       },
       {
+        "type": "predict",
+        "question": "Première étape d'une attaque : entrer. Quelle est la porte d'entrée la plus courante ?",
+        "choices": [
+          { "id": "a", "text": "Une faille zero-day introuvable" },
+          { "id": "b", "text": "Un e-mail de phishing ou un accès mal protégé" },
+          { "id": "c", "text": "Une intrusion physique dans les locaux" }
+        ],
+        "correctId": "b",
+        "reveal": "Pas besoin d'exploit d'élite : un clic malheureux ou un accès RDP exposé suffisent le plus souvent."
+      },
+      {
         "type": "text",
         "md": "Le déroulé typique d'une attaque :\n\n1. **Infection** : l'attaquant entre, souvent par un e-mail de phishing, un accès **RDP** (Remote Desktop Protocol) mal protégé ou une faille non corrigée.\n2. **Propagation** : il se déplace latéralement pour toucher un maximum de machines.\n3. **Chiffrement** : les fichiers sont chiffrés ; une **note de rançon** s'affiche.\n4. **Extorsion** : le paiement est exigé. De nombreux groupes pratiquent la **double extorsion** : ils exfiltrent les données avant de les chiffrer, puis menacent de les publier."
+      },
+      {
+        "type": "truefalse",
+        "statement": "Payer la rançon garantit de récupérer ses fichiers.",
+        "answer": false,
+        "explanation": "Rien n'oblige l'attaquant à livrer la clé une fois payé — ni à effacer les données volées, ni à ne pas revenir. Et chaque paiement finance les attaques suivantes."
       },
       {
         "type": "text",
@@ -80,23 +143,23 @@
         "md": "Une sauvegarde connectée en permanence peut être chiffrée en même temps que le reste. Seule une **sauvegarde hors ligne** (déconnectée, hors site ou immuable) survit à un ransomware."
       },
       {
-        "type": "keyterms",
-        "terms": [
+        "type": "flipcards",
+        "cards": [
           {
-            "term": "Ransomware",
-            "def": "Malware qui chiffre les fichiers de la victime et exige une rançon pour la clé de déchiffrement."
+            "front": "Ransomware",
+            "back": "Malware qui chiffre les fichiers de la victime et exige une rançon pour la clé de déchiffrement."
           },
           {
-            "term": "Chiffrement",
-            "def": "Transformation des données en un format illisible sans la clé ; c'est le levier du ransomware."
+            "front": "Chiffrement",
+            "back": "Transformation des données en un format illisible sans la clé ; c'est le levier du ransomware."
           },
           {
-            "term": "Double extorsion",
-            "def": "Technique où l'attaquant exfiltre les données avant de chiffrer, puis menace de les publier."
+            "front": "Double extorsion",
+            "back": "Technique où l'attaquant exfiltre les données avant de chiffrer, puis menace de les publier."
           },
           {
-            "term": "Sauvegarde hors ligne (offline backup)",
-            "def": "Copie de données déconnectée du réseau, donc à l'abri d'un chiffrement par ransomware."
+            "front": "Sauvegarde hors ligne (offline backup)",
+            "back": "Copie de données déconnectée du réseau, donc à l'abri d'un chiffrement par ransomware."
           }
         ]
       },
@@ -115,8 +178,34 @@
     "estMinutes": 5,
     "blocks": [
       {
+        "type": "hook",
+        "md": "Entre 2013 et 2015, un homme a soutiré plus de 100 millions de dollars à Google et Facebook — sans écrire une ligne de code. Il envoyait de fausses factures en se faisant passer pour un fournisseur asiatique bien réel des deux géants, et leurs services comptables payaient. Son arme : la confiance."
+      },
+      {
+        "type": "predict",
+        "question": "Pour entrer dans une organisation, quel est le plus souvent le chemin le plus facile ?",
+        "choices": [
+          { "id": "a", "text": "Casser le chiffrement" },
+          { "id": "b", "text": "Exploiter une faille logicielle inconnue" },
+          { "id": "c", "text": "Manipuler un humain" }
+        ],
+        "correctId": "c",
+        "reveal": "Pourquoi forcer une porte blindée quand quelqu'un peut l'ouvrir de l'intérieur ? L'humain est la cible la plus accessible — et cette approche a un nom."
+      },
+      {
         "type": "text",
         "md": "L'**ingénierie sociale** (social engineering) consiste à manipuler des personnes pour qu'elles divulguent des informations ou accomplissent une action. L'attaquant ne s'en prend pas à la technique, mais à l'**humain** : confiance, peur, curiosité, envie d'aider. C'est très souvent la première étape d'une intrusion."
+      },
+      {
+        "type": "predict",
+        "question": "Tu trouves une clé USB étiquetée « Salaires 2026 » sur le parking de ton entreprise. Le plus probable ?",
+        "choices": [
+          { "id": "a", "text": "Quelqu'un l'a perdue : il faut la brancher pour retrouver son propriétaire" },
+          { "id": "b", "text": "C'est un appât déposé exprès pour qu'on la branche" },
+          { "id": "c", "text": "Elle est sûrement vide, aucun risque" }
+        ],
+        "correctId": "b",
+        "reveal": "Un grand classique : la curiosité fait brancher la clé, la clé exécute la charge malveillante. La technique s'appelle le baiting — et elle a des cousines."
       },
       {
         "type": "text",
@@ -128,23 +217,29 @@
         "md": "Ces techniques exploitent des leviers psychologiques : **autorité** (se faire passer pour un supérieur), **urgence**, **réciprocité**. Identifier le levier employé aide à déjouer la manipulation."
       },
       {
-        "type": "keyterms",
-        "terms": [
+        "type": "truefalse",
+        "statement": "Seules les personnes naïves ou peu à l'aise avec l'informatique tombent dans les pièges d'ingénierie sociale.",
+        "answer": false,
+        "explanation": "Les leviers exploités — autorité, urgence, réciprocité — sont universels. Des ingénieurs, des comptables de multinationales et même des professionnels de la sécurité se sont fait piéger."
+      },
+      {
+        "type": "flipcards",
+        "cards": [
           {
-            "term": "Ingénierie sociale (social engineering)",
-            "def": "Manipulation d'une personne pour lui faire divulguer une information ou accomplir une action."
+            "front": "Ingénierie sociale (social engineering)",
+            "back": "Manipulation d'une personne pour lui faire divulguer une information ou accomplir une action."
           },
           {
-            "term": "Pretexting",
-            "def": "Invention d'un prétexte crédible pour instaurer la confiance et soutirer des informations."
+            "front": "Pretexting",
+            "back": "Invention d'un prétexte crédible pour instaurer la confiance et soutirer des informations."
           },
           {
-            "term": "Baiting",
-            "def": "Appâtage : un objet ou fichier attractif (clé USB, téléchargement) que la victime utilise, déclenchant l'infection."
+            "front": "Baiting",
+            "back": "Appâtage : un objet ou fichier attractif (clé USB, téléchargement) que la victime utilise, déclenchant l'infection."
           },
           {
-            "term": "Quid pro quo",
-            "def": "Proposition d'un service en échange d'une information ou d'un accès (ex. faux support informatique)."
+            "front": "Quid pro quo",
+            "back": "Proposition d'un service en échange d'une information ou d'un accès (ex. faux support informatique)."
           }
         ]
       },
@@ -163,8 +258,34 @@
     "estMinutes": 6,
     "blocks": [
       {
+        "type": "hook",
+        "md": "Octobre 2016. Une armée de centaines de milliers de caméras de surveillance et de routeurs infectés — le botnet **Mirai** — bombarde l'infrastructure DNS de l'entreprise Dyn. Résultat : Twitter, Netflix, Spotify et Reddit inaccessibles pendant des heures sur une bonne partie des États-Unis. Les propriétaires des caméras, eux, n'ont rien remarqué."
+      },
+      {
+        "type": "predict",
+        "question": "Justement : ta machine est enrôlée dans un botnet. Que remarques-tu au quotidien ?",
+        "choices": [
+          { "id": "a", "text": "Elle devient inutilisable" },
+          { "id": "b", "text": "Probablement rien du tout" },
+          { "id": "c", "text": "Des fenêtres de rançon s'affichent" }
+        ],
+        "correctId": "b",
+        "reveal": "C'est toute la ruse : le bot reste discret pour durer. La machine travaille pour toi en apparence… et pour l'attaquant en permanence."
+      },
+      {
         "type": "text",
         "md": "Un **botnet** est un réseau de machines compromises — appelées **bots** ou **zombies** — pilotées à distance par un attaquant. Chaque machine (ordinateur, serveur, objet connecté) continue de fonctionner normalement pour son propriétaire, tout en obéissant en secret aux ordres du **botmaster** (maître du botnet)."
+      },
+      {
+        "type": "predict",
+        "question": "Les défenseurs finissent par couper le serveur de commande d'un botnet. Comment les attaquants avaient-ils prévu le coup ?",
+        "choices": [
+          { "id": "a", "text": "En supprimant tout serveur central, ou en générant des milliers de domaines de secours" },
+          { "id": "b", "text": "En cachant le serveur derrière un VPN" },
+          { "id": "c", "text": "En chiffrant plus fort leurs malwares" }
+        ],
+        "correctId": "a",
+        "reveal": "Un botnet moderne survit à la perte d'un serveur : les ordres circulent de pair à pair, ou les bots recalculent chaque jour où chercher leur maître."
       },
       {
         "type": "text",
@@ -180,27 +301,27 @@
         "md": "Côté défense, on traque le **beaconing** : des connexions sortantes régulières vers un domaine ou une IP suspecte trahissent souvent un bot qui « appelle » son C2."
       },
       {
-        "type": "keyterms",
-        "terms": [
+        "type": "flipcards",
+        "cards": [
           {
-            "term": "Botnet",
-            "def": "Réseau de machines compromises pilotées à distance par un même attaquant."
+            "front": "Botnet",
+            "back": "Réseau de machines compromises pilotées à distance par un même attaquant."
           },
           {
-            "term": "Bot / Zombie",
-            "def": "Machine infectée qui obéit en secret aux ordres du botmaster."
+            "front": "Bot / Zombie",
+            "back": "Machine infectée qui obéit en secret aux ordres du botmaster."
           },
           {
-            "term": "C2 (Command and Control)",
-            "def": "Infrastructure qui envoie les ordres aux bots et récupère les données exfiltrées."
+            "front": "C2 (Command and Control)",
+            "back": "Infrastructure qui envoie les ordres aux bots et récupère les données exfiltrées."
           },
           {
-            "term": "Botmaster",
-            "def": "Personne ou groupe qui contrôle le botnet et donne les ordres via le C2."
+            "front": "Botmaster",
+            "back": "Personne ou groupe qui contrôle le botnet et donne les ordres via le C2."
           },
           {
-            "term": "DDoS",
-            "def": "Déni de service distribué : saturation d'une cible par le trafic de nombreuses machines infectées."
+            "front": "DDoS",
+            "back": "Déni de service distribué : saturation d'une cible par le trafic de nombreuses machines infectées."
           }
         ]
       },
@@ -219,12 +340,38 @@
     "estMinutes": 7,
     "blocks": [
       {
+        "type": "hook",
+        "md": "2010. Dans l'usine iranienne de Natanz, des centrifugeuses d'enrichissement d'uranium se détraquent mystérieusement — alors que tous les écrans de contrôle affichent des valeurs normales. Le coupable : **Stuxnet**, un malware conçu sur mesure, resté invisible pendant des mois. Ce niveau d'opération porte un nom."
+      },
+      {
         "type": "text",
         "md": "Une **APT** (Advanced Persistent Threat, menace persistante avancée) désigne un attaquant très organisé et bien financé — souvent un groupe soutenu par un État — qui vise une cible précise et cherche à y rester **longtemps et discrètement**. Décryptons le sigle : **Advanced** (techniques sophistiquées), **Persistent** (présence durable, objectifs à long terme), **Threat** (un acteur humain déterminé, pas un malware opportuniste)."
       },
       {
+        "type": "predict",
+        "question": "Une intrusion ciblée comme celle-là commence toujours par quoi ?",
+        "choices": [
+          { "id": "a", "text": "L'envoi du malware à la victime" },
+          { "id": "b", "text": "L'exploitation d'une faille" },
+          { "id": "c", "text": "La reconnaissance : étudier la cible" }
+        ],
+        "correctId": "c",
+        "reveal": "Avant de forger la moindre arme, l'attaquant observe : organigramme, technologies, habitudes. Un modèle célèbre formalise cette logique en 7 étapes."
+      },
+      {
         "type": "text",
         "md": "Pour décrire le déroulé d'une intrusion ciblée, Lockheed Martin a proposé la **cyber kill chain** (chaîne d'attaque), un modèle **linéaire en 7 étapes** :\n\n1. **Reconnaissance** : collecte d'informations sur la cible.\n2. **Weaponization** (militarisation) : préparation de l'arme (ex. document piégé).\n3. **Delivery** (livraison) : envoi à la victime (e-mail, clé USB, site web).\n4. **Exploitation** : la faille est déclenchée.\n5. **Installation** : le malware s'installe et se rend persistant.\n6. **Command & Control** (C2) : l'attaquant prend la main à distance.\n7. **Actions on Objectives** : il atteint son but (exfiltration, sabotage)."
+      },
+      {
+        "type": "predict",
+        "question": "Pour stopper une attaque modélisée par la kill chain, combien d'étapes le défenseur doit-il faire échouer ?",
+        "choices": [
+          { "id": "a", "text": "Une seule" },
+          { "id": "b", "text": "Au moins la moitié" },
+          { "id": "c", "text": "Toutes" }
+        ],
+        "correctId": "a",
+        "reveal": "La chaîne est séquentielle : sans livraison, pas d'exploitation ; sans C2, pas d'exfiltration. Casser un maillon suffit."
       },
       {
         "type": "text",
@@ -236,23 +383,23 @@
         "md": "Ne confondez pas les deux modèles : la **cyber kill chain** (Lockheed Martin) est une séquence **linéaire** d'étapes d'attaque. **MITRE ATT&CK** est une **matrice** de tactiques et techniques réellement observées, ni linéaire ni séquentielle."
       },
       {
-        "type": "keyterms",
-        "terms": [
+        "type": "flipcards",
+        "cards": [
           {
-            "term": "APT (Advanced Persistent Threat)",
-            "def": "Attaquant organisé et bien doté qui vise une cible précise et y reste durablement et discrètement."
+            "front": "APT (Advanced Persistent Threat)",
+            "back": "Attaquant organisé et bien doté qui vise une cible précise et y reste durablement et discrètement."
           },
           {
-            "term": "Cyber kill chain",
-            "def": "Modèle linéaire en 7 étapes (Lockheed Martin) décrivant le déroulé d'une intrusion ciblée."
+            "front": "Cyber kill chain",
+            "back": "Modèle linéaire en 7 étapes (Lockheed Martin) décrivant le déroulé d'une intrusion ciblée."
           },
           {
-            "term": "Weaponization (militarisation)",
-            "def": "Étape où l'attaquant prépare son arme, par exemple un document piégé prêt à être livré."
+            "front": "Weaponization (militarisation)",
+            "back": "Étape où l'attaquant prépare son arme, par exemple un document piégé prêt à être livré."
           },
           {
-            "term": "Exfiltration",
-            "def": "Sortie discrète des données volées hors du système de la victime."
+            "front": "Exfiltration",
+            "back": "Sortie discrète des données volées hors du système de la victime."
           }
         ]
       },
@@ -271,12 +418,36 @@
     "estMinutes": 6,
     "blocks": [
       {
+        "type": "hook",
+        "md": "Tu es analyste dans un SOC. Une intrusion vient d'être détectée, et ta responsable te demande de décrire ce que fait l'attaquant dans un langage que toute l'équipe — et les outils — comprennent. Bonne nouvelle : ce vocabulaire commun existe, il est public, et le monde entier l'utilise."
+      },
+      {
         "type": "text",
         "md": "**MITRE ATT&CK** est une base de connaissances publique qui recense les **comportements d'attaquants réellement observés**. Le sigle signifie **Adversarial Tactics, Techniques, and Common Knowledge**. Elle se présente sous forme de **matrice** : une grille où chaque colonne est un objectif et chaque case, une manière concrète de l'atteindre."
       },
       {
+        "type": "predict",
+        "question": "Dans ce vocabulaire, le phishing est-il une tactique ou une technique ?",
+        "choices": [
+          { "id": "a", "text": "Une tactique" },
+          { "id": "b", "text": "Une technique" }
+        ],
+        "correctId": "b",
+        "reveal": "Le phishing est un moyen — le comment, référencé T1566 — au service d'un objectif comme l'accès initial. Cette distinction est le cœur d'ATT&CK."
+      },
+      {
         "type": "text",
         "md": "Deux notions à ne jamais confondre :\n\n- **Tactique** (tactic) : le **pourquoi**, l'objectif de l'attaquant à un instant donné. Exemples : *Initial Access* (accès initial), *Persistence* (persistance), *Privilege Escalation* (élévation de privilèges), *Exfiltration*.\n- **Technique** (technique) : le **comment**, la méthode employée pour atteindre cette tactique. Chaque technique porte un identifiant, ex. **T1566 – Phishing**. Une technique peut se décliner en **sous-techniques** (ex. T1566.001 – pièce jointe piégée)."
+      },
+      {
+        "type": "predict",
+        "question": "Une même technique — le phishing, par exemple — peut-elle servir plusieurs tactiques ?",
+        "choices": [
+          { "id": "a", "text": "Oui" },
+          { "id": "b", "text": "Non, chaque technique appartient à une seule tactique" }
+        ],
+        "correctId": "a",
+        "reveal": "La matrice n'est pas cloisonnée : une technique peut apparaître dans plusieurs colonnes, et chaque tactique se réalise par de nombreuses techniques."
       },
       {
         "type": "text",
@@ -288,27 +459,27 @@
         "md": "Piège d'examen : la **kill chain** (Lockheed Martin) est **linéaire** ; **ATT&CK** est une **matrice** non séquentielle fondée sur des techniques observées. Retenez : *tactique = objectif (pourquoi)*, *technique = méthode (comment)*."
       },
       {
-        "type": "keyterms",
-        "terms": [
+        "type": "flipcards",
+        "cards": [
           {
-            "term": "MITRE ATT&CK",
-            "def": "Base de connaissances publique des tactiques et techniques d'attaquants réellement observées, présentée en matrice."
+            "front": "MITRE ATT&CK",
+            "back": "Base de connaissances publique des tactiques et techniques d'attaquants réellement observées, présentée en matrice."
           },
           {
-            "term": "Tactique",
-            "def": "L'objectif de l'attaquant à un instant donné (le pourquoi), ex. persistance ou exfiltration."
+            "front": "Tactique",
+            "back": "L'objectif de l'attaquant à un instant donné (le pourquoi), ex. persistance ou exfiltration."
           },
           {
-            "term": "Technique",
-            "def": "La méthode concrète employée pour atteindre une tactique (le comment), identifiée par un code (ex. T1566)."
+            "front": "Technique",
+            "back": "La méthode concrète employée pour atteindre une tactique (le comment), identifiée par un code (ex. T1566)."
           },
           {
-            "term": "Sous-technique",
-            "def": "Déclinaison plus précise d'une technique (ex. T1566.001, pièce jointe piégée)."
+            "front": "Sous-technique",
+            "back": "Déclinaison plus précise d'une technique (ex. T1566.001, pièce jointe piégée)."
           },
           {
-            "term": "Matrice",
-            "def": "Grille d'ATT&CK où les colonnes sont les tactiques et les cases, les techniques."
+            "front": "Matrice",
+            "back": "Grille d'ATT&CK où les colonnes sont les tactiques et les cases, les techniques."
           }
         ]
       },
@@ -327,12 +498,38 @@
     "estMinutes": 6,
     "blocks": [
       {
+        "type": "hook",
+        "md": "Tu es analyste SOC. Ce matin, une entreprise partenaire t'envoie sa liste noire : trois empreintes de fichiers, deux adresses IP, un nom de domaine — tout ce qu'elle a relevé pendant l'attaque qu'elle vient de subir. Ces petites traces ont un nom, une science… et une hiérarchie qui va te surprendre."
+      },
+      {
+        "type": "predict",
+        "question": "Tu retrouves l'une de ces adresses IP dans tes propres logs. Qu'est-ce que cela prouve ?",
+        "choices": [
+          { "id": "a", "text": "Ton réseau est certainement compromis" },
+          { "id": "b", "text": "Une compromission est probable : il faut investiguer" },
+          { "id": "c", "text": "Rien : une adresse IP ne veut rien dire" }
+        ],
+        "correctId": "b",
+        "reveal": "Un indicateur n'est pas un verdict : il signale une compromission probable et déclenche l'investigation. C'est exactement la définition d'un IOC."
+      },
+      {
         "type": "text",
         "md": "Un **IOC** (Indicator of Compromise, indicateur de compromission) est une trace technique montrant qu'un système a **probablement été attaqué**. Exemples : l'**empreinte** (hash) d'un fichier malveillant, une adresse IP ou un domaine de C2, une URL de phishing, un nom de fichier suspect ou une clé de registre créée par un malware."
       },
       {
         "type": "text",
         "md": "La **threat intelligence** (renseignement sur les menaces) est le processus de **collecte, d'analyse et de partage** d'informations sur les attaquants et leurs méthodes, afin d'anticiper et de mieux se défendre. On la diffuse souvent via des formats standardisés comme **STIX** (structure des données) et **TAXII** (protocole d'échange), ce qui permet aux organisations de partager des IOC entre elles."
+      },
+      {
+        "type": "predict",
+        "question": "Ton temps est limité : quel indicateur est le plus précieux à bloquer pour gêner durablement l'attaquant ?",
+        "choices": [
+          { "id": "a", "text": "Le hash d'un fichier malveillant" },
+          { "id": "b", "text": "Une adresse IP de C2" },
+          { "id": "c", "text": "Ses TTP, ses habitudes de travail" }
+        ],
+        "correctId": "c",
+        "reveal": "Contre-intuitif mais central : un hash se change en une seconde, une IP en une heure — des habitudes de travail, très difficilement. Un modèle célèbre en fait une pyramide."
       },
       {
         "type": "text",
@@ -344,27 +541,27 @@
         "md": "Un IOC est **réactif** : il décrit une compromission déjà survenue. On le complète par des **IOA** (Indicators of Attack), qui repèrent un **comportement** d'attaque en cours plutôt qu'une trace figée."
       },
       {
-        "type": "keyterms",
-        "terms": [
+        "type": "flipcards",
+        "cards": [
           {
-            "term": "IOC (Indicator of Compromise)",
-            "def": "Trace technique révélant qu'un système a probablement été compromis (hash, IP, domaine, URL...)."
+            "front": "IOC (Indicator of Compromise)",
+            "back": "Trace technique révélant qu'un système a probablement été compromis (hash, IP, domaine, URL...)."
           },
           {
-            "term": "Threat intelligence",
-            "def": "Collecte, analyse et partage d'informations sur les menaces pour mieux anticiper et se défendre."
+            "front": "Threat intelligence",
+            "back": "Collecte, analyse et partage d'informations sur les menaces pour mieux anticiper et se défendre."
           },
           {
-            "term": "Hash (empreinte)",
-            "def": "Signature numérique d'un fichier ; sert d'IOC mais se modifie très facilement par l'attaquant."
+            "front": "Hash (empreinte)",
+            "back": "Signature numérique d'un fichier ; sert d'IOC mais se modifie très facilement par l'attaquant."
           },
           {
-            "term": "STIX / TAXII",
-            "def": "Formats standard pour structurer (STIX) et échanger (TAXII) le renseignement sur les menaces."
+            "front": "STIX / TAXII",
+            "back": "Formats standard pour structurer (STIX) et échanger (TAXII) le renseignement sur les menaces."
           },
           {
-            "term": "TTP",
-            "def": "Tactics, Techniques and Procedures : les habitudes de travail d'un attaquant, très coûteuses à changer."
+            "front": "TTP",
+            "back": "Tactics, Techniques and Procedures : les habitudes de travail d'un attaquant, très coûteuses à changer."
           }
         ]
       },
@@ -383,12 +580,42 @@
     "estMinutes": 7,
     "blocks": [
       {
+        "type": "hook",
+        "md": "2005. Des CD de musique vendus par Sony BMG installent en douce, sur les PC qui les lisent, un logiciel qui cache des fichiers au système d'exploitation lui-même. Un chercheur le découvre, le scandale éclate : rappel massif, procès. Le grand public venait d'apprendre un mot jusque-là réservé aux experts : **rootkit**."
+      },
+      {
         "type": "text",
         "md": "Un **rootkit** est un malware conçu pour **dissimuler sa présence** (et celle d'autres composants malveillants) tout en conservant un **accès privilégié** durable. Le nom vient de « root » (le compte administrateur sous Unix) et « kit » (l'outillage). Son but n'est pas de détruire, mais de rester **invisible** le plus longtemps possible."
       },
       {
+        "type": "predict",
+        "question": "Où un rootkit est-il le plus redoutable ?",
+        "choices": [
+          { "id": "a", "text": "Dans une application, au niveau utilisateur" },
+          { "id": "b", "text": "Dans le noyau du système, ou plus bas encore" }
+        ],
+        "correctId": "b",
+        "reveal": "Plus il s'implante bas, plus il contrôle ce que voient les couches au-dessus — jusqu'à mentir à l'OS et à l'antivirus."
+      },
+      {
         "type": "text",
         "md": "Les rootkits se classent par le **niveau** où ils s'implantent — plus c'est bas, plus c'est puissant et difficile à détecter :\n\n- **User-mode** (mode utilisateur) : intercepte les appels d'applications ; le plus simple, le plus facile à repérer.\n- **Kernel-mode** (mode noyau) : s'installe dans le **noyau** du système (via un pilote), avec les privilèges les plus élevés ; il peut mentir au système d'exploitation lui-même.\n- **Bootkit** : infecte le démarrage (bootloader, **UEFI**) et se charge **avant** le système d'exploitation.\n- **Firmware / matériel** : niveau le plus bas, il persiste même après une réinstallation."
+      },
+      {
+        "type": "truefalse",
+        "statement": "Réinstaller complètement le système d'exploitation élimine n'importe quel rootkit.",
+        "answer": false,
+        "explanation": "Un rootkit firmware ou un bootkit logé dans l'UEFI vit sous le système d'exploitation : il survit au formatage et à la réinstallation. Seuls les niveaux supérieurs sont balayés."
+      },
+      {
+        "type": "predict",
+        "question": "Tu redémarres une machine infectée. Après le reboot, le malware…",
+        "choices": [
+          { "id": "a", "text": "a disparu : la mémoire a été vidée" },
+          { "id": "b", "text": "revient, s'il a mis en place une persistance" }
+        ],
+        "correctId": "b",
+        "reveal": "Survivre au redémarrage est un art à part entière — et il compte bien plus d'une technique."
       },
       {
         "type": "text",
@@ -400,27 +627,27 @@
         "md": "Un rootkit **kernel-mode** peut falsifier ce que voient l'antivirus et le système d'exploitation : il devient alors quasi impossible à détecter depuis la machine infectée. On l'analyse **hors ligne** (disque monté ailleurs) et on s'appuie sur le **Secure Boot** et le **measured boot** pour se protéger en amont."
       },
       {
-        "type": "keyterms",
-        "terms": [
+        "type": "flipcards",
+        "cards": [
           {
-            "term": "Rootkit",
-            "def": "Malware qui dissimule sa présence tout en conservant un accès privilégié durable au système."
+            "front": "Rootkit",
+            "back": "Malware qui dissimule sa présence tout en conservant un accès privilégié durable au système."
           },
           {
-            "term": "User-mode",
-            "def": "Rootkit en mode utilisateur : intercepte les appels d'applications ; le plus simple à détecter."
+            "front": "User-mode",
+            "back": "Rootkit en mode utilisateur : intercepte les appels d'applications ; le plus simple à détecter."
           },
           {
-            "term": "Kernel-mode",
-            "def": "Rootkit en mode noyau, aux privilèges maximaux ; il peut mentir à l'OS et à l'antivirus."
+            "front": "Kernel-mode",
+            "back": "Rootkit en mode noyau, aux privilèges maximaux ; il peut mentir à l'OS et à l'antivirus."
           },
           {
-            "term": "Bootkit",
-            "def": "Rootkit qui infecte le démarrage (bootloader, UEFI) et se charge avant le système d'exploitation."
+            "front": "Bootkit",
+            "back": "Rootkit qui infecte le démarrage (bootloader, UEFI) et se charge avant le système d'exploitation."
           },
           {
-            "term": "Persistance",
-            "def": "Ensemble des techniques permettant à un malware de survivre à un redémarrage."
+            "front": "Persistance",
+            "back": "Ensemble des techniques permettant à un malware de survivre à un redémarrage."
           }
         ]
       },

