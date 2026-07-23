@@ -308,7 +308,7 @@
    },
    {
     "type": "predict",
-    "question": "Un éditeur publie un correctif de sécurité. Pour les machines qui ne l'installent pas, le risque immédiat…",
+    "question": "Un éditeur publie un correctif de sécurité. Pour les machines qui ne l'installent pas, comment évolue le risque immédiat ?",
     "choices": [
      {
       "id": "a",
@@ -332,7 +332,7 @@
    },
    {
     "type": "predict",
-    "question": "Votre pari : la grande majorité des intrusions exploitent…",
+    "question": "La grande majorité des intrusions exploitent quel type de faille ?",
     "choices": [
      {
       "id": "a",
@@ -424,7 +424,7 @@
    },
    {
     "type": "predict",
-    "question": "Votre sauvegarde vit sur un disque externe branché en permanence au PC. Un ransomware frappe. Votre copie…",
+    "question": "Votre sauvegarde vit sur un disque externe branché en permanence au PC. Un ransomware frappe : qu'arrive-t-il à votre copie ?",
     "choices": [
      {
       "id": "a",
@@ -676,7 +676,7 @@
    },
    {
     "type": "predict",
-    "question": "Un voleur récupère votre téléphone verrouillé, le démonte et branche la puce mémoire sur son ordinateur. Il lit…",
+    "question": "Un voleur récupère votre téléphone verrouillé, le démonte et branche la puce mémoire sur son ordinateur. Que peut-il lire ?",
     "choices": [
      {
       "id": "a",
@@ -700,7 +700,7 @@
    },
    {
     "type": "predict",
-    "question": "Une app « lampe torche » demande l'accès à vos contacts et à votre position. C'est…",
+    "question": "Une app « lampe torche » demande l'accès à vos contacts et à votre position. Comment faut-il l'interpréter ?",
     "choices": [
      {
       "id": "a",

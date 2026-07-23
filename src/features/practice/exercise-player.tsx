@@ -117,7 +117,7 @@ function TerminalPlayer({ ex, onLeave }: { ex: TerminalExercise; onLeave: () => 
             key={i}
             style={[
               styles.termText,
-              { color: l.kind === 'err' ? theme.danger : l.kind === 'out' ? theme.success : theme.text },
+              { color: l.kind === 'err' ? theme.danger : l.kind === 'out' ? theme.success : theme.terminalText },
             ]}>
             {l.text}
           </ThemedText>
@@ -126,7 +126,7 @@ function TerminalPlayer({ ex, onLeave }: { ex: TerminalExercise; onLeave: () => 
           <View style={styles.termComposeRow}>
             <ThemedText style={[styles.termText, { color: theme.accent }]}>{ex.shell} </ThemedText>
             {composed.length === 0 ? (
-              <ThemedText style={[styles.termText, { color: theme.textDisabled }]}>
+              <ThemedText style={[styles.termText, { color: theme.terminalTextDim }]}>
                 {t.practice.composeHint}
               </ThemedText>
             ) : (
@@ -137,8 +137,8 @@ function TerminalPlayer({ ex, onLeave }: { ex: TerminalExercise; onLeave: () => 
                     tapFeedback();
                     setComposed((c) => c.filter((i) => i !== poolIndex));
                   }}
-                  style={[styles.composedToken, { borderColor: theme.border }]}>
-                  <ThemedText style={[styles.termText, { color: theme.text }]}>
+                  style={[styles.composedToken, { borderColor: theme.terminalTextDim }]}>
+                  <ThemedText style={[styles.termText, { color: theme.terminalText }]}>
                     {pool[poolIndex]}
                   </ThemedText>
                 </Pressable>
@@ -154,10 +154,10 @@ function TerminalPlayer({ ex, onLeave }: { ex: TerminalExercise; onLeave: () => 
               onChangeText={setInput}
               onSubmitEditing={submit}
               placeholder={t.practice.typeCommand}
-              placeholderTextColor={theme.textDisabled}
+              placeholderTextColor={theme.terminalTextDim}
               autoCapitalize="none"
               autoCorrect={false}
-              style={[styles.termText, styles.termInput, { color: theme.text }]}
+              style={[styles.termText, styles.termInput, { color: theme.terminalText }]}
               returnKeyType="send"
             />
           </View>
@@ -430,7 +430,19 @@ function ScenarioPlayer({ ex, onLeave }: { ex: ScenarioExercise; onLeave: () => 
         </>
       ) : (
         node.choices!.map((c, i) => (
-          <Button key={i} label={c.text} variant="secondary" onPress={() => go(c.to)} />
+          <Pressable
+            key={i}
+            onPress={() => go(c.to)}
+            style={({ pressed }) => [
+              styles.choiceCard,
+              { backgroundColor: theme.backgroundElement, borderColor: theme.border },
+              pressed && { opacity: 0.7 },
+            ]}>
+            <ThemedText type="small" style={styles.flex}>
+              {c.text}
+            </ThemedText>
+            <Ionicons name="chevron-forward" size={18} color={theme.textSecondary} />
+          </Pressable>
         ))
       )}
     </ScrollView>
@@ -513,4 +525,13 @@ const styles = StyleSheet.create({
     borderRadius: Radius.pill,
   },
   nodeText: { fontFamily: FontFamily.medium, lineHeight: 24 },
+  choiceCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.sm,
+    borderWidth: 1.5,
+    borderRadius: Radius.md,
+    paddingVertical: Spacing.base,
+    paddingHorizontal: Spacing.base,
+  },
 });
