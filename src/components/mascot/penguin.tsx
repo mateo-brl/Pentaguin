@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useMemo, useState } from 'react';
 import { Animated, View, type StyleProp, type ViewStyle } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 
@@ -30,7 +30,7 @@ type Props = {
 
 const RATIO = 240 / 200;
 
-export function Penguin({
+function PenguinBase({
   state = 'neutral',
   accessory = null,
   finish = 'flat',
@@ -38,7 +38,9 @@ export function Penguin({
   animation = 'none',
   style,
 }: Props) {
-  const xml = penguinSvg(state, { finish, accessory });
+  // SvgXml re-parse la chaîne à chaque nouvelle référence : on ne la reconstruit
+  // que si l'apparence change (sinon re-parse à chaque rendu parent).
+  const xml = useMemo(() => penguinSvg(state, { finish, accessory }), [state, finish, accessory]);
   const [scale] = useState(() => new Animated.Value(animation === 'pop' ? 0.6 : 1));
   const [opacity] = useState(() => new Animated.Value(animation === 'pop' ? 0 : 1));
   const [float] = useState(() => new Animated.Value(0));
@@ -93,6 +95,9 @@ export function Penguin({
     </Animated.View>
   );
 }
+
+/** Mémoïsé : ne re-rend que si les props d'apparence changent. */
+export const Penguin = memo(PenguinBase);
 
 /** Flamme de série — boucle linéaire, la seule animation continue autorisée. */
 export function StreakFlame({ size = 28 }: { size?: number }) {

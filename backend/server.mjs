@@ -107,7 +107,7 @@ db.exec(`
   );
   CREATE INDEX IF NOT EXISTS idx_error_reports_created ON error_reports(created_at);
   CREATE TABLE IF NOT EXISTS progress (
-    user_id    INTEGER PRIMARY KEY,
+    user_id    TEXT PRIMARY KEY,
     data       TEXT NOT NULL,
     updated_at INTEGER NOT NULL
   );
@@ -512,10 +512,14 @@ async function handlePutProgress(req, res) {
   const row = db.prepare('SELECT data FROM progress WHERE user_id = ?').get(userId);
   const stored = row ? JSON.parse(row.data) : emptySnapshot();
   const merged = mergeSnapshots(stored, incoming ?? {});
+  const serialized = JSON.stringify(merged);
+  // Borne dure : la fusion unit les clés à chaque PUT. Sans plafond, un compte
+  // pourrait gonfler sa ligne indéfiniment (DoS stockage/CPU par compte).
+  if (serialized.length > 256 * 1024) return send(res, 413, { error: 'progression trop volumineuse' });
   db.prepare(
     `INSERT INTO progress (user_id, data, updated_at) VALUES (?, ?, ?)
      ON CONFLICT(user_id) DO UPDATE SET data = excluded.data, updated_at = excluded.updated_at`,
-  ).run(userId, JSON.stringify(merged), Date.now());
+  ).run(userId, serialized, Date.now());
   return send(res, 200, merged);
 }
 
@@ -621,10 +625,13 @@ async function handleVerifyEmail(req, res) {
   if (!claims || !claims.vrf) return send(res, 401, { error: 'défi invalide ou expiré' });
   const user = selectUserById.get(claims.sub);
   if (!user?.email) return send(res, 401, { error: 'défi invalide ou expiré' });
+  if (loginLockedUntil(user.email)) return send(res, 429, { error: 'trop de tentatives' });
   const entry = selectVerifyCode.get(user.email);
   const codeHash = createHash('sha256').update(String(code ?? '')).digest('hex');
-  if (!entry || entry.expires_at < Date.now() || entry.code_hash !== codeHash)
+  if (!entry || entry.expires_at < Date.now() || entry.code_hash !== codeHash) {
+    recordLoginFail(user.email); // limite le brute-force du code
     return send(res, 401, { error: 'code invalide ou expiré' });
+  }
   setEmailVerified.run(Date.now(), user.id);
   deleteVerifyCode.run(user.email);
   clearLoginFails(user.email);
@@ -715,8 +722,8 @@ async function handleTelemetry(req, res) {
   pruneErrorReports.run(MAX_ERROR_REPORTS);
   // Assainit les retours-ligne avant de logguer (sinon forge de fausses lignes
   // dans journald depuis une entrée non authentifiée).
-  const safeMessage = message.replace(/[\r\n]+/g, ' ');
-  console.error(`[error-report] ${platform ?? '?'} v${appVer ?? '?'}: ${safeMessage}`);
+  const clean = (s) => (s ?? '?').replace(/[\r\n]+/g, ' ');
+  console.error(`[error-report] ${clean(platform)} v${clean(appVer)}: ${clean(message)}`);
   send(res, 200, { ok: true });
 }
 
@@ -831,7 +838,11 @@ function handleDeleteMe(req, res) {
     db.prepare('DELETE FROM daily_xp WHERE device_id = ?').run(player.device_id);
     db.prepare('DELETE FROM players WHERE device_id = ?').run(player.device_id);
   }
-  if (user.email) deleteResetCode.run(user.email);
+  if (user.email) {
+    deleteResetCode.run(user.email);
+    db.prepare('DELETE FROM email_verifications WHERE email = ?').run(user.email);
+  }
+  db.prepare('DELETE FROM progress WHERE user_id = ?').run(userId);
   db.prepare('DELETE FROM users WHERE id = ?').run(userId);
   send(res, 200, { ok: true });
 }
@@ -862,16 +873,20 @@ async function handleReset(req, res) {
   if (!isEmail(email) || typeof code !== 'string' || !isPassword(newPassword))
     return send(res, 400, { error: 'requête invalide' });
   const normalized = email.trim().toLowerCase();
+  if (loginLockedUntil(normalized)) return send(res, 429, { error: 'trop de tentatives' });
   const entry = selectResetCode.get(normalized);
   const codeHash = createHash('sha256').update(code).digest('hex');
-  if (!entry || entry.expires_at < Date.now() || entry.code_hash !== codeHash)
+  if (!entry || entry.expires_at < Date.now() || entry.code_hash !== codeHash) {
+    recordLoginFail(normalized); // limite le brute-force du code à 6 chiffres
     return send(res, 401, { error: 'code invalide ou expiré' });
+  }
   const user = selectUserByEmail.get(normalized);
   if (!user) return send(res, 401, { error: 'code invalide ou expiré' });
   const { salt, hash } = hashPassword(newPassword);
   updatePassword.run(hash, salt, Date.now(), user.id);
   bumpTokenVersion.run(Date.now(), user.id); // révoque les autres sessions
   deleteResetCode.run(normalized);
+  clearLoginFails(normalized);
   send(res, 200, { ok: true });
 }
 
@@ -956,9 +971,10 @@ const server = createServer(async (req, res) => {
     // Ne ré-écrit pas une réponse déjà envoyée (sinon ERR_HTTP_HEADERS_SENT
     // relèverait dans le catch et, sans handler process, tuerait le serveur).
     if (!res.headersSent) {
-      send(res, message === 'body_too_large' || message === 'invalid_json' ? 400 : 500, {
-        error: message,
-      });
+      const badReq = message === 'body_too_large' || message === 'invalid_json';
+      if (!badReq) console.error(`[500] ${req.method} ${req.url}: ${message}`);
+      // Ne divulgue pas le détail interne au client (fuite d'infos).
+      send(res, badReq ? 400 : 500, { error: badReq ? message : 'internal_error' });
     }
   }
 });

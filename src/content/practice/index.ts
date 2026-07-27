@@ -4,12 +4,7 @@ import rawEn from './exercises.en.json';
 import raw from './exercises.json';
 import missionsRawEn from './missions.en.json';
 import missionsRaw from './missions.json';
-import {
-  missionBankSchema,
-  practiceBankSchema,
-  type PracticeExercise,
-  type PracticeMission,
-} from './schema';
+import type { PracticeExercise, PracticeMission } from './schema';
 
 const cache = new Map<Locale, PracticeExercise[]>();
 const missionCache = new Map<Locale, PracticeMission[]>();
@@ -21,8 +16,7 @@ const missionCache = new Map<Locale, PracticeMission[]>();
 export function getPracticeExercises(locale: Locale = getLocale()): PracticeExercise[] {
   const cached = cache.get(locale);
   if (cached) return cached;
-  const source = locale === 'en' && rawEn.length > 0 ? rawEn : raw;
-  const parsed = practiceBankSchema.parse(source);
+  const parsed = (locale === 'en' && rawEn.length > 0 ? rawEn : raw) as PracticeExercise[];
   cache.set(locale, parsed);
   return parsed;
 }
@@ -35,8 +29,9 @@ export function getPracticeExercise(id: string): PracticeExercise | undefined {
 export function getPracticeMissions(locale: Locale = getLocale()): PracticeMission[] {
   const cached = missionCache.get(locale);
   if (cached) return cached;
-  const source = locale === 'en' && missionsRawEn.length > 0 ? missionsRawEn : missionsRaw;
-  const parsed = missionBankSchema.parse(source);
+  const parsed = (locale === 'en' && missionsRawEn.length > 0
+    ? missionsRawEn
+    : missionsRaw) as PracticeMission[];
   missionCache.set(locale, parsed);
   return parsed;
 }

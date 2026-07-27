@@ -95,7 +95,13 @@ export default function LessonScreen() {
 
   const blocks = lesson.blocks;
   const gatingBlock = blocks[revealed - 1];
-  const waitingOnInteraction = !finished && gatingBlock != null && isInteractiveBlock(gatingBlock);
+  // Un quickcheck vers une question introuvable rend `null` : il ne doit PAS
+  // bloquer l'avancée (sinon leçon sans issue). Content-guardé par la CI, mais
+  // filet runtime.
+  const gatingRenders =
+    gatingBlock?.type !== 'quickcheck' || pack.questions.some((q) => q.id === gatingBlock.questionId);
+  const waitingOnInteraction =
+    !finished && gatingBlock != null && isInteractiveBlock(gatingBlock) && gatingRenders;
 
   const finish = () => {
     setFinished(true);

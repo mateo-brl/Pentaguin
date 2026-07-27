@@ -1,13 +1,7 @@
 import { getLocale, type Locale } from '@/i18n/strings';
 
 import { rawPacksByLocale } from './packs';
-import {
-  contentPackSchema,
-  type ContentPack,
-  type Domain,
-  type Lesson,
-  type Question,
-} from './schema';
+import type { ContentPack, Domain, Lesson, Question } from './schema';
 
 const cache = new Map<Locale, ContentPack[]>();
 
@@ -25,7 +19,9 @@ export const DEFAULT_PACK_ID = (rawPacksByLocale.fr[0] as { id: string }).id;
 export function getPacks(locale: Locale = getLocale()): ContentPack[] {
   const cached = cache.get(locale);
   if (cached) return cached;
-  const parsed = rawPacksByLocale[locale].map((raw) => contentPackSchema.parse(raw));
+  // Le contenu est validé au build (npm run validate:content, en CI). On évite
+  // de re-parser ~360 Ko avec Zod sur le thread JS au tout premier rendu.
+  const parsed = rawPacksByLocale[locale] as ContentPack[];
   cache.set(locale, parsed);
   return parsed;
 }

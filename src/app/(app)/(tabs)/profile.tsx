@@ -47,9 +47,9 @@ export default function ProfileScreen() {
   const avatar = parseAvatar(me?.avatar, pseudo);
   const identity =
     me?.email ??
-    (me?.providers.includes('apple')
+    (me?.providers?.includes('apple')
       ? t.account.appleAccount
-      : me?.providers.includes('google')
+      : me?.providers?.includes('google')
         ? t.account.googleAccount
         : t.account.emailAccount);
 

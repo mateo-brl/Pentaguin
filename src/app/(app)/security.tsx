@@ -28,7 +28,7 @@ export default function SecurityScreen() {
   const toast = useToast();
   const { me, token, refresh } = useSession();
 
-  const hasPassword = Boolean(me?.providers.includes('email'));
+  const hasPassword = Boolean(me?.providers?.includes('email'));
   const hasEmail = Boolean(me?.email);
   const twoFactorOn = Boolean(me?.twoFactor);
 
