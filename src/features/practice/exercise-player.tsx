@@ -117,14 +117,14 @@ function TerminalPlayer({ ex, onLeave }: { ex: TerminalExercise; onLeave: () => 
             key={i}
             style={[
               styles.termText,
-              { color: l.kind === 'err' ? theme.danger : l.kind === 'out' ? theme.success : theme.terminalText },
+              { color: l.kind === 'err' ? theme.terminalDanger : l.kind === 'out' ? theme.terminalSuccess : theme.terminalText },
             ]}>
             {l.text}
           </ThemedText>
         ))}
         {!done && tokenMode && (
           <View style={styles.termComposeRow}>
-            <ThemedText style={[styles.termText, { color: theme.accent }]}>{ex.shell} </ThemedText>
+            <ThemedText style={[styles.termText, { color: theme.terminalAccent }]}>{ex.shell} </ThemedText>
             {composed.length === 0 ? (
               <ThemedText style={[styles.termText, { color: theme.terminalTextDim }]}>
                 {t.practice.composeHint}
@@ -148,7 +148,7 @@ function TerminalPlayer({ ex, onLeave }: { ex: TerminalExercise; onLeave: () => 
         )}
         {!done && !tokenMode && (
           <View style={styles.termInputRow}>
-            <ThemedText style={[styles.termText, { color: theme.accent }]}>{ex.shell} </ThemedText>
+            <ThemedText style={[styles.termText, { color: theme.terminalAccent }]}>{ex.shell} </ThemedText>
             <TextInput
               value={input}
               onChangeText={setInput}

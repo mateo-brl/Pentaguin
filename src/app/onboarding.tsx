@@ -1,6 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useState } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Penguin } from '@/components/mascot/penguin';
@@ -56,7 +56,9 @@ export default function OnboardingScreen() {
           )}
         </View>
 
-        <View style={styles.content}>
+        <ScrollView
+          contentContainerStyle={styles.content}
+          showsVerticalScrollIndicator={false}>
           <Penguin
             key={step}
             state={penguinState}
@@ -130,7 +132,7 @@ export default function OnboardingScreen() {
               </ThemedText>
             </View>
           )}
-        </View>
+        </ScrollView>
 
         {/* Points de progression */}
         <View style={styles.dots}>
@@ -173,7 +175,7 @@ const styles = StyleSheet.create({
     minHeight: 20,
   },
   content: {
-    flex: 1,
+    flexGrow: 1,
     alignItems: 'center',
     justifyContent: 'center',
     gap: Spacing.lg,

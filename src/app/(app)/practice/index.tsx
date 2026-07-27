@@ -101,8 +101,13 @@ export default function PracticeListScreen() {
             {t.practice.subtitle}
           </ThemedText>
         </View>
-        <RowGroup>
-          {exercises.map((ex, index) => {
+        {exercises.length === 0 ? (
+          <ThemedText type="small" themeColor="textSecondary">
+            {t.practice.empty}
+          </ThemedText>
+        ) : (
+          <RowGroup>
+            {exercises.map((ex, index) => {
             const hue = domainColor(index);
             const reco = rank != null && isRecommended(ex, rank);
             return (
@@ -119,8 +124,9 @@ export default function PracticeListScreen() {
                 onPress={() => router.push({ pathname: '/practice/[id]', params: { id: ex.id } })}
               />
             );
-          })}
-        </RowGroup>
+            })}
+          </RowGroup>
+        )}
       </ScrollView>
     </ThemedView>
   );

@@ -62,5 +62,5 @@ export async function syncActivity(payload: SyncPayload, token?: string | null):
 
 export async function fetchLeaderboard(period: LeaderboardPeriod): Promise<LeaderboardEntry[]> {
   const data = await request<{ entries: LeaderboardEntry[] }>(`/v1/leaderboard?period=${period}`);
-  return data.entries;
+  return Array.isArray(data?.entries) ? data.entries : [];
 }
