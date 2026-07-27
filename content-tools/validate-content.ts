@@ -160,7 +160,12 @@ for (const [locale, source, exercisesSource] of [
 }
 
 // — Parité FR/EN (mêmes ids des deux côtés : la bascule de langue ne casse rien) ----
+const frPack = rawPacksByLocale.fr[0] as { lessons: { id: string }[]; questions: { id: string }[] };
+const enPack = rawPacksByLocale.en[0] as { lessons: { id: string }[]; questions: { id: string }[] };
 const parityChecks: [string, { id: string }[], { id: string }[]][] = [
+  ['leçons', frPack.lessons, enPack.lessons],
+  ['questions', frPack.questions, enPack.questions],
+  ['positionnement', placementRaw as { id: string }[], placementEnRaw as { id: string }[]],
   ['pratique', practiceRaw, practiceEnRaw],
   ['missions', missionsRaw, missionsEnRaw],
 ];

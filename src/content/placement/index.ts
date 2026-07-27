@@ -2,7 +2,7 @@ import { getLocale, type Locale } from '@/i18n/strings';
 
 import rawEn from './questions.en.json';
 import raw from './questions.json';
-import { placementBankSchema, type PlacementQuestion } from './schema';
+import type { PlacementQuestion } from './schema';
 
 const cache = new Map<Locale, PlacementQuestion[]>();
 
@@ -15,8 +15,9 @@ const cache = new Map<Locale, PlacementQuestion[]>();
 export function getPlacementQuestions(locale: Locale = getLocale()): PlacementQuestion[] {
   const cached = cache.get(locale);
   if (cached) return cached;
-  const source = locale === 'en' && rawEn.length > 0 ? rawEn : raw;
-  const parsed = placementBankSchema.parse(source);
+  // Validé au build (validate:content) : pas de re-parse Zod de 450 questions
+  // sur le thread JS au démarrage du parcours de positionnement.
+  const parsed = (locale === 'en' && rawEn.length > 0 ? rawEn : raw) as PlacementQuestion[];
   cache.set(locale, parsed);
   return parsed;
 }
