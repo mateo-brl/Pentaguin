@@ -579,6 +579,82 @@ def s_rank(pen):
         pen.text((CW - 34, ly + 18), xp + " XP", "mono", 12, hx("dim"), anchor="ra")
     tabbar(pen, 3)
 
+
+
+# ======================== PAYWALL (fiche abonnement) ========================
+def s_paywall(pen):
+    """Écran de vente, tel que rendu par src/app/(app)/paywall.tsx.
+    Sert de capture de vérification pour l'abonnement dans App Store Connect."""
+    statusbar(pen)
+    pen.ell((CW - 60, 44, CW - 16, 88), fill=hx("card"), outline=mix("line", "card", .62), w=1)
+    cx, cy = CW - 38, 66
+    pen.line([(cx - 7, cy - 7), (cx + 7, cy + 7)], hx("txt"), 2.2)
+    pen.line([(cx + 7, cy - 7), (cx - 7, cy + 7)], hx("txt"), 2.2)
+
+    pen.text((CW / 2, 104), "Pentaguin Pro", "bold", 26, hx("txt"), anchor="ma")
+    y = para(pen, (CW / 2, 146), "Beau parcours : 12 leçons terminées, rang Argent II.",
+             "semi", 13, hx("txt"), CW - 48, 19, anchor="ma")
+    y = para(pen, (CW / 2, y + 6),
+             "Il te reste 6 thèmes et 36 leçons à débloquer, à ton rythme.",
+             "med", 13, hx("dim"), CW - 48, 19, anchor="ma") + 16
+
+    bullets = ["Les 8 thèmes, 64 leçons interactives",
+               "514 questions avec explications détaillées",
+               "3 examens blancs chronométrés, rejouables",
+               "Missions scénarisées et pratique en situation"]
+    lines = [wrap(pen, b, "med", 13, CW - 96) for b in bullets]
+    bh = 24 + sum(len(l) * 18 for l in lines) + (len(bullets) - 1) * 10
+    pen.rr((16, y, CW - 16, y + bh), 15, fill=hx("card"), outline=mix("line", "card", .62), w=1)
+    by = y + 14
+    for l in lines:
+        pen.ell((32, by + 1, 48, by + 17), outline=hx("amber"), w=1.6)
+        check(pen, 40, by + 9, 5, hx("amber"), 1.8)
+        ty = by
+        for line in l:
+            pen.text((58, ty), line, "med", 13, hx("txt")); ty += 18
+        by += len(l) * 18 + 10
+    y += bh + 16
+
+    pen.rr((16, y, CW - 16, y + 104), 15, fill=mix("amber", "bg", .13))
+    pen.text((32, y + 16), "ABONNEMENT ANNUEL, SANS ENGAGEMENT", "bold", 10.5, hx("amber"), ls=1.4)
+    pen.text((32, y + 40), "19,99 $", "bold", 24, hx("txt"))
+    pen.text((32 + pen.tw("19,99 $", "bold", 24) + 10, y + 52), "par an", "med", 13, hx("dim"))
+    pen.text((32, y + 76), "soit environ 1,67 $ par mois", "med", 12.5, hx("dim"))
+    y += 120
+
+    pen.rr((16, y + 4, CW - 16, y + 56), 13, fill=hx("amberDark"))
+    pen.rr((16, y, CW - 16, y + 52), 13, fill=hx("amber"))
+    pen.text((CW / 2, y + 15), "S'abonner", "bold", 16.5, hx("onAmber"), anchor="ma")
+    y += 68
+    pen.text((CW / 2, y + 12), "Restaurer mes achats", "semi", 14, hx("amber"), anchor="ma")
+    y += 48
+
+    legal = ("Renouvelé automatiquement chaque année sauf résiliation au moins 24 h avant la fin "
+             "de la période. Tu gères ou résilies l'abonnement à tout moment depuis les réglages "
+             "de ton compte App Store.")
+    y = para(pen, (CW / 2, y), legal, "med", 11.5, hx("dim"), CW - 48, 17, anchor="ma") + 10
+    sep = " · "
+    w = pen.tw("Conditions d'utilisation", "med", 12) + pen.tw(sep, "med", 12) + pen.tw("Confidentialité", "med", 12)
+    x = (CW - w) / 2
+    pen.text((x, y), "Conditions d'utilisation", "med", 12, hx("amber"))
+    x += pen.tw("Conditions d'utilisation", "med", 12)
+    pen.text((x, y), sep, "med", 12, hx("dim"))
+    x += pen.tw(sep, "med", 12)
+    pen.text((x, y), "Confidentialité", "med", 12, hx("amber"))
+    home_indicator(pen)
+
+
+def build_raw(draw_screen, out_path, w, h):
+    """Capture brute plein cadre, sans habillage marketing : c'est ce que
+    demande App Store Connect pour la vérification de l'abonnement."""
+    global AW, AH, DW, DX, DY, SC
+    AW, AH, DW, DX, DY = w, h, w, 0, 0
+    SC = w / 393.0
+    _fc.clear()
+    img = Image.new("RGBA", (w, h), hx("bg"))
+    draw_screen(Pen(img, 0, 0))
+    img.convert("RGB").save(out_path, optimize=True)
+
 # ============================== MONTAGE =====================================
 def glow(img, cx, cy, r, rgb, a):
     layer = Image.new("RGBA", img.size, (0, 0, 0, 0))
@@ -649,3 +725,6 @@ for w, h, suffix in SIZES:
     for fn, eb, hd, name in SHOTS:
         build(fn, eb, hd, f"{OUT}/{name}{suffix}.png")
     print("ok", f"{AW}x{AH}", "->", len(SHOTS), "captures")
+
+build_raw(s_paywall, f"{OUT}/paywall-review.png", 1290, 2796)
+print("ok paywall-review 1290x2796")
