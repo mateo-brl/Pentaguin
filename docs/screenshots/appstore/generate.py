@@ -304,7 +304,7 @@ def s_home(pen):
 
 # ============================ 2. S'ENTRAÎNER ================================
 def s_practice(pen):
-    statusbar(pen); navbar(pen, "S'entraîner", pro=True)
+    statusbar(pen); navbar(pen, "S'entraîner")
     pen.text((20, 88), "Missions", "bold", 19.5, hx("txt"))
     pen.text((20, 114), "Des enquêtes complètes, étape par étape.", "med", 12.5, hx("dim"))
     missions = [("Quart de nuit au SOC", "Détecter, investiguer, répondre : une nuit de garde au SOC.", 5, True),
@@ -328,7 +328,7 @@ def s_practice(pen):
 
     y += 8
     pen.text((20, y), "Exercices", "bold", 19.5, hx("txt"))
-    pen.text((20, y + 26), "32 exercices, tous débloqués.", "med", 12.5, hx("dim"))
+    pen.text((20, y + 26), "32 exercices, tous accessibles.", "med", 12.5, hx("dim"))
     y += 52
     exos = [("Audit des privilèges locaux (Linux)", "Terminal · Pour ton rang", 0, "term", True),
             ("L'événement critique noyé dans le bruit du SIEM", "Analyse d'artefact", 3, "anal", False),
@@ -713,7 +713,7 @@ SHOTS = [
     (s_lesson, "LEÇONS INTERACTIVES", "Tu *paries*\navant d'apprendre", "02-lecon"),
     (s_terminal, "PRATIQUE EN SITUATION", "Un vrai terminal,\n*sans le clavier*", "03-terminal"),
     (s_quickcheck, "COMPRENDRE, PAS BACHOTER", "Chaque réponse\n*est expliquée*", "04-quiz"),
-    (s_practice, "PENTAGUIN PRO", "Toute la pratique\n*débloquée*", "05-pratique"),
+    (s_practice, "TOUT EST OUVERT", "Toute la pratique,\n*sans rien payer*", "05-pratique"),
     (s_rank, "PROGRESSION", "15 rangs\nà *gravir*", "06-rang"),
 ]
 for w, h, suffix in SIZES:
