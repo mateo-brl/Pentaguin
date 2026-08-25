@@ -11,8 +11,13 @@
  *   ssh mateobrl 'node --experimental-sqlite /opt/pentaguin-api/admin.mjs reset-ranks --yes'
  *   ssh mateobrl 'node --experimental-sqlite /opt/pentaguin-api/admin.mjs reset-all --yes'
  *   ssh mateobrl 'node --experimental-sqlite /opt/pentaguin-api/admin.mjs wipe-users --yes'
+ *   ssh mateobrl 'node --experimental-sqlite /opt/pentaguin-api/admin.mjs set-progress Tux /tmp/demo.json --yes'
+ *   ssh mateobrl 'node --experimental-sqlite /opt/pentaguin-api/admin.mjs clear-progress Tux --yes'
  */
+import { readFileSync } from 'node:fs';
 import { DatabaseSync } from 'node:sqlite';
+
+import { mergeSnapshots } from './progress.mjs';
 
 const DB_PATH = process.env.DB_PATH ?? '/var/lib/pentaguin/pentaguin.db';
 const [cmd, ...args] = process.argv.slice(2);
@@ -121,6 +126,68 @@ function user(needle) {
   db.close();
 }
 
+/** Retrouve l'id de compte d'un utilisateur par pseudo ou e-mail. */
+function findUserId(db, needle) {
+  const key = String(needle ?? '').trim();
+  if (!key) return null;
+  const byEmail = db.prepare('SELECT id FROM users WHERE email = ?').get(key.toLowerCase());
+  if (byEmail) return byEmail.id;
+  const byPseudo = db.prepare('SELECT user_id FROM players WHERE pseudo = ? AND user_id IS NOT NULL').get(key);
+  return byPseudo?.user_id ?? null;
+}
+
+/**
+ * Écrit une progression de démonstration dans la sauvegarde cloud d'un compte.
+ * Sert à préparer les captures App Store et le compte de test App Review. La
+ * fusion reste sans régression : ce qui existe déjà et vaut plus est conservé.
+ * Snapshot produit par `node content-tools/demo-snapshot.mjs`.
+ */
+function setProgress(needle, file) {
+  if (!needle || !file) return console.error('usage: admin.mjs set-progress <pseudo|email> <snapshot.json> --yes');
+  if (!hasYes) { console.error('⚠ Écrase la sauvegarde cloud du compte. Ajoute --yes pour confirmer.'); process.exit(1); }
+  const incoming = JSON.parse(readFileSync(file, 'utf8'));
+  const db = open(false);
+  const userId = findUserId(db, needle);
+  if (!userId) { console.error(`Compte introuvable : ${needle}`); db.close(); process.exit(1); }
+  const row = db.prepare('SELECT data FROM progress WHERE user_id = ?').get(userId);
+  const current = row ? JSON.parse(row.data) : null;
+  const merged = current ? mergeSnapshots(current, incoming) : incoming;
+  db.prepare(
+    `INSERT INTO progress (user_id, data, updated_at) VALUES (?, ?, ?)
+     ON CONFLICT(user_id) DO UPDATE SET data = excluded.data, updated_at = excluded.updated_at`,
+  ).run(userId, JSON.stringify(merged), Date.now());
+  // Le classement lit players : on aligne rang et XP du jour pour rester cohérent.
+  const rank = Number.parseInt(merged.kv?.player_rank ?? '', 10);
+  if (Number.isFinite(rank)) db.prepare('UPDATE players SET rank = ? WHERE user_id = ?').run(rank, userId);
+  const player = db.prepare('SELECT device_id FROM players WHERE user_id = ?').get(userId);
+  if (player) {
+    for (const [date, xp] of Object.entries(merged.activity ?? {})) {
+      db.prepare(
+        `INSERT INTO daily_xp (device_id, date, xp) VALUES (?, ?, ?)
+         ON CONFLICT(device_id, date) DO UPDATE SET xp = MAX(daily_xp.xp, excluded.xp)`,
+      ).run(player.device_id, date, Number(xp) || 0);
+    }
+  }
+  const xp = Object.values(merged.activity ?? {}).reduce((a, b) => a + (Number(b) || 0), 0);
+  db.close();
+  console.log(`✔ Progression écrite pour ${needle} : rang ${rankLabel(rank)}, ${xp} XP, ` +
+    `${Object.keys(merged.lessons ?? {}).length} leçons, ${Object.keys(merged.kv ?? {}).length} clés.`);
+  console.log('  Relance l\'app (fermeture complète puis réouverture) pour la récupérer.');
+}
+
+/** Vide la sauvegarde cloud d'un compte (annule une progression de démo). */
+function clearProgress(needle) {
+  if (!needle) return console.error('usage: admin.mjs clear-progress <pseudo|email> --yes');
+  if (!hasYes) { console.error('⚠ Supprime la sauvegarde cloud du compte. Ajoute --yes pour confirmer.'); process.exit(1); }
+  const db = open(false);
+  const userId = findUserId(db, needle);
+  if (!userId) { console.error(`Compte introuvable : ${needle}`); db.close(); process.exit(1); }
+  const n = db.prepare('DELETE FROM progress WHERE user_id = ?').run(userId).changes;
+  db.close();
+  console.log(`✔ Sauvegarde supprimée pour ${needle} : ${n} ligne(s).`);
+  console.log('  La progression locale du téléphone n\'est pas touchée : réinstalle l\'app pour repartir à zéro.');
+}
+
 function confirmReset(what, run) {
   if (!hasYes) { console.error(`⚠ ${what} — action destructrice. Ajoute --yes pour confirmer.`); process.exit(1); }
   const db = open(false);
@@ -133,6 +200,8 @@ const COMMANDS = {
   stats,
   players,
   user: () => user(args[0]),
+  'set-progress': () => setProgress(args[0], args[1]),
+  'clear-progress': () => clearProgress(args[0]),
   'reset-xp': () => confirmReset('Réinitialisation de l\'XP/classement (daily_xp)', (db) => db.prepare('DELETE FROM daily_xp').run().changes),
   'reset-ranks': () => confirmReset('Réinitialisation des rangs (players.rank)', (db) => db.prepare('UPDATE players SET rank = NULL').run().changes),
   'reset-all': () => confirmReset('Réinitialisation XP + rangs', (db) => {
@@ -156,7 +225,8 @@ const COMMANDS = {
 
 const fn = COMMANDS[cmd];
 if (!fn) {
-  console.log('Commandes : stats | players | user <pseudo|email> | reset-xp --yes | reset-ranks --yes | reset-all --yes');
+  console.log('Commandes : stats | players | user <pseudo|email> | set-progress <pseudo> <fichier.json> --yes |');
+  console.log('            clear-progress <pseudo> --yes | reset-xp --yes | reset-ranks --yes | reset-all --yes | wipe-users --yes');
   process.exit(cmd ? 1 : 0);
 }
 fn();
