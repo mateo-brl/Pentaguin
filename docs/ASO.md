@@ -44,7 +44,7 @@ combine les mots entre eux et avec le nom/sous-titre pour les requêtes multi-mo
 
 **Texte promotionnel (134/170)**, modifiable à tout moment, non indexé :
 ```
-Le manchot qui t’apprend la cybersécurité, de zéro à expert. Test de niveau, 15 rangs, quiz et faux terminal. En français, hors-ligne.
+Le manchot qui t’apprend la cybersécurité, de zéro à expert. Test de niveau, 15 rangs, quiz et faux terminal. En français, leçons jouables sans connexion.
 ```
 
 **Description** (les 2 premières lignes sont les plus importantes) :
@@ -53,8 +53,10 @@ Apprends la cybersécurité comme un jeu, du grand débutant à l’expert.
 
 Pentaguin te fait réviser la sécurité informatique sur ton téléphone : un test
 de niveau adaptatif te place parmi 15 rangs, puis l’app t’oriente vers des
-leçons et des exercices adaptés à TON niveau. Le tout en français, hors-ligne,
-sans blabla.
+leçons et des exercices adaptés à TON niveau. Le tout en français, sans blabla.
+Un compte gratuit est demandé au premier lancement : il te sert d’identité de
+classement et sauvegarde ta progression. Ensuite, les leçons, les quiz et les
+examens se jouent sans connexion.
 
 CE QUI REND PENTAGUIN DIFFÉRENT
 • Un vrai parcours, pas un dump de questions : 64 leçons courtes, plus de
@@ -74,8 +76,20 @@ niveau zéro à l’expert. Contenu en français avec la terminologie technique
 anglaise du métier.
 
 RESPECTUEUX
-Offline-first, pas de pub, pas de revente de données. La partie offensive reste
-éducative et défensive, dans un cadre légal.
+Pas de pub, pas de traceurs, pas de revente de données. La partie offensive
+reste éducative et défensive, dans un cadre légal.
+
+PENTAGUIN PRO
+Deux thèmes complets et un aperçu de chaque autre restent gratuits. L’abonnement
+Pentaguin Pro ouvre les 8 thèmes, les 514 questions, les examens blancs et toute
+la pratique : 19,99 $ par an, renouvelé automatiquement sauf résiliation au moins
+24 h avant la fin de la période. Tu gères ou résilies l’abonnement dans les
+réglages de ton compte App Store.
+Conditions : https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Confidentialité : https://pentaguin.mateobrl.fr/privacy
+
+Pentaguin est indépendant de CompTIA. CompTIA et Security+ appartiennent à leurs
+propriétaires respectifs.
 
 Rejoins la banquise.
 ```
@@ -92,9 +106,53 @@ infosec,pentest,network,cryptography,certification,ethical,study,exam,malware,ph
 ```
 **Promotional text (139/170)**
 ```
-The penguin that teaches you cybersecurity, from zero to expert. Placement test, 15 ranks, quizzes and a fake terminal. Bilingual, offline.
+The penguin that teaches you cybersecurity, from zero to expert. Placement test, 15 ranks, quizzes and a fake terminal. Lessons play without a connection.
 ```
-**Description** : même structure traduite (à demander si tu veux la version longue EN).
+**Description**
+```
+Learn cybersecurity like a game, from complete beginner to expert.
+
+Pentaguin helps you revise information security on your phone: an adaptive
+placement test puts you on one of 15 ranks, then the app points you at lessons
+and exercises that match YOUR level. In English and French, no fluff. A free
+account is asked for on first launch: it is your leaderboard identity and it
+backs up your progress. After that, lessons, quizzes and exams play without a
+connection.
+
+WHAT MAKES PENTAGUIN DIFFERENT
+• A real path, not a question dump: 64 short lessons, over 500 questions with
+  detailed explanations, and hands-on practice.
+• Timed mock exams, drawn according to the official domain weights, so every
+  attempt is different.
+• Simulated practice: a fake terminal where you run the investigation, logs
+  where you spot the attack, decision scenarios. You learn by doing.
+• 8 themes, from the basics to the sharp end: hygiene, networks, cryptography,
+  web, systems & Active Directory, malware, defence/SOC, offensive (ethical).
+• Built to keep you coming back: streaks, daily goal, streak shields, ranks to
+  climb, leaderboard.
+
+WHO IS IT FOR?
+Students, curious minds, people preparing a certification, enthusiasts, from
+zero to expert.
+
+RESPECTFUL
+No ads, no trackers, no data resale. The offensive part stays educational and
+defensive, within a legal framework.
+
+PENTAGUIN PRO
+Two full themes and a preview of every other one stay free. The Pentaguin Pro
+subscription opens all 8 themes, the 514 questions, the mock exams and all the
+practice: $19.99 per year, renewed automatically unless cancelled at least 24
+hours before the end of the period. You manage or cancel the subscription in
+your App Store account settings.
+Terms: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Privacy: https://pentaguin.mateobrl.fr/privacy
+
+Pentaguin is independent of CompTIA. CompTIA and Security+ belong to their
+respective owners.
+
+Join the ice floe.
+```
 
 ---
 

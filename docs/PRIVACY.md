@@ -20,12 +20,22 @@ d'identité pour le classement et à retrouver ta progression.
   ne sont jamais stockés en clair (hachage scrypt + sel) ;
 - un **pseudo** et un **avatar** (icône + couleur), que tu choisis ;
 - ton **XP quotidien**, pour le classement et tes statistiques ;
+- un **identifiant d'installation** aléatoire (UUID), qui rattache ta
+  progression de classement à ton compte ;
+- une **sauvegarde de ta progression** (leçons terminées, statistiques de
+  réponses, XP par jour, révisions et préférences transférables), pour te la
+  rendre après une réinstallation ou sur un autre appareil ;
 - si tu actives la double authentification, un **secret TOTP**.
+
+**Diagnostics** : quand l'app rencontre une erreur, elle envoie un rapport
+technique (message d'erreur, pile d'appel, version de l'app, identifiant de mise
+à jour OTA, plateforme). Ce rapport ne contient ni compte, ni e-mail, ni
+progression, et sert uniquement à corriger les pannes.
 
 **Données sur l'appareil uniquement** (jamais envoyées) :
 
-- ta **progression pédagogique** (leçons terminées, réponses, séries, réglages),
-  stockée localement (SQLite) ;
+- le **détail de tes réponses** et l'état de tes sessions en cours, stockés
+  localement (SQLite) ;
 - ton **jeton de session** et ton secret d'authentification, gardés dans le
   trousseau iOS sécurisé.
 

@@ -53,7 +53,7 @@ bilingue FR/EN (langue choisie au premier lancement, modifiable dans Réglages).
    Plusieurs leviers complémentaires : **abonnement Pro** pour l'app complète
    (la rétention est le nerf de la guerre) + des **« parcours certif »** (Security+
    et autres) vendus comme packs à forte valeur perçue et décision d'achat rapide.
-   ⚠️ **L'achat unique actuel plafonne le revenu par client → à repenser.**
+   Modèle acté : **abonnement annuel 19,99 $/an** (`pentaguin.pro.yearly`).
    Toujours dans l'esprit **monétisation douce** (1 proposition max, rien de forcé).
 4. **La RÉTENTION est la priorité produit n°1.** C'est le point faible structurel
    des apps « apprendre pour le plaisir ». Séries, rangs, classement, sessions
@@ -94,7 +94,7 @@ la prépa certif est **un levier, pas la seule voie**.
 - Backend : comptes, classement, télémétrie de crashs, sauvegardes quotidiennes,
   verrouillage anti-brute-force.
 - **Freemium** : 2 thèmes gratuits + avant-goût de chaque thème = **28 leçons/64
-  gratuites** ; **Pentaguin Pro** = **achat unique** (RevenueCat) pour le reste.
+  gratuites** ; **Pentaguin Pro** = **abonnement annuel** 19,99 $/an (RevenueCat) pour le reste.
 - **Entièrement bilingue FR/EN** : choix de la langue **au premier lancement**,
   modifiable à tout moment dans Réglages. L'interface **ET tout le contenu**
   (64 leçons, 450 questions de positionnement, 32 exercices) existent dans les
@@ -107,7 +107,7 @@ la prépa certif est **un levier, pas la seule voie**.
 - **Découvrabilité / go-to-market francophone** : SEO App Store FR, communautés
   cyber francophones (Reddit, Discord, YouTube) — le vrai goulot.
 - **Repenser le modèle de revenus** : abonnement + parcours certif plutôt que le
-  seul achat unique (décision business à prendre).
+  seul abonnement annuel (déjà acté à 19,99 $/an).
 - **Relecture humaine** du contenu généré (tags `lesson-v1`, `placement-v1`,
   `practice-v1`) — rédigé par des agents IA puis relu par d'autres agents, mais
   pas encore par moi.

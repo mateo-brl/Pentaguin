@@ -103,7 +103,7 @@ const fr = {
       'Pentaguin est « offline-first » : l’essentiel reste sur ton appareil. Un compte sert d’identité pour le classement et à retrouver ta progression.',
     collectTitle: 'Ce qu’on traite',
     collectBody:
-      'Sur notre serveur : e-mail ou identifiant Apple/Google, pseudo, avatar et XP quotidien. Sur l’appareil uniquement : ta progression et ton jeton de session (trousseau iOS sécurisé).',
+      'Sur notre serveur : e-mail ou identifiant Apple/Google, pseudo, avatar, XP quotidien, un identifiant d’installation aléatoire et une sauvegarde de ta progression, pour te la rendre après une réinstallation. En cas de panne, un rapport d’erreur technique sans donnée de compte. Sur l’appareil uniquement : le détail de tes réponses et ton jeton de session (trousseau iOS sécurisé).',
     noneTitle: 'Ce qu’on ne fait pas',
     noneBody:
       'Pas de publicité, pas de traceurs tiers, pas de revente de données. Les paiements passent par Apple et RevenueCat : on ne voit jamais tes informations bancaires.',
@@ -555,7 +555,7 @@ const en: Strings = {
       'Pentaguin is offline-first: most of your usage stays on your device. An account is your leaderboard identity and lets you recover your progress.',
     collectTitle: 'What we process',
     collectBody:
-      'On our server: email or Apple/Google identifier, pseudonym, avatar and daily XP. On the device only: your progress and session token (secure iOS keychain).',
+      'On our server: email or Apple/Google identifier, pseudonym, avatar, daily XP, a random install identifier and a backup of your progress, so you get it back after a reinstall. When something crashes, a technical error report with no account data. On the device only: your detailed answers and session token (secure iOS keychain).',
     noneTitle: 'What we don’t do',
     noneBody:
       'No ads, no third-party trackers, no selling of data. Payments go through Apple and RevenueCat: we never see your payment details.',
