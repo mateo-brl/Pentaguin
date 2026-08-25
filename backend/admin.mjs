@@ -13,10 +13,13 @@
  *   ssh mateobrl 'node --experimental-sqlite /opt/pentaguin-api/admin.mjs wipe-users --yes'
  *   ssh mateobrl 'node --experimental-sqlite /opt/pentaguin-api/admin.mjs set-progress Tux /tmp/demo.json --yes'
  *   ssh mateobrl 'node --experimental-sqlite /opt/pentaguin-api/admin.mjs clear-progress Tux --yes'
+ *   ssh mateobrl 'node --experimental-sqlite /opt/pentaguin-api/admin.mjs create-demo review@… <mdp> Tux --yes'
  */
+import { randomUUID } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { DatabaseSync } from 'node:sqlite';
 
+import { hashPassword } from './auth.mjs';
 import { mergeSnapshots } from './progress.mjs';
 
 const DB_PATH = process.env.DB_PATH ?? '/var/lib/pentaguin/pentaguin.db';
@@ -188,6 +191,48 @@ function clearProgress(needle) {
   console.log('  La progression locale du téléphone n\'est pas touchée : réinstalle l\'app pour repartir à zéro.');
 }
 
+/**
+ * Crée le compte de démonstration fourni à App Review. L'inscription normale
+ * exige un code de vérification reçu par e-mail : un reviewer ne peut pas le
+ * recevoir, donc le compte est créé ici déjà vérifié, avec son pseudo, prêt à
+ * se connecter. Le mot de passe n'est JAMAIS écrit dans le repo (public) : il
+ * est passé en argument et ne vit que dans App Store Connect.
+ */
+function createDemo(email, password, pseudo) {
+  if (!email || !password || !pseudo)
+    return console.error('usage: admin.mjs create-demo <email> <mot-de-passe> <pseudo> --yes');
+  if (String(password).length < 8) return console.error('mot de passe : 8 caractères minimum');
+  if (!hasYes) { console.error('⚠ Crée un compte utilisateur réel. Ajoute --yes pour confirmer.'); process.exit(1); }
+  const normalized = String(email).trim().toLowerCase();
+  const db = open(false);
+  const existing = db.prepare('SELECT id FROM users WHERE email = ?').get(normalized);
+  const now = Date.now();
+  const { salt, hash } = hashPassword(String(password));
+  let userId;
+  if (existing) {
+    userId = existing.id;
+    db.prepare(
+      'UPDATE users SET password_hash = ?, password_salt = ?, email_verified = 1, updated_at = ? WHERE id = ?',
+    ).run(hash, salt, now, userId);
+    console.log('Compte existant : mot de passe réinitialisé et e-mail marqué vérifié.');
+  } else {
+    userId = randomUUID();
+    db.prepare(
+      `INSERT INTO users (id, email, password_hash, password_salt, apple_sub, google_sub,
+                          created_at, updated_at, email_verified)
+       VALUES (?, ?, ?, ?, NULL, NULL, ?, ?, 1)`,
+    ).run(userId, normalized, hash, salt, now, now);
+  }
+  const player = db.prepare('SELECT device_id FROM players WHERE user_id = ?').get(userId);
+  const deviceId = player?.device_id ?? randomUUID();
+  if (player) db.prepare('UPDATE players SET pseudo = ?, updated_at = ? WHERE device_id = ?').run(pseudo, now, deviceId);
+  else db.prepare('INSERT INTO players (device_id, pseudo, user_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?)')
+         .run(deviceId, pseudo, userId, now, now);
+  db.close();
+  console.log(`✔ Compte de démo prêt : ${normalized} · pseudo ${pseudo} · e-mail vérifié, sans 2FA.`);
+  console.log('  Charge une progression avec set-progress pour qu\'il ne soit pas vide.');
+}
+
 function confirmReset(what, run) {
   if (!hasYes) { console.error(`⚠ ${what} — action destructrice. Ajoute --yes pour confirmer.`); process.exit(1); }
   const db = open(false);
@@ -202,6 +247,7 @@ const COMMANDS = {
   user: () => user(args[0]),
   'set-progress': () => setProgress(args[0], args[1]),
   'clear-progress': () => clearProgress(args[0]),
+  'create-demo': () => createDemo(args[0], args[1], args[2]),
   'reset-xp': () => confirmReset('Réinitialisation de l\'XP/classement (daily_xp)', (db) => db.prepare('DELETE FROM daily_xp').run().changes),
   'reset-ranks': () => confirmReset('Réinitialisation des rangs (players.rank)', (db) => db.prepare('UPDATE players SET rank = NULL').run().changes),
   'reset-all': () => confirmReset('Réinitialisation XP + rangs', (db) => {
@@ -226,7 +272,8 @@ const COMMANDS = {
 const fn = COMMANDS[cmd];
 if (!fn) {
   console.log('Commandes : stats | players | user <pseudo|email> | set-progress <pseudo> <fichier.json> --yes |');
-  console.log('            clear-progress <pseudo> --yes | reset-xp --yes | reset-ranks --yes | reset-all --yes | wipe-users --yes');
+  console.log('            clear-progress <pseudo> --yes | create-demo <email> <mdp> <pseudo> --yes |');
+  console.log('            reset-xp --yes | reset-ranks --yes | reset-all --yes | wipe-users --yes');
   process.exit(cmd ? 1 : 0);
 }
 fn();
