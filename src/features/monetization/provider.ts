@@ -7,8 +7,12 @@ export type Entitlements = ReadonlySet<EntitlementId>;
  * noopProvider (dev, Expo Go, monétisation coupée) et, au jalon M6,
  * un RevenueCatProvider (react-native-purchases).
  */
-/** Produit affichable sur le paywall (prix localisé par le store). */
-export type ProOffer = { productId: string; priceString: string };
+/**
+ * Produit affichable sur le paywall (prix localisé par le store). `price` est le
+ * montant numérique dans la devise locale, utilisé pour afficher l'équivalent
+ * mensuel d'un abonnement annuel.
+ */
+export type ProOffer = { productId: string; priceString: string; price?: number };
 
 export interface PurchasesProvider {
   /** À appeler une fois au démarrage de l'app. */

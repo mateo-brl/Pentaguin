@@ -61,7 +61,19 @@ export const monetizationConfig: MonetizationConfig = {
 export const purchasesConfig = {
   revenueCatIosKey:
     process.env.EXPO_PUBLIC_REVENUECAT_IOS_KEY ?? 'appl_ZcJDQirsburfcDexXoeYuNNcQcO',
+  /**
+   * Abonnement ANNUEL auto-renouvelable. Le produit doit être rattaché, côté
+   * RevenueCat, à l'entitlement `pro:<packId>` : le reste de l'app ne change pas.
+   */
   iosProductByPack: {
-    'secplus-sy0-701': 'pentaguin.pro.secplus',
+    'secplus-sy0-701': 'pentaguin.pro.yearly',
   } as Record<string, string>,
+  /**
+   * Offre auto-renouvelable : impose les mentions d'affichage Apple (durée, prix,
+   * renouvellement automatique, liens CGU + confidentialité) sur le paywall.
+   * Sans elles, l'app est rejetée en revue (guideline 3.1.2).
+   */
+  isSubscription: true,
+  /** EULA standard Apple, acceptée à défaut de CGU propres (obligatoire). */
+  termsUrl: 'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/',
 };

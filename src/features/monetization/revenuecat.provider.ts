@@ -4,7 +4,7 @@ import type { Entitlements, ProOffer, PurchasesProvider } from './provider';
 // natif n'existe pas en Expo Go, il ne doit jamais être requis là-bas —
 // active-provider.ts garantit que ce provider n'y est pas construit).
 type CustomerInfo = { entitlements: { active: Record<string, unknown> } };
-type StoreProduct = { identifier: string; priceString: string };
+type StoreProduct = { identifier: string; priceString: string; price?: number };
 type PurchasesModule = {
   configure(options: { apiKey: string }): void;
   getCustomerInfo(): Promise<CustomerInfo>;
@@ -13,6 +13,18 @@ type PurchasesModule = {
   restorePurchases(): Promise<CustomerInfo>;
   addCustomerInfoUpdateListener(listener: (info: CustomerInfo) => void): void;
 };
+
+/**
+ * Cherche le produit en tant qu'abonnement, puis sans filtre de catégorie : selon
+ * la version du SDK, la catégorie par défaut varie — on ne veut pas d'un paywall
+ * vide à cause de ça.
+ */
+async function findProduct(purchases: PurchasesModule, productId: string) {
+  const [asSubscription] = await purchases.getProducts([productId], 'SUBSCRIPTION');
+  if (asSubscription) return asSubscription;
+  const [any] = await purchases.getProducts([productId]);
+  return any ?? null;
+}
 
 function toEntitlements(info: CustomerInfo): Entitlements {
   return new Set(Object.keys(info.entitlements.active));
@@ -42,13 +54,15 @@ export function createRevenueCatProvider(apiKey: string): PurchasesProvider {
 
     async getProOffer(productId): Promise<ProOffer | null> {
       if (!purchases) return null;
-      const [product] = await purchases.getProducts([productId], 'NON_SUBSCRIPTION');
-      return product ? { productId: product.identifier, priceString: product.priceString } : null;
+      const product = await findProduct(purchases, productId);
+      return product
+        ? { productId: product.identifier, priceString: product.priceString, price: product.price }
+        : null;
     },
 
     async purchase(productId) {
       if (!purchases) throw new Error('Boutique non initialisée.');
-      const [product] = await purchases.getProducts([productId], 'NON_SUBSCRIPTION');
+      const product = await findProduct(purchases, productId);
       if (!product) throw new Error(`Produit introuvable : ${productId}`);
       const { customerInfo } = await purchases.purchaseStoreProduct(product);
       return toEntitlements(customerInfo);

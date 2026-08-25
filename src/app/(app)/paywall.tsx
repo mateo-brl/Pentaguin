@@ -1,7 +1,15 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  Linking,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/themed-text';
@@ -9,6 +17,7 @@ import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { rankLabel } from '@/components/ui/rank-badge';
+import { backendConfig } from '@/config/backend';
 import { purchasesConfig } from '@/config/monetization';
 import { Radius, Spacing } from '@/theme';
 import { DEFAULT_PACK_ID, getDefaultPack } from '@/content';
@@ -37,8 +46,25 @@ function isUserCancellation(error: unknown): boolean {
 }
 
 /**
- * SEUL écran de vente de l'app (modal). Règles douces : prix affiché d'emblée,
- * fermeture en un geste, pas d'urgence, restore toujours visible (exigence Apple).
+ * Équivalent mensuel d'un prix annuel, dans le format local du store (on
+ * remplace la partie numérique du prix formaté pour garder devise et position).
+ * Renvoie null si le calcul n'est pas fiable : on n'affiche alors rien.
+ */
+function monthlyEquivalent(offer: ProOffer): string | null {
+  const { price, priceString } = offer;
+  if (typeof price !== 'number' || !Number.isFinite(price) || price <= 0) return null;
+  const match = priceString.match(/[\d][\d\s .,]*/);
+  if (!match) return null;
+  const comma = match[0].includes(',');
+  const monthly = (price / 12).toFixed(2).replace('.', comma ? ',' : '.');
+  return priceString.replace(match[0], monthly);
+}
+
+/**
+ * SEUL écran de vente (modal). Abonnement annuel auto-renouvelable : Apple exige
+ * d'afficher la durée, le prix, la mention de renouvellement automatique et des
+ * liens fonctionnels vers les CGU et la confidentialité (guideline 3.1.2).
+ * Règles maison : prix d'emblée, fermeture en un geste, pas d'urgence factice.
  */
 export default function PaywallScreen() {
   const pack = getDefaultPack();
@@ -48,7 +74,6 @@ export default function PaywallScreen() {
   const entitlements = useEntitlements();
   const isPro = entitlements.has(packEntitlement(pack.id));
   const rank = useRank();
-  // Lecture unique à l'ouverture (modal) : de quoi personnaliser le pitch.
   const [completedCount] = useState(() => getCompletedLessonIds(DEFAULT_PACK_ID).size);
   const locked = lockedContentSummary(entitlements);
 
@@ -100,13 +125,18 @@ export default function PaywallScreen() {
     }
   };
 
-  // On ne promet les examens blancs que s'il en existe (sinon vente d'un
-  // contenu absent → rejet App Review + perte de confiance).
+  // Arguments chiffrés à partir du contenu réel : ils restent vrais si le pack grandit.
   const bullets = [
-    t.paywall.bulletDomains,
-    t.paywall.bulletBank,
-    ...(pack.exams.length > 0 ? [t.paywall.bulletExams] : []),
+    t.paywall.bulletDomains.replace('{lessons}', String(pack.lessons.length)),
+    t.paywall.bulletBank.replace('{questions}', String(pack.questions.length)),
+    // On ne promet un examen que s'il en existe (sinon rejet en revue + confiance perdue).
+    ...(pack.exams.length > 0
+      ? [t.paywall.bulletExams.replace('{exams}', String(pack.exams.length))]
+      : []),
+    t.paywall.bulletPractice,
   ];
+
+  const monthly = offer ? monthlyEquivalent(offer) : null;
 
   return (
     <ThemedView style={styles.container}>
@@ -140,8 +170,7 @@ export default function PaywallScreen() {
           </Card>
         ) : (
           <>
-            {/* Pitch personnalisé : ce que tu as accompli (valorisant), puis ce
-                qui t'attend (concret), au lieu d'une liste générique. */}
+            {/* Pitch personnalisé : ce que tu as accompli, puis ce qui t'attend. */}
             {completedCount > 0 && rank != null && (
               <ThemedText type="smallBold" style={styles.pitch}>
                 {t.paywall.statLine
@@ -168,37 +197,60 @@ export default function PaywallScreen() {
               ))}
             </Card>
 
-            {/* Achat unique mis en avant : l'argument de confiance clé. */}
-            <Card background={theme.accentSoft} style={styles.oneTimeCard}>
-              <Ionicons name="infinite" size={20} color={theme.accent} />
-              <View style={styles.oneTimeTextWrap}>
-                <ThemedText type="smallBold" style={{ color: theme.accent }}>
-                  {t.paywall.oneTimeTitle}
-                </ThemedText>
-                <ThemedText type="small" themeColor="textSecondary">
-                  {t.paywall.oneTimeBody}
-                </ThemedText>
-              </View>
-            </Card>
-
+            {/* Prix + durée : obligation d'affichage pour un abonnement. */}
             {offerLoading ? (
               <ActivityIndicator style={styles.loading} color={theme.accent} />
-            ) : (
+            ) : offer ? (
               <>
-                <Button
-                  label={`${t.paywall.buy}${offer ? ` · ${offer.priceString}` : ''}`}
-                  onPress={buy}
-                  disabled={!offer || busy}
-                />
-                {!offer && (
-                  <ThemedText type="small" themeColor="textSecondary" style={styles.note}>
-                    {t.paywall.unavailable}
+                <Card background={theme.accentSoft} style={styles.priceCard}>
+                  <ThemedText type="label" style={{ color: theme.accent }}>
+                    {t.paywall.renewTitle}
                   </ThemedText>
-                )}
+                  <View style={styles.priceRow}>
+                    <ThemedText type="subtitle">{offer.priceString}</ThemedText>
+                    <ThemedText type="small" themeColor="textSecondary">
+                      {t.paywall.perYear}
+                    </ThemedText>
+                  </View>
+                  {monthly && (
+                    <ThemedText type="small" themeColor="textSecondary">
+                      {t.paywall.monthlyHint.replace('{price}', monthly)}
+                    </ThemedText>
+                  )}
+                </Card>
+
+                <Button label={t.paywall.buy} onPress={buy} disabled={busy} />
               </>
+            ) : (
+              <ThemedText type="small" themeColor="textSecondary" style={styles.note}>
+                {t.paywall.unavailable}
+              </ThemedText>
             )}
 
             <Button label={t.paywall.restore} onPress={restore} variant="ghost" disabled={busy} />
+
+            {/* Mention de renouvellement automatique + liens légaux : sans eux,
+                l'app est rejetée en revue (guideline 3.1.2). */}
+            <ThemedText type="small" themeColor="textSecondary" style={styles.legal}>
+              {t.paywall.renewBody}
+            </ThemedText>
+            <View style={styles.legalLinks}>
+              <ThemedText
+                type="small"
+                themeColor="accent"
+                onPress={() => Linking.openURL(purchasesConfig.termsUrl)}>
+                {t.paywall.terms}
+              </ThemedText>
+              <ThemedText type="small" themeColor="textSecondary">
+                ·
+              </ThemedText>
+              <ThemedText
+                type="small"
+                themeColor="accent"
+                onPress={() => Linking.openURL(`${backendConfig.baseUrl}/privacy`)}>
+                {t.paywall.privacyLink}
+              </ThemedText>
+            </View>
           </>
         )}
       </ScrollView>
@@ -254,19 +306,29 @@ const styles = StyleSheet.create({
   bulletText: {
     flex: 1,
   },
-  oneTimeCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: Spacing.sm,
+  priceCard: {
+    gap: Spacing.xs,
     borderColor: 'transparent',
   },
-  oneTimeTextWrap: {
-    flex: 1,
+  priceRow: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    gap: Spacing.sm,
   },
   note: {
     textAlign: 'center',
   },
   loading: {
     paddingVertical: Spacing.sm,
+  },
+  legal: {
+    fontSize: 12,
+    lineHeight: 17,
+    textAlign: 'center',
+  },
+  legalLinks: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: Spacing.sm,
   },
 });

@@ -8,6 +8,7 @@ import practiceRaw from '../src/content/practice/exercises.json';
 import missionsEnRaw from '../src/content/practice/missions.en.json';
 import missionsRaw from '../src/content/practice/missions.json';
 import { missionBankSchema, practiceBankSchema } from '../src/content/practice/schema';
+import questionDomains from '../src/content/questions-domains.json';
 import { contentPackSchema } from '../src/content/schema';
 import { validateExercise, validateMission } from '../src/features/practice/logic';
 
@@ -181,6 +182,35 @@ for (const [label, fr, en] of parityChecks) {
     if (extra.length > 0) console.error(`  ✖ ${label} : ids EN sans équivalent FR — ${extra.join(', ')}`);
   } else {
     console.log(`✔ parité FR/EN (${label})`);
+  }
+}
+
+// — Carte id → domaine de la banque de positionnement réutilisée en banque jouable —
+{
+  const map = questionDomains as Record<string, string>;
+  const domainIds = new Set(
+    (rawPacksByLocale.fr[0] as { domains: { id: string }[] }).domains.map((d) => d.id),
+  );
+  const placementIds = new Set((placementRaw as { id: string }[]).map((q) => q.id));
+  const errors: string[] = [];
+  for (const id of placementIds)
+    if (!map[id]) errors.push(`question de positionnement sans domaine : ${id}`);
+  for (const [id, domain] of Object.entries(map)) {
+    if (!placementIds.has(id)) errors.push(`carte domaine : id inconnu « ${id} »`);
+    if (!domainIds.has(domain)) errors.push(`carte domaine : domaine inconnu « ${domain} » (${id})`);
+  }
+  if (errors.length > 0) {
+    failed = true;
+    for (const error of errors) console.error(`  ✖ ${error}`);
+  } else {
+    const per = new Map<string, number>();
+    for (const d of Object.values(map)) per.set(d, (per.get(d) ?? 0) + 1);
+    console.log(
+      `✔ banque jouable élargie — +${placementIds.size} questions (${[...per]
+        .sort((a, b) => b[1] - a[1])
+        .map(([d, n]) => `${d}:${n}`)
+        .join(' ')})`,
+    );
   }
 }
 
