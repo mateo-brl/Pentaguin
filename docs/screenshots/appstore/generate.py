@@ -1,475 +1,651 @@
 #!/usr/bin/env python3
-"""Captures App Store Pentaguin, calquées sur la vraie UI (1290x2796)."""
+"""Captures App Store Pentaguin.
+
+Tout est tracé UNE fois à la résolution finale (1290x2796) : aucun
+redimensionnement, donc aucun flou. Chaque carte est dimensionnée à partir du
+texte réellement mesuré, jamais sur une hauteur devinée.
+"""
 import math, os
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
-ROOT="/home/user/orca/projects/Pentaguin"; OUT="/tmp/store/out"; os.makedirs(OUT, exist_ok=True)
-S=3                      # points -> pixels
-CW,CH=393,852            # iPhone 16 Pro en points
-C=dict(bg="#0C0E1A", card="#14192C", card2="#1A2038", line="#29344F",
-       txt="#EAF0FB", dim="#8695AE", dim2="#6E7C94",
-       amber="#FBBE4B", amberSoft="#33270D", mint="#2DE0A6", mintSoft="#0B2A20",
-       ember="#EF9330", emberSoft="#2E1E0C", red="#E4655F", redSoft="#33191A", term="#05080F")
-def hx(c,a=255):
-    c=C.get(c,c).lstrip('#'); return (int(c[0:2],16),int(c[2:4],16),int(c[4:6],16),a)
-F={"reg":"HankenGrotesk-Regular","med":"HankenGrotesk-Medium","semi":"HankenGrotesk-SemiBold",
-   "bold":"HankenGrotesk-Bold","mono":"JetBrainsMono-Regular","monob":"JetBrainsMono-Bold"}
-_fc={}
-def font(n,s):
-    k=(n,round(s,1))
-    if k not in _fc: _fc[k]=ImageFont.truetype(f"{ROOT}/assets/fonts/{F[n]}.ttf", max(1,int(round(s*S))))
-    return _fc[k]
-def cut():
-    im=Image.open(f"{ROOT}/assets/images/icon.png").convert("RGBA"); px=im.load()
-    for y in range(im.height):
-        for x in range(im.width):
-            r,g,b,a=px[x,y]
-            if (r-10)**2+(g-15)**2+(b-28)**2 < 34**2: px[x,y]=(r,g,b,0)
-    return im
-PEN=cut()
-def pen(img,cx,cy,w):
-    p=PEN.resize((int(w*S),int(w*S)),Image.LANCZOS)
-    img.alpha_composite(p,(int(cx*S-p.width/2),int(cy*S-p.height/2)))
-def rr(d,b,r,fill=None,outline=None,width=1):
-    d.rounded_rectangle([b[0]*S,b[1]*S,b[2]*S,b[3]*S],radius=r*S,fill=fill,outline=outline,width=max(1,int(width*S)))
-def tx(d,xy,s,n,sz,fill,anchor="la",ls=0):
-    f=font(n,sz)
-    if ls:
-        w=sum(d.textlength(ch,font=f)+ls*S for ch in s)-ls*S
-        x0=xy[0]*S
-        if anchor[0]=="m": x0-=w/2
-        elif anchor[0]=="r": x0-=w
-        x,y=x0,xy[1]*S
-        for ch in s:
-            d.text((x,y),ch,font=f,fill=fill,anchor="l"+anchor[1]); x+=d.textlength(ch,font=f)+ls*S
-        return
-    d.text((xy[0]*S,xy[1]*S),s,font=f,fill=fill,anchor=anchor)
-def tw(s,n,sz): return font(n,sz).getlength(s)/S
-def wrap(s,n,sz,mw):
-    out,cur=[],""
-    for w in s.split():
-        t=(cur+" "+w).strip()
-        if tw(t,n,sz)<=mw: cur=t
+ROOT = "/home/user/orca/projects/Pentaguin"
+OUT = "/tmp/shots/out"
+os.makedirs(OUT, exist_ok=True)
+
+AW, AH = 1290, 2796            # valeurs par défaut, réécrites par SIZES
+DW = 995                       # largeur de l'écran d'app, en pixels finaux
+DX, DY = (AW - DW) // 2, 618
+SC = DW / 393.0                # points logiques -> pixels finaux
+CW, CH = 393.0, 852.0          # iPhone en points
+
+C = dict(bg="#0C0E1A", card="#14192C", card2="#1A2038", line="#29344F",
+         txt="#EAF0FB", dim="#8695AE", dim2="#6E7C94",
+         amber="#FBBE4B", amberSoft="#33270D", amberDark="#C08A22",
+         mint="#2DE0A6", mintSoft="#0E2A22", ember="#EF9330",
+         red="#E4655F", term="#05080F", onAmber="#14100A")
+
+def hx(name, a=255):
+    v = C.get(name, name).lstrip("#")
+    return (int(v[0:2], 16), int(v[2:4], 16), int(v[4:6], 16), a)
+
+def mix(fg, bg, t):
+    """Couleur opaque = `fg` posé à `t` sur `bg`. ImageDraw n'alpha-compose pas :
+    on pré-mélange plutôt que de dessiner en semi-transparent."""
+    f, b = hx(fg), hx(bg)
+    return tuple(round(f[i] * t + b[i] * (1 - t)) for i in range(3)) + (255,)
+
+FONTS = {"reg": "HankenGrotesk-Regular", "med": "HankenGrotesk-Medium",
+         "semi": "HankenGrotesk-SemiBold", "bold": "HankenGrotesk-Bold",
+         "mono": "JetBrainsMono-Regular", "monob": "JetBrainsMono-Bold"}
+_fc = {}
+def font(name, pt):
+    """Police à une taille exprimée en points logiques (convertie en pixels)."""
+    key = (name, round(pt * SC))
+    if key not in _fc:
+        _fc[key] = ImageFont.truetype(f"{ROOT}/assets/fonts/{FONTS[name]}.ttf", max(1, int(round(pt * SC))))
+    return _fc[key]
+
+# --- repère : on dessine en points, la conversion est centralisée -------------
+class Pen:
+    def __init__(self, img, ox, oy):
+        self.img = img
+        self.d = ImageDraw.Draw(img)
+        self.ox, self.oy = ox, oy
+    def X(self, x): return self.ox + x * SC
+    def Y(self, y): return self.oy + y * SC
+    def rr(self, box, r, fill=None, outline=None, w=1):
+        self.d.rounded_rectangle([self.X(box[0]), self.Y(box[1]), self.X(box[2]), self.Y(box[3])],
+                                 radius=r * SC, fill=fill, outline=outline, width=max(1, round(w * SC)))
+    def ell(self, box, fill=None, outline=None, w=1):
+        self.d.ellipse([self.X(box[0]), self.Y(box[1]), self.X(box[2]), self.Y(box[3])],
+                       fill=fill, outline=outline, width=max(1, round(w * SC)))
+    def arc(self, box, a0, a1, fill, w):
+        self.d.arc([self.X(box[0]), self.Y(box[1]), self.X(box[2]), self.Y(box[3])], a0, a1,
+                   fill=fill, width=max(1, round(w * SC)))
+    def line(self, pts, fill, w=1):
+        self.d.line([c for x, y in pts for c in (self.X(x), self.Y(y))], fill=fill,
+                    width=max(1, round(w * SC)))
+    def poly(self, pts, fill):
+        self.d.polygon([c for x, y in pts for c in (self.X(x), self.Y(y))], fill=fill)
+    def text(self, xy, s, f, pt, fill, anchor="la", ls=0):
+        fnt = font(f, pt)
+        x, y = self.X(xy[0]), self.Y(xy[1])
+        if ls:
+            gap = ls * SC
+            w = sum(self.d.textlength(ch, font=fnt) + gap for ch in s) - gap
+            if anchor[0] == "m": x -= w / 2
+            elif anchor[0] == "r": x -= w
+            for ch in s:
+                self.d.text((x, y), ch, font=fnt, fill=fill, anchor="l" + anchor[1])
+                x += self.d.textlength(ch, font=fnt) + gap
+        else:
+            self.d.text((x, y), s, font=fnt, fill=fill, anchor=anchor)
+    def tw(self, s, f, pt):
+        return self.d.textlength(s, font=font(f, pt)) / SC
+
+def wrap(pen, s, f, pt, maxw):
+    out, cur = [], ""
+    for word in s.split():
+        trial = (cur + " " + word).strip()
+        if pen.tw(trial, f, pt) <= maxw:
+            cur = trial
         else:
             if cur: out.append(cur)
-            cur=w
+            cur = word
     if cur: out.append(cur)
     return out
-def para(d,xy,s,n,sz,fill,mw,lh,anchor="la"):
-    x,y=xy
-    for l in wrap(s,n,sz,mw): tx(d,(x,y),l,n,sz,fill,anchor); y+=lh
+
+def para(pen, xy, s, f, pt, fill, maxw, lh, anchor="la"):
+    x, y = xy
+    for line in wrap(pen, s, f, pt, maxw):
+        pen.text((x, y), line, f, pt, fill, anchor)
+        y += lh
     return y
-def star(d,cx,cy,R,fill):
-    p=[]
+
+def para_h(pen, s, f, pt, maxw, lh):
+    return len(wrap(pen, s, f, pt, maxw)) * lh
+
+# --- mascotte : détourage du fond de l'icône --------------------------------
+def _cutout():
+    im = Image.open(f"{ROOT}/assets/images/icon.png").convert("RGBA")
+    px = im.load()
+    for y in range(im.height):
+        for x in range(im.width):
+            r, g, b, a = px[x, y]
+            if (r - 10) ** 2 + (g - 15) ** 2 + (b - 28) ** 2 < 34 ** 2:
+                px[x, y] = (r, g, b, 0)
+    return im
+PENGUIN = _cutout()
+
+def penguin(pen, cx, cy, w):
+    size = max(2, int(round(w * SC)))
+    img = PENGUIN.resize((size, size), Image.LANCZOS)
+    pen.img.alpha_composite(img, (int(pen.X(cx) - size / 2), int(pen.Y(cy) - size / 2)))
+
+# --- pictogrammes vectoriels ------------------------------------------------
+def check(pen, cx, cy, r, col, w=2.2):
+    pen.line([(cx - r * .52, cy + r * .05), (cx - r * .12, cy + r * .5)], col, w)
+    pen.line([(cx - r * .12, cy + r * .5), (cx + r * .6, cy - r * .5)], col, w)
+def star(pen, cx, cy, R, col):
+    pts = []
     for k in range(10):
-        a=-math.pi/2+k*math.pi/5; r=R if k%2==0 else R*.42
-        p.append(((cx+r*math.cos(a))*S,(cy+r*math.sin(a))*S))
-    d.polygon(p,fill=fill)
-def shield(d,cx,cy,r,fill):
-    d.polygon([(cx*S,(cy-r)*S),((cx+r*.8)*S,(cy-r*.5)*S),((cx+r*.8)*S,(cy+r*.2)*S),
-               (cx*S,(cy+r)*S),((cx-r*.8)*S,(cy+r*.2)*S),((cx-r*.8)*S,(cy-r*.5)*S)],fill=fill)
-def flame(d,cx,cy,r,fill):
-    d.polygon([(cx*S,(cy-r)*S),((cx+r*.8)*S,(cy+r*.1)*S),((cx+r*.5)*S,(cy+r*.9)*S),
-               (cx*S,(cy+r)*S),((cx-r*.5)*S,(cy+r*.9)*S),((cx-r*.8)*S,(cy+r*.1)*S)],fill=fill)
-def check(d,cx,cy,r,fill,w=2.2):
-    d.line([(cx-r*.5)*S,cy*S,(cx-r*.1)*S,(cy+r*.5)*S],fill=fill,width=int(w*S))
-    d.line([(cx-r*.1)*S,(cy+r*.5)*S,(cx+r*.6)*S,(cy-r*.5)*S],fill=fill,width=int(w*S))
+        a = -math.pi / 2 + k * math.pi / 5
+        r = R if k % 2 == 0 else R * .42
+        pts.append((cx + r * math.cos(a), cy + r * math.sin(a)))
+    pen.poly(pts, col)
+def shield(pen, cx, cy, r, col):
+    pen.poly([(cx, cy - r), (cx + r * .82, cy - r * .48), (cx + r * .82, cy + r * .18),
+              (cx, cy + r), (cx - r * .82, cy + r * .18), (cx - r * .82, cy - r * .48)], col)
+def flame(pen, cx, cy, r, col):
+    pen.poly([(cx, cy - r), (cx + r * .78, cy + r * .12), (cx + r * .48, cy + r * .88),
+              (cx, cy + r), (cx - r * .48, cy + r * .88), (cx - r * .78, cy + r * .12)], col)
+def chevron(pen, x, y, r, col, w=1.8, back=False):
+    s = -1 if back else 1
+    pen.line([(x - s * r * .5, y - r), (x + s * r * .5, y)], col, w)
+    pen.line([(x + s * r * .5, y), (x - s * r * .5, y + r)], col, w)
 
-def screen():
-    img=Image.new("RGBA",(CW*S,CH*S),hx("bg")); return img,ImageDraw.Draw(img)
-def statusbar(d,t="9:41"):
-    rr(d,(CW/2-46,10,CW/2+46,29),10,fill=(0,0,0,255))
-    tx(d,(22,11),t,"semi",13,hx("txt"))
-    for i,h in enumerate([4,6,8,10]):
-        d.rectangle([(CW-58+i*5)*S,(21-h)*S,(CW-58+i*5+3)*S,21*S],fill=hx("txt"))
-    rr(d,(CW-33,12,CW-15,22),2.5,outline=hx("txt"),width=1)
-    d.rectangle([(CW-31)*S,14*S,(CW-20)*S,20*S],fill=hx("txt"))
-def tabbar(d,active=0):
-    y=CH-64
-    d.line([0,y*S,CW*S,y*S],fill=hx("line",120),width=int(1*S))
-    labs=["Accueil","Apprendre","S'entraîner","Profil"]
-    for i,l in enumerate(labs):
-        cx=CW*(i+.5)/4; col=hx("amber") if i==active else hx("dim2")
-        if i==0:
-            d.polygon([(cx*S,(y+14)*S),((cx-9)*S,(y+22)*S),((cx+9)*S,(y+22)*S)],outline=col,width=int(1.8*S))
-            rr(d,(cx-7,y+21,cx+7,y+30),1.5,outline=col,width=1.8)
-        elif i==1:
-            rr(d,(cx-9,y+14,cx-.5,y+29),1.5,outline=col,width=1.8); rr(d,(cx+.5,y+14,cx+9,y+29),1.5,outline=col,width=1.8)
-        elif i==2:
-            d.ellipse([(cx-9)*S,(y+14)*S,(cx+9)*S,(y+31)*S],outline=col,width=int(1.8*S))
-            d.line([cx*S,(y+22)*S,cx*S,(y+17)*S],fill=col,width=int(1.8*S))
+def icon(pen, kind, cx, cy, col):
+    if kind == "term":
+        pen.rr((cx - 8.5, cy - 7, cx + 8.5, cy + 7), 3, outline=col, w=1.6)
+        pen.line([(cx - 5, cy - 3), (cx - 2, cy)], col, 1.6)
+        pen.line([(cx - 2, cy), (cx - 5, cy + 3)], col, 1.6)
+        pen.line([(cx + .5, cy + 3.2), (cx + 5, cy + 3.2)], col, 1.6)
+    elif kind == "anal":
+        pen.ell((cx - 8, cy - 8, cx + 3, cy + 3), outline=col, w=1.8)
+        pen.line([(cx + 2, cy + 2), (cx + 8, cy + 8)], col, 2)
+    elif kind == "ord":
+        pen.line([(cx - 5, cy - 6), (cx - 5, cy + 7)], col, 1.8)
+        pen.poly([(cx - 5, cy - 8.5), (cx - 8.5, cy - 4), (cx - 1.5, cy - 4)], col)
+        pen.line([(cx + 5, cy - 7), (cx + 5, cy + 6)], col, 1.8)
+        pen.poly([(cx + 5, cy + 8.5), (cx + 1.5, cy + 4), (cx + 8.5, cy + 4)], col)
+    elif kind == "flag":
+        pen.line([(cx - 6, cy - 8), (cx - 6, cy + 8)], col, 1.8)
+        pen.poly([(cx - 5, cy - 8), (cx + 8, cy - 3.5), (cx - 5, cy + 1)], col)
+    else:  # scenario
+        pen.ell((cx - 8, cy - 8.5, cx - 2.5, cy - 3), outline=col, w=1.8)
+        pen.ell((cx + 2.5, cy + 3, cx + 8, cy + 8.5), outline=col, w=1.8)
+        pen.ell((cx + 2.5, cy - 8.5, cx + 8, cy - 3), outline=col, w=1.8)
+        pen.line([(cx - 5.2, cy - 3), (cx - 5.2, cy + 5.8)], col, 1.6)
+        pen.line([(cx - 5.2, cy + 5.8), (cx + 2.5, cy + 5.8)], col, 1.6)
+        pen.line([(cx - 5.2, cy - 5.8), (cx + 2.5, cy - 5.8)], col, 1.6)
+
+DOMAIN = ["#4C74AD", "#4881AC", "#458DAB", "#4A98A9", "#579FA6", "#69A8AE", "#7EB1BC", "#93BCC9"]
+
+# --- chrome iOS -------------------------------------------------------------
+def statusbar(pen, t="9:41"):
+    pen.rr((CW / 2 - 47, 11, CW / 2 + 47, 30), 10, fill=(0, 0, 0, 255))
+    pen.text((24, 12.5), t, "semi", 13.5, hx("txt"))
+    for i, h in enumerate([4, 6.5, 9, 11.5]):
+        pen.rr((CW - 62 + i * 5.6, 22 - h, CW - 62 + i * 5.6 + 3.4, 22), 1, fill=hx("txt"))
+    pen.rr((CW - 34, 12.5, CW - 15, 22.5), 3, outline=mix("txt", "bg", .75), w=1)
+    pen.rr((CW - 32.4, 14.2, CW - 20, 20.8), 1.6, fill=hx("txt"))
+
+def navbar(pen, title, pro=False):
+    pen.ell((16, 44, 44, 72), fill=hx("card"))
+    chevron(pen, 31, 58, 6.5, hx("txt"), 2.2, back=True)
+    pen.text((CW / 2, 50), title, "bold", 16.5, hx("txt"), anchor="ma")
+    if pro:
+        w = pen.tw("PRO", "bold", 10.5) + 3 * 0.8 + 30
+        pen.rr((CW - 16 - w, 47, CW - 16, 69), 11, fill=hx("amberSoft"), outline=mix("amber", "card", .55), w=1)
+        star(pen, CW - 16 - w + 13, 58, 6, hx("amber"))
+        pen.text((CW - 16 - w + 22, 51.5), "PRO", "bold", 10.5, hx("amber"), ls=0.8)
+
+def tabbar(pen, active=0):
+    y = CH - 68
+    pen.line([(0, y), (CW, y)], mix("line", "bg", .5), 1)
+    labels = ["Accueil", "Apprendre", "S'entraîner", "Profil"]
+    for i, lab in enumerate(labels):
+        cx = CW * (i + .5) / 4
+        col = hx("amber") if i == active else hx("dim2")
+        if i == 0:
+            pen.poly([(cx, y + 13), (cx - 10, y + 22), (cx + 10, y + 22)], col)
+            pen.rr((cx - 7.5, y + 21, cx + 7.5, y + 31), 2, outline=col, w=1.9)
+        elif i == 1:
+            pen.rr((cx - 9.5, y + 14, cx - .8, y + 30), 1.6, outline=col, w=1.9)
+            pen.rr((cx + .8, y + 14, cx + 9.5, y + 30), 1.6, outline=col, w=1.9)
+        elif i == 2:
+            pen.ell((cx - 9.5, y + 13, cx + 9.5, y + 32), outline=col, w=1.9)
+            pen.line([(cx, y + 22.5), (cx, y + 17)], col, 1.9)
         else:
-            d.ellipse([(cx-6)*S,(y+13)*S,(cx+6)*S,(y+25)*S],outline=col,width=int(1.8*S))
-            d.arc([(cx-10)*S,(y+24)*S,(cx+10)*S,(y+38)*S],180,360,fill=col,width=int(1.8*S))
-        tx(d,(cx,y+40),l,"semi",10,col,anchor="ma")
-    rr(d,(CW/2-45,CH-10,CW/2+45,CH-7),2,fill=hx("dim2"))
+            pen.ell((cx - 6.5, y + 13, cx + 6.5, y + 26), outline=col, w=1.9)
+            pen.arc((cx - 10.5, y + 24, cx + 10.5, y + 39), 180, 360, col, 1.9)
+        pen.text((cx, y + 40), lab, "semi", 10.5, col, anchor="ma")
+    pen.rr((CW / 2 - 47, CH - 12, CW / 2 + 47, CH - 8.5), 2, fill=hx("dim2"))
 
-# ---------------------------------------------------------------- 1. ACCUEIL
-def s_home():
-    img,d=screen(); statusbar(d)
-    tx(d,(20,54),"PENTAGUIN","bold",11,hx("dim2"),ls=2.4)
-    pen(img,56,116,78)
-    tx(d,(104,92),"Salut, Nova.","bold",23,hx("txt"))
-    tx(d,(104,122),"Prêt pour aujourd'hui ?","med",14,hx("dim"))
+def home_indicator(pen):
+    pen.rr((CW / 2 - 47, CH - 12, CW / 2 + 47, CH - 8.5), 2, fill=hx("dim2"))
+
+# ============================== 1. ACCUEIL ==================================
+def s_home(pen):
+    statusbar(pen)
+    pen.text((22, 55), "PENTAGUIN", "bold", 11.5, hx("dim2"), ls=2.6)
+    penguin(pen, 58, 121, 84)
+    pen.text((106, 95), "Salut, Nova.", "bold", 23.5, hx("txt"))
+    pen.text((106, 127), "Prêt pour aujourd'hui ?", "med", 14, hx("dim"))
 
     # Objectif du jour
-    rr(d,(16,158,CW-16,262),16,fill=hx("card"),outline=hx("line",150),width=1)
-    cx,cy,r=58,210,28
-    d.ellipse([(cx-r)*S,(cy-r)*S,(cx+r)*S,(cy+r)*S],outline=hx("line"),width=int(5*S))
-    d.arc([(cx-r)*S,(cy-r)*S,(cx+r)*S,(cy+r)*S],-90,270,fill=hx("mint"),width=int(5*S))
-    check(d,cx,cy-1,10,hx("mint"),2.6)
-    tx(d,(98,178),"Objectif du jour","semi",13,hx("dim"))
-    tx(d,(98,196),"30","bold",27,hx("mint")); tx(d,(98+tw("30","bold",27)+5,207),"/ 30 XP","semi",14,hx("dim"))
-    rr(d,(98,230,98+tw("Objectif atteint","semi",11)+30,249),9,fill=hx("mintSoft"))
-    check(d,108,239,5,hx("mint"),1.8)
-    tx(d,(117,233),"Objectif atteint","semi",11,hx("mint"))
-    shield(d,CW-46,200,11,hx("amber")); tx(d,(CW-46,215),"×2","bold",11,hx("amber"),anchor="ma")
+    y0, y1 = 164, 268
+    pen.rr((16, y0, CW - 16, y1), 17, fill=hx("card"), outline=mix("line", "card", .62), w=1)
+    cx, cy, r = 60, (y0 + y1) / 2, 30
+    pen.ell((cx - r, cy - r, cx + r, cy + r), outline=hx("line"), w=5.5)
+    pen.arc((cx - r, cy - r, cx + r, cy + r), -90, 270, hx("mint"), 5.5)
+    check(pen, cx, cy, 12, hx("mint"), 3)
+    pen.text((104, y0 + 16), "Objectif du jour", "semi", 13, hx("dim"))
+    pen.text((104, y0 + 34), "30", "bold", 27, hx("mint"))
+    pen.text((104 + pen.tw("30", "bold", 27) + 6, y0 + 45), "/ 30 XP", "semi", 14, hx("dim"))
+    bw = pen.tw("Objectif atteint", "semi", 11) + 32
+    pen.rr((104, y0 + 70, 104 + bw, y0 + 90), 10, fill=hx("mintSoft"))
+    check(pen, 115, y0 + 80, 6, hx("mint"), 2)
+    pen.text((125, y0 + 73.5), "Objectif atteint", "semi", 11, hx("mint"))
+    shield(pen, CW - 46, y0 + 34, 12, hx("amber"))
+    pen.text((CW - 46, y0 + 50), "×2", "bold", 11.5, hx("amber"), anchor="ma")
 
-    # Cette semaine
-    rr(d,(16,274,CW-16,356),16,fill=hx("card"),outline=hx("line",150),width=1)
-    tx(d,(32,290),"CETTE SEMAINE","bold",10,hx("dim2"),ls=1.4)
-    tx(d,(CW-32,290),"6/7 · 240 XP","semi",11,hx("dim"),anchor="ra")
-    days=["L","M","M","J","V","S","D"]
-    for i,dl in enumerate(days):
-        x=32+i*47.6
-        on=i<6
-        rr(d,(x,312,x+36,338),8,fill=hx("amberSoft") if on else hx("card2"),
-           outline=hx("amber") if i==6 else None,width=1.4)
-        if on: check(d,x+18,324,7,hx("amber"),2)
-        else: tx(d,(x+18,318),dl,"bold",12,hx("dim2"),anchor="ma")
+    # Semaine
+    y0, y1 = 282, 368
+    pen.rr((16, y0, CW - 16, y1), 17, fill=hx("card"), outline=mix("line", "card", .62), w=1)
+    pen.text((32, y0 + 16), "CETTE SEMAINE", "bold", 10.5, hx("dim2"), ls=1.5)
+    pen.text((CW - 32, y0 + 16), "6/7 · 240 XP", "semi", 11.5, hx("dim"), anchor="ra")
+    for i, lab in enumerate("LMMJVSD"):
+        x = 32 + i * 47.4
+        on = i < 6
+        pen.rr((x, y0 + 38, x + 36, y0 + 66), 9,
+               fill=hx("amberSoft") if on else hx("card2"),
+               outline=hx("amber") if i == 6 else None, w=1.5)
+        if on: check(pen, x + 18, y0 + 52, 7.5, hx("amber"), 2.2)
+        else: pen.text((x + 18, y0 + 44), lab, "bold", 12, hx("dim2"), anchor="ma")
 
-    # Reprendre
-    rr(d,(16,368,CW-16,474),16,fill=hx("card"),outline=hx("amber",90),width=1.4)
-    d.polygon([(34*S,386*S),(34*S,396*S),(42*S,391*S)],fill=hx("amber"))
-    tx(d,(48,385),"REPRENDRE","bold",10,hx("amber"),ls=1.4)
-    tx(d,(CW-32,385),"ÉTAPE 5/8","bold",10,hx("dim2"),anchor="ra",ls=1.2)
-    y=para(d,(32,408),"Détecter un phishing en 15 secondes","bold",18,hx("txt"),CW-64,23)
-    tx(d,(32,y+6),"FONDAMENTAUX & HYGIÈNE · 5 MIN","mono",10,hx("dim2"))
-    rr(d,(32,458,CW-32,463),3,fill=hx("card2")); rr(d,(32,458,32+(CW-64)*0.62,463),3,fill=hx("amber"))
+    # Reprendre — hauteur calculée sur le titre mesuré
+    title = "Authentification, sessions et cookies"
+    lines = wrap(pen, title, "bold", 18.5, CW - 64)
+    y0 = 382
+    y1 = y0 + 34 + len(lines) * 24 + 44
+    pen.rr((16, y0, CW - 16, y1), 17, fill=hx("card"), outline=mix("amber", "card", .42), w=1.5)
+    pen.poly([(34, y0 + 15), (34, y0 + 25), (42.5, y0 + 20)], hx("amber"))
+    pen.text((48, y0 + 14), "REPRENDRE", "bold", 10.5, hx("amber"), ls=1.5)
+    pen.text((CW - 32, y0 + 14), "ÉTAPE 5/8", "bold", 10.5, hx("dim2"), anchor="ra", ls=1.2)
+    yy = y0 + 34
+    for line in lines:
+        pen.text((32, yy), line, "bold", 18.5, hx("txt")); yy += 24
+    pen.text((32, yy + 4), "FONDAMENTAUX & HYGIÈNE · 6 MIN", "mono", 10, hx("dim2"))
+    pen.rr((32, y1 - 14, CW - 32, y1 - 9), 3, fill=hx("card2"))
+    pen.rr((32, y1 - 14, 32 + (CW - 64) * .62, y1 - 9), 3, fill=hx("amber"))
 
     # Tuiles
-    rr(d,(16,486,196,586),16,fill=hx("card"),outline=hx("line",150),width=1)
-    tx(d,(32,504),"RANG","bold",10,hx("dim2"),ls=1.4)
-    star(d,37,540,12,hx("amber"))
-    tx(d,(56,527),"Or III","bold",22,hx("amber"))
-    tx(d,(32,558),"Top 12 % des joueurs","med",11,hx("dim"))
-    for bx,by,lab,val,col,ic in [(204,486,"XP TOTAL","4 820",hx("txt"),"x"),(204,536,"SÉRIE","12 jours",hx("ember"),"f")]:
-        rr(d,(bx,by,CW-16,by+50),14,fill=hx("card"),outline=hx("line",150),width=1)
-        tx(d,(bx+16,by+11),lab,"bold",10,hx("dim2"),ls=1.4)
-        if ic=="f": flame(d,bx+22,by+32,8,hx("ember")); tx(d,(bx+34,by+24),val,"bold",17,col)
-        else: tx(d,(bx+16,by+24),val,"bold",17,col)
+    y0 = y1 + 14
+    pen.rr((16, y0, 196, y0 + 100), 17, fill=hx("card"), outline=mix("line", "card", .62), w=1)
+    pen.text((32, y0 + 17), "RANG", "bold", 10.5, hx("dim2"), ls=1.5)
+    star(pen, 38, y0 + 53, 13, hx("amber"))
+    pen.text((58, y0 + 39), "Or I", "bold", 23, hx("amber"))
+    pen.text((32, y0 + 74), "Top 9 % des joueurs", "med", 11, hx("dim"))
+    for i, (lab, val, col) in enumerate([("XP TOTAL", "4 930", hx("txt")), ("SÉRIE", "12 jours", hx("ember"))]):
+        by = y0 + i * 52
+        pen.rr((204, by, CW - 16, by + 48), 15, fill=hx("card"), outline=mix("line", "card", .62), w=1)
+        pen.text((220, by + 11), lab, "bold", 10.5, hx("dim2"), ls=1.5)
+        if lab == "SÉRIE":
+            flame(pen, 227, by + 32, 8.5, hx("ember"))
+            pen.text((240, by + 23), val, "bold", 17, col)
+        else:
+            pen.text((220, by + 23), val, "bold", 17, col)
 
     # CTA
-    rr(d,(16,602,CW-16,656),14,fill=hx("amber"))
-    tx(d,(CW/2,617),"Continuer ma leçon","bold",17,hx("bg"),anchor="ma")
-    rr(d,(16,670,CW-16,752),16,fill=hx("card"),outline=hx("line",150),width=1)
-    tx(d,(32,686),"À RÉVISER AUJOURD'HUI","bold",10,hx("dim2"),ls=1.4)
-    tx(d,(32,704),"7 questions arrivent à échéance","semi",13.5,hx("txt"))
-    tx(d,(32,724),"Révision espacée · 3 min","med",11.5,hx("dim"))
-    chevron_fwd(d,CW-34,712,hx("amber"))
-    tabbar(d,0); return img
+    y0 = y0 + 114
+    pen.rr((16, y0 + 4, CW - 16, y0 + 56), 14, fill=hx("amberDark"))
+    pen.rr((16, y0, CW - 16, y0 + 52), 14, fill=hx("amber"))
+    pen.text((CW / 2, y0 + 15), "Continuer ma leçon", "bold", 17, hx("onAmber"), anchor="ma")
 
-# --------------------------------------------------------------- 2. PRATIQUE
-def s_practice():
-    img,d=screen(); statusbar(d)
-    chevron_back(d); tx(d,(CW/2,52),"S'entraîner","bold",16,hx("txt"),anchor="ma")
-    rr(d,(CW-72,46,CW-18,64),9,fill=hx("amberSoft"),outline=hx("amber",120),width=1)
-    star(d,CW-62,55,5.5,hx("amber")); tx(d,(CW-54,49),"PRO","bold",10,hx("amber"),ls=1)
-    tx(d,(20,84),"Missions","bold",19,hx("txt"))
-    tx(d,(20,108),"Des enquêtes complètes, étape par étape.","med",12,hx("dim"))
-    miss=[("Quart de nuit au SOC","Détecter, investiguer, répondre : une nuit de garde.",5,True),
-          ("Anatomie d'une attaque","De la kill chain à la note de rançon.",5,False),
-          ("Pentest sous mandat","Du cadre légal à la faille, dans les règles.",7,False)]
-    y=128
-    for i,(t_,sub,hue,done) in enumerate(miss):
-        base=["#4C74AD","#4881AC","#458DAB","#4A98A9","#579FA6","#69A8AE","#7EB1BC","#93BCC9"][hue]
-        rr(d,(16,y,CW-16,y+74),14,fill=hx("card"),outline=hx("line",150),width=1)
-        rr(d,(30,y+14,60,y+44),9,fill=hx(base,40))
-        if done: check(d,45,y+29,8,hx("mint"),2.2)
-        else:
-            d.line([40*S,(y+18)*S,40*S,(y+42)*S],fill=hx(base),width=int(2*S))
-            d.polygon([(41*S,(y+18)*S),(56*S,(y+23)*S),(41*S,(y+29)*S)],fill=hx(base))
-        tx(d,(70,y+16),t_,"bold",14,hx("txt"))
-        para(d,(70,y+34),sub,"med",11.5,hx("dim"),CW-110,14)
-        chevron_fwd(d,CW-32,y+29)
-        tx(d,(30,y+54),"4 ÉTAPES · TERMINAL, LOGS, DÉCISION","mono",10,hx("dim2"))
-        y+=82
-    tx(d,(20,y+8),"Exercices","bold",19,hx("txt"))
-    tx(d,(20,y+32),"32 exercices, tous débloqués avec Pro.","med",12,hx("dim"))
-    y+=56
-    exos=[("Analyse de logs : traque d'un brute-force SSH","Terminal · Pour ton rang",0,"term"),
-          ("L'événement critique noyé dans le SIEM","Analyse d'artefact",3,"anal"),
-          ("Le cycle de réponse à incident (SANS)","Remise en ordre",5,"ord"),
-          ("Ransomware en cours : décisions","Scénario",6,"scen"),
-          ("Inspecter un certificat avec openssl","Terminal",2,"term")]
-    rr(d,(16,y,CW-16,y+4+len(exos)*62),14,fill=hx("card"),outline=hx("line",150),width=1)
-    for i,(t_,sub,hue,k) in enumerate(exos):
-        ly=y+8+i*62; base=["#4C74AD","#4881AC","#458DAB","#4A98A9","#579FA6","#69A8AE","#7EB1BC","#93BCC9"][hue]
-        if i: d.line([70*S,(ly-4)*S,(CW-16)*S,(ly-4)*S],fill=hx("line",110),width=int(1*S))
-        rr(d,(30,ly+8,60,ly+38),9,fill=hx(base,40))
-        icon(d,k,45,ly+23,hx(base))
-        para(d,(70,ly+8),t_,"semi",13,hx("txt"),CW-110,15)
-        tx(d,(70,ly+38),sub,"med",11,hx("amber") if "rang" in sub else hx("dim"))
-        chevron_fwd(d,CW-32,ly+23)
-    tabbar(d,2); return img
+    # À réviser
+    y0 = y0 + 70
+    pen.rr((16, y0, CW - 16, y0 + 74), 16, fill=hx("card"), outline=mix("line", "card", .62), w=1)
+    pen.text((32, y0 + 15), "À RÉVISER AUJOURD'HUI", "bold", 10.5, hx("dim2"), ls=1.5)
+    pen.text((32, y0 + 33), "7 questions arrivent à échéance", "semi", 13.5, hx("txt"))
+    pen.text((32, y0 + 53), "Révision espacée · 3 min", "med", 11.5, hx("dim"))
+    chevron(pen, CW - 34, y0 + 37, 6, hx("amber"), 2)
+    tabbar(pen, 0)
 
-def chevron_back(d,x=24,y=55):
-    d.line([(x+5)*S,(y-6)*S,x*S,y*S],fill=hx("amber"),width=int(2*S))
-    d.line([x*S,y*S,(x+5)*S,(y+6)*S],fill=hx("amber"),width=int(2*S))
-def chevron_fwd(d,x,y,col=None):
-    c=col or hx("dim2")
-    d.line([(x-3)*S,(y-5)*S,(x+2)*S,y*S],fill=c,width=int(1.8*S))
-    d.line([(x+2)*S,y*S,(x-3)*S,(y+5)*S],fill=c,width=int(1.8*S))
-def icon(d,k,cx,cy,col):
-    if k=="term":
-        rr(d,(cx-8,cy-7,cx+8,cy+7),3,outline=col,width=1.6)
-        d.line([(cx-5)*S,(cy-3)*S,(cx-2)*S,cy*S],fill=col,width=int(1.6*S))
-        d.line([(cx-2)*S,cy*S,(cx-5)*S,(cy+3)*S],fill=col,width=int(1.6*S))
-        d.line([(cx)*S,(cy+3)*S,(cx+5)*S,(cy+3)*S],fill=col,width=int(1.6*S))
-    elif k=="anal":
-        d.ellipse([(cx-8)*S,(cy-8)*S,(cx+3)*S,(cy+3)*S],outline=col,width=int(1.8*S))
-        d.line([(cx+2)*S,(cy+2)*S,(cx+8)*S,(cy+8)*S],fill=col,width=int(2*S))
-    elif k=="ord":
-        d.line([(cx-5)*S,(cy-7)*S,(cx-5)*S,(cy+7)*S],fill=col,width=int(1.8*S))
-        d.polygon([((cx-5)*S,(cy-8)*S),((cx-8)*S,(cy-4)*S),((cx-2)*S,(cy-4)*S)],fill=col)
-        d.line([(cx+5)*S,(cy-7)*S,(cx+5)*S,(cy+7)*S],fill=col,width=int(1.8*S))
-        d.polygon([((cx+5)*S,(cy+8)*S),((cx+2)*S,(cy+4)*S),((cx+8)*S,(cy+4)*S)],fill=col)
-    else:
-        d.ellipse([(cx-8)*S,(cy-8)*S,(cx-3)*S,(cy-3)*S],outline=col,width=int(1.8*S))
-        d.ellipse([(cx+3)*S,(cy+3)*S,(cx+8)*S,(cy+8)*S],outline=col,width=int(1.8*S))
-        d.ellipse([(cx+3)*S,(cy-8)*S,(cx+8)*S,(cy-3)*S],outline=col,width=int(1.8*S))
-        d.line([(cx-5)*S,(cy-3)*S,(cx-5)*S,(cy+5)*S],fill=col,width=int(1.6*S))
-        d.line([(cx-5)*S,(cy+5)*S,(cx+3)*S,(cy+5)*S],fill=col,width=int(1.6*S))
-        d.line([(cx-5)*S,(cy-5)*S,(cx+3)*S,(cy-5)*S],fill=col,width=int(1.6*S))
+# ============================ 2. S'ENTRAÎNER ================================
+def s_practice(pen):
+    statusbar(pen); navbar(pen, "S'entraîner", pro=True)
+    pen.text((20, 88), "Missions", "bold", 19.5, hx("txt"))
+    pen.text((20, 114), "Des enquêtes complètes, étape par étape.", "med", 12.5, hx("dim"))
+    missions = [("Quart de nuit au SOC", "Détecter, investiguer, répondre : une nuit de garde au SOC.", 5, True),
+                ("Anatomie d'une attaque", "De la kill chain à la note de rançon.", 4, True),
+                ("Pentest sous mandat", "Du cadre légal à la faille, dans les règles.", 7, False)]
+    y = 138
+    for title, sub, hue, done in missions:
+        sub_lines = wrap(pen, sub, "med", 11.5, CW - 116)
+        h = 20 + max(34, len(sub_lines) * 14 + 20) + 22
+        pen.rr((16, y, CW - 16, y + h), 15, fill=hx("card"), outline=mix("line", "card", .62), w=1)
+        pen.rr((30, y + 15, 62, y + 47), 9, fill=mix(DOMAIN[hue], "card", .2))
+        if done: check(pen, 46, y + 31, 9, hx("mint"), 2.4)
+        else: icon(pen, "flag", 46, y + 31, mix(DOMAIN[hue], "txt", .35))
+        pen.text((72, y + 16), title, "bold", 14.5, hx("txt"))
+        yy = y + 36
+        for line in sub_lines:
+            pen.text((72, yy), line, "med", 11.5, hx("dim")); yy += 14
+        chevron(pen, CW - 32, y + 31, 6, hx("dim2"))
+        pen.text((30, y + h - 19), "4 ÉTAPES · TERMINAL, LOGS, DÉCISION", "mono", 9.5, hx("dim2"))
+        y += h + 10
 
-# --------------------------------------------------------------- 3. TERMINAL
-def s_terminal():
-    img,d=screen(); statusbar(d); chevron_back(d)
-    tx(d,(CW/2,52),"Terminal","bold",16,hx("txt"),anchor="ma")
-    tx(d,(20,80),"Analyse de logs : traque d'un","bold",18,hx("txt"))
-    tx(d,(20,102),"brute-force SSH","bold",18,hx("txt"))
-    rr(d,(20,130,20+tw("ÉTAPE 2 / 4","bold",10)+22,150),8,fill=hx("card2"))
-    tx(d,(31,133),"ÉTAPE 2 / 4","bold",10,hx("dim"),ls=1)
-    y=para(d,(20,164),"Compte les tentatives par IP source pour désigner l'attaquant : extrais l'adresse IP avec awk, puis agrège.","semi",13.5,hx("txt"),CW-40,18)
-    ty=y+12
-    rr(d,(16,ty,CW-16,ty+296),12,fill=hx("term"))
-    lines=[("analyst@soc:~$ grep \"Failed password\" /var/log/auth.log","amber"),
-           ("Jul 20 08:16:03 srv-app01 sshd[20455]: Failed","mint"),
-           ("password for invalid user admin from 203.0.113.66","mint"),
-           ("Jul 20 08:16:07 srv-app01 sshd[20457]: Failed","mint"),
-           ("password for root from 203.0.113.66 port 51044","mint"),
-           ("Jul 20 08:16:11 srv-app01 sshd[20461]: Failed","mint"),
-           ("password for backup from 203.0.113.66 port 51070","mint"),
-           ("... (312 lignes correspondantes)","dim")]
-    ly=ty+12
-    for s,c in lines:
-        tx(d,(28,ly),s,"mono",9.5,hx({"amber":"amber","mint":"mint","dim":"dim2"}[c])); ly+=15
-    ly+=8
-    tx(d,(28,ly),"analyst@soc:~$","mono",10,hx("amber"))
-    comp=["grep","\"Failed password\"","/var/log/auth.log","|","awk"]
-    cx_,cy_=28,ly+20
-    for tkn in comp:
-        w=tw(tkn,"mono",10)+10
-        if cx_+w>CW-30: cx_=28; cy_+=20
-        rr(d,(cx_,cy_,cx_+w,cy_+17),4,fill=hx("card2"),outline=hx("amber",120),width=1)
-        tx(d,(cx_+5,cy_+3),tkn,"mono",10,hx("txt")); cx_+=w+5
-    rr(d,(cx_+1,cy_+2,cx_+3,cy_+15),1,fill=hx("amber"))
-    py=ty+310
-    tx(d,(20,py),"COMPOSE LA COMMANDE","bold",10,hx("dim2"),ls=1.4)
-    pool=["'{print $(NF-3)}'","sort","|","uniq","-c","cut","-rn","wc","head","-l","awk","tail"]
-    px,pyy=20,py+18
-    for tkn in pool:
-        w=tw(tkn,"mono",11)+18
-        if px+w>CW-20: px=20; pyy+=32
-        rr(d,(px,pyy,px+w,pyy+27),7,fill=hx("card"),outline=hx("line"),width=1)
-        tx(d,(px+9,pyy+6),tkn,"mono",11,hx("txt")); px+=w+8
-    hy=pyy+44
-    rr(d,(16,hy,CW-16,hy+64),12,fill=hx("card"),outline=hx("line"),width=1)
-    tx(d,(32,hy+14),"INDICE","bold",10,hx("amber"),ls=1.4)
-    para(d,(32,hy+32),"awk isole la colonne voulue, sort | uniq -c agrège, sort -rn classe.","med",12,hx("dim"),CW-64,15)
-    rr(d,(16,CH-118,CW-16,CH-66),12,fill=hx("amber"))
-    tx(d,(CW/2,CH-104),"Exécuter","bold",16,hx("bg"),anchor="ma")
-    tx(d,(CW/2,CH-52),"Passer au clavier","semi",12,hx("dim"),anchor="ma")
-    rr(d,(CW/2-45,CH-30,CW/2+45,CH-27),2,fill=hx("dim2")); return img
+    y += 8
+    pen.text((20, y), "Exercices", "bold", 19.5, hx("txt"))
+    pen.text((20, y + 26), "32 exercices, tous débloqués.", "med", 12.5, hx("dim"))
+    y += 52
+    exos = [("Audit des privilèges locaux (Linux)", "Terminal · Pour ton rang", 0, "term", True),
+            ("L'événement critique noyé dans le bruit du SIEM", "Analyse d'artefact", 3, "anal", False),
+            ("Le cycle de réponse à incident (SANS)", "Remise en ordre", 5, "ord", False),
+            ("Ransomware en cours : décisions", "Scénario", 6, "scen", False),
+            ("Inspecter un certificat avec openssl", "Terminal", 2, "term", False)]
+    rows = []
+    for title, sub, hue, kind, reco in exos:
+        tl = wrap(pen, title, "semi", 13, CW - 116)
+        rows.append((tl, sub, hue, kind, reco, 18 + len(tl) * 16 + 20))
+    total = sum(r[5] for r in rows) + 12
+    pen.rr((16, y, CW - 16, y + total), 15, fill=hx("card"), outline=mix("line", "card", .62), w=1)
+    yy = y + 6
+    for i, (tl, sub, hue, kind, reco, h) in enumerate(rows):
+        if i: pen.line([(72, yy), (CW - 16, yy)], mix("line", "card", .45), 1)
+        pen.rr((30, yy + 12, 62, yy + 44), 9, fill=mix(DOMAIN[hue], "card", .2))
+        icon(pen, kind, 46, yy + 28, mix(DOMAIN[hue], "txt", .35))
+        ty = yy + 12
+        for line in tl:
+            pen.text((72, ty), line, "semi", 13, hx("txt")); ty += 16
+        pen.text((72, ty + 2), sub, "med", 11, hx("amber") if reco else hx("dim"))
+        chevron(pen, CW - 32, yy + h / 2, 6, hx("dim2"))
+        yy += h
+    tabbar(pen, 2)
 
-# ---------------------------------------------------------------- 4. MISSION
-def s_mission():
-    img,d=screen(); statusbar(d); chevron_back(d)
-    tx(d,(CW/2,52),"Mission","bold",16,hx("txt"),anchor="ma")
-    rr(d,(16,78,CW-16,168),16,fill=hx("card"),outline=hx("line",150),width=1)
-    tx(d,(32,94),"MISSION 07 · DÉFENSE / SOC","bold",10,hx("amber"),ls=1.4)
-    tx(d,(32,112),"Quart de nuit au SOC","bold",21,hx("txt"))
-    para(d,(32,140),"Détecter, investiguer, répondre : une nuit de garde au SOC.","med",12.5,hx("dim"),CW-64,16)
+# ============================== 3. TERMINAL =================================
+def s_terminal(pen):
+    statusbar(pen); navbar(pen, "Audit des privilèges locaux")
+    pen.text((20, 88), "Étape 2/4", "mono", 13, hx("dim"))
     for i in range(4):
-        x=20+i*(CW-40)/4
-        w=(CW-40)/4-8
-        col=hx("mint") if i<2 else (hx("amber") if i==2 else hx("card2"))
-        rr(d,(x,184,x+w,190),3,fill=col)
-    tx(d,(20,200),"ÉTAPE 3 / 4","bold",11,hx("amber"),ls=1.2)
-    tx(d,(CW-20,200),"12 min","mono",11,hx("dim2"),anchor="ra")
-    rr(d,(16,226,CW-16,330),14,fill=hx("card2"))
-    tx(d,(32,242),"ALERTE SIEM · 03:14","mono",10,hx("red"))
-    y=para(d,(32,262),"312 échecs SSH depuis 203.0.113.66, puis une connexion acceptée sur le compte « backup ».","semi",13.5,hx("txt"),CW-64,18)
-    tx(d,(32,y+8),"Quelle est ta première action ?","bold",14,hx("amber"))
-    ans=[("Isoler SRV-APP01 du réseau et préserver la mémoire vive.",True),
-         ("Redémarrer le serveur pour couper la session.",False),
-         ("Changer le mot de passe de « backup » et attendre.",False)]
-    yy=346
-    for txt_,good in ans:
-        lines_=wrap(txt_,"med",13,CW-96)
-        h=18+len(lines_)*17
-        rr(d,(16,yy,CW-16,yy+h),12,fill=hx("mintSoft") if good else hx("card"),
-           outline=hx("mint") if good else hx("line"),width=1.4 if good else 1)
-        if good: check(d,36,yy+h/2-1,7,hx("mint"),2)
-        else: d.ellipse([28*S,(yy+h/2-8)*S,44*S,(yy+h/2+8)*S],outline=hx("dim2"),width=int(1.4*S))
-        ly=yy+9
-        for l in lines_: tx(d,(56,ly),l,"med",13,hx("txt")); ly+=17
-        yy+=h+10
-    rr(d,(16,yy+8,CW-16,yy+142),12,fill=hx("mintSoft"))
-    tx(d,(32,yy+24),"BONNE RÉPONSE","bold",10,hx("mint"),ls=1.4)
-    rr(d,(CW-88,yy+20,CW-32,yy+38),8,fill=hx("bg",170))
-    tx(d,(CW-60,yy+23),"+40 XP","bold",11,hx("mint"),anchor="ma")
-    yb=para(d,(32,yy+44),"L'isolement réseau stoppe l'attaquant sans détruire les preuves. Un redémarrage effacerait la RAM, et donc les traces du reverse shell.","med",12.5,hx("txt"),CW-64,16)
-    d.line([32*S,(yb+8)*S,(CW-32)*S,(yb+8)*S],fill=hx("mint",70),width=int(1*S))
-    tx(d,(32,yb+16),"NIST SP 800-61 · confinement avant éradication","mono",10,hx("mint"))
-    ny=yy+156
-    rr(d,(16,ny,CW-16,ny+72),12,fill=hx("card"),outline=hx("line",150),width=1)
-    tx(d,(32,ny+14),"ÉTAPE 4 · RAPPORT DE MISSION","bold",10,hx("dim2"),ls=1.4)
-    para(d,(32,ny+32),"Rédige le compte rendu : chronologie, portée, recommandations.","med",12.5,hx("dim"),CW-70,16)
-    rr(d,(16,CH-88,CW-16,CH-40),12,fill=hx("amber"))
-    tx(d,(CW/2,CH-75),"Étape suivante","bold",16,hx("bg"),anchor="ma")
-    rr(d,(CW/2-45,CH-26,CW/2+45,CH-23),2,fill=hx("dim2")); return img
+        cx = CW - 30 - (3 - i) * 17
+        col = hx("mint") if i < 1 else (hx("amber") if i == 1 else hx("line"))
+        pen.ell((cx - 5, 90, cx + 5, 100), fill=col)
 
-# ----------------------------------------------------------------- 5. LEÇON
-def s_lesson():
-    img,d=screen(); statusbar(d); chevron_back(d)
-    tx(d,(CW/2,52),"Leçon","bold",16,hx("txt"),anchor="ma")
-    rr(d,(20,76,CW-20,82),3,fill=hx("card2")); rr(d,(20,76,20+(CW-40)*0.5,82),3,fill=hx("amber"))
-    tx(d,(20,92),"CRYPTOGRAPHIE · 4/8","mono",10,hx("dim2"))
-    pen(img,52,150,64)
-    rr(d,(90,116,CW-20,196),14,fill=hx("card"),outline=hx("line",150),width=1)
-    d.polygon([(90*S,140*S),(82*S,148*S),(90*S,156*S)],fill=hx("card"))
-    para(d,(104,130),"En 2012, LinkedIn s'est fait voler 6,5 millions de mots de passe. Ils étaient « chiffrés »… en SHA-1 sans sel.","med",13,hx("txt"),CW-140,17)
-    rr(d,(16,214,CW-16,246),10,fill=hx("amberSoft"))
-    tx(d,(30,222),"À TON AVIS ?","bold",11,hx("amber"),ls=1.4)
-    y=para(d,(20,262),"Pourquoi le sel rend-il un vol de base de mots de passe beaucoup moins rentable ?","bold",16,hx("txt"),CW-40,21)
-    ans=[("Il rend chaque hash unique : les rainbow tables ne servent plus à rien.",True),
-         ("Il rallonge le mot de passe, donc il devient plus dur à deviner.",False),
-         ("Il chiffre le hash avec une clé secrète stockée à part.",False)]
-    yy=y+16
-    for txt_,good in ans:
-        lines_=wrap(txt_,"med",13,CW-96)
-        h=18+len(lines_)*17
-        rr(d,(16,yy,CW-16,yy+h),12,fill=hx("mintSoft") if good else hx("card"),
-           outline=hx("mint") if good else hx("line"),width=1.4 if good else 1)
-        if good: check(d,36,yy+h/2-1,7,hx("mint"),2)
-        else: d.ellipse([28*S,(yy+h/2-8)*S,44*S,(yy+h/2+8)*S],outline=hx("dim2"),width=int(1.4*S))
-        ly=yy+9
-        for l in lines_: tx(d,(56,ly),l,"med",13,hx("txt")); ly+=17
-        yy+=h+10
-    rr(d,(16,yy+8,CW-16,yy+176),12,fill=hx("card"),outline=hx("mint",120),width=1.4)
-    tx(d,(32,yy+24),"BIEN VU","bold",10,hx("mint"),ls=1.4)
-    rr(d,(CW-88,yy+20,CW-32,yy+38),8,fill=hx("mintSoft"))
-    tx(d,(CW-60,yy+23),"+15 XP","bold",11,hx("mint"),anchor="ma")
-    yb=para(d,(32,yy+44),"Sans sel, un seul calcul casse tous les comptes qui partagent le même mot de passe. Avec un sel unique, l'attaquant doit repartir de zéro pour chaque ligne de la base.","med",12.5,hx("txt"),CW-64,16)
-    d.line([32*S,(yb+10)*S,(CW-32)*S,(yb+10)*S],fill=hx("line"),width=int(1*S))
-    tx(d,(32,yb+18),"À retenir : bcrypt / argon2id salent et ralentissent","med",12,hx("dim"))
-    tx(d,(32,yb+36),"le calcul. SHA-1 seul n'est pas fait pour ça.","med",12,hx("dim"))
-    rr(d,(16,CH-88,CW-16,CH-40),12,fill=hx("amber"))
-    tx(d,(CW/2,CH-75),"Continuer","bold",16,hx("bg"),anchor="ma")
-    rr(d,(CW/2-45,CH-26,CW/2+45,CH-23),2,fill=hx("dim2")); return img
+    y = para(pen, (20, 118),
+             "Tu mènes une revue de durcissement sur un serveur Linux. Objectif : cartographier "
+             "la surface d'élévation de privilèges du compte courant, avec des commandes "
+             "strictement en lecture seule et non destructives.",
+             "med", 13, hx("dim"), CW - 40, 19)
+    y = para(pen, (20, y + 12),
+             "Liste les commandes que ce compte peut exécuter via sudo (une élévation est-elle possible ?).",
+             "semi", 14, hx("txt"), CW - 40, 20)
 
-# ------------------------------------------------------------------ 6. RANGS
-def s_ranks():
-    img,d=screen(); statusbar(d); chevron_back(d)
-    tx(d,(CW/2,52),"Ton rang","bold",16,hx("txt"),anchor="ma")
-    rr(d,(16,78,CW-16,244),18,fill=hx("card"),outline=hx("amber",90),width=1.4)
-    cx,cy=CW/2,142
-    d.ellipse([(cx-42)*S,(cy-42)*S,(cx+42)*S,(cy+42)*S],fill=hx("amberSoft"))
-    d.ellipse([(cx-42)*S,(cy-42)*S,(cx+42)*S,(cy+42)*S],outline=hx("amber"),width=int(2*S))
-    for k in range(3): star(d,cx-22+k*22,cy-4,11,hx("amber"))
-    tx(d,(cx,cy+14),"OR","bold",13,hx("amber"),anchor="ma",ls=2)
-    tx(d,(cx,192),"Or III","bold",26,hx("txt"),anchor="ma")
-    tx(d,(cx,222),"Rang 9 sur 15 · Top 12 %","med",12.5,hx("dim"),anchor="ma")
-    tx(d,(20,262),"PROGRESSION VERS PLATINE I","bold",10,hx("dim2"),ls=1.4)
-    rr(d,(20,282,CW-20,292),5,fill=hx("card2")); rr(d,(20,282,20+(CW-40)*0.68,292),5,fill=hx("amber"))
-    tx(d,(20,300),"4 820 XP","semi",12,hx("txt")); tx(d,(CW-20,300),"7 000 XP","semi",12,hx("dim"),anchor="ra")
-    tx(d,(20,336),"Classement de la semaine","bold",17,hx("txt"))
-    tx(d,(20,360),"Ligue Or · 30 joueurs","med",12,hx("dim"))
-    rows=[(1,"Kernel_Fox","1 240",False),(2,"n0ct4mbule","1 105",False),
-          (3,"Nova","980",True),(4,"packet_lily","870",False),(5,"sudo_marin","755",False),
-          (6,"tcp_flynn","690",False),(7,"mireille_hash","612",False)]
-    y=386
-    rr(d,(16,y,CW-16,y+len(rows)*54+6),14,fill=hx("card"),outline=hx("line",150),width=1)
-    for i,(rk,name,xp,me) in enumerate(rows):
-        ly=y+8+i*54
-        if i: d.line([64*S,(ly-4)*S,(CW-16)*S,(ly-4)*S],fill=hx("line",110),width=int(1*S))
-        if me: rr(d,(22,ly-2,CW-22,ly+46),10,fill=hx("amberSoft"))
-        col=hx("amber") if rk<=3 else hx("dim")
-        tx(d,(42,ly+12),str(rk),"bold",16,col,anchor="ma")
-        d.ellipse([58*S,(ly+6)*S,90*S,(ly+38)*S],fill=hx("card2"))
-        tx(d,(74,ly+14),name[0].upper(),"bold",14,hx("dim"),anchor="ma")
-        tx(d,(100,ly+13),name,"semi" if not me else "bold",14,hx("amber") if me else hx("txt"))
-        tx(d,(CW-34,ly+13),xp+" XP","mono",12,hx("dim"),anchor="ra")
-    tabbar(d,3); return img
+    # Terminal : hauteur = contenu réel
+    out = ["audit@srv01:~$ id",
+           "uid=1004(audit) gid=1004(audit) groups=1004(audit),4(adm)",
+           "",
+           "audit@srv01:~$ sudo -l",
+           "Matching Defaults entries for audit on srv01:",
+           "    env_reset, mail_badpass",
+           "",
+           "User audit may run the following commands on srv01:",
+           "    (root) NOPASSWD: /usr/bin/find"]
+    ty = y + 16
+    th = 16 + len(out) * 16 + 34
+    pen.rr((16, ty, CW - 16, ty + th), 12, fill=hx("term"))
+    ly = ty + 14
+    for i, line in enumerate(out):
+        pen.text((30, ly), line, "mono", 10, hx("amber") if i == 0 else hx("mint"))
+        ly += 16
+    ly += 6
+    pen.text((30, ly), "audit@srv01:~$", "mono", 10.5, hx("amber"))
+    cx = 30 + pen.tw("audit@srv01:~$ ", "mono", 10.5)
+    for tok in ["sudo", "-l"]:
+        w = pen.tw(tok, "mono", 10.5) + 11
+        pen.rr((cx, ly - 3, cx + w, ly + 16), 4, fill=hx("card2"), outline=mix("amber", "term", .5), w=1)
+        pen.text((cx + 5.5, ly), tok, "mono", 10.5, hx("txt"))
+        cx += w + 5
+    pen.rr((cx + 1, ly - 1, cx + 3, ly + 14), 1, fill=hx("amber"))
 
-# ------------------------------------------------------- MONTAGE APP STORE
-AW,AH=1290,2796
-def glow(img,cx,cy,r,col,a):
-    l=Image.new("RGBA",img.size,(0,0,0,0)); ImageDraw.Draw(l).ellipse([cx-r,cy-r,cx+r,cy+r],fill=col+(a,))
-    img.alpha_composite(l.filter(ImageFilter.GaussianBlur(r*0.42)))
-def rich(draw,x,y,parts,f,base,acc):
-    for s,is_acc in parts:
-        draw.text((x,y),s,font=f,fill=acc if is_acc else base); x+=draw.textlength(s,font=f)
-def rich_w(draw,parts,f): return sum(draw.textlength(s,font=f) for s,_ in parts)
+    py = ty + th + 18
+    pen.text((20, py), "COMPOSE LA COMMANDE", "bold", 10.5, hx("dim2"), ls=1.5)
+    pool = ["su", "-i", "visudo", "-v", "cat", "/etc/sudoers"]
+    px, pyy = 20, py + 20
+    for tok in pool:
+        w = pen.tw(tok, "mono", 11.5) + 22
+        if px + w > CW - 20:
+            px = 20; pyy += 36
+        pen.rr((px, pyy, px + w, pyy + 30), 8, fill=hx("card"), outline=hx("line"), w=1)
+        pen.text((px + 11, pyy + 6), tok, "mono", 11.5, hx("txt"))
+        px += w + 9
+    hy = pyy + 48
+    hint = "Un compte peut avoir le droit d'exécuter une commande précise en root. C'est ce droit que l'on cherche."
+    hl = wrap(pen, hint, "med", 12, CW - 64)
+    hh = 34 + len(hl) * 16 + 14
+    pen.rr((16, hy, CW - 16, hy + hh), 12, fill=hx("card"), outline=mix("line", "card", .62), w=1)
+    pen.text((32, hy + 14), "INDICE", "bold", 10.5, hx("amber"), ls=1.5)
+    ty2 = hy + 34
+    for line in hl:
+        pen.text((32, ty2), line, "med", 12, hx("dim")); ty2 += 16
+    by = CH - 118
+    pen.rr((16, by + 4, CW - 16, by + 56), 13, fill=hx("amberDark"))
+    pen.rr((16, by, CW - 16, by + 52), 13, fill=hx("amber"))
+    pen.text((CW / 2, by + 15), "Valider", "bold", 16.5, hx("onAmber"), anchor="ma")
+    pen.text((CW / 2, by + 70), "Taper au clavier", "semi", 13.5, hx("amber"), anchor="ma")
+    home_indicator(pen)
+
+# ================================ 4. LEÇON ==================================
+def s_lesson(pen):
+    statusbar(pen); navbar(pen, "Authentification, sessions")
+    pen.rr((0, 78, CW, 84), 0, fill=hx("card2"))
+    pen.rr((0, 78, CW * .5, 84), 0, fill=hx("amber"))
+    pen.text((20, 96), "6 min", "mono", 12, hx("dim2"))
+
+    hook = ("2010 : l'extension Firefox Firesheep transforme n'importe qui en pirate. Sur un Wi-Fi "
+            "ouvert, un clic suffisait pour voler la session Facebook ou Twitter des voisins de café : "
+            "leurs cookies circulaient en clair.")
+    lines = wrap(pen, hook, "med", 13.5, CW - 152)
+    by0 = 122
+    bh = 24 + len(lines) * 19
+    pen.rr((88, by0, CW - 18, by0 + bh), 15, fill=hx("card"), outline=mix("line", "card", .62), w=1)
+    pen.poly([(88, by0 + bh / 2 - 8), (78, by0 + bh / 2), (88, by0 + bh / 2 + 8)], hx("card"))
+    yy = by0 + 12
+    for line in lines:
+        pen.text((104, yy), line, "med", 13.5, hx("txt")); yy += 19
+    penguin(pen, 48, by0 + bh / 2, 74)
+
+    y = by0 + bh + 24
+    w = pen.tw("À TON AVIS ?", "bold", 11) + 11 * 1.4 + 30
+    pen.rr((16, y, 16 + w, y + 26), 9, fill=hx("amberSoft"))
+    pen.text((31, y + 6), "À TON AVIS ?", "bold", 11, hx("amber"), ls=1.4)
+
+    q = "Pourquoi un cookie de session doit-il porter l'attribut Secure ?"
+    y = para(pen, (20, y + 42), q, "bold", 16.5, hx("txt"), CW - 40, 22) + 12
+
+    answers = [("Pour qu'il ne parte jamais sur une connexion non chiffrée.", True),
+               ("Pour qu'il expire automatiquement au bout d'une heure.", False),
+               ("Pour empêcher JavaScript d'y accéder depuis la page.", False)]
+    for text, good in answers:
+        tl = wrap(pen, text, "med", 13, CW - 100)
+        h = 20 + len(tl) * 18
+        pen.rr((16, y, CW - 16, y + h), 13, fill=hx("mintSoft") if good else hx("card"),
+               outline=hx("mint") if good else hx("line"), w=1.6 if good else 1)
+        if good: check(pen, 38, y + h / 2, 8, hx("mint"), 2.4)
+        else: pen.ell((29, y + h / 2 - 9, 47, y + h / 2 + 9), outline=hx("dim2"), w=1.5)
+        ty = y + 10
+        for line in tl:
+            pen.text((58, ty), line, "med", 13, hx("txt")); ty += 18
+        y += h + 10
+
+    exp = ("Sans Secure, le navigateur renvoie le cookie même en HTTP : c'est exactement la brèche "
+           "que Firesheep exploitait. HttpOnly, lui, bloque l'accès depuis JavaScript.")
+    el = wrap(pen, exp, "med", 12.5, CW - 64)
+    eh = 40 + len(el) * 17 + 14
+    y += 8
+    pen.rr((16, y, CW - 16, y + eh), 13, fill=hx("card"), outline=mix("mint", "card", .5), w=1.5)
+    pen.text((32, y + 16), "BIEN VU", "bold", 10.5, hx("mint"), ls=1.5)
+    pw = pen.tw("+15 XP", "bold", 11) + 22
+    pen.rr((CW - 32 - pw, y + 12, CW - 32, y + 32), 9, fill=hx("mintSoft"))
+    pen.text((CW - 32 - pw / 2, y + 15), "+15 XP", "bold", 11, hx("mint"), anchor="ma")
+    ty = y + 38
+    for line in el:
+        pen.text((32, ty), line, "med", 12.5, hx("txt")); ty += 17
+    by = CH - 104
+    pen.rr((16, by + 4, CW - 16, by + 56), 13, fill=hx("amberDark"))
+    pen.rr((16, by, CW - 16, by + 52), 13, fill=hx("amber"))
+    pen.text((CW / 2, by + 15), "Continuer", "bold", 16.5, hx("onAmber"), anchor="ma")
+    home_indicator(pen)
+
+# ========================= 5. FIN DE LEÇON (QUIZ) ===========================
+def s_quickcheck(pen):
+    statusbar(pen); navbar(pen, "Post-exploitation et C2")
+    pen.rr((0, 78, CW, 84), 0, fill=hx("card2"))
+    pen.rr((0, 78, CW, 84), 0, fill=hx("mint"))
+    pen.text((20, 100), "QUESTION RAPIDE", "bold", 11, hx("dim2"), ls=1.6)
+    y = para(pen, (20, 122), "Qu'est-ce qu'un canal de command & control (C2) ?",
+             "bold", 17, hx("txt"), CW - 40, 23) + 14
+
+    answers = [("A", "Une fonction de hachage utilisée pour stocker les mots de passe", False),
+               ("B", "Le canal par lequel l'attaquant pilote à distance les machines compromises", True),
+               ("C", "Le pare-feu qui contrôle le trafic entrant sur le réseau", False),
+               ("D", "Un protocole de chiffrement des e-mails entre deux serveurs", False)]
+    for letter, text, good in answers:
+        tl = wrap(pen, text, "med", 13, CW - 110)
+        h = 20 + len(tl) * 18
+        pen.rr((16, y, CW - 16, y + h), 13, fill=hx("mintSoft") if good else hx("card"),
+               outline=hx("mint") if good else mix("line", "card", .62), w=1.8 if good else 1)
+        pen.text((40, y + h / 2 - 8), letter, "semi", 13.5,
+                 hx("mint") if good else hx("dim2"), anchor="ma")
+        ty = y + 10
+        for line in tl:
+            pen.text((62, ty), line, "med", 13, hx("txt")); ty += 18
+        y += h + 10
+
+    exp = ("Le C2 est l'infrastructure et le canal par lesquels l'attaquant envoie des ordres aux "
+           "machines compromises et récupère des résultats. Il se déguise souvent en trafic HTTPS ou "
+           "DNS légitime, d'où l'intérêt de surveiller le trafic sortant (egress).")
+    el = wrap(pen, exp, "med", 12.5, CW - 64)
+    eh = 38 + len(el) * 17 + 14
+    y += 8
+    pen.rr((16, y, CW - 16, y + eh), 13, fill=hx("mintSoft"))
+    pen.text((32, y + 16), "BONNE RÉPONSE", "bold", 10.5, hx("mint"), ls=1.5)
+    ty = y + 38
+    for line in el:
+        pen.text((32, ty), line, "med", 12.5, hx("txt")); ty += 17
+    y += eh + 12
+
+    pen.rr((16, y, CW - 16, y + 74), 13, fill=hx("mintSoft"))
+    pen.text((CW / 2, y + 16), "Leçon terminée", "bold", 16, hx("mint"), anchor="ma")
+    pen.text((CW / 2, y + 44), "+20 XP, ça rentre.", "med", 13.5, hx("txt"), anchor="ma")
+
+    by = y + 96
+    pen.rr((16, by + 4, CW - 16, by + 56), 13, fill=hx("amberDark"))
+    pen.rr((16, by, CW - 16, by + 52), 13, fill=hx("amber"))
+    pen.text((CW / 2, by + 15), "Revenir aux leçons", "bold", 16.5, hx("onAmber"), anchor="ma")
+    home_indicator(pen)
+
+# =============================== 6. RANG ====================================
+def s_rank(pen):
+    statusbar(pen); navbar(pen, "Ton rang")
+    y0 = 84
+    pen.rr((16, y0, CW - 16, y0 + 176), 19, fill=hx("card"), outline=mix("amber", "card", .45), w=1.5)
+    cx, cy = CW / 2, y0 + 66
+    pen.ell((cx - 46, cy - 46, cx + 46, cy + 46), fill=hx("amberSoft"))
+    pen.ell((cx - 46, cy - 46, cx + 46, cy + 46), outline=hx("amber"), w=2.2)
+    for k in range(3):
+        star(pen, cx - 23 + k * 23, cy - 6, 12, hx("amber"))
+    pen.text((cx, cy + 12), "OR", "bold", 13, hx("amber"), anchor="ma", ls=2.2)
+    pen.text((cx, y0 + 120), "Or I", "bold", 27, hx("txt"), anchor="ma")
+    pen.text((cx, y0 + 152), "Rang 9 sur 15 · Top 9 %", "med", 12.5, hx("dim"), anchor="ma")
+
+    y = y0 + 200
+    pen.text((20, y), "PROGRESSION VERS PLATINE III", "bold", 10.5, hx("dim2"), ls=1.5)
+    pen.rr((20, y + 22, CW - 20, y + 33), 6, fill=hx("card2"))
+    pen.rr((20, y + 22, 20 + (CW - 40) * .68, y + 33), 6, fill=hx("amber"))
+    pen.text((20, y + 41), "4 930 XP", "semi", 12, hx("txt"))
+    pen.text((CW - 20, y + 41), "7 000 XP", "semi", 12, hx("dim"), anchor="ra")
+
+    y += 82
+    pen.text((20, y), "Classement de la semaine", "bold", 18, hx("txt"))
+    pen.text((20, y + 26), "Ligue Or · 30 joueurs", "med", 12, hx("dim"))
+    y += 52
+    rows = [(1, "Kernel_Fox", "1 240", False), (2, "n0ct4mbule", "1 105", False),
+            (3, "Nova", "980", True), (4, "packet_lily", "870", False),
+            (5, "sudo_marin", "755", False), (6, "tcp_flynn", "690", False)]
+    rh = 54
+    pen.rr((16, y, CW - 16, y + len(rows) * rh + 12), 15, fill=hx("card"),
+           outline=mix("line", "card", .62), w=1)
+    for i, (rk, name, xp, me) in enumerate(rows):
+        ly = y + 6 + i * rh
+        if i: pen.line([(66, ly), (CW - 16, ly)], mix("line", "card", .45), 1)
+        if me: pen.rr((22, ly + 2, CW - 22, ly + rh - 4), 11, fill=hx("amberSoft"))
+        pen.text((44, ly + 16), str(rk), "bold", 16, hx("amber") if rk <= 3 else hx("dim"), anchor="ma")
+        pen.ell((60, ly + 10, 94, ly + 44), fill=hx("card2"))
+        pen.text((77, ly + 18), name[0].upper(), "bold", 14, hx("dim"), anchor="ma")
+        pen.text((104, ly + 17), name, "bold" if me else "semi", 14,
+                 hx("amber") if me else hx("txt"))
+        pen.text((CW - 34, ly + 18), xp + " XP", "mono", 12, hx("dim"), anchor="ra")
+    tabbar(pen, 3)
+
+# ============================== MONTAGE =====================================
+def glow(img, cx, cy, r, rgb, a):
+    layer = Image.new("RGBA", img.size, (0, 0, 0, 0))
+    ImageDraw.Draw(layer).ellipse([cx - r, cy - r, cx + r, cy + r], fill=rgb + (a,))
+    img.alpha_composite(layer.filter(ImageFilter.GaussianBlur(r * 0.45)))
+
 def parse(line):
-    out=[];
-    for i,chunk in enumerate(line.split("*")):
-        if chunk: out.append((chunk,i%2==1))
-    return out
-def compose(scr,eyebrow,head):
-    a=Image.new("RGBA",(AW,AH),hx("bg")); dr=ImageDraw.Draw(a)
-    glow(a,AW//2,340,760,(251,190,75),34); glow(a,AW//2,2500,900,(45,224,166),12)
-    fe=ImageFont.truetype(f"{ROOT}/assets/fonts/{F['bold']}.ttf",30)
-    x=AW//2-(sum(dr.textlength(c,font=fe)+7 for c in eyebrow)-7)/2
-    for c in eyebrow: dr.text((x,168),c,font=fe,fill=hx("amber")); x+=dr.textlength(c,font=fe)+7
-    fh=ImageFont.truetype(f"{ROOT}/assets/fonts/{F['bold']}.ttf",92)
-    yy=232
-    for line in head.split("\n"):
-        p=parse(line); rich(dr,(AW-rich_w(dr,p,fh))/2,yy,p,fh,hx("txt"),hx("amber")); yy+=104
-    # device
-    sw=int(AW*0.784); sh=int(sw*CH/CW)
-    body=scr.resize((sw,sh),Image.LANCZOS)
-    fx,fy=(AW-sw)//2,506
-    sd=Image.new("RGBA",a.size,(0,0,0,0))
-    ImageDraw.Draw(sd).rounded_rectangle([fx-16,fy-10,fx+sw+16,fy+sh+30],radius=76,fill=(0,0,0,150))
-    a.alpha_composite(sd.filter(ImageFilter.GaussianBlur(26)))
-    fr=Image.new("RGBA",(sw+22,sh+22),(0,0,0,0))
-    ImageDraw.Draw(fr).rounded_rectangle([0,0,sw+21,sh+21],radius=76,fill=(30,38,58,255))
-    a.alpha_composite(fr,(fx-11,fy-11))
-    mask=Image.new("L",(sw,sh),0); ImageDraw.Draw(mask).rounded_rectangle([0,0,sw-1,sh-1],radius=66,fill=255)
-    a.paste(body,(fx,fy),mask)
-    return a.convert("RGB")
+    return [(chunk, i % 2 == 1) for i, chunk in enumerate(line.split("*")) if chunk]
 
-SHOTS=[(s_home,"APPRENDS EN JOUANT","Ta cybersécurité,\n*5 minutes* par jour"),
-       (s_practice,"PENTAGUIN PRO","Toute la pratique\n*débloquée*"),
-       (s_terminal,"PRATIQUE EN SITUATION","Un vrai terminal,\n*sans le clavier*"),
-       (s_mission,"PENTAGUIN PRO","Des missions\n*comme au SOC*"),
-       (s_lesson,"LEÇONS INTERACTIVES","Tu *paries*\navant d'apprendre"),
-       (s_ranks,"PROGRESSION","15 rangs\nà *gravir*")]
-for i,(fn,eb,hd) in enumerate(SHOTS,1):
-    scr=fn()
-    scr.convert("RGB").save(f"{OUT}/raw-{i}.png")
-    compose(scr,eb,hd).save(f"{OUT}/{i:02d}-{fn.__name__[2:]}.png",optimize=True)
-    print("ok",i,fn.__name__)
+def build(draw_screen, eyebrow, headline, out_path):
+    img = Image.new("RGBA", (AW, AH), hx("bg"))
+    glow(img, AW // 2, 300, 780, (251, 190, 75), 30)
+    glow(img, AW // 2, 2600, 900, (45, 224, 166), 11)
+    d = ImageDraw.Draw(img)
 
-# 6,5" (1242x2688) dérivé
-import glob as _g
-for f in sorted(_g.glob(f"{OUT}/0*.png")):
-    if "-65" in f: continue
-    im=Image.open(f); w,h=1242,2688
-    sc=Image.new("RGB",(w,h),(12,14,26))
-    r=im.resize((w,int(w*AH/AW)),Image.LANCZOS)
-    sc.paste(r,(0,(h-r.height)//2))
-    sc.save(f.replace(".png","-65.png"),optimize=True)
-print("6.5in ok")
+    fe = ImageFont.truetype(f"{ROOT}/assets/fonts/{FONTS['bold']}.ttf", 31)
+    gap = 7
+    w = sum(d.textlength(c, font=fe) + gap for c in eyebrow) - gap
+    x = (AW - w) / 2
+    for ch in eyebrow:
+        d.text((x, 176), ch, font=fe, fill=hx("amber")); x += d.textlength(ch, font=fe) + gap
+
+    fh = ImageFont.truetype(f"{ROOT}/assets/fonts/{FONTS['bold']}.ttf", 94)
+    yy = 244
+    for line in headline.split("\n"):
+        parts = parse(line)
+        tw = sum(d.textlength(s, font=fh) for s, _ in parts)
+        x = (AW - tw) / 2
+        for s, acc in parts:
+            d.text((x, yy), s, font=fh, fill=hx("amber") if acc else hx("txt"))
+            x += d.textlength(s, font=fh)
+        yy += 106
+
+    # ombre portée du téléphone
+    sh = Image.new("RGBA", img.size, (0, 0, 0, 0))
+    ImageDraw.Draw(sh).rounded_rectangle(
+        [DX - 14, DY - 8, DX + DW + 14, DY + int(CH * SC) + 34], radius=84, fill=(0, 0, 0, 165))
+    img.alpha_composite(sh.filter(ImageFilter.GaussianBlur(30)))
+    # tranche du châssis
+    ImageDraw.Draw(img).rounded_rectangle(
+        [DX - 11, DY - 11, DX + DW + 11, DY + int(CH * SC) + 11], radius=82, fill=(32, 40, 60, 255))
+
+    # écran : tracé une seule fois, à la résolution finale
+    screen = Image.new("RGBA", (DW, int(CH * SC)), hx("bg"))
+    draw_screen(Pen(screen, 0, 0))
+    mask = Image.new("L", screen.size, 0)
+    ImageDraw.Draw(mask).rounded_rectangle([0, 0, screen.width - 1, screen.height - 1],
+                                           radius=int(72 * SC / 2.53), fill=255)
+    img.paste(screen, (DX, DY), mask)
+    img.convert("RGB").save(out_path, optimize=True)
+
+SIZES = [(1290, 2796, ""), (1320, 2868, "-69"), (1242, 2688, "-65")]
+
+SHOTS = [
+    (s_home, "APPRENDS EN JOUANT", "Ta cybersécurité,\n*5 minutes* par jour", "01-accueil"),
+    (s_lesson, "LEÇONS INTERACTIVES", "Tu *paries*\navant d'apprendre", "02-lecon"),
+    (s_terminal, "PRATIQUE EN SITUATION", "Un vrai terminal,\n*sans le clavier*", "03-terminal"),
+    (s_quickcheck, "COMPRENDRE, PAS BACHOTER", "Chaque réponse\n*est expliquée*", "04-quiz"),
+    (s_practice, "PENTAGUIN PRO", "Toute la pratique\n*débloquée*", "05-pratique"),
+    (s_rank, "PROGRESSION", "15 rangs\nà *gravir*", "06-rang"),
+]
+for w, h, suffix in SIZES:
+    AW, AH = w, h
+    DW = round(AW * 0.7713)
+    DX, DY = (AW - DW) // 2, round(AH * 0.2210)
+    SC = DW / 393.0
+    _fc.clear()
+    for fn, eb, hd, name in SHOTS:
+        build(fn, eb, hd, f"{OUT}/{name}{suffix}.png")
+    print("ok", f"{AW}x{AH}", "->", len(SHOTS), "captures")
