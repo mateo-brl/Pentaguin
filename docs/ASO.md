@@ -77,7 +77,7 @@ RESPECTUEUX
 Offline-first, pas de pub, pas de revente de données. La partie offensive reste
 éducative et défensive, dans un cadre légal.
 
-Rejoins la banquise. 🐧
+Rejoins la banquise.
 ```
 
 ---
