@@ -80,13 +80,29 @@
         </li>
         <li>un <strong>pseudo</strong> et un <strong>avatar</strong> que tu choisis ;</li>
         <li>ton <strong>XP quotidien</strong>, pour le classement et tes statistiques ;</li>
+        <li>
+          un <strong>identifiant d'installation</strong> aléatoire (UUID), qui
+          rattache ta progression de classement à ton compte ;
+        </li>
+        <li>
+          une <strong>sauvegarde de ta progression</strong> (leçons terminées,
+          statistiques de réponses, XP par jour, révisions et préférences), pour
+          te la rendre après une réinstallation ou sur un autre appareil ;
+        </li>
         <li>si tu actives la double authentification, un <strong>secret TOTP</strong>.</li>
       </ul>
       <p><strong>Données sur l'appareil uniquement</strong> (jamais envoyées) :</p>
       <ul>
-        <li>ta <strong>progression pédagogique</strong> (leçons, réponses, séries, réglages), stockée localement ;</li>
+        <li>le <strong>détail de tes réponses</strong> et l'état de tes sessions en cours ;</li>
         <li>ton <strong>jeton de session</strong>, gardé dans le trousseau iOS sécurisé.</li>
       </ul>
+      <p>
+        <strong>Diagnostics</strong> : quand l'application rencontre une erreur,
+        elle nous envoie un rapport technique (message d'erreur, pile d'appel,
+        version de l'app, identifiant de mise à jour, plateforme). Ce rapport ne
+        contient ni ton compte, ni ton e-mail, ni ta progression. Il sert
+        uniquement à corriger les pannes.
+      </p>
       <p>
         <strong>Achats</strong> : les achats intégrés sont gérés par
         <strong>Apple</strong> et <strong>RevenueCat</strong>. Pentaguin ne voit

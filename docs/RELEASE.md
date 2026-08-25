@@ -45,19 +45,23 @@ Le job `build` produit le `.ipa` (artifact `pentaguin-ios`). Le job `submit` res
 1. **Créer la fiche app** (réserve le nom « Pentaguin ») : My Apps → + → New App.
    - Plateforme : iOS · Nom : **Pentaguin** · Langue principale : Français.
    - Bundle ID : `fr.mateobrl.pentaguin` · SKU : `pentaguin-secplus`.
-2. **Produit d'achat intégré** (pour la monétisation, M6) : Non-consommable, product ID **`pentaguin.pro.secplus`**. À relier dans RevenueCat à l'entitlement **`pro:secplus-sy0-701`** (doit matcher `packEntitlement()` dans le code).
+2. **Produit d'achat intégré** : abonnement auto-renouvelable **`pentaguin.pro.yearly`**, 19,99 $/an, entitlement RevenueCat `pro:secplus-sy0-701`. Procédure : docs/SUBSCRIPTION-SETUP.md. À relier dans RevenueCat à l'entitlement **`pro:secplus-sy0-701`** (doit matcher `packEntitlement()` dans le code).
 3. **App Privacy** (Confidentialité de l'app) : voir section dédiée ci-dessous.
 4. **Mention non-affiliation** : dans la description App Store, reprendre le disclaimer de l'app (aucune affiliation avec CompTIA). Ne jamais utiliser « CompTIA » ou « Security+ » dans le *nom* de l'app ni les captures, uniquement en usage nominatif dans le texte.
 
 ## App Privacy — déclaration (données collectées)
 
-Pentaguin v1 est offline, sans compte, sans analytics. À déclarer :
+Le backend est en place et le compte est obligatoire : la déclaration
+« aucune donnée collectée » ne vaut plus. Le tableau qui fait foi est celui de
+[docs/APP-STORE.md](APP-STORE.md) ; en résumé, tout est **lié à l'identité** et
+**pour le fonctionnement de l'app**, sauf les diagnostics :
 
-- **Aucune donnée collectée par l'app elle-même** (progression, streak, réponses : stockés uniquement sur l'appareil en SQLite, jamais envoyés).
-- **Achats (via RevenueCat)** : « Purchase History » et un identifiant d'appareil peuvent être traités pour gérer les achats. À marquer **non lié à l'identité de l'utilisateur** et **non utilisé pour le suivi**.
-- Pas de publicité, pas de tracking (pas d'`App Tracking Transparency` requis).
+- e-mail ou identifiant Apple/Google, pseudo, avatar, XP, identifiant
+  d'installation, sauvegarde de progression ;
+- historique d'achat (Apple / RevenueCat) ;
+- rapports d'erreur : **non liés à l'identité**.
 
-> Rappel v1.1 : quand le backend classement/stats arrivera (mateobrl.fr), cette déclaration devra être mise à jour (identifiant de joueur, scores transmis).
+Rien n'est utilisé pour le **suivi**, donc pas d'`App Tracking Transparency`.
 
 ## Checklist beta review TestFlight
 
