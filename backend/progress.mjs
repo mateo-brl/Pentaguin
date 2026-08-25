@@ -15,7 +15,7 @@ export const NUMERIC_MAX_KEYS = [
 ];
 
 export function emptySnapshot() {
-  return { v: SNAPSHOT_VERSION, lessons: {}, qstats: {}, activity: {}, kv: {} };
+  return { v: SNAPSHOT_VERSION, lessons: {}, qstats: {}, activity: {}, kv: {}, reviews: {} };
 }
 
 const asInt = (v) => {
@@ -47,6 +47,17 @@ export function mergeSnapshots(a, b) {
   for (const k of keys(a.activity, b.activity)) {
     out.activity[k] = Math.max(a.activity[k] ?? 0, b.activity[k] ?? 0);
   }
+  // Révisions : série la plus longue, puis échéance la plus lointaine.
+  for (const k of keys(a.reviews, b.reviews)) {
+    const x = a.reviews[k];
+    const y = b.reviews[k];
+    if (!Array.isArray(x)) out.reviews[k] = y;
+    else if (!Array.isArray(y)) out.reviews[k] = x;
+    else if ((y[2] ?? 0) > (x[2] ?? 0)) out.reviews[k] = y;
+    else if ((x[2] ?? 0) > (y[2] ?? 0)) out.reviews[k] = x;
+    else out.reviews[k] = String(y[0]) > String(x[0]) ? y : x;
+  }
+
   for (const k of keys(a.kv, b.kv)) {
     out.kv[k] = NUMERIC_MAX_KEYS.includes(k)
       ? String(Math.max(asInt(a.kv[k]), asInt(b.kv[k])))
@@ -65,5 +76,6 @@ function normalize(s) {
     qstats: o.qstats && typeof o.qstats === 'object' ? o.qstats : {},
     activity: o.activity && typeof o.activity === 'object' ? o.activity : {},
     kv: o.kv && typeof o.kv === 'object' ? o.kv : {},
+    reviews: o.reviews && typeof o.reviews === 'object' ? o.reviews : {},
   };
 }
