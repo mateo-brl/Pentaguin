@@ -462,6 +462,22 @@ const PRIVACY_HTML = (() => {
   }
 })();
 
+// Page d'assistance publique (URL exigée par l'App Store) :
+// https://pentaguin.mateobrl.fr/support
+const SUPPORT_HTML = (() => {
+  try {
+    return readFileSync(new URL('./support.html', import.meta.url), 'utf-8');
+  } catch {
+    return '';
+  }
+})();
+
+function handleSupport(res) {
+  if (!SUPPORT_HTML) return send(res, 404, { error: 'introuvable' });
+  res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'public, max-age=3600' });
+  res.end(SUPPORT_HTML);
+}
+
 function handlePrivacy(res) {
   if (!PRIVACY_HTML) return send(res, 404, { error: 'introuvable' });
   res.writeHead(200, {
@@ -926,6 +942,8 @@ const server = createServer(async (req, res) => {
     if (req.method === 'GET' && url.pathname === '/healthz') return send(res, 200, { ok: true });
     if (req.method === 'GET' && (url.pathname === '/privacy' || url.pathname === '/privacy.html'))
       return handlePrivacy(res);
+    if (req.method === 'GET' && (url.pathname === '/support' || url.pathname === '/support.html'))
+      return handleSupport(res);
     if (req.method === 'GET' && url.pathname === '/v1/leaderboard')
       return handleLeaderboard(res, url);
     if (req.method === 'POST' && url.pathname === '/v1/sync') return await handleSync(req, res);
