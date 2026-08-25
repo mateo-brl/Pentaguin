@@ -1,16 +1,16 @@
-# ASO Pentaguin — métadonnées App Store (prêtes à coller)
+# ASO Pentaguin : métadonnées App Store (prêtes à coller)
 
 Optimisation pour la recherche App Store. **Priorité au FR** (notre avantage :
 le francophone est un désert, l'anglais un océan rouge). Constat vérifié : les
 apps en tête sur l'App Store FR pour « cybersécurité » sont surtout des **apps
 anglaises traduites** (HackerX « Apprendre le piratage éthique », « Cyber
-Security For Beginners », « Cybersecurity Quiz ») — aucune app **française
+Security For Beginners », « Cybersecurity Quiz »). Aucune app **française
 native et gamifiée**. C'est notre créneau.
 
 ## Ce qu'Apple indexe (par ordre de poids)
-1. **Nom de l'app** (30 car.) — le plus fort.
-2. **Sous-titre** (30 car.) — fort.
-3. **Champ mots-clés** (100 car., caché) — moyen.
+1. **Nom de l'app** (30 car.), le plus fort.
+2. **Sous-titre** (30 car.), fort.
+3. **Champ mots-clés** (100 car., caché), moyen.
 4. Nom du développeur, noms des achats intégrés.
 > La **description n'est PAS indexée** par Apple : elle sert à convaincre, pas à
 > se classer. Les 1res lignes (avant « plus ») sont ce qui compte.
@@ -39,10 +39,10 @@ Hacking éthique, quiz & rangs
 sécurité,informatique,pentest,réseau,cryptographie,certification,réviser,malware,phishing,SOC
 ```
 *(couvre « sécurité informatique », « réseau », « cryptographie », « pentest »,
-« certification », « réviser », « malware », « phishing », « SOC » — Apple
+« certification », « réviser », « malware », « phishing », « SOC ». Apple
 combine les mots entre eux et avec le nom/sous-titre pour les requêtes multi-mots.)*
 
-**Texte promotionnel (134/170)** — modifiable à tout moment, non indexé :
+**Texte promotionnel (134/170)**, modifiable à tout moment, non indexé :
 ```
 Le manchot qui t’apprend la cybersécurité, de zéro à expert. Test de niveau, 15 rangs, quiz et faux terminal. En français, hors-ligne.
 ```
@@ -84,8 +84,8 @@ Rejoins la banquise. 🐧
 
 ## 🇬🇧 Locale anglaise (secondaire)
 
-**Name (24/30)** — `Pentaguin: Cybersecurity`
-**Subtitle (29/30)** — `Ethical hacking, quiz & ranks`
+**Name (24/30)** : `Pentaguin: Cybersecurity`
+**Subtitle (29/30)** : `Ethical hacking, quiz & ranks`
 **Keywords (90/100)**
 ```
 infosec,pentest,network,cryptography,certification,ethical,study,exam,malware,phishing,SOC
@@ -94,11 +94,11 @@ infosec,pentest,network,cryptography,certification,ethical,study,exam,malware,ph
 ```
 The penguin that teaches you cybersecurity, from zero to expert. Placement test, 15 ranks, quizzes and a fake terminal. Bilingual, offline.
 ```
-**Description** — même structure traduite (à demander si tu veux la version longue EN).
+**Description** : même structure traduite (à demander si tu veux la version longue EN).
 
 ---
 
-## 📸 Captures d'écran (stratégie)
+## Captures d'écran (stratégie)
 
 6 captures, chacune avec une **accroche courte en surimpression** (le lecteur
 scanne, il ne lit pas). Ordre = de l'accroche émotionnelle vers la preuve.
@@ -108,7 +108,7 @@ scanne, il ne lit pas). Ordre = de l'accroche émotionnelle vers la preuve.
 | 1 | Accueil (manchot + objectif) | **Apprends la cybersécurité en t’amusant** |
 | 2 | Résultat du test (écusson de rang) | **Un test de niveau te place parmi 15 rangs** |
 | 3 | Apprendre (leçons recommandées) | **Des cours adaptés à ton niveau** |
-| 4 | Pratique — faux terminal | **Mets-toi en situation, comme un vrai analyste** |
+| 4 | Pratique, faux terminal | **Mets-toi en situation, comme un vrai analyste** |
 | 5 | Quiz (feedback) | **Des quiz qui expliquent, pas qui piègent** |
 | 6 | Accueil (série + récap semaine) | **Séries, objectifs, boucliers : garde le rythme** |
 
@@ -119,7 +119,7 @@ scanne, il ne lit pas). Ordre = de l'accroche émotionnelle vers la preuve.
   montent (Claude peut produire une maquette d'artefact pour valider le rendu
   avant montage final).
 
-## 💳 Modèle : abonnement annuel
+## Modèle : abonnement annuel
 
 Abonnement auto-renouvelable **19,99 $/an** (produit `pentaguin.pro.yearly`).
 Le paywall affiche durée, prix, équivalent mensuel, mention de renouvellement
@@ -127,7 +127,7 @@ automatique et liens CGU + confidentialité (exigés par la guideline 3.1.2).
 Ne PAS écrire « achat unique » ni « pas d'abonnement » dans les métadonnées.
 Mise en place : voir [docs/SUBSCRIPTION-SETUP.md](SUBSCRIPTION-SETUP.md).
 
-## 🎯 Après la publication
+## Après la publication
 - Surveiller le classement sur « cybersécurité », « hacking éthique », « réviser
   cybersécurité » (App Store Connect → Analytics, et une recherche manuelle).
 - Itérer le **sous-titre** et le **champ mots-clés** toutes les ~2-3 semaines

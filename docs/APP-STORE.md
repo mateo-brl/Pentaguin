@@ -1,4 +1,4 @@
-# Checklist de soumission App Store — Pentaguin
+# Checklist de soumission App Store (Pentaguin)
 
 Aide-mémoire pour la première soumission publique (après TestFlight). Ce qui est
 déjà fait dans le repo est coché ; le reste sont des actions dans App Store
@@ -27,7 +27,7 @@ Déclarer, toutes « liées à l'identité » et « pour le fonctionnement de l'
 | Historique d'achat | Purchases → Purchase History | Via Apple / RevenueCat |
 
 À NE PAS déclarer : localisation, contacts, photos, santé, diagnostics,
-publicité — l'app n'y touche pas.
+publicité : l'app n'y touche pas.
 
 ## Chiffrement
 
@@ -36,9 +36,9 @@ publicité — l'app n'y touche pas.
 
 ## Fiche produit
 
-- [ ] **Captures d'écran** 6.7" (iPhone 15/16 Pro Max) et 6.5" — à générer depuis
+- [ ] **Captures d'écran** 6.7" (iPhone 15/16 Pro Max) et 6.5", à générer depuis
       le simulateur (Learn, un quiz, un examen, le classement, le profil).
-- [ ] Description, mots-clés, sous-titre — **prêts à coller** dans
+- [ ] Description, mots-clés, sous-titre : **prêts à coller** dans
       [docs/ASO.md](ASO.md) (nom, sous-titre, mots-clés et description FR + EN,
       tous calibrés aux limites de caractères). Ne pas écrire « achat unique ».
 - [ ] Catégorie : Éducation. Classification par âge : 4+.
@@ -46,7 +46,7 @@ publicité — l'app n'y touche pas.
 - [ ] Mentions marques : Pentaguin est indépendant de CompTIA (déjà dit dans
       l'app, à répéter dans la description).
 
-## Produit / achats — ABONNEMENT ANNUEL
+## Produit / achats : abonnement annuel
 
 Modèle retenu : abonnement auto-renouvelable **19,99 $/an**, produit
 `pentaguin.pro.yearly`. Procédure détaillée :
