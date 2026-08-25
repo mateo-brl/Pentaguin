@@ -63,4 +63,19 @@ export const migrations: string[] = [
     value TEXT NOT NULL
   );
   `,
+
+  // v3 — répétition espacée : échéance de révision par question.
+  `
+  CREATE TABLE review (
+    pack_id       TEXT NOT NULL,
+    question_id   TEXT NOT NULL,
+    due_date      TEXT NOT NULL,
+    interval_days INTEGER NOT NULL DEFAULT 1,
+    streak        INTEGER NOT NULL DEFAULT 0,
+    updated_at    INTEGER NOT NULL,
+    PRIMARY KEY (pack_id, question_id)
+  );
+
+  CREATE INDEX idx_review_due ON review(pack_id, due_date);
+  `,
 ];

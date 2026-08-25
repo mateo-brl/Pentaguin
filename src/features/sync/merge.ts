@@ -18,6 +18,8 @@ export type Snapshot = {
   activity: Record<string, number>;
   /** Clés de progression whitelistées (rang, séries, objectif, flags…). */
   kv: Record<string, string>;
+  /** Révisions : "packId::questionId" -> [dueDate, intervalDays, streak]. */
+  reviews?: Record<string, [string, number, number]>;
 };
 
 export const SNAPSHOT_VERSION = 1;
@@ -32,7 +34,7 @@ export const NUMERIC_MAX_KEYS = [
 ];
 
 export function emptySnapshot(): Snapshot {
-  return { v: SNAPSHOT_VERSION, lessons: {}, qstats: {}, activity: {}, kv: {} };
+  return { v: SNAPSHOT_VERSION, lessons: {}, qstats: {}, activity: {}, kv: {}, reviews: {} };
 }
 
 const asInt = (v?: string): number => {
@@ -67,6 +69,23 @@ export function mergeSnapshots(a: Snapshot, b: Snapshot): Snapshot {
   for (const k of keys(a.activity, b.activity)) {
     out.activity[k] = Math.max(a.activity[k] ?? 0, b.activity[k] ?? 0);
   }
+
+  // Révisions : la progression la plus avancée gagne (série la plus longue),
+  // et à série égale l'échéance la plus lointaine (on ne re-demande pas ce qui
+  // vient d'être révisé sur un autre appareil).
+  const ra = a.reviews ?? {};
+  const rb = b.reviews ?? {};
+  const reviews: Record<string, [string, number, number]> = {};
+  for (const k of keys(ra, rb)) {
+    const x = ra[k];
+    const y = rb[k];
+    if (!x) reviews[k] = y;
+    else if (!y) reviews[k] = x;
+    else if (y[2] > x[2]) reviews[k] = y;
+    else if (x[2] > y[2]) reviews[k] = x;
+    else reviews[k] = y[0] > x[0] ? y : x;
+  }
+  out.reviews = reviews;
 
   for (const k of keys(a.kv, b.kv)) {
     out.kv[k] = NUMERIC_MAX_KEYS.includes(k)
