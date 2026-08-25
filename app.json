@@ -44,7 +44,12 @@
       ],
       "expo-sqlite",
       "expo-asset",
-      "expo-secure-store",
+      [
+        "expo-secure-store",
+        {
+          "faceIDPermission": "Pentaguin protège ton jeton de connexion dans le trousseau de l'appareil."
+        }
+      ],
       "expo-web-browser"
     ],
     "experiments": {
