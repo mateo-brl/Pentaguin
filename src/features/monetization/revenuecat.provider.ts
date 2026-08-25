@@ -33,6 +33,10 @@ function toEntitlements(info: CustomerInfo): Entitlements {
 export function createRevenueCatProvider(apiKey: string): PurchasesProvider {
   let purchases: PurchasesModule | null = null;
   const listeners = new Set<(entitlements: Entitlements) => void>();
+  const publish = (entitlements: Entitlements): Entitlements => {
+    listeners.forEach((listener) => listener(entitlements));
+    return entitlements;
+  };
 
   return {
     async init() {
@@ -65,12 +69,15 @@ export function createRevenueCatProvider(apiKey: string): PurchasesProvider {
       const product = await findProduct(purchases, productId);
       if (!product) throw new Error(`Produit introuvable : ${productId}`);
       const { customerInfo } = await purchases.purchaseStoreProduct(product);
-      return toEntitlements(customerInfo);
+      // Le listener natif n'est pas garanti immédiat : on diffuse nous-mêmes,
+      // sinon un onglet déjà monté garde son Set vide et le contenu payé reste
+      // verrouillé.
+      return publish(toEntitlements(customerInfo));
     },
 
     async restore() {
       if (!purchases) return new Set();
-      return toEntitlements(await purchases.restorePurchases());
+      return publish(toEntitlements(await purchases.restorePurchases()));
     },
 
     onChange(listener) {

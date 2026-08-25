@@ -53,7 +53,11 @@ export default function ProfileScreen() {
         ? t.account.googleAccount
         : t.account.emailAccount);
 
+  // Entrée permanente vers l'abonnement : sans elle, un abonné n'a plus aucun
+  // chemin vers « Restaurer mes achats » ni vers la gestion de l'abonnement,
+  // que la guideline 3.1.1 demande de garder atteignables.
   const links = [
+    { key: 'pro', icon: 'star' as const, title: t.paywall.title, href: '/paywall' as const },
     { key: 'ranks', icon: 'trending-up' as const, title: t.ranksScreen.title, href: '/ranks' as const },
     { key: 'leaderboard', icon: 'podium' as const, title: t.profile.leaderboard, href: '/leaderboard' as const },
     { key: 'account', icon: 'person' as const, title: t.profile.account, href: '/account' as const },
