@@ -49,7 +49,7 @@ Le manchot qui t’apprend la cybersécurité, de zéro à expert. Test de nivea
 
 **Description** (les 2 premières lignes sont les plus importantes) :
 ```
-Apprends la cybersécurité comme un jeu — du grand débutant à l’expert.
+Apprends la cybersécurité comme un jeu, du grand débutant à l’expert.
 
 Pentaguin te fait réviser la sécurité informatique sur ton téléphone : un test
 de niveau adaptatif te place parmi 15 rangs, puis l’app t’oriente vers des
@@ -69,7 +69,7 @@ CE QUI REND PENTAGUIN DIFFÉRENT
   série, rangs à gravir, classement.
 
 POUR QUI ?
-Étudiants, curieux, personnes qui préparent une certification, passionnés — du
+Étudiants, curieux, personnes qui préparent une certification, passionnés, du
 niveau zéro à l’expert. Contenu en français avec la terminologie technique
 anglaise du métier.
 

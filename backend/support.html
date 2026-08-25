@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="all" />
+    <title>Assistance — Pentaguin</title>
+    <style>
+      :root {
+        --bg: #f6f8fb; --card: #ffffff; --text: #0b1626;
+        --muted: #5b6b80; --border: #e3e9f2; --accent: #8a6414;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0a0f1c; --card: #121a2e; --text: #eaf0fb;
+          --muted: #8695ae; --border: #29344f; --accent: #fbbe4b;
+        }
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0; padding: 32px 20px 64px; background: var(--bg); color: var(--text);
+        font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      }
+      main { max-width: 720px; margin: 0 auto; }
+      h1 { font-size: 30px; line-height: 1.2; margin: 0 0 8px; letter-spacing: -0.5px; }
+      .lead { color: var(--muted); margin: 0 0 32px; }
+      section {
+        background: var(--card); border: 1px solid var(--border);
+        border-radius: 16px; padding: 20px 24px; margin-bottom: 16px;
+      }
+      h2 { font-size: 18px; margin: 0 0 10px; }
+      p { margin: 0 0 10px; }
+      p:last-child { margin-bottom: 0; }
+      a { color: var(--accent); }
+      ul { margin: 0; padding-left: 20px; }
+      li { margin-bottom: 6px; }
+      footer { color: var(--muted); font-size: 14px; text-align: center; margin-top: 32px; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Assistance Pentaguin</h1>
+      <p class="lead">Une question, un bug, une erreur dans une leçon ? Écris-nous, on répond.</p>
+
+      <section>
+        <h2>Nous contacter</h2>
+        <p>
+          E-mail : <a href="mailto:pentaguin@mateobrl.fr">pentaguin@mateobrl.fr</a><br />
+          Réponse sous quelques jours ouvrés.
+        </p>
+        <p>
+          Pour un problème technique, précise ton modèle d'iPhone, ta version d'iOS et la
+          version de l'app (Réglages → À propos → Version).
+        </p>
+      </section>
+
+      <section>
+        <h2>Questions fréquentes</h2>
+        <p><strong>J'ai réinstallé l'app, j'ai tout perdu ?</strong><br />
+          Non. Reconnecte-toi avec le même compte : ta progression, ton rang et tes séries
+          sont sauvegardés et restaurés automatiquement.</p>
+        <p><strong>Comment gérer ou résilier mon abonnement ?</strong><br />
+          Depuis l'app Réglages d'iOS : ton nom → Abonnements → Pentaguin. La résiliation
+          prend effet à la fin de la période en cours.</p>
+        <p><strong>J'ai payé mais le contenu reste verrouillé.</strong><br />
+          Ouvre l'offre dans l'app et touche « Restaurer mes achats ». Si le problème
+          persiste, écris-nous.</p>
+        <p><strong>J'ai repéré une erreur dans une question.</strong><br />
+          Envoie-nous l'énoncé, on corrige et on met à jour l'app.</p>
+        <p><strong>Comment supprimer mon compte ?</strong><br />
+          Dans l'app : Profil → Compte → Supprimer mon compte. La suppression est définitive.</p>
+      </section>
+
+      <section>
+        <h2>Confidentialité</h2>
+        <p>
+          Pentaguin est « offline-first » : l'essentiel reste sur ton appareil, pas de
+          publicité, pas de revente de données.
+          <a href="/privacy">Lire la politique de confidentialité</a>.
+        </p>
+      </section>
+
+      <footer>Pentaguin est une application indépendante. CompTIA® et Security+® appartiennent à leurs propriétaires respectifs.</footer>
+    </main>
+  </body>
+</html>
