@@ -97,6 +97,13 @@ const DOMAIN_TITLES_EN: Record<string, string> = {
   'd-offensive': 'Offensive security & pentesting',
 };
 
+/** Titres d'examens traduits (mêmes ids : un examen entamé survit au changement de langue). */
+const EXAM_TITLES_EN: Record<string, string> = {
+  'e-blanc-1': 'Mock exam #1',
+  'e-blanc-2': 'Mock exam #2',
+  'e-express': 'Quick exam',
+};
+
 export const packFr = { ...pack, lessons: lessonsFr, questions: questionsFr, exams };
 
 export const packEn = {
@@ -105,7 +112,7 @@ export const packEn = {
   domains: pack.domains.map((d) => ({ ...d, title: DOMAIN_TITLES_EN[d.id] ?? d.title })),
   lessons: lessonsEn,
   questions: questionsEn,
-  exams,
+  exams: exams.map((e) => ({ ...e, title: EXAM_TITLES_EN[e.id] ?? e.title })),
 };
 
 export default packFr;

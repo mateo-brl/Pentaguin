@@ -57,8 +57,10 @@ leçons et des exercices adaptés à TON niveau. Le tout en français, hors-lign
 sans blabla.
 
 CE QUI REND PENTAGUIN DIFFÉRENT
-• Un vrai parcours, pas un dump de questions : leçons courtes, quiz avec
-  explications détaillées, et de la pratique « en situation ».
+• Un vrai parcours, pas un dump de questions : 64 leçons courtes, plus de
+  500 questions avec explications détaillées, et de la pratique « en situation ».
+• Des examens blancs chronométrés, tirés au sort selon les poids officiels des
+  domaines : chaque tentative est différente.
 • Pratique simulée : un faux terminal où tu mènes l’enquête, des logs où
   repérer l’attaque, des scénarios de décision. On apprend en faisant.
 • 8 thèmes, du fondamental au pointu : hygiène, réseaux, cryptographie, web,
@@ -116,6 +118,14 @@ scanne, il ne lit pas). Ordre = de l'accroche émotionnelle vers la preuve.
 - Les vrais écrans se capturent depuis un build ; les cadres + accroches se
   montent (Claude peut produire une maquette d'artefact pour valider le rendu
   avant montage final).
+
+## 💳 Modèle : abonnement annuel
+
+Abonnement auto-renouvelable **19,99 $/an** (produit `pentaguin.pro.yearly`).
+Le paywall affiche durée, prix, équivalent mensuel, mention de renouvellement
+automatique et liens CGU + confidentialité (exigés par la guideline 3.1.2).
+Ne PAS écrire « achat unique » ni « pas d'abonnement » dans les métadonnées.
+Mise en place : voir [docs/SUBSCRIPTION-SETUP.md](SUBSCRIPTION-SETUP.md).
 
 ## 🎯 Après la publication
 - Surveiller le classement sur « cybersécurité », « hacking éthique », « réviser
