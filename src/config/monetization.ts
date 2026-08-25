@@ -23,6 +23,11 @@ export type MonetizationConfig = {
     lessonsPerDomain?: number;
     /** Part de la banque de questions accessible gratuitement dans les autres domaines (0 à 1). */
     questionRatioPerDomain: number;
+    /**
+     * Nombre d'exercices de pratique gratuits au début de CHAQUE autre thème.
+     * Les missions d'un thème payant restent Pro (elles enchaînent ses exercices).
+     */
+    practicePerDomain?: number;
     /** Nombre d'examens blancs gratuits (les premiers, dans l'ordre du pack). */
     mockExamCount: number;
   };
@@ -37,9 +42,13 @@ export const monetizationConfig: MonetizationConfig = {
   free: {
     // Thèmes fondateurs entièrement gratuits + un avant-goût (2 leçons) de
     // chaque autre thème : l'utilisateur goûte à tout avant de passer Pro.
+    // Deux thèmes ENTIERS gratuits (leçons, questions, pratique, mission) : le
+    // gratuit est un vrai petit cours, pas une démo. Ailleurs, un avant-goût
+    // franc mais borné — c'est ce qui laisse sa valeur propre à l'abonnement.
     domainIds: ['d-fond', 'd-net'],
     lessonsPerDomain: 2,
-    questionRatioPerDomain: 0.4,
+    questionRatioPerDomain: 0.2,
+    practicePerDomain: 1,
     mockExamCount: 1,
   },
   upsell: {

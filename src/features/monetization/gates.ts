@@ -10,7 +10,8 @@ export function packEntitlement(packId: string): string {
 export type GatedItem =
   | { kind: 'lesson'; domainId: string; entitlement: string }
   | { kind: 'exam'; examIndex: number; entitlement: string }
-  | { kind: 'full-question-bank'; domainId: string; entitlement: string };
+  | { kind: 'full-question-bank'; domainId: string; entitlement: string }
+  | { kind: 'practice'; domainId: string; entitlement: string };
 
 /**
  * Décide si un contenu est accessible. Fonction pure : toute la politique
@@ -31,6 +32,8 @@ export function isUnlocked(
       return item.examIndex < config.free.mockExamCount;
     case 'full-question-bank':
       return config.free.domainIds.includes(item.domainId);
+    case 'practice':
+      return config.free.domainIds.includes(item.domainId);
   }
 }
 
@@ -46,6 +49,38 @@ export function freeQuestionIds(questionIds: readonly string[], ratio: number): 
 }
 
 export type FreeLessonInput = { id: string; domainId: string; level?: number; order: number };
+
+export type FreePracticeInput = { id: string; domainId: string; level: number };
+
+/**
+ * Exercices de pratique gratuits : tous ceux des thèmes gratuits, plus les N
+ * plus faciles de chaque autre thème (avant-goût). Fonction pure.
+ */
+export function freePracticeIds(
+  exercises: readonly FreePracticeInput[],
+  config: MonetizationConfig,
+): Set<string> {
+  const free = new Set<string>();
+  const perDomain = new Map<string, FreePracticeInput[]>();
+  for (const exercise of exercises) {
+    if (config.free.domainIds.includes(exercise.domainId)) {
+      free.add(exercise.id);
+      continue;
+    }
+    const arr = perDomain.get(exercise.domainId) ?? [];
+    arr.push(exercise);
+    perDomain.set(exercise.domainId, arr);
+  }
+  const n = config.free.practicePerDomain ?? 0;
+  for (const arr of perDomain.values()) {
+    arr
+      .slice()
+      .sort((a, b) => a.level - b.level || a.id.localeCompare(b.id))
+      .slice(0, n)
+      .forEach((e) => free.add(e.id));
+  }
+  return free;
+}
 
 /**
  * Leçons gratuites (« eau à la bouche ») : toutes celles des domaines gratuits,
