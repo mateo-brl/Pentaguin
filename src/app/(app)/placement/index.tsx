@@ -1,4 +1,4 @@
-import { router } from 'expo-router';
+import { Stack, router } from 'expo-router';
 import { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -23,7 +23,10 @@ export default function PlacementIntroScreen() {
 
   return (
     <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
+      {/* En-tête natif : sans lui l'écran est un cul-de-sac, on ne peut plus
+          ressortir du test une fois entré depuis l'onglet Apprendre. */}
+      <Stack.Screen options={{ headerShown: true, title: t.placement.title }} />
+      <SafeAreaView style={styles.safe} edges={['bottom']}>
         <View style={styles.content}>
           <Penguin state="focus" size={116} animation="float" />
           <ThemedText type="title" style={styles.title}>

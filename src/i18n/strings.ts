@@ -378,7 +378,7 @@ const fr = {
     delete: 'Supprimer mon compte',
     deleteConfirmTitle: 'Supprimer le compte ?',
     deleteConfirmBody:
-      'Ton compte, ton pseudo et ton score du classement seront définitivement supprimés.',
+      'Ton compte, ton pseudo et ton score du classement seront définitivement supprimés. Un abonnement en cours n’est pas résilié pour autant : il se gère depuis les réglages de ton compte App Store.',
     cancel: 'Annuler',
     confirmDelete: 'Supprimer',
     errorCredentials: 'E-mail ou mot de passe incorrect.',
@@ -829,7 +829,7 @@ const en: Strings = {
     delete: 'Delete my account',
     deleteConfirmTitle: 'Delete account?',
     deleteConfirmBody:
-      'Your account, pseudonym and leaderboard score will be permanently deleted.',
+      'Your account, pseudonym and leaderboard score will be permanently deleted. An active subscription is not cancelled by this: manage it from your App Store account settings.',
     cancel: 'Cancel',
     confirmDelete: 'Delete',
     errorCredentials: 'Incorrect email or password.',
