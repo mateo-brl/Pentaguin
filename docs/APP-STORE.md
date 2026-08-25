@@ -38,24 +38,37 @@ publicité — l'app n'y touche pas.
 
 - [ ] **Captures d'écran** 6.7" (iPhone 15/16 Pro Max) et 6.5" — à générer depuis
       le simulateur (Learn, un quiz, un examen, le classement, le profil).
-- [ ] Description, mots-clés, sous-titre.
+- [ ] Description, mots-clés, sous-titre — **prêts à coller** dans
+      [docs/ASO.md](ASO.md) (nom, sous-titre, mots-clés et description FR + EN,
+      tous calibrés aux limites de caractères). Ne pas écrire « achat unique ».
 - [ ] Catégorie : Éducation. Classification par âge : 4+.
 - [ ] URL de support (une adresse e-mail suffit : pentaguin@mateobrl.fr).
 - [ ] Mentions marques : Pentaguin est indépendant de CompTIA (déjà dit dans
       l'app, à répéter dans la description).
 
-## Produit / achats
+## Produit / achats — ABONNEMENT ANNUEL
 
-- [x] Produit non-consommable `pentaguin.pro.secplus` configuré + RevenueCat.
-- [ ] Cliquer « Ajouter pour vérification » sur le produit (se fait avec la
-      première soumission de build public).
-- [ ] Ajuster le prix à 9,99 € pile en France si souhaité (Prix → Modifier).
+Modèle retenu : abonnement auto-renouvelable **19,99 $/an**, produit
+`pentaguin.pro.yearly`. Procédure détaillée :
+**[docs/SUBSCRIPTION-SETUP.md](SUBSCRIPTION-SETUP.md)**.
+
+- [ ] Créer le **groupe d'abonnements** + l'abonnement `pentaguin.pro.yearly`
+      (durée 1 an, 19,99 USD).
+- [ ] Localisations FR + EN (nom d'affichage + description).
+- [ ] **Capture d'écran de revue** du paywall (obligatoire pour un abonnement).
+- [ ] RevenueCat : rattacher le produit à l'entitlement **`pro:secplus-sy0-701`**
+      (déjà utilisé par l'app → aucun code à changer).
+- [ ] Joindre le produit à la version lors de la première soumission.
+- [x] Paywall conforme guideline 3.1.2 (durée, prix, renouvellement automatique,
+      liens CGU + confidentialité, restauration).
+- [ ] Tester un achat avec un **compte Sandbox**, puis « Restaurer ».
 
 ## Contenu
 
-- [ ] **Ajouter le contenu pédagogique** (le pack est vide) : la banque doit être
-      suffisante pour que les quiz/examens soient jouables avant la sortie
-      publique. Voir `docs/AUTHORING.md`.
+- [x] **Contenu pédagogique en place** : 64 leçons interactives (FR+EN),
+      **514 questions** jouables avec explications, 450 questions de
+      positionnement, 32 exercices de pratique, 8 missions, **3 examens blancs**.
+      Relu par passe d'audit (aucune erreur factuelle bloquante).
 
 ## Divers
 
