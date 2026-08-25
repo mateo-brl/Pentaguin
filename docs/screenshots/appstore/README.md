@@ -28,6 +28,13 @@ tels qu'ils existent dans `src/content/`.
 
 Pseudo affiché : **Nova**. Les autres joueurs du classement sont fictifs.
 
+## paywall-review.png
+
+Capture brute du paywall (1290×2796, sans habillage marketing), demandée par
+App Store Connect pour la vérification de l'abonnement. Elle montre le prix, la
+durée, la mention de renouvellement automatique, la restauration d'achat et les
+liens CGU + confidentialité, comme l'exige la guideline 3.1.2.
+
 Régénérer : `python3 generate.py` (Pillow requis), sortie dans `/tmp/shots/out`.
 
 ## Guideline 2.3.3

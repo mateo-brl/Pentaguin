@@ -36,8 +36,11 @@ publicité : l'app n'y touche pas.
 
 ## Fiche produit
 
-- [ ] **Captures d'écran** 6.7" (iPhone 15/16 Pro Max) et 6.5", à générer depuis
-      le simulateur (Learn, un quiz, un examen, le classement, le profil).
+- [x] **Captures d'écran prêtes** : `docs/screenshots/appstore/` — 6 visuels
+      (accueil, leçon, terminal à jetons, fin de leçon, pratique Pro, rang) en
+      1290×2796, 1320×2868 (6,9") et 1242×2688 (6,5"), chacune rendue
+      nativement. Générateur : `docs/screenshots/appstore/generate.py`.
+      Fidélité aux écrans réels vérifiée sur appareil le 25/08/2026 (guideline 2.3.3).
 - [ ] Description, mots-clés, sous-titre : **prêts à coller** dans
       [docs/ASO.md](ASO.md) (nom, sous-titre, mots-clés et description FR + EN,
       tous calibrés aux limites de caractères). Ne pas écrire « achat unique ».
@@ -55,7 +58,10 @@ Modèle retenu : abonnement auto-renouvelable **19,99 $/an**, produit
 - [ ] Créer le **groupe d'abonnements** + l'abonnement `pentaguin.pro.yearly`
       (durée 1 an, 19,99 USD).
 - [ ] Localisations FR + EN (nom d'affichage + description).
-- [ ] **Capture d'écran de revue** du paywall (obligatoire pour un abonnement).
+- [x] **Capture d'écran de revue** du paywall (obligatoire pour un abonnement) :
+      `docs/screenshots/appstore/paywall-review.png` (1290×2796). Elle montre le
+      prix, la durée, la mention de renouvellement automatique, la restauration
+      et les liens CGU + confidentialité.
 - [ ] RevenueCat : rattacher le produit à l'entitlement **`pro:secplus-sy0-701`**
       (déjà utilisé par l'app → aucun code à changer).
 - [ ] Joindre le produit à la version lors de la première soumission.
@@ -69,6 +75,41 @@ Modèle retenu : abonnement auto-renouvelable **19,99 $/an**, produit
       **514 questions** jouables avec explications, 450 questions de
       positionnement, 32 exercices de pratique, 8 missions, **3 examens blancs**.
       Relu par passe d'audit (aucune erreur factuelle bloquante).
+
+## Compte de démonstration pour App Review
+
+L'app est derrière un mur de connexion obligatoire : sans identifiants, la revue
+est rejetée d'office (guideline 2.1). L'inscription normale exige un code reçu
+par e-mail, qu'un reviewer ne peut pas recevoir. Un compte est donc créé
+directement en base, déjà vérifié et sans 2FA.
+
+- Identifiant : **appreview@pentaguin.app** · pseudo **Pingu**
+- Mot de passe : **jamais dans ce repo** (public). Il vit uniquement dans
+  App Store Connect → Informations sur la revue de l'app.
+- État : e-mail vérifié, 2FA désactivée, rang Argent II, 760 XP, série 4 jours,
+  43 leçons faites. Volontairement **pas abonné**, pour que le reviewer teste
+  l'achat en bac à sable.
+- [ ] Renseigner les identifiants dans App Store Connect → **Informations sur la
+      revue de l'app** → Connexion requise.
+
+Recréer ou changer le mot de passe :
+
+```bash
+ssh mateobrl 'node --experimental-sqlite /opt/pentaguin-api/admin.mjs \
+  create-demo appreview@pentaguin.app <mot-de-passe> Pingu --yes'
+node content-tools/demo-snapshot.mjs --rank=5 --streak=4 --xp=760 > /tmp/demo.json
+scp /tmp/demo.json mateobrl:/tmp/
+ssh mateobrl 'node --experimental-sqlite /opt/pentaguin-api/admin.mjs \
+  set-progress Pingu /tmp/demo.json --yes && rm -f /tmp/demo.json'
+```
+
+Note pour le reviewer, à coller dans le champ « Notes » :
+
+> L'app est en français et en anglais (elle suit la langue du système). Le compte
+> fourni est déjà connecté à une progression. L'abonnement annuel se teste depuis
+> Profil → Pentaguin Pro, ou depuis n'importe quel contenu verrouillé. La partie
+> « offensive » est traitée sous un angle défensif et éducatif : aucun outil
+> d'attaque n'est fourni, les terminaux sont simulés et sans réseau.
 
 ## Divers
 
