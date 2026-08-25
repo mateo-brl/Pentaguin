@@ -24,6 +24,9 @@ Déclarer, toutes « liées à l'identité » et « pour le fonctionnement de l'
 | Identifiant compte / Apple / Google | Identifiers → User ID | Identité de connexion |
 | Pseudo, avatar | User Content → Other User Content | Choisis par l'utilisateur |
 | XP / progression classement | Usage Data → Product Interaction | Fonctionnalité, pas d'analytics |
+| Identifiant d'installation | Identifiers → Device ID | UUID aléatoire, clé du joueur au classement |
+| Sauvegarde de progression | Usage Data → Product Interaction | Leçons, stats de réponses, XP, révisions |
+| Rapports d'erreur | Diagnostics → Crash Data | **Non liée à l'identité** : ni compte, ni e-mail |
 | Historique d'achat | Purchases → Purchase History | Via Apple / RevenueCat |
 
 À NE PAS déclarer : localisation, contacts, photos, santé, diagnostics,
