@@ -1,25 +1,37 @@
 # Captures App Store
 
-6 captures en 6,7" (1290×2796) + leur dérivé 6,5" (1242×2688), générées par
-`generate.py` (Pillow, polices et couleurs réelles de l'app, mascotte réelle).
+18 fichiers : 6 captures × 3 tailles, chacune **rendue nativement** à sa
+résolution finale par `generate.py` (Pillow). Aucun redimensionnement n'est
+appliqué après coup, donc aucun flou ; chaque carte est dimensionnée sur le
+texte réellement mesuré, donc aucun débordement.
 
-| # | Écran | Accroche | État montré |
-|---|-------|----------|-------------|
-| 1 | Accueil | Ta cybersécurité, 5 minutes par jour | Pro, série 12 j, Or III |
-| 2 | S'entraîner | Toute la pratique débloquée | Pro, aucun cadenas |
-| 3 | Terminal à jetons | Un vrai terminal, sans le clavier | exercice `defense-term` |
-| 4 | Mission | Des missions comme au SOC | `m-defense`, étape 3/4 |
-| 5 | Leçon | Tu paries avant d'apprendre | bloc « à ton avis ? » |
-| 6 | Rang & classement | 15 rangs à gravir | Or III, ligue Or |
+| Suffixe | Taille | Tranche Apple |
+|---------|--------|---------------|
+| *(aucun)* | 1290×2796 | 6,7" / 6,9" |
+| `-69` | 1320×2868 | 6,9" |
+| `-65` | 1242×2688 | 6,5" |
 
-Le pseudo affiché est **Nova** (anonyme) ; les autres joueurs du classement sont
-fictifs. Aucune donnée réelle n'apparaît.
+| # | Écran | Accroche |
+|---|-------|----------|
+| 1 | Accueil | Ta cybersécurité, 5 minutes par jour |
+| 2 | Leçon interactive | Tu paries avant d'apprendre |
+| 3 | Terminal à jetons | Un vrai terminal, sans le clavier |
+| 4 | Fin de leçon | Chaque réponse est expliquée |
+| 5 | S'entraîner (Pro) | Toute la pratique débloquée |
+| 6 | Rang & classement | 15 rangs à gravir |
 
-Régénérer : `python3 generate.py` (nécessite Pillow). Sortie dans `/tmp/store/out`.
+Couleurs, polices (Hanken Grotesk, JetBrains Mono) et mascotte proviennent du
+design system réel. Les textes affichés sont le contenu réel du pack : leçon
+« Authentification, sessions et cookies » (accroche Firesheep), question rapide
+sur le C2, exercice `sys-term` (`sudo -l` sur `srv01`), missions et exercices
+tels qu'ils existent dans `src/content/`.
+
+Pseudo affiché : **Nova**. Les autres joueurs du classement sont fictifs.
+
+Régénérer : `python3 generate.py` (Pillow requis), sortie dans `/tmp/shots/out`.
 
 ## Guideline 2.3.3
 
-Les captures doivent refléter l'app. L'écran 1 est calqué sur une capture réelle
-de l'appareil. Les écrans 2 à 6 sont reconstruits à partir du code des
-composants et du contenu JSON réel : à revérifier sur un build avant envoi, et à
-remplacer par une vraie capture si un écran a bougé.
+Les captures doivent refléter l'app. Elles reproduisent les écrans à partir du
+code des composants et du contenu réel. À revérifier sur un build avant envoi,
+et à remplacer par une vraie capture si un écran a bougé.
