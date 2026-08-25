@@ -5,13 +5,27 @@
  */
 import { monetizationConfig } from '@/config/monetization';
 import { getDefaultPack, type Lesson } from '@/content';
+import { getPracticeExercises, type PracticeExercise, type PracticeMission } from '@/content/practice';
 
-import { freeLessonIds, isUnlocked, packEntitlement, type GatedItem } from './gates';
+import {
+  freeLessonIds,
+  freePracticeIds,
+  isUnlocked,
+  packEntitlement,
+  type GatedItem,
+} from './gates';
 import type { Entitlements } from './provider';
 import { isEndOfFreeTheme } from './upsell';
 
 export { activeProvider } from './active-provider';
-export { freeLessonIds, freeQuestionIds, isUnlocked, packEntitlement, type GatedItem } from './gates';
+export {
+  freeLessonIds,
+  freePracticeIds,
+  freeQuestionIds,
+  isUnlocked,
+  packEntitlement,
+  type GatedItem,
+} from './gates';
 export { noopProvider } from './noop.provider';
 export type { EntitlementId, Entitlements, ProOffer, PurchasesProvider } from './provider';
 export {
@@ -44,6 +58,40 @@ export function isLessonUnlockedNow(lesson: Lesson, entitlements: Entitlements):
   if (!monetizationConfig.enabled) return true;
   if (entitlements.has(packEntitlement(getDefaultPack().id))) return true;
   return freeLessons().has(lesson.id);
+}
+
+// Ensemble des exercices de pratique gratuits, mémoïsé (contenu stable en session).
+let freePracticeCache: Set<string> | null = null;
+function freePractice(): Set<string> {
+  if (!freePracticeCache)
+    freePracticeCache = freePracticeIds(getPracticeExercises('fr'), monetizationConfig);
+  return freePracticeCache;
+}
+
+/**
+ * Un exercice de pratique est-il accessible ? Même politique que les leçons :
+ * tout est ouvert dans les thèmes gratuits, avant-goût ailleurs.
+ */
+export function isPracticeUnlockedNow(
+  exercise: PracticeExercise,
+  entitlements: Entitlements,
+): boolean {
+  if (!monetizationConfig.enabled) return true;
+  if (entitlements.has(packEntitlement(getDefaultPack().id))) return true;
+  return freePractice().has(exercise.id);
+}
+
+/**
+ * Une mission enchaîne les exercices de son thème : elle suit donc l'accès du
+ * thème (pas d'enquête à moitié jouable).
+ */
+export function isMissionUnlockedNow(
+  mission: PracticeMission,
+  entitlements: Entitlements,
+): boolean {
+  if (!monetizationConfig.enabled) return true;
+  if (entitlements.has(packEntitlement(getDefaultPack().id))) return true;
+  return monetizationConfig.free.domainIds.includes(mission.domainId);
 }
 
 /** Vrai si l'utilisateur (non Pro) a Pro entièrement débloqué ou monétisation coupée. */

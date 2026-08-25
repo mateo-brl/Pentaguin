@@ -1,6 +1,7 @@
 [
  {
   "id": "fond-anal",
+  "domainId": "d-fond",
   "kind": "analysis",
   "title": "Spot the spoofed sender",
   "level": 2,
@@ -22,6 +23,7 @@
  },
  {
   "id": "fond-scen",
+  "domainId": "d-fond",
   "kind": "scenario",
   "title": "The urgent email from your “bank”",
   "level": 2,
@@ -73,6 +75,7 @@
  },
  {
   "id": "fond-order",
+  "domainId": "d-fond",
   "kind": "order",
   "title": "Responding to a compromised account",
   "level": 3,
@@ -114,6 +117,7 @@
  },
  {
   "id": "fond-term",
+  "domainId": "d-fond",
   "kind": "terminal",
   "title": "Keeping your system up to date",
   "level": 4,
@@ -179,6 +183,7 @@
  },
  {
   "id": "net-scen",
+  "domainId": "d-net",
   "kind": "scenario",
   "title": "Public Wi-Fi: the evil twin trap",
   "level": 4,
@@ -251,6 +256,7 @@
  },
  {
   "id": "crypto-scen",
+  "domainId": "d-crypto",
   "kind": "scenario",
   "title": "How should you store passwords?",
   "level": 6,
@@ -336,6 +342,7 @@
  },
  {
   "id": "net-anal",
+  "domainId": "d-net",
   "kind": "analysis",
   "title": "Spot the suspicious connection in ss",
   "level": 6,
@@ -358,6 +365,7 @@
  },
  {
   "id": "net-term",
+  "domainId": "d-net",
   "kind": "terminal",
   "title": "Troubleshooting an unreachable service",
   "level": 6,
@@ -421,6 +429,7 @@
  },
  {
   "id": "threats-anal",
+  "domainId": "d-threats",
   "kind": "analysis",
   "title": "Spot the IOC in the DNS log",
   "level": 6,
@@ -443,6 +452,7 @@
  },
  {
   "id": "threats-scen",
+  "domainId": "d-threats",
   "kind": "scenario",
   "title": "Ransomware detected on a workstation",
   "level": 7,
@@ -511,6 +521,7 @@
  },
  {
   "id": "web-anal",
+  "domainId": "d-web",
   "kind": "analysis",
   "title": "Spot the attack in the access log",
   "level": 7,
@@ -532,6 +543,7 @@
  },
  {
   "id": "crypto-anal",
+  "domainId": "d-crypto",
   "kind": "analysis",
   "title": "The flaw in the encryption code",
   "level": 8,
@@ -555,6 +567,7 @@
  },
  {
   "id": "net-order",
+  "domainId": "d-net",
   "kind": "order",
   "title": "Put DNS resolution in order",
   "level": 8,
@@ -601,6 +614,7 @@
  },
  {
   "id": "sys-anal",
+  "domainId": "d-sys",
   "kind": "analysis",
   "title": "One permission too many",
   "level": 8,
@@ -624,6 +638,7 @@
  },
  {
   "id": "web-scen",
+  "domainId": "d-web",
   "kind": "scenario",
   "title": "A flaw found by accident",
   "level": 8,
@@ -696,6 +711,7 @@
  },
  {
   "id": "defense-anal",
+  "domainId": "d-defense",
   "kind": "analysis",
   "title": "The critical event buried in the SIEM noise",
   "level": 9,
@@ -720,6 +736,7 @@
  },
  {
   "id": "off-scen",
+  "domainId": "d-offensive",
   "kind": "scenario",
   "title": "Keeping a penetration test within the law",
   "level": 9,
@@ -796,6 +813,7 @@
  },
  {
   "id": "sys-term",
+  "domainId": "d-sys",
   "kind": "terminal",
   "title": "Local privilege audit (Linux)",
   "level": 9,
@@ -862,6 +880,7 @@
  },
  {
   "id": "threats-order",
+  "domainId": "d-threats",
   "kind": "order",
   "title": "Put the Cyber Kill Chain in order",
   "level": 9,
@@ -913,6 +932,7 @@
  },
  {
   "id": "web-term",
+  "domainId": "d-web",
   "kind": "terminal",
   "title": "Inspect the HTTP security headers",
   "level": 9,
@@ -986,6 +1006,7 @@
  },
  {
   "id": "crypto-order",
+  "domainId": "d-crypto",
   "kind": "order",
   "title": "The TLS handshake in order",
   "level": 10,
@@ -1037,6 +1058,7 @@
  },
  {
   "id": "defense-order",
+  "domainId": "d-defense",
   "kind": "order",
   "title": "The incident response cycle (SANS)",
   "level": 10,
@@ -1083,6 +1105,7 @@
  },
  {
   "id": "off-order",
+  "domainId": "d-offensive",
   "kind": "order",
   "title": "The phases of a penetration test",
   "level": 10,
@@ -1129,6 +1152,7 @@
  },
  {
   "id": "sys-scen",
+  "domainId": "d-sys",
   "kind": "scenario",
   "title": "Unexpected privileged access on an authorized test",
   "level": 10,
@@ -1196,6 +1220,7 @@
  },
  {
   "id": "web-order",
+  "domainId": "d-web",
   "kind": "order",
   "title": "The OAuth 2.0 flow (Authorization Code)",
   "level": 10,
@@ -1242,6 +1267,7 @@
  },
  {
   "id": "defense-scen",
+  "domainId": "d-defense",
   "kind": "scenario",
   "title": "Ransomware in progress: incident response decisions",
   "level": 11,
@@ -1326,6 +1352,7 @@
  },
  {
   "id": "off-term",
+  "domainId": "d-offensive",
   "kind": "terminal",
   "title": "Reconnaissance & enumeration of an authorized target",
   "level": 11,
@@ -1426,6 +1453,7 @@
  },
  {
   "id": "sys-order",
+  "domainId": "d-sys",
   "kind": "order",
   "title": "How a Kerberos authentication unfolds",
   "level": 11,
@@ -1472,6 +1500,7 @@
  },
  {
   "id": "threats-term",
+  "domainId": "d-threats",
   "kind": "terminal",
   "title": "Static triage of a suspicious sample",
   "level": 11,
@@ -1534,6 +1563,7 @@
  },
  {
   "id": "crypto-term",
+  "domainId": "d-crypto",
   "kind": "terminal",
   "title": "Inspect a certificate with openssl",
   "level": 12,
@@ -1607,6 +1637,7 @@
  },
  {
   "id": "defense-term",
+  "domainId": "d-defense",
   "kind": "terminal",
   "title": "Log analysis: hunting an SSH brute-force",
   "level": 13,
@@ -1705,6 +1736,7 @@
  },
  {
   "id": "off-anal",
+  "domainId": "d-offensive",
   "kind": "analysis",
   "title": "The line that makes the server exploitable",
   "level": 13,

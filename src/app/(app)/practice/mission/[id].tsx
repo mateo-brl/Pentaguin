@@ -6,12 +6,14 @@ import { Penguin } from '@/components/mascot/penguin';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
+import { ProCurtain } from '@/components/ui/pro-curtain';
 import { ScreenFallback } from '@/components/ui/screen-fallback';
 import { XP } from '@/config/gamification';
 import { Radius, Spacing } from '@/theme';
 import { getPracticeExercise, getPracticeMission } from '@/content/practice';
 import { addDailyXp, getKv, setKv } from '@/db/repositories';
 import { successFeedback } from '@/features/haptics/haptics';
+import { isMissionUnlockedNow, useEntitlements } from '@/features/monetization';
 import { ExercisePlayer } from '@/features/practice/exercise-player';
 import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
@@ -28,11 +30,29 @@ export default function MissionScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const t = useStrings();
   const theme = useTheme();
+  const entitlements = useEntitlements();
   const mission = getPracticeMission(id ?? '');
   const [phase, setPhase] = useState<'intro' | 'steps' | 'debrief'>('intro');
   const [stepIndex, setStepIndex] = useState(0);
 
   if (!mission) return <ScreenFallback />;
+
+  // Mission Pro : le briefing (l'accroche narrative) reste lisible, puis l'invitation.
+  if (!isMissionUnlockedNow(mission, entitlements)) {
+    return (
+      <ThemedView style={styles.container}>
+        <Stack.Screen options={{ headerShown: true, title: mission.title }} />
+        <ScrollView contentContainerStyle={styles.centered}>
+          <Penguin state="focus" accessory="headset" size={104} animation="float" />
+          <ThemedText type="label" themeColor="accent">
+            {t.practice.missionBriefing}
+          </ThemedText>
+          <ThemedText style={styles.intro}>{mission.intro}</ThemedText>
+          <ProCurtain body={t.practice.previewBody} />
+        </ScrollView>
+      </ThemedView>
+    );
+  }
   // Étapes résolues vers leurs exercices ; un id cassé est ignoré (pas de crash).
   const exercises = mission.steps
     .map((stepId) => getPracticeExercise(stepId))
