@@ -121,7 +121,12 @@ function accessory(acc: PenguinAccessory, ol: Outline): string {
     '<g><rect x="140" y="66" width="66" height="50" rx="8" fill="#10161f" stroke="#2DE0A6" stroke-width="2.2"/>' +
     '<rect x="140" y="66" width="66" height="12" rx="6" fill="#1b2632"/>' +
     '<circle cx="149" cy="72" r="1.8" fill="#2DE0A6"/>' +
-    '<text x="149" y="104" font-family="JetBrainsMono-Bold" font-size="20" fill="#2DE0A6">&gt;_</text></g>'
+    // Invite dessinée en tracés : SvgXml ne décode pas les entités XML dans un
+    // <text> (le « > » sortait littéralement en « &gt; »), et la police de l'app
+    // n'est pas garantie à l'intérieur d'un SVG.
+    '<path d="M150 89 L158 96.5 L150 104" fill="none" stroke="#2DE0A6" stroke-width="3" ' +
+    'stroke-linecap="round" stroke-linejoin="round"/>' +
+    '<rect x="163" y="101" width="15" height="3" rx="1.5" fill="#2DE0A6"/></g>'
   );
 }
 
