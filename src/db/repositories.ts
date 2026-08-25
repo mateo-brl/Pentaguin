@@ -1,3 +1,5 @@
+import { nextReview, type ReviewState } from '@/features/review/schedule';
+
 import { getDb } from './index';
 
 export type AttemptMode = 'quiz' | 'exam';
@@ -87,6 +89,95 @@ export function bumpQuestionStat(packId: string, questionId: string, isCorrect: 
        last_seen_at = excluded.last_seen_at,
        last_wrong_at = excluded.last_wrong_at`,
     [packId, questionId, isCorrect ? 1 : 0, now, isCorrect ? null : now],
+  );
+  scheduleReview(packId, questionId, isCorrect);
+}
+
+// — Répétition espacée -------------------------------------------------------
+
+function readReview(packId: string, questionId: string): ReviewState | null {
+  const row = getDb().getFirstSync<{ due_date: string; interval_days: number; streak: number }>(
+    'SELECT due_date, interval_days, streak FROM review WHERE pack_id = ? AND question_id = ?',
+    [packId, questionId],
+  );
+  return row
+    ? { dueDate: row.due_date, intervalDays: row.interval_days, streak: row.streak }
+    : null;
+}
+
+/**
+ * Replanifie une question après une réponse. Appelé par bumpQuestionStat :
+ * TOUTES les réponses (quiz, examen, défi, question de leçon) alimentent donc
+ * les révisions, sans qu'un écran ait à y penser.
+ */
+export function scheduleReview(packId: string, questionId: string, isCorrect: boolean): void {
+  const state = nextReview(readReview(packId, questionId), isCorrect, localDateKey());
+  getDb().runSync(
+    `INSERT INTO review (pack_id, question_id, due_date, interval_days, streak, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?)
+     ON CONFLICT(pack_id, question_id) DO UPDATE SET
+       due_date = excluded.due_date,
+       interval_days = excluded.interval_days,
+       streak = excluded.streak,
+       updated_at = excluded.updated_at`,
+    [packId, questionId, state.dueDate, state.intervalDays, state.streak, Date.now()],
+  );
+}
+
+/** Questions dues aujourd'hui (échéances dépassées incluses), les plus en retard d'abord. */
+export function getDueReviewIds(packId: string, today = localDateKey()): string[] {
+  const rows = getDb().getAllSync<{ question_id: string }>(
+    `SELECT question_id FROM review
+     WHERE pack_id = ? AND due_date <= ?
+     ORDER BY due_date ASC, streak ASC`,
+    [packId, today],
+  );
+  return rows.map((row) => row.question_id);
+}
+
+/** Nombre de révisions dues (pour la carte d'accueil, sans charger les questions). */
+export function countDueReviews(packId: string, today = localDateKey()): number {
+  const row = getDb().getFirstSync<{ n: number }>(
+    'SELECT COUNT(*) AS n FROM review WHERE pack_id = ? AND due_date <= ?',
+    [packId, today],
+  );
+  return row?.n ?? 0;
+}
+
+export function getAllReviews(): {
+  pack_id: string;
+  question_id: string;
+  due_date: string;
+  interval_days: number;
+  streak: number;
+}[] {
+  return getDb().getAllSync(
+    'SELECT pack_id, question_id, due_date, interval_days, streak FROM review',
+  );
+}
+
+/**
+ * Fusion depuis une sauvegarde cloud : on garde la progression la plus AVANCÉE
+ * (série la plus longue) et, à série égale, l'échéance la plus lointaine.
+ */
+export function mergeReview(
+  packId: string,
+  questionId: string,
+  dueDate: string,
+  intervalDays: number,
+  streak: number,
+): void {
+  getDb().runSync(
+    `INSERT INTO review (pack_id, question_id, due_date, interval_days, streak, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?)
+     ON CONFLICT(pack_id, question_id) DO UPDATE SET
+       due_date = CASE WHEN excluded.streak > streak THEN excluded.due_date
+                       WHEN excluded.streak = streak AND excluded.due_date > due_date THEN excluded.due_date
+                       ELSE due_date END,
+       interval_days = MAX(interval_days, excluded.interval_days),
+       streak = MAX(streak, excluded.streak),
+       updated_at = excluded.updated_at`,
+    [packId, questionId, dueDate, intervalDays, streak, Date.now()],
   );
 }
 

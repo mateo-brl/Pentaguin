@@ -2,10 +2,12 @@ import {
   getAllKv,
   getAllLessonProgress,
   getAllQuestionStats,
+  getAllReviews,
   getDailyActivity,
   mergeDailyActivity,
   mergeLessonProgress,
   mergeQuestionStat,
+  mergeReview,
   setKv,
 } from '@/db/repositories';
 
@@ -46,6 +48,9 @@ export function snapshotFromDb(): Snapshot {
       r.last_wrong_at ?? 0,
     ];
   for (const r of getDailyActivity()) snap.activity[r.date] = r.xp;
+  snap.reviews = {};
+  for (const r of getAllReviews())
+    snap.reviews[`${r.pack_id}::${r.question_id}`] = [r.due_date, r.interval_days, r.streak];
   for (const [k, v] of Object.entries(getAllKv())) if (syncableKv(k)) snap.kv[k] = v;
   return snap;
 }
@@ -61,5 +66,9 @@ export function applySnapshot(snap: Snapshot): void {
     if (pack && q) mergeQuestionStat(pack, q, s[0], s[1], s[2] || null, s[3] || null);
   }
   for (const [date, xp] of Object.entries(snap.activity)) mergeDailyActivity(date, xp);
+  for (const [k, r] of Object.entries(snap.reviews ?? {})) {
+    const [pack, q] = k.split('::');
+    if (pack && q && Array.isArray(r)) mergeReview(pack, q, r[0], r[1], r[2]);
+  }
   for (const [k, v] of Object.entries(snap.kv)) if (syncableKv(k)) setKv(k, v);
 }

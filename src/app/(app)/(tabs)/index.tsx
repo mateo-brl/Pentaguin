@@ -11,7 +11,13 @@ import { ProgressRing } from '@/components/ui/progress-ring';
 import { rankLabel } from '@/components/ui/rank-badge';
 import { BottomTabInset, MaxContentWidth, Radius, Spacing, Stroke } from '@/theme';
 import { DEFAULT_PACK_ID, getDefaultPack, lessonsByDomain } from '@/content';
-import { getCompletedLessonIds, getKv, getTotalXp, localDateKey } from '@/db/repositories';
+import {
+  countDueReviews,
+  getCompletedLessonIds,
+  getKv,
+  getTotalXp,
+  localDateKey,
+} from '@/db/repositories';
 import { useSession } from '@/features/account/session';
 import {
   DAILY_CHALLENGE_KV_KEY,
@@ -44,11 +50,13 @@ export default function HomeScreen() {
   const [completed, setCompleted] = useState<Set<string>>(new Set());
   const [totalXp, setTotalXp] = useState(0);
   const [challengeDoneDate, setChallengeDoneDate] = useState<string | null>(null);
+  const [dueReviews, setDueReviews] = useState(0);
   useFocusEffect(
     useCallback(() => {
       setCompleted(getCompletedLessonIds(DEFAULT_PACK_ID));
       setTotalXp(getTotalXp());
       setChallengeDoneDate(getKv(DAILY_CHALLENGE_KV_KEY));
+      setDueReviews(countDueReviews(DEFAULT_PACK_ID));
     }, []),
   );
 
@@ -242,6 +250,34 @@ export default function HomeScreen() {
               </View>
             </View>
           </View>
+
+          {/* Révisions dues : ce qui fait vraiment revenir demain. */}
+          {dueReviews > 0 && (
+            <Pressable
+              onPress={() => router.push('/mistakes')}
+              style={({ pressed }) => [
+                styles.challengeTile,
+                { backgroundColor: theme.backgroundElement, borderColor: theme.border, borderWidth: 1 },
+                pressed && styles.pressed,
+              ]}>
+              <View style={[styles.challengeIcon, { backgroundColor: theme.streakSoft }]}>
+                <Ionicons name="alarm" size={20} color={theme.streak} />
+              </View>
+              <View style={styles.challengeBody}>
+                <ThemedText type="smallBold" style={{ fontSize: 15 }}>
+                  {t.home.reviewTitle}
+                </ThemedText>
+                <ThemedText type="small" themeColor="textSecondary">
+                  {t.home.reviewDesc.replace('{n}', String(dueReviews))}
+                </ThemedText>
+              </View>
+              <View style={[styles.playPill, { backgroundColor: theme.streakSoft }]}>
+                <ThemedText type="smallBold" style={{ color: theme.streak }}>
+                  {t.home.reviewCta}
+                </ThemedText>
+              </View>
+            </Pressable>
+          )}
 
           {/* Défi du jour : le rendez-vous quotidien. */}
           {hasChallenge && (
