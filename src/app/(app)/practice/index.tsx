@@ -13,6 +13,7 @@ import {
 } from '@/content/practice';
 import { getKv } from '@/db/repositories';
 import { tapFeedback } from '@/features/haptics/haptics';
+import { isMissionUnlockedNow, isPracticeUnlockedNow, useEntitlements } from '@/features/monetization';
 import { isRecommended } from '@/features/rank/recommend';
 import { useRank } from '@/features/rank/ranks';
 import { useTheme } from '@/hooks/use-theme';
@@ -29,6 +30,7 @@ export default function PracticeListScreen() {
   const t = useStrings();
   const theme = useTheme();
   const rank = useRank();
+  const entitlements = useEntitlements();
   const exercises = getPracticeExercises();
   const missions = getPracticeMissions();
 
@@ -55,6 +57,7 @@ export default function PracticeListScreen() {
               {missions.map((mission, index) => {
                 const hue = domainColor(index);
                 const done = Boolean(getKv(`mission_done:${mission.id}`));
+                const unlocked = isMissionUnlockedNow(mission, entitlements);
                 return (
                   <Pressable
                     key={mission.id}
@@ -72,9 +75,9 @@ export default function PracticeListScreen() {
                     <View style={styles.missionHead}>
                       <SquareBadge color={hue.base} background={hue.soft}>
                         <Ionicons
-                          name={done ? 'checkmark-done' : 'flag'}
+                          name={!unlocked ? 'lock-closed' : done ? 'checkmark-done' : 'flag'}
                           size={18}
-                          color={done ? theme.success : hue.base}
+                          color={!unlocked ? theme.textSecondary : done ? theme.success : hue.base}
                         />
                       </SquareBadge>
                       <View style={styles.flex}>
@@ -109,16 +112,24 @@ export default function PracticeListScreen() {
           <RowGroup>
             {exercises.map((ex, index) => {
             const hue = domainColor(index);
-            const reco = rank != null && isRecommended(ex, rank);
+            const unlocked = isPracticeUnlockedNow(ex, entitlements);
+            const reco = rank != null && unlocked && isRecommended(ex, rank);
             return (
               <Row
                 key={ex.id}
                 first={index === 0}
+                dimmed={!unlocked}
                 title={ex.title}
                 subtitle={`${kindLabel[ex.kind]}${reco ? ` · ${t.learn.forYourRank}` : ''}`}
                 leading={
-                  <SquareBadge color={hue.base} background={hue.soft}>
-                    <Ionicons name={ICONS[ex.kind]} size={18} color={hue.base} />
+                  <SquareBadge
+                    color={unlocked ? hue.base : theme.textSecondary}
+                    background={unlocked ? hue.soft : theme.backgroundSelected}>
+                    <Ionicons
+                      name={unlocked ? ICONS[ex.kind] : 'lock-closed'}
+                      size={18}
+                      color={unlocked ? hue.base : theme.textSecondary}
+                    />
                   </SquareBadge>
                 }
                 onPress={() => router.push({ pathname: '/practice/[id]', params: { id: ex.id } })}

@@ -329,7 +329,8 @@ const fr = {
     missionNextStep: 'Étape suivante',
     missionDebrief: 'Rapport de mission',
     missionDone: 'Mission accomplie',
-    missionRedo: 'Refaite quand tu veux — les réflexes se travaillent.',
+    missionRedo: 'Refaite quand tu veux, les réflexes se travaillent.',
+    previewBody: 'Cet entraînement fait partie de Pentaguin Pro, avec tous les thèmes.',
   },
   leaderboard: {
     title: 'Classement',
@@ -765,7 +766,8 @@ const en: Strings = {
     missionNextStep: 'Next step',
     missionDebrief: 'Mission report',
     missionDone: 'Mission accomplished',
-    missionRedo: 'Replay it anytime — reflexes take practice.',
+    missionRedo: 'Replay it anytime, reflexes take practice.',
+    previewBody: 'This exercise is part of Pentaguin Pro, along with every theme.',
   },
   leaderboard: {
     title: 'Leaderboard',

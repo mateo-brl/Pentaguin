@@ -8,6 +8,8 @@ import { z } from 'zod';
 
 const base = {
   id: z.string().regex(/^[a-z0-9][a-z0-9-]*$/),
+  /** Thème de rattachement : pilote le regroupement ET l'accès gratuit/Pro. */
+  domainId: z.string().regex(/^[a-z0-9][a-z0-9-]*$/),
   title: z.string().min(1),
   level: z.number().int().min(1).max(15),
   /** Mise en situation affichée en tête. */
