@@ -38,7 +38,12 @@ export type MonetizationConfig = {
 };
 
 export const monetizationConfig: MonetizationConfig = {
-  enabled: process.env.EXPO_PUBLIC_MONETIZATION !== 'off',
+  // Lancement gratuit : tout est ouvert tant qu'aucune structure ne permet de
+  // vendre légalement (statut de commerçant DSA côté Apple, SIRET côté France).
+  // Repasser à `!== 'off'` le jour où l'abonnement est activé — le binaire et
+  // les mises à jour OTA lisent la même valeur, donc pas de divergence
+  // possible entre les deux.
+  enabled: process.env.EXPO_PUBLIC_MONETIZATION === 'on',
   free: {
     // Thèmes fondateurs entièrement gratuits + un avant-goût (2 leçons) de
     // chaque autre thème : l'utilisateur goûte à tout avant de passer Pro.
