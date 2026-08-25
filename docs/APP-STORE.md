@@ -138,7 +138,24 @@ Ce qu'il faut pour le faire, dans l'ordre :
 Secrets requis dans `/etc/pentaguin/env` (jamais dans le repo) :
 `APPLE_TEAM_ID`, `APPLE_KEY_ID`, `APPLE_PRIVATE_KEY_P8`.
 
-## État de la soumission (25/08/2026)
+## Soumis le 25/08/2026
+
+**Version 1.1.0, build 23, état « En attente de vérification ».** Publication
+automatique après validation. Apple annonce jusqu'à 48 h.
+
+Cette première version part **entièrement gratuite, sans achat intégré** :
+vendre suppose d'être déclaré commerçant au sens du DSA, ce qui suppose un
+SIRET. L'abonnement `pentaguin.pro.yearly` reste configuré dans App Store
+Connect, en « Finaliser avant soumission », prêt à partir avec la version qui
+le réactivera.
+
+Pour passer au payant, dans l'ordre : SIRET (et domiciliation si l'adresse
+personnelle ne doit pas être publique), statut de commerçant chez Apple,
+`enabled: process.env.EXPO_PUBLIC_MONETIZATION !== 'off'` dans
+`src/config/monetization.ts`, bloc abonnement réintégré aux descriptions
+(voir docs/ASO.md), puis soumission de l'abonnement **avec** la nouvelle version.
+
+## État de la fiche au moment de la soumission
 
 | Élément | État |
 |---|---|
