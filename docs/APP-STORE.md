@@ -27,6 +27,9 @@ Déclarer, toutes « liées à l'identité » et « pour le fonctionnement de l'
 | Identifiant d'installation | Identifiers → Device ID | UUID aléatoire, clé du joueur au classement |
 | Sauvegarde de progression | Usage Data → Product Interaction | Leçons, stats de réponses, XP, révisions |
 | Rapports d'erreur | Diagnostics → Crash Data | **Non liée à l'identité** : ni compte, ni e-mail |
+
+Les 7 types sont **déclarés et publiés** dans App Store Connect (25/08/2026),
+tous en « Fonctionnalité de l'app », aucun en suivi, donc pas d'ATT.
 | Historique d'achat | Purchases → Purchase History | Via Apple / RevenueCat |
 
 À NE PAS déclarer : localisation, contacts, photos, santé, diagnostics,
@@ -113,6 +116,49 @@ Note pour le reviewer, à coller dans le champ « Notes » :
 > Profil → Pentaguin Pro, ou depuis n'importe quel contenu verrouillé. La partie
 > « offensive » est traitée sous un angle défensif et éducatif : aucun outil
 > d'attaque n'est fourni, les terminaux sont simulés et sans réseau.
+
+## Gap connu : révocation du jeton Sign in with Apple
+
+Apple demande, à la suppression d'un compte créé via Sign in with Apple, de
+révoquer le jeton côté Apple (`POST https://appleid.apple.com/auth/revoke`).
+Aujourd'hui `DELETE /v1/me` purge bien toutes les tables mais n'appelle pas
+cette API. Ce n'est pas bloquant à tous les coups en revue, mais c'est une
+exigence écrite (5.1.1(v)).
+
+Ce qu'il faut pour le faire, dans l'ordre :
+
+1. Côté app, transmettre l'`authorizationCode` renvoyé par
+   `expo-apple-authentication` à `POST /v1/auth/apple` (aujourd'hui seul
+   l'`identityToken` est envoyé). **Demande un nouveau build.**
+2. Côté serveur, échanger ce code contre un `refresh_token`
+   (`POST https://appleid.apple.com/auth/token`) et le stocker chiffré.
+3. À la suppression, signer un `client_secret` ES256 avec la clé `.p8` Apple
+   (team id, key id, client id = bundle id) et appeler `/auth/revoke`.
+
+Secrets requis dans `/etc/pentaguin/env` (jamais dans le repo) :
+`APPLE_TEAM_ID`, `APPLE_KEY_ID`, `APPLE_PRIVATE_KEY_P8`.
+
+## État de la soumission (25/08/2026)
+
+| Élément | État |
+|---|---|
+| Version | 1.1.0, build **22** attaché |
+| Captures | 6 en 1242×2688, dans l'ordre |
+| Description / mots-clés / promo | à jour, mention d'abonnement incluse |
+| Informations de revue | compte de démo, notes avec justification 5.1.1, capture du paywall jointe |
+| Abonnement | `pentaguin.pro.yearly` 19,99 $, « Prêt pour la vérification » |
+| Prix et disponibilité | gratuit, 175 pays |
+| Classification par âge | 4+ |
+| Confidentialité | 7 types déclarés et publiés |
+
+Restent à faire à la main :
+
+- [ ] Fiche de version → « Ajouter pour vérification » → « Brouillons de
+      soumission (1) », pour joindre la version au brouillon qui contient déjà
+      l'abonnement, puis « Envoyer pour vérification ».
+- [ ] Déclaration **DSA** (Informations sur l'app) : statut professionnel ou non,
+      obligatoire pour l'UE.
+- [ ] Tester le build 22 sur appareil : achat en bac à sable puis restauration.
 
 ## Divers
 
