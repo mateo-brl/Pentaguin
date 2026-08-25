@@ -33,6 +33,12 @@ export default function AppLayout() {
         contentStyle: { backgroundColor: theme.background },
       }}>
       <Stack.Screen name="paywall" options={{ presentation: 'modal' }} />
+      {/* Célébration d'achat : plein écran, sans geste de fermeture (le seul
+          moyen d'en sortir est le bouton, qui emmène dans le contenu). */}
+      <Stack.Screen
+        name="pro-welcome"
+        options={{ presentation: 'fullScreenModal', gestureEnabled: false }}
+      />
     </Stack>
   );
 }

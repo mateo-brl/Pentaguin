@@ -36,6 +36,16 @@ import { useStrings } from '@/i18n/strings';
 // Stable au niveau module : l'identifiant du pack est le même dans toutes les langues.
 const productId = purchasesConfig.iosProductByPack[DEFAULT_PACK_ID];
 
+/**
+ * Fermeture robuste : après un achat, la mise à jour des entitlements
+ * re-rend l'arbre et `router.back()` peut ne plus avoir d'historique. On
+ * retombe alors sur l'accueil plutôt que de laisser l'écran bloqué.
+ */
+function closePaywall(): void {
+  if (router.canGoBack()) router.back();
+  else router.replace('/');
+}
+
 function isUserCancellation(error: unknown): boolean {
   return (
     typeof error === 'object' &&
@@ -101,7 +111,9 @@ export default function PaywallScreen() {
     setBusy(true);
     try {
       await activeProvider.purchase(offer.productId);
-      router.back();
+      // On ne referme pas sur un simple « abonnement actif » : l'écran suivant
+      // montre ce qui vient de s'ouvrir.
+      router.replace('/pro-welcome');
     } catch (error) {
       if (!isUserCancellation(error)) Alert.alert(t.paywall.title, t.paywall.error);
     } finally {
@@ -117,7 +129,7 @@ export default function PaywallScreen() {
         t.paywall.title,
         restored.size > 0 ? t.paywall.restored : t.paywall.nothingToRestore,
       );
-      if (restored.size > 0) router.back();
+      if (restored.size > 0) closePaywall();
     } catch {
       Alert.alert(t.paywall.title, t.paywall.error);
     } finally {
@@ -144,8 +156,8 @@ export default function PaywallScreen() {
           grande cible (44×44) sous la safe area (Dynamic Island incluse). */}
       <View style={[styles.header, { paddingTop: Math.max(insets.top, Spacing.base) }]}>
         <Pressable
-          onPress={() => router.back()}
-          hitSlop={12}
+          onPress={closePaywall}
+          hitSlop={16}
           accessibilityRole="button"
           accessibilityLabel={t.paywall.close}
           style={({ pressed }) => [
@@ -163,11 +175,20 @@ export default function PaywallScreen() {
         </ThemedText>
 
         {isPro ? (
-          <Card background={theme.successSoft} style={styles.proBadge}>
-            <ThemedText type="smallBold" style={{ color: theme.success }}>
-              {t.paywall.alreadyPro}
-            </ThemedText>
-          </Card>
+          <>
+            <Card background={theme.successSoft} style={styles.proBadge}>
+              <ThemedText type="smallBold" style={{ color: theme.success }}>
+                {t.paywall.alreadyPro}
+              </ThemedText>
+            </Card>
+            {/* Déjà abonné : l'écran doit servir à gérer, pas à revendre. */}
+            <Button label={t.paywall.done} onPress={closePaywall} />
+            <Button
+              label={t.paywall.manage}
+              variant="ghost"
+              onPress={() => Linking.openURL('https://apps.apple.com/account/subscriptions')}
+            />
+          </>
         ) : (
           <>
             {/* Pitch personnalisé : ce que tu as accompli, puis ce qui t'attend. */}
