@@ -90,6 +90,9 @@ export default function PaywallScreen() {
   const [offer, setOffer] = useState<ProOffer | null>(null);
   const [offerLoading, setOfferLoading] = useState(true);
   const [busy, setBusy] = useState(false);
+  // Incrémenté par « Réessayer » : une offre qui ne charge pas (réseau, produit
+  // pas encore propagé par la boutique) ne doit pas laisser un cul-de-sac.
+  const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
     let mounted = true;
@@ -98,13 +101,16 @@ export default function PaywallScreen() {
       .then((value) => {
         if (mounted) setOffer(value);
       })
+      .catch(() => {
+        if (mounted) setOffer(null);
+      })
       .finally(() => {
         if (mounted) setOfferLoading(false);
       });
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [attempt]);
 
   const buy = async () => {
     if (!offer) return;
@@ -124,12 +130,12 @@ export default function PaywallScreen() {
   const restore = async () => {
     setBusy(true);
     try {
+      // On ne se contente pas d'« au moins un entitlement » : c'est celui du
+      // pack qui déverrouille le contenu, tout autre serait un faux positif.
       const restored = await activeProvider.restore();
-      Alert.alert(
-        t.paywall.title,
-        restored.size > 0 ? t.paywall.restored : t.paywall.nothingToRestore,
-      );
-      if (restored.size > 0) closePaywall();
+      const ok = restored.has(packEntitlement(pack.id));
+      Alert.alert(t.paywall.title, ok ? t.paywall.restored : t.paywall.nothingToRestore);
+      if (ok) closePaywall();
     } catch {
       Alert.alert(t.paywall.title, t.paywall.error);
     } finally {
@@ -243,9 +249,18 @@ export default function PaywallScreen() {
                 <Button label={t.paywall.buy} onPress={buy} disabled={busy} />
               </>
             ) : (
-              <ThemedText type="small" themeColor="textSecondary" style={styles.note}>
-                {t.paywall.unavailable}
-              </ThemedText>
+              <>
+                <ThemedText type="small" themeColor="textSecondary" style={styles.note}>
+                  {t.paywall.unavailable}
+                </ThemedText>
+                <Button
+                  label={t.paywall.retry}
+                  onPress={() => {
+                    setOfferLoading(true);
+                    setAttempt((n) => n + 1);
+                  }}
+                />
+              </>
             )}
 
             <Button label={t.paywall.restore} onPress={restore} variant="ghost" disabled={busy} />

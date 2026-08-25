@@ -11,9 +11,15 @@ export function useEntitlements(): Entitlements {
 
   useEffect(() => {
     let mounted = true;
-    activeProvider.getEntitlements().then((value) => {
-      if (mounted) setEntitlements(value);
-    });
+    // Un échec de lecture (hors-ligne, boutique injoignable) ne doit pas faire
+    // remonter une promesse non gérée : on garde le Set courant et le listener
+    // corrigera dès que l'info revient.
+    activeProvider
+      .getEntitlements()
+      .then((value) => {
+        if (mounted) setEntitlements(value);
+      })
+      .catch(() => {});
     const unsubscribe = activeProvider.onChange(setEntitlements);
     return () => {
       mounted = false;
