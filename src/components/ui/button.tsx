@@ -53,10 +53,20 @@ export function Button({ label, onPress, variant = 'primary', disabled, style }:
     },
     danger: { face: theme.dangerSoft, edge: theme.dangerDark, color: theme.danger },
   };
-  const colors = palette[variant];
+  // Un bouton désactivé rendu en ambre translucide vire au brun sale sur fond
+  // sombre, et son libellé repasse sous le seuil de lisibilité. On le neutralise
+  // plutôt que de le faire pâlir.
+  const colors = disabled
+    ? {
+        face: theme.backgroundElement,
+        edge: theme.border,
+        color: theme.textSecondary,
+        borderColor: theme.border,
+      }
+    : palette[variant];
 
   return (
-    <Pressable onPress={press} disabled={disabled} style={[styles.container, disabled && styles.disabled, style]}>
+    <Pressable onPress={press} disabled={disabled} style={[styles.container, style]}>
       {({ pressed }) => (
         <View style={styles.inner}>
           <View style={[styles.edge, { backgroundColor: colors.edge }]} />
