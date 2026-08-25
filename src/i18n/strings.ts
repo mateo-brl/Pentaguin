@@ -37,7 +37,7 @@ const fr = {
   },
   crash: {
     title: 'Oups, une erreur est survenue',
-    body: 'Quelque chose a mal tourné. Réessaie — si le problème persiste, redémarre l’application.',
+    body: 'Quelque chose a mal tourné. Réessaie. Si le problème persiste, redémarre l’application.',
     retry: 'Réessayer',
   },
   ranks: {
@@ -106,7 +106,7 @@ const fr = {
       'Sur notre serveur : e-mail ou identifiant Apple/Google, pseudo, avatar et XP quotidien. Sur l’appareil uniquement : ta progression et ton jeton de session (trousseau iOS sécurisé).',
     noneTitle: 'Ce qu’on ne fait pas',
     noneBody:
-      'Pas de publicité, pas de traceurs tiers, pas de revente de données. Les paiements passent par Apple et RevenueCat — on ne voit jamais tes informations bancaires.',
+      'Pas de publicité, pas de traceurs tiers, pas de revente de données. Les paiements passent par Apple et RevenueCat : on ne voit jamais tes informations bancaires.',
     rightsTitle: 'Tes droits',
     rightsBody:
       'Tu modifies ton pseudo, ton avatar et ton mot de passe dans l’app. « Supprimer mon compte » efface définitivement ton compte, ton pseudo, ton avatar et ton historique d’XP.',
@@ -219,7 +219,7 @@ const fr = {
     next: 'Suivante',
     finish: 'Terminer l’examen',
     confirmTitle: 'Terminer l’examen ?',
-    confirmBody: 'question(s) sans réponse — elles seront comptées fausses.',
+    confirmBody: 'question(s) sans réponse. Elles seront comptées fausses.',
     keepGoing: 'Continuer',
     confirm: 'Terminer',
     resultsTitle: 'Résultat de l’examen',
@@ -310,7 +310,7 @@ const fr = {
     restart: 'Recommencer',
     hint: 'Indice',
     typeCommand: 'Tape une commande…',
-    unknownCommand: 'commande non reconnue — réessaie (touche « Indice » au besoin)',
+    unknownCommand: 'commande non reconnue, réessaie (touche « Indice » au besoin)',
     reset: 'Réinitialiser',
     outcomeGood: 'Bien joué',
     outcomeBad: 'Raté',
@@ -336,7 +336,7 @@ const fr = {
     title: 'Classement',
     optInTitle: 'Participer au classement',
     optInBody:
-      'Compare ton XP avec les autres. Seuls un pseudo et tes points sont partagés — aucune donnée personnelle, et tu peux arrêter quand tu veux.',
+      'Compare ton XP avec les autres. Seuls un pseudo et tes points sont partagés : aucune donnée personnelle, et tu peux arrêter quand tu veux.',
     pseudoPlaceholder: 'Ton pseudo (3-20 caractères)',
     join: 'Participer',
     invalidPseudo: 'Pseudo invalide : 3 à 20 caractères (lettres, chiffres, espaces, . _ -).',
@@ -377,7 +377,7 @@ const fr = {
     codePlaceholder: 'Code reçu par e-mail',
     newPasswordPlaceholder: 'Nouveau mot de passe (8 caractères min.)',
     resetDo: 'Réinitialiser le mot de passe',
-    resetDone: 'Mot de passe mis à jour — tu peux te connecter.',
+    resetDone: 'Mot de passe mis à jour, tu peux te connecter.',
     errorReset: 'Code invalide ou expiré.',
     back: 'Retour',
     gateTitle: 'Bienvenue sur Pentaguin',
@@ -386,7 +386,7 @@ const fr = {
     emailAccount: 'Compte e-mail',
     pseudoTitle: 'Choisis ton pseudo',
     pseudoIntro:
-      'Il te représente au classement. 3 à 20 caractères — tu pourras le changer plus tard.',
+      'Il te représente au classement. 3 à 20 caractères, tu pourras le changer plus tard.',
     pseudoPlaceholder: 'Ton pseudo',
     pseudoInvalid: 'Pseudo invalide : 3 à 20 caractères (lettres, chiffres, espaces, . _ -).',
     pseudoCta: 'Continuer',
@@ -475,7 +475,7 @@ const en: Strings = {
   },
   crash: {
     title: 'Oops, something went wrong',
-    body: 'Something broke. Try again — if it persists, restart the app.',
+    body: 'Something broke. Try again. If it persists, restart the app.',
     retry: 'Try again',
   },
   ranks: {
@@ -544,7 +544,7 @@ const en: Strings = {
       'On our server: email or Apple/Google identifier, pseudonym, avatar and daily XP. On the device only: your progress and session token (secure iOS keychain).',
     noneTitle: 'What we don’t do',
     noneBody:
-      'No ads, no third-party trackers, no selling of data. Payments go through Apple and RevenueCat — we never see your payment details.',
+      'No ads, no third-party trackers, no selling of data. Payments go through Apple and RevenueCat: we never see your payment details.',
     rightsTitle: 'Your rights',
     rightsBody:
       'You can change your pseudonym, avatar and password in the app. “Delete my account” permanently erases your account, pseudonym, avatar and XP history.',
@@ -657,7 +657,7 @@ const en: Strings = {
     next: 'Next',
     finish: 'Finish exam',
     confirmTitle: 'Finish exam?',
-    confirmBody: 'unanswered question(s) — they will count as wrong.',
+    confirmBody: 'unanswered question(s). They will count as wrong.',
     keepGoing: 'Keep going',
     confirm: 'Finish',
     resultsTitle: 'Exam result',
@@ -747,7 +747,7 @@ const en: Strings = {
     restart: 'Restart',
     hint: 'Hint',
     typeCommand: 'Type a command…',
-    unknownCommand: 'command not recognized — try again (tap “Hint” if needed)',
+    unknownCommand: 'command not recognized, try again (tap “Hint” if needed)',
     reset: 'Reset',
     outcomeGood: 'Well played',
     outcomeBad: 'Failed',
@@ -773,7 +773,7 @@ const en: Strings = {
     title: 'Leaderboard',
     optInTitle: 'Join the leaderboard',
     optInBody:
-      'Compare your XP with others. Only a pseudonym and your points are shared — no personal data, and you can stop anytime.',
+      'Compare your XP with others. Only a pseudonym and your points are shared: no personal data, and you can stop anytime.',
     pseudoPlaceholder: 'Your pseudonym (3-20 characters)',
     join: 'Join',
     invalidPseudo: 'Invalid pseudonym: 3 to 20 characters (letters, digits, spaces, . _ -).',
@@ -814,7 +814,7 @@ const en: Strings = {
     codePlaceholder: 'Code received by email',
     newPasswordPlaceholder: 'New password (min. 8 characters)',
     resetDo: 'Reset password',
-    resetDone: 'Password updated — you can sign in.',
+    resetDone: 'Password updated, you can sign in.',
     errorReset: 'Invalid or expired code.',
     back: 'Back',
     gateTitle: 'Welcome to Pentaguin',
@@ -823,7 +823,7 @@ const en: Strings = {
     emailAccount: 'Email account',
     pseudoTitle: 'Choose your pseudonym',
     pseudoIntro:
-      'It represents you on the leaderboard. 3 to 20 characters — you can change it later.',
+      'It represents you on the leaderboard. 3 to 20 characters, you can change it later.',
     pseudoPlaceholder: 'Your pseudonym',
     pseudoInvalid: 'Invalid pseudonym: 3 to 20 characters (letters, digits, spaces, . _ -).',
     pseudoCta: 'Continue',

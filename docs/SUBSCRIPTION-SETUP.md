@@ -1,9 +1,9 @@
-# Abonnement annuel — mise en place (App Store Connect + RevenueCat)
+# Abonnement annuel : mise en place (App Store Connect + RevenueCat)
 
 Modèle retenu : **abonnement auto-renouvelable annuel, 19,99 $/an**.
 Côté code, tout est déjà en place (`src/config/monetization.ts`, paywall
 conforme guideline 3.1.2). Il reste des actions **dans les consoles**, à faire
-par Mateo — je n'y ai pas accès.
+par Mateo, je n'y ai pas accès.
 
 Identifiant produit attendu par l'app : **`pentaguin.pro.yearly`**
 
@@ -24,9 +24,9 @@ Identifiant produit attendu par l'app : **`pentaguin.pro.yearly`**
    régions (≈ 21,99 € en zone euro selon la grille du moment ; vérifie et ajuste
    la France si tu veux un prix rond).
 4. **Localisations** (au moins FR + EN) :
-   - FR — Nom d'affichage : `Pentaguin Pro` · Description :
+   - FR, nom d'affichage : `Pentaguin Pro` · Description :
      `Accès complet : les 8 thèmes, 64 leçons, plus de 500 questions, les examens blancs et les missions.`
-   - EN — Display name: `Pentaguin Pro` · Description:
+   - EN, display name: `Pentaguin Pro` · Description:
      `Full access: all 8 themes, 64 lessons, 500+ questions, mock exams and missions.`
 5. **Capture d'écran de revue** : une capture du paywall de l'app (obligatoire).
 6. **Informations de revue** : indiquer un compte de test si nécessaire.
@@ -46,7 +46,7 @@ déjà) et **y rattacher le nouveau produit**.
 > entitlement, **aucun code ne change** côté gating.
 
 **Offerings** (optionnel mais conseillé) : un offering `default` avec un package
-`$rc_annual` pointant sur le produit — utile si tu veux plus tard tester des
+`$rc_annual` pointant sur le produit, utile si tu veux plus tard tester des
 prix sans publier de build.
 
 ## 3. Vérifier
@@ -79,7 +79,7 @@ dans la description, le texte promotionnel ou les captures. Voir
 
 ## 6. Honnêteté produit
 
-Un abonnement annuel se justifie si le contenu **continue d'arriver**. Prévois
-un rythme (nouvelles questions, nouveaux thèmes, nouveaux packs de certification)
-et annonce-le dans la description : c'est ce qui transforme un abonnement en
-achat perçu comme juste, et ce qui évite les résiliations en masse au bout d'un an.
+Le premier renouvellement tombe un an après le premier abonné. D'ici là, il faut
+que du contenu soit arrivé (nouvelles questions, nouveaux thèmes, un autre pack de
+certification), sinon les résiliations arrivent en bloc. Annonce le rythme prévu
+dans la description de l'App Store : c'est ce que l'abonné vérifie avant de payer.
