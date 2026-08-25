@@ -79,14 +79,9 @@ RESPECTUEUX
 Pas de pub, pas de traceurs, pas de revente de données. La partie offensive
 reste éducative et défensive, dans un cadre légal.
 
-PENTAGUIN PRO
-Deux thèmes complets et un aperçu de chaque autre restent gratuits. L’abonnement
-Pentaguin Pro ouvre les 8 thèmes, les 514 questions, les examens blancs et toute
-la pratique : 19,99 $ par an, renouvelé automatiquement sauf résiliation au moins
-24 h avant la fin de la période. Tu gères ou résilies l’abonnement dans les
-réglages de ton compte App Store.
-Conditions : https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
-Confidentialité : https://pentaguin.mateobrl.fr/privacy
+ENTIÈREMENT GRATUIT
+Les 8 thèmes, les 514 questions, les examens blancs et toute la pratique sont
+ouverts. Pas de pub, pas d’achat intégré.
 
 Pentaguin est indépendant de CompTIA. CompTIA et Security+ appartiennent à leurs
 propriétaires respectifs.
@@ -139,14 +134,9 @@ RESPECTFUL
 No ads, no trackers, no data resale. The offensive part stays educational and
 defensive, within a legal framework.
 
-PENTAGUIN PRO
-Two full themes and a preview of every other one stay free. The Pentaguin Pro
-subscription opens all 8 themes, the 514 questions, the mock exams and all the
-practice: $19.99 per year, renewed automatically unless cancelled at least 24
-hours before the end of the period. You manage or cancel the subscription in
-your App Store account settings.
-Terms: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
-Privacy: https://pentaguin.mateobrl.fr/privacy
+FULLY FREE
+All 8 themes, the 514 questions, the mock exams and all the practice are open.
+No ads, no in-app purchases.
 
 Pentaguin is independent of CompTIA. CompTIA and Security+ belong to their
 respective owners.
@@ -177,12 +167,21 @@ scanne, il ne lit pas). Ordre = de l'accroche émotionnelle vers la preuve.
   montent (Claude peut produire une maquette d'artefact pour valider le rendu
   avant montage final).
 
-## Modèle : abonnement annuel
+## Modèle : gratuit au lancement, abonnement ensuite
 
-Abonnement auto-renouvelable **19,99 $/an** (produit `pentaguin.pro.yearly`).
-Le paywall affiche durée, prix, équivalent mensuel, mention de renouvellement
-automatique et liens CGU + confidentialité (exigés par la guideline 3.1.2).
-Ne PAS écrire « achat unique » ni « pas d'abonnement » dans les métadonnées.
+**Version 1.1.0 : entièrement gratuite, sans achat intégré.** Vendre suppose
+d'être déclaré commerçant au sens du DSA côté Apple, ce qui suppose un SIRET
+côté France. Tant que ce n'est pas en place, l'app sort gratuite et le curseur
+`monetizationConfig.enabled` est à `off` par défaut
+(`src/config/monetization.ts`) : le binaire et les mises à jour OTA lisent la
+même valeur, donc pas de divergence.
+
+**Quand le SIRET et le statut de commerçant seront là**, remettre
+`enabled: process.env.EXPO_PUBLIC_MONETIZATION !== 'off'`, réintégrer le bloc
+abonnement dans les descriptions FR et EN (durée, prix, renouvellement
+automatique, liens CGU et confidentialité, exigés par la guideline 3.1.2), et
+soumettre l'abonnement `pentaguin.pro.yearly` **avec** la version qui l'active.
+Ne PAS écrire « achat unique » ni « pas d'abonnement ».
 Mise en place : voir [docs/SUBSCRIPTION-SETUP.md](SUBSCRIPTION-SETUP.md).
 
 ## Après la publication
