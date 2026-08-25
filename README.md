@@ -54,6 +54,10 @@ gamifié, en **français** (avec la terminologie technique anglaise) et **anglai
   d'apprendre** (« à ton avis ? »), tu démontes les idées reçues en vrai/faux, tu
   retournes des cartes. Chaque leçon porte un niveau 1-15 : l'onglet Apprendre
   met en avant celles **de ton rang**.
+- **Banque de questions & examens blancs** — **514 questions** avec explications
+  détaillées (les 450 questions de positionnement servent aussi de banque jouable,
+  rattachées à leur thème), quiz par thème et **3 examens blancs chronométrés**
+  à tirage pondéré selon les poids officiels des domaines, rejouables.
 - **Pratique en situation** — 4 types d'exercices (un **terminal à jetons** qu'on
   compose sans clavier, analyse d'artefacts, remise en ordre, scénarios à choix)
   et **8 missions scénarisées** qui les enchaînent en enquêtes : briefing →
@@ -65,8 +69,10 @@ gamifié, en **français** (avec la terminologie technique anglaise) et **anglai
 - **Classement** — XP quotidien et rang synchronisés, ligues.
 - **Offline-first** — l'essentiel vit sur l'appareil (SQLite) ; le compte sert
   d'identité de classement et de synchronisation.
-- **Monétisation douce** — freemium généreux (thèmes fondateurs gratuits), achat
-  unique isolé et désactivable ; pas de dark patterns.
+- **Monétisation douce** — freemium généreux (2 thèmes complets gratuits + un
+  avant-goût de chaque autre), puis **abonnement annuel** ; logique isolée dans
+  `src/features/monetization/` et désactivable (`EXPO_PUBLIC_MONETIZATION=off`).
+  Une seule proposition spontanée à vie, pas de dark patterns.
 
 ---
 
