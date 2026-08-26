@@ -344,4 +344,11 @@ export function resetLocalProgress(): void {
   `);
   const keep = DEVICE_SCOPED_KV.map(() => '?').join(', ');
   db.runSync(`DELETE FROM kv WHERE key NOT IN (${keep})`, DEVICE_SCOPED_KV);
+  // `onboarding_seen` est effacé volontairement : un compte neuf doit revoir la
+  // présentation. Mais `hasChosenLocale()` retombe sur lui quand `locale_chosen`
+  // n'a jamais été écrit (installations antérieures à l'écran de langue) : sans
+  // cette ligne, supprimer son compte renvoyait au sélecteur de langue, comme
+  // une installation neuve.
+  db.runSync(`INSERT INTO kv (key, value) VALUES ('locale_chosen', '1')
+              ON CONFLICT(key) DO UPDATE SET value = '1'`);
 }

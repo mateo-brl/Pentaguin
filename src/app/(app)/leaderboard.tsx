@@ -106,10 +106,17 @@ export default function LeaderboardScreen() {
       setError(false);
       try {
         const token = await getToken();
-        await syncActivity(
-          buildSyncPayload(getDeviceId(), pseudo, getDailyActivity(), getRank()),
-          token,
-        );
+        // L'envoi de son propre score ne doit pas décider de l'affichage de la
+        // liste : un échec de sync (token expiré, trousseau injoignable) faisait
+        // afficher « Classement indisponible » alors que l'API répondait.
+        try {
+          await syncActivity(
+            buildSyncPayload(getDeviceId(), pseudo, getDailyActivity(), getRank()),
+            token,
+          );
+        } catch {
+          // Le classement reste consultable, le score partira au prochain passage.
+        }
         const data = await fetchLeaderboard(period);
         if (!cancelled) {
           setEntries(data);

@@ -24,6 +24,7 @@ import {
   type Me,
   type Session,
 } from './api';
+import { reloadDailyGoal } from '@/features/settings/daily-goal';
 import { pushNow } from '@/features/sync/cloud-save';
 
 import { clearToken, getToken, setToken } from './token';
@@ -171,7 +172,10 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const signOut = useCallback(async (wipeLocal = true, push = true) => {
     if (push) await pushNow();
     await clearToken();
-    if (wipeLocal) resetLocalProgress();
+    if (wipeLocal) {
+      resetLocalProgress();
+      reloadDailyGoal();
+    }
     setKv(READY_KEY, '');
     resetLeaderboardIdentity();
     setTokenState(null);
