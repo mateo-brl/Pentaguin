@@ -12,7 +12,7 @@ import { Avatar } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Radius, Spacing } from '@/theme';
-import { deleteAccount } from '@/features/account/api';
+import { ApiError, deleteAccount } from '@/features/account/api';
 import {
   AVATAR_COLORS,
   AVATAR_ICONS,
@@ -82,13 +82,22 @@ export default function AccountScreen() {
         text: t.account.confirmDelete,
         style: 'destructive',
         onPress: async () => {
+          // Sans état occupé, il peut s'écouler jusqu'à 10 s entre l'appui et la
+          // bascule d'écran, sans rien à l'image : ça se lit comme un bouton mort.
+          setBusy(true);
           try {
             if (token) await deleteAccount(token);
             // Pas de sauvegarde avant de sortir : le compte vient d'être
             // supprimé côté serveur, pousser la progression le recréerait.
             await signOut(true, false);
-          } catch {
-            toast.show(t.account.errorGeneric, 'error');
+          } catch (error) {
+            // 401 = le compte a bien été supprimé mais la réponse s'est perdue.
+            // Rester connecté sur un compte inexistant laisserait la progression
+            // locale repartir sur le compte suivant.
+            if (error instanceof ApiError && error.status === 401) await signOut(true, false);
+            else toast.show(t.account.errorGeneric, 'error');
+          } finally {
+            setBusy(false);
           }
         },
       },

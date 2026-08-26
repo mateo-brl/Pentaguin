@@ -197,13 +197,22 @@ function TerminalPlayer({ ex, onLeave }: { ex: TerminalExercise; onLeave: () => 
       ) : (
         <>
           <Button label={t.practice.validate} onPress={submit} disabled={!command.trim()} />
-          {step.hint && (
-            <Button
-              label={showHint ? `${t.practice.hint} : ${step.hint}` : t.practice.hint}
-              variant="ghost"
-              onPress={() => setShowHint(true)}
-            />
-          )}
+          {step.hint &&
+            (showHint ? (
+              // L'indice ne tient pas dans un bouton : le variant ghost a une
+              // hauteur figée de 44 px, et la commande la plus longue fait
+              // trois lignes. Elle chevauchait les boutons voisins.
+              <View style={[styles.hintBox, { backgroundColor: theme.backgroundElement }]}>
+                <ThemedText type="label" themeColor="accent">
+                  {t.practice.hint}
+                </ThemedText>
+                <ThemedText style={[styles.termText, { color: theme.text }]}>
+                  {step.hint}
+                </ThemedText>
+              </View>
+            ) : (
+              <Button label={t.practice.hint} variant="ghost" onPress={() => setShowHint(true)} />
+            ))}
           {pool.length > 0 && (
             <Button
               label={keyboardMode ? t.practice.switchTokens : t.practice.switchKeyboard}
@@ -474,6 +483,11 @@ const styles = StyleSheet.create({
     borderRadius: Radius.sm / 2,
     paddingHorizontal: Spacing.xs,
     paddingVertical: 1,
+  },
+  hintBox: {
+    gap: Spacing.xs,
+    padding: Spacing.base,
+    borderRadius: Radius.md,
   },
   tokenPool: {
     flexDirection: 'row',
