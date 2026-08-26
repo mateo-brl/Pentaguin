@@ -138,12 +138,27 @@ Ce qu'il faut pour le faire, dans l'ordre :
 Secrets requis dans `/etc/pentaguin/env` (jamais dans le repo) :
 `APPLE_TEAM_ID`, `APPLE_KEY_ID`, `APPLE_PRIVATE_KEY_P8`.
 
-## Publié le 25/08/2026
+## Refusée le 26/08/2026 — Guideline 2.1, Information Needed
 
-**Version 1.1.0, build 23, approuvée par Apple.** Première version publique.
-Le mur de connexion est passé en revue sans rejet 5.1.1(i), et la partie
-offensive n'a pas soulevé d'objection : les notes de revue ont fait leur
-travail, à reprendre telles quelles pour les prochaines versions.
+**Version 1.1.0, build 23, refusée.** Ce n'est pas un rejet fonctionnel : Apple
+n'a signalé aucun bug, ni le mur de connexion, ni la partie offensive. Ils
+demandent des informations complémentaires avant de poursuivre la revue.
+
+Les sept points demandés :
+
+1. **Un enregistrement d'écran** capturé sur un appareil physique, démarrant au
+   lancement de l'app et montrant le parcours type, dont l'inscription, la
+   connexion et la suppression de compte. **Seul point qui demande Mateo.**
+2. La liste des modèles d'appareils et versions d'OS testés.
+3. Une description des fonctions et du public visé.
+4. Les instructions d'accès aux fonctions principales et les identifiants.
+5. La liste des services externes utilisés.
+6. Les différences régionales, ou la confirmation qu'il n'y en a pas.
+7. Toute documentation si l'app touche à un secteur régulé ou à du contenu tiers
+   protégé.
+
+Apple demande que ces informations vivent dans le champ **Notes** des
+informations de vérification pour les soumissions futures.
 
 Cette première version part **entièrement gratuite, sans achat intégré** :
 vendre suppose d'être déclaré commerçant au sens du DSA, ce qui suppose un
