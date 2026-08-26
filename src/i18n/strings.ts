@@ -360,6 +360,16 @@ const fr = {
     error: 'Classement indisponible. Vérifie ta connexion.',
     you: 'toi',
     points: 'XP',
+    moderationTitle: 'Ce joueur te dérange ?',
+    moderationBody:
+      'Un pseudo offensant n’a rien à faire ici. Tu peux le masquer tout de suite, et nous le signaler pour qu’on intervienne.',
+    report: 'Signaler et masquer',
+    block: 'Masquer seulement',
+    reported: 'Signalement envoyé. Ce joueur est masqué.',
+    blocked: 'Ce joueur est masqué.',
+    reportFailed: 'Signalement impossible. Le joueur reste masqué sur cet appareil.',
+    hiddenCount: '{n} joueur(s) masqué(s)',
+    unblockAll: 'Réafficher tout le monde',
   },
   account: {
     title: 'Compte',
@@ -378,7 +388,7 @@ const fr = {
     delete: 'Supprimer mon compte',
     deleteConfirmTitle: 'Supprimer le compte ?',
     deleteConfirmBody:
-      'Ton compte, ton pseudo et ton score du classement seront définitivement supprimés. Un abonnement en cours n’est pas résilié pour autant : il se gère depuis les réglages de ton compte App Store.',
+      'Ton compte, ton pseudo et ton score du classement seront définitivement supprimés. Cette action est irréversible.',
     cancel: 'Annuler',
     confirmDelete: 'Supprimer',
     errorCredentials: 'E-mail ou mot de passe incorrect.',
@@ -811,6 +821,16 @@ const en: Strings = {
     error: 'Leaderboard unavailable. Check your connection.',
     you: 'you',
     points: 'XP',
+    moderationTitle: 'Is this player a problem?',
+    moderationBody:
+      'An offensive name has no place here. You can hide it right away, and report it so we can act.',
+    report: 'Report and hide',
+    block: 'Hide only',
+    reported: 'Report sent. This player is now hidden.',
+    blocked: 'This player is now hidden.',
+    reportFailed: 'Could not send the report. The player stays hidden on this device.',
+    hiddenCount: '{n} hidden player(s)',
+    unblockAll: 'Show everyone again',
   },
   account: {
     title: 'Account',
@@ -829,7 +849,7 @@ const en: Strings = {
     delete: 'Delete my account',
     deleteConfirmTitle: 'Delete account?',
     deleteConfirmBody:
-      'Your account, pseudonym and leaderboard score will be permanently deleted. An active subscription is not cancelled by this: manage it from your App Store account settings.',
+      'Your account, pseudonym and leaderboard score will be permanently deleted. This cannot be undone.',
     cancel: 'Cancel',
     confirmDelete: 'Delete',
     errorCredentials: 'Incorrect email or password.',

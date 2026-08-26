@@ -1,6 +1,7 @@
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { Stack } from 'expo-router';
-import { useEffect, useState } from 'react';
-import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
+import { useEffect, useMemo, useState } from 'react';
+import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -28,6 +29,14 @@ import {
   isValidPseudo,
   setPseudo as persistPseudo,
 } from '@/features/leaderboard/identity';
+import {
+  blockPseudo,
+  filterBlocked,
+  getBlockedPseudos,
+  reportAndBlock,
+  unblockAll,
+} from '@/features/leaderboard/moderation';
+import { useToast } from '@/features/toast/toast';
 import { useTheme } from '@/hooks/use-theme';
 import { useStrings } from '@/i18n/strings';
 
@@ -46,6 +55,46 @@ export default function LeaderboardScreen() {
   const [entries, setEntries] = useState<LeaderboardEntry[] | null>(null);
   const [error, setError] = useState(false);
   const [retry, setRetry] = useState(0);
+  const [blocked, setBlocked] = useState<string[]>(() => getBlockedPseudos());
+  const toast = useToast();
+
+  // Le classement est la seule surface où l'on voit du contenu écrit par
+  // d'autres (leur pseudo). La guideline 1.2 d'Apple demande de pouvoir le
+  // signaler ET d'en bloquer l'auteur : le masquage est local et immédiat, le
+  // signalement part au serveur.
+  const visible = useMemo(
+    () => (entries === null ? null : filterBlocked(entries, blocked)),
+    [entries, blocked],
+  );
+
+  const moderate = (target: string) => {
+    Alert.alert(t.leaderboard.moderationTitle, t.leaderboard.moderationBody, [
+      { text: t.account.cancel, style: 'cancel' },
+      {
+        text: t.leaderboard.block,
+        onPress: () => {
+          blockPseudo(target);
+          setBlocked(getBlockedPseudos());
+          toast.show(t.leaderboard.blocked, 'success');
+        },
+      },
+      {
+        text: t.leaderboard.report,
+        style: 'destructive',
+        onPress: async () => {
+          try {
+            await reportAndBlock(target, await getToken());
+            toast.show(t.leaderboard.reported, 'success');
+          } catch {
+            // Le masquage local a déjà eu lieu : on ne laisse pas l'échec
+            // réseau remettre le contenu offensant sous les yeux.
+            toast.show(t.leaderboard.reportFailed, 'error');
+          }
+          setBlocked(getBlockedPseudos());
+        },
+      },
+    ]);
+  };
 
   useEffect(() => {
     if (!pseudo) return;
@@ -131,21 +180,21 @@ export default function LeaderboardScreen() {
               </ThemedText>
               <Button label={t.common.retry} variant="secondary" onPress={() => setRetry((r) => r + 1)} />
             </View>
-          ) : entries === null ? (
+          ) : visible === null ? (
             <ActivityIndicator style={styles.loading} color={theme.accent} />
-          ) : entries.length === 0 ? (
+          ) : visible.length === 0 ? (
             <ThemedText type="small" themeColor="textSecondary" style={styles.message}>
               {t.leaderboard.empty}
             </ThemedText>
           ) : (
             <ScrollView contentContainerStyle={styles.list}>
               <RowGroup>
-                {(entries ?? []).map((item, index) => {
+                {(visible ?? []).map((item, index) => {
                   const isSelf = item.pseudo === pseudo;
                   const podium = item.rank <= 3;
                   return (
                     <Row
-                      key={item.pseudo}
+                      key={`${item.rank}-${item.pseudo}`}
                       first={index === 0}
                       title={`${item.pseudo}${isSelf ? ` (${t.leaderboard.you})` : ''}`}
                       subtitle={Number.isInteger(item.rankId) ? rankLabel(item.rankId as number, t) : undefined}
@@ -168,14 +217,45 @@ export default function LeaderboardScreen() {
                         </View>
                       }
                       trailing={
-                        <ThemedText type="smallBold" themeColor="accent">
-                          {item.xp} {t.leaderboard.points}
-                        </ThemedText>
+                        <View style={styles.trailing}>
+                          <ThemedText type="smallBold" themeColor="accent">
+                            {item.xp} {t.leaderboard.points}
+                          </ThemedText>
+                          {!isSelf && (
+                            <Pressable
+                              onPress={() => moderate(item.pseudo)}
+                              hitSlop={12}
+                              accessibilityRole="button"
+                              accessibilityLabel={t.leaderboard.moderationTitle}
+                              style={({ pressed }) => pressed && styles.pressed}>
+                              <Ionicons
+                                name="ellipsis-horizontal"
+                                size={18}
+                                color={theme.textSecondary}
+                              />
+                            </Pressable>
+                          )}
+                        </View>
                       }
                     />
                   );
                 })}
               </RowGroup>
+              {blocked.length > 0 && (
+                <View style={styles.blockedBox}>
+                  <ThemedText type="small" themeColor="textSecondary">
+                    {t.leaderboard.hiddenCount.replace('{n}', String(blocked.length))}
+                  </ThemedText>
+                  <Button
+                    label={t.leaderboard.unblockAll}
+                    variant="ghost"
+                    onPress={() => {
+                      unblockAll();
+                      setBlocked([]);
+                    }}
+                  />
+                </View>
+              )}
             </ScrollView>
           )}
         </>
@@ -187,6 +267,19 @@ export default function LeaderboardScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  trailing: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.sm,
+  },
+  pressed: {
+    opacity: 0.5,
+  },
+  blockedBox: {
+    alignItems: 'center',
+    gap: Spacing.xs,
+    paddingTop: Spacing.base,
   },
   optIn: {
     padding: Spacing.lg,
