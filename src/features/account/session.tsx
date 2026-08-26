@@ -9,7 +9,7 @@ import {
   type ReactNode,
 } from 'react';
 
-import { getKv, setKv } from '@/db/repositories';
+import { getKv, resetLocalProgress, setKv } from '@/db/repositories';
 import {
   resetLeaderboardIdentity,
   setPseudo as setLocalPseudo,
@@ -24,6 +24,8 @@ import {
   type Me,
   type Session,
 } from './api';
+import { pushNow } from '@/features/sync/cloud-save';
+
 import { clearToken, getToken, setToken } from './token';
 
 // Drapeau local « compte prêt » (connecté + pseudo choisi). Permet, hors-ligne,
@@ -47,7 +49,8 @@ type SessionValue = {
   signIn: (session: Session) => Promise<void>;
   submitPseudo: (pseudo: string) => Promise<void>;
   updateAvatar: (avatar: string) => Promise<void>;
-  signOut: () => Promise<void>;
+  /** `wipeLocal` : efface la progression locale (défaut). `push` : sauvegarde avant. */
+  signOut: (wipeLocal?: boolean, push?: boolean) => Promise<void>;
   refresh: () => Promise<void>;
 };
 
@@ -158,8 +161,17 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     [token],
   );
 
-  const signOut = useCallback(async () => {
+  /**
+   * `wipeLocal` efface la progression restée sur l'appareil. Indispensable : la
+   * sauvegarde cloud pousse le local vers le compte connecté, donc sans ça le
+   * compte suivant hérite de la progression du précédent (rang, XP, onboarding
+   * déjà vu). On pousse d'abord, au cas où du travail n'aurait pas encore été
+   * synchronisé — inutile après une suppression, le compte n'existe plus.
+   */
+  const signOut = useCallback(async (wipeLocal = true, push = true) => {
+    if (push) await pushNow();
     await clearToken();
+    if (wipeLocal) resetLocalProgress();
     setKv(READY_KEY, '');
     resetLeaderboardIdentity();
     setTokenState(null);

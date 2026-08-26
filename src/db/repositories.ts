@@ -308,3 +308,40 @@ export function mergeDailyActivity(date: string, xp: number): void {
     [date, xp],
   );
 }
+
+/**
+ * Réglages qui appartiennent à l'APPAREIL, pas au compte : ils survivent à une
+ * déconnexion ou à une suppression de compte. Tout le reste de la base locale
+ * est une progression, donc lié au compte qui vient de partir.
+ */
+const DEVICE_SCOPED_KV = [
+  'locale',
+  'locale_chosen',
+  'theme_mode',
+  'reminders_enabled',
+  'reminder_signature',
+  'reminder_prompted',
+];
+
+/**
+ * Efface la progression locale : leçons, tentatives, statistiques, activité,
+ * révisions, et toutes les clés KV sauf les préférences d'appareil.
+ *
+ * Sans ça, se déconnecter puis se reconnecter avec un AUTRE compte lui fait
+ * hériter de la progression du précédent : la sauvegarde cloud pousse le local
+ * (non vide) vers le compte neuf. Après une suppression de compte, le rang, l'XP
+ * et l'onboarding déjà vu réapparaissaient donc sur le compte suivant.
+ */
+export function resetLocalProgress(): void {
+  const db = getDb();
+  db.execSync(`
+    DELETE FROM attempt_answer;
+    DELETE FROM attempt;
+    DELETE FROM lesson_progress;
+    DELETE FROM question_stat;
+    DELETE FROM daily_activity;
+    DELETE FROM review;
+  `);
+  const keep = DEVICE_SCOPED_KV.map(() => '?').join(', ');
+  db.runSync(`DELETE FROM kv WHERE key NOT IN (${keep})`, DEVICE_SCOPED_KV);
+}
