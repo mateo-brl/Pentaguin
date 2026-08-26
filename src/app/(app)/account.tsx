@@ -84,7 +84,9 @@ export default function AccountScreen() {
         onPress: async () => {
           try {
             if (token) await deleteAccount(token);
-            await signOut();
+            // Pas de sauvegarde avant de sortir : le compte vient d'être
+            // supprimé côté serveur, pousser la progression le recréerait.
+            await signOut(true, false);
           } catch {
             toast.show(t.account.errorGeneric, 'error');
           }
