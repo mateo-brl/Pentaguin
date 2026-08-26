@@ -173,6 +173,26 @@ export default function HomeScreen() {
             </View>
           </View>
 
+          {/* Compte neuf : sans rang, la carte « Reprendre » ne se rend pas et
+              l'écran n'offre plus aucune direction. On oriente vers le test. */}
+          {rank == null && (
+            <Pressable
+              onPress={() => router.push('/placement')}
+              style={({ pressed }) => [
+                styles.resumeCard,
+                { backgroundColor: theme.backgroundElement, borderColor: theme.accent },
+                pressed && styles.pressed,
+              ]}>
+              <ThemedText type="label" style={{ color: theme.accent }}>
+                {t.home.placementLabel}
+              </ThemedText>
+              <ThemedText type="subtitle">{t.home.placementTitle}</ThemedText>
+              <ThemedText type="small" themeColor="textSecondary">
+                {t.home.placementBody}
+              </ThemedText>
+            </Pressable>
+          )}
+
           {/* Reprendre : l'action n°1 de l'écran. */}
           {next && nextDomain && (
             <Pressable
@@ -219,7 +239,7 @@ export default function HomeScreen() {
                 numberOfLines={1}
                 adjustsFontSizeToFit
                 style={[styles.statPrimaryValue, { color: theme.accent }]}>
-                {rank != null ? rankLabel(rank, t) : '—'}
+                {rank != null ? rankLabel(rank, t) : t.home.rankUnranked}
               </ThemedText>
             </View>
 
