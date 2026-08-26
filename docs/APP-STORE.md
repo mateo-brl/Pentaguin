@@ -138,10 +138,12 @@ Ce qu'il faut pour le faire, dans l'ordre :
 Secrets requis dans `/etc/pentaguin/env` (jamais dans le repo) :
 `APPLE_TEAM_ID`, `APPLE_KEY_ID`, `APPLE_PRIVATE_KEY_P8`.
 
-## Soumis le 25/08/2026
+## Publié le 25/08/2026
 
-**Version 1.1.0, build 23, état « En attente de vérification ».** Publication
-automatique après validation. Apple annonce jusqu'à 48 h.
+**Version 1.1.0, build 23, approuvée par Apple.** Première version publique.
+Le mur de connexion est passé en revue sans rejet 5.1.1(i), et la partie
+offensive n'a pas soulevé d'objection : les notes de revue ont fait leur
+travail, à reprendre telles quelles pour les prochaines versions.
 
 Cette première version part **entièrement gratuite, sans achat intégré** :
 vendre suppose d'être déclaré commerçant au sens du DSA, ce qui suppose un
