@@ -37,6 +37,11 @@ function errorMessage(error: unknown, t: Strings): string {
     if (error.status === 401) return t.account.errorCredentials;
     if (error.status === 409) return t.account.errorEmailTaken;
     if (error.status === 400) return t.account.errorInvalid;
+    // Un verrouillage anti-bourrage annoncé comme une panne réseau pousse à
+    // réessayer aussitôt, ce qui prolonge le verrou. Et si c'est le testeur
+    // Apple qui se trompe de mot de passe, il conclut à une app cassée.
+    if (error.status === 429) return t.account.errorTooMany;
+    if (error.status === 503) return t.account.errorUnavailable;
   }
   return t.account.errorGeneric;
 }
@@ -179,6 +184,7 @@ export default function SignInScreen() {
   };
 
   const handleApple = async () => {
+    setBusy(true);
     try {
       const credential = await AppleAuthentication.signInAsync({
         requestedScopes: [AppleAuthentication.AppleAuthenticationScope.EMAIL],
@@ -189,6 +195,8 @@ export default function SignInScreen() {
     } catch (err) {
       const code = (err as { code?: string })?.code;
       if (code !== 'ERR_REQUEST_CANCELED') setError(errorMessage(err, t));
+    } finally {
+      setBusy(false);
     }
   };
 
@@ -237,9 +245,9 @@ export default function SignInScreen() {
     <ThemedView style={styles.container}>
       <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
         <ScrollView
-          contentContainerStyle={styles.content}
+          automaticallyAdjustKeyboardInsets
           keyboardShouldPersistTaps="handled"
-        >
+          contentContainerStyle={styles.content}>
           <View style={styles.header}>
             <ThemedText type="title">
               {verifyToken

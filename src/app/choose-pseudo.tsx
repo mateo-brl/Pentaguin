@@ -43,9 +43,9 @@ export default function ChoosePseudoScreen() {
     <ThemedView style={styles.container}>
       <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
         <ScrollView
-          contentContainerStyle={styles.content}
+          automaticallyAdjustKeyboardInsets
           keyboardShouldPersistTaps="handled"
-        >
+          contentContainerStyle={styles.content}>
           <View style={styles.header}>
             <ThemedText type="title">{t.account.pseudoTitle}</ThemedText>
             <ThemedText type="small" themeColor="textSecondary">
