@@ -13,6 +13,15 @@ export function initDailyGoal(): void {
   if (stored === 'light' || stored === 'normal' || stored === 'intense') current = stored;
 }
 
+/**
+ * Relit la base après un effacement de progression. Sans ça, `current` garde en
+ * mémoire l'objectif du compte supprimé : l'anneau de l'accueil et la puce des
+ * réglages affichaient encore 50 XP sur un compte neuf.
+ */
+export function reloadDailyGoal(): void {
+  initDailyGoal();
+}
+
 export function getDailyGoalLevel(): GoalLevel {
   return current;
 }

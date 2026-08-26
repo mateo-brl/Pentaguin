@@ -1,5 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { Redirect, router, useFocusEffect } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -15,6 +15,7 @@ import { isLessonUnlockedNow, useEntitlements } from '@/features/monetization';
 import { recommendedLessons } from '@/features/rank/recommend';
 import { useRank } from '@/features/rank/ranks';
 import { useTheme } from '@/hooks/use-theme';
+import { PlacementGate } from '@/features/placement/placement-gate';
 import { useStrings } from '@/i18n/strings';
 
 /** Accroche d'une leçon : première phrase de son premier bloc de texte. */
@@ -42,8 +43,10 @@ export default function LearnScreen() {
     }, []),
   );
 
-  // Positionnement obligatoire avant d'accéder au contenu.
-  if (rank == null) return <Redirect href="/placement" />;
+  // Positionnement obligatoire avant d'accéder au contenu. `push` et non
+  // `Redirect` : un Redirect remplace la route (tabs) elle-même, la barre
+  // d'onglets disparaît et le test devient un cul-de-sac sans retour possible.
+  if (rank == null) return <PlacementGate />;
 
   const recommended = recommendedLessons(pack, rank, { exclude: completed, limit: 4 });
   const [hero, ...rest] = recommended;

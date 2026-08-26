@@ -52,6 +52,9 @@ const fr = {
     emperor: 'Empereur',
   },
   placement: {
+    gateTitle: 'On commence par situer ton niveau',
+    gateBody:
+      'Vingt questions, à peu près cinq minutes. Elles servent à te placer parmi les 15 rangs, pour que les leçons proposées ensuite soient à ta hauteur. Tu peux t’arrêter et y revenir.',
     title: 'Établis ton rang',
     intro:
       'Une vingtaine de questions, quelques minutes, pour situer ton niveau. Pas de piège : ça sert juste à t’orienter vers le bon contenu. Tu pourras le repasser quand tu veux.',
@@ -514,6 +517,9 @@ const en: Strings = {
     emperor: 'Emperor',
   },
   placement: {
+    gateTitle: 'Let’s find your level first',
+    gateBody:
+      'Twenty questions, about five minutes. They place you on one of the 15 ranks, so the lessons you get next match where you are. You can stop and come back.',
     title: 'Set your rank',
     intro:
       'About twenty questions, a few minutes, to gauge your level. No tricks: it just guides you to the right content. You can retake it anytime.',
