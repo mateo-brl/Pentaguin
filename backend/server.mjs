@@ -12,12 +12,12 @@
  * Secrets (jamais dans le repo, public) : /etc/pentaguin/env via systemd
  * EnvironmentFile — JWT_SECRET (sessions), GOOGLE_CLIENT_IDS (aud OAuth).
  */
-import { spawn } from 'node:child_process';
 import { createHash, randomBytes, randomUUID } from 'node:crypto';
-import { existsSync, readFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { DatabaseSync } from 'node:sqlite';
 
+import { sendMail } from './mail.mjs';
 import { emptySnapshot, mergeSnapshots } from './progress.mjs';
 
 import {
@@ -42,7 +42,6 @@ const GOOGLE_CLIENT_IDS = (process.env.GOOGLE_CLIENT_IDS ?? '')
   .map((value) => value.trim())
   .filter(Boolean);
 const MAIL_FROM = process.env.MAIL_FROM ?? 'pentaguin@mateobrl.fr';
-const SENDMAIL = '/usr/sbin/sendmail';
 
 // — garde-fous anti-abus --------------------------------------------------------
 const MAX_BODY_BYTES = 64 * 1024;
@@ -426,17 +425,17 @@ const updatePlayerRank = db.prepare(
   'UPDATE players SET rank = ?, updated_at = ? WHERE device_id = ?',
 );
 
-function sendMail(to, subject, text) {
-  return new Promise((resolve, reject) => {
-    const proc = spawn(SENDMAIL, ['-t']);
-    proc.on('error', reject);
-    proc.on('close', (code) => (code === 0 ? resolve() : reject(new Error(`sendmail_${code}`))));
-    proc.stdin.end(
-      `To: ${to}\nFrom: Pentaguin <${MAIL_FROM}>\nSubject: ${subject}\nContent-Type: text/plain; charset=utf-8\n\n${text}\n`,
-    );
+/**
+ * L'envoi passe par SMTP local (backend/mail.mjs). On journalise les échecs :
+ * les taire a coûté cher — aucun code de vérification ne partait, sans la
+ * moindre trace côté application.
+ */
+function deliver(to, subject, text) {
+  return sendMail(to, subject, text, MAIL_FROM).catch((error) => {
+    console.error(`[mail] échec d'envoi vers ${to} : ${error.message}`);
+    throw error;
   });
 }
-const mailAvailable = existsSync(SENDMAIL);
 
 /** Génère + envoie un code de vérification d'e-mail (6 chiffres, valable 15 min). */
 function sendVerificationCode(email) {
@@ -444,12 +443,11 @@ function sendVerificationCode(email) {
   const code = String(randomBytes(4).readUInt32BE() % 1_000_000).padStart(6, '0');
   const codeHash = createHash('sha256').update(code).digest('hex');
   upsertVerifyCode.run(email, codeHash, Date.now() + VERIFY_CODE_TTL_MS);
-  if (mailAvailable)
-    sendMail(
-      email,
-      'Verifie ton adresse Pentaguin',
-      `Ton code de vérification Pentaguin : ${code}\nIl expire dans 15 minutes. Si tu n'es pas à l'origine de cette inscription, ignore ce message.`,
-    ).catch(() => {});
+  deliver(
+    email,
+    'Vérifie ton adresse Pentaguin',
+    `Ton code de vérification Pentaguin : ${code}\nIl expire dans 15 minutes. Si tu n'es pas à l'origine de cette inscription, ignore ce message.`,
+  ).catch(() => {});
 }
 
 // Politique de confidentialité servie en HTML (URL publique pour l'App Store) :
@@ -867,15 +865,15 @@ async function handleResetRequest(req, res) {
   if (!requireJson(req, res)) return;
   const { email } = (await readJson(req)) ?? {};
   // Réponse identique que l'email existe ou non (pas d'énumération de comptes).
-  if (isEmail(email) && mailAvailable) {
+  if (isEmail(email)) {
     const user = selectUserByEmail.get(email.trim().toLowerCase());
     if (user?.password_hash && !mailCoolingDown(user.email)) {
       const code = String(randomBytes(4).readUInt32BE() % 1_000_000).padStart(6, '0');
       const codeHash = createHash('sha256').update(code).digest('hex');
       upsertResetCode.run(user.email, codeHash, Date.now() + RESET_CODE_TTL_MS);
-      sendMail(
+      deliver(
         user.email,
-        'Code de reinitialisation Pentaguin',
+        'Code de réinitialisation Pentaguin',
         `Ton code de réinitialisation Pentaguin : ${code}\nIl expire dans 15 minutes. Si tu n'es pas à l'origine de cette demande, ignore ce message.`,
       ).catch(() => {});
     }
@@ -1008,6 +1006,6 @@ process.on('uncaughtException', (err) => {
 
 server.listen(PORT, '127.0.0.1', () => {
   console.log(
-    `API Pentaguin sur 127.0.0.1:${PORT} (db: ${DB_PATH}, auth: ${JWT_SECRET ? 'active' : 'INACTIVE'}, mail: ${mailAvailable})`,
+    `API Pentaguin sur 127.0.0.1:${PORT} (db: ${DB_PATH}, auth: ${JWT_SECRET ? 'active' : 'INACTIVE'}, mail: SMTP ${process.env.SMTP_HOST ?? '127.0.0.1'}:${process.env.SMTP_PORT ?? 25})`,
   );
 });
