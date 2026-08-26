@@ -105,6 +105,14 @@ db.exec(`
     context    TEXT
   );
   CREATE INDEX IF NOT EXISTS idx_error_reports_created ON error_reports(created_at);
+  CREATE TABLE IF NOT EXISTS reports (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    pseudo      TEXT NOT NULL,
+    reporter_id TEXT,
+    created_at  INTEGER NOT NULL,
+    handled     INTEGER NOT NULL DEFAULT 0
+  );
+  CREATE INDEX IF NOT EXISTS idx_reports_open ON reports(handled, created_at);
   CREATE TABLE IF NOT EXISTS progress (
     user_id    TEXT PRIMARY KEY,
     data       TEXT NOT NULL,
@@ -222,7 +230,71 @@ const pruneErrorReports = db.prepare(`
 
 // — validation --------------------------------------------------------------------
 const isDeviceId = (value) => typeof value === 'string' && /^[0-9a-f-]{16,64}$/i.test(value);
-const isPseudo = (value) => typeof value === 'string' && /^[\p{L}\p{N} _.-]{3,20}$/u.test(value.trim());
+/**
+ * Modération des pseudos. Le pseudo est la SEULE surface de contenu écrit par
+ * l'utilisateur et visible des autres (au classement) : la guideline 1.2 d'Apple
+ * demande de filtrer les contenus offensants à la publication, pas seulement de
+ * les retirer après coup.
+ *
+ * Deux listes, parce qu'un simple `includes` sur des termes courts fait des
+ * dégâts : « nique » rejetterait « Technique », « rape » rejetterait « Grape »,
+ * « pd » rejetterait « Update ». Les termes sans ambiguïté sont cherchés en
+ * sous-chaîne ; les termes courts ou contenus dans des mots ordinaires ne
+ * matchent qu'en mot entier.
+ *
+ * La normalisation retire les accents et défait les substitutions « leet », sans
+ * quoi « c0nn4rd » passerait. Les séparateurs deviennent des espaces pour que la
+ * recherche par mot entier reste possible.
+ */
+const SLURS_SUBSTRING = [
+  'connard', 'connasse', 'enculé', 'encule', 'salope', 'putain', 'batard', 'batarde',
+  'bougnoule', 'chinetoque', 'youpin', 'negresse', 'tapette', 'pedale', 'pedophile',
+  'nigger', 'nigga', 'faggot', 'bitch', 'whore', 'motherfuck', 'asshole', 'cunt',
+  // Usurpation d'identité officielle : sans ambiguïté, personne ne s'appelle
+  // légitimement « PentaguinStaff ».
+  'pentaguin',
+];
+/** Termes courts ou présents dans des mots courants : mot entier uniquement. */
+const SLURS_WORD = [
+  'pd', 'fdp', 'ntm', 'tg', 'kkk', 'pute', 'merde', 'couille', 'bite', 'chatte',
+  'nique', 'niquer', 'zebi', 'negro', 'negre', 'raton',
+  'fuck', 'shit', 'slut', 'dick', 'cock', 'pussy', 'fag', 'rape', 'rapist',
+  'nazi', 'hitler', 'retard',
+  'admin', 'moderateur', 'moderator', 'support', 'staff', 'officiel',
+];
+
+function normalizePseudo(value) {
+  return value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[4@]/g, 'a')
+    .replace(/[3€]/g, 'e')
+    .replace(/[1!|]/g, 'i')
+    .replace(/0/g, 'o')
+    .replace(/[5$]/g, 's')
+    .replace(/7/g, 't')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
+/** Pseudo offensant, ou usurpation d'une identité officielle. */
+function isOffensivePseudo(value) {
+  const normalized = normalizePseudo(value);
+  if (!normalized) return false;
+  const collapsed = normalized.replace(/ /g, '');
+  if (SLURS_SUBSTRING.some((word) => collapsed.includes(word))) return true;
+  const tokens = new Set(normalized.split(' '));
+  // Un pseudo d'un seul mot est aussi testé sous sa forme sans séparateur :
+  // « n i q u e » se réduit à « nique ».
+  if (tokens.size > 1) tokens.add(collapsed);
+  return SLURS_WORD.some((word) => tokens.has(word));
+}
+
+const isPseudo = (value) =>
+  typeof value === 'string' &&
+  /^[\p{L}\p{N} _.-]{3,20}$/u.test(value.trim()) &&
+  !isOffensivePseudo(value);
 // Avatar = « <icône>.<teinte> » (ex. shield.3). Icône dans la liste blanche,
 // teinte 0-4 (miroir du barème de teintes de l'app). Rendu 100 % côté client.
 const AVATAR_ICONS = new Set([
@@ -549,17 +621,13 @@ async function handleSync(req, res) {
       return send(res, 400, { error: 'entrée de jour invalide' });
   }
 
+  // Le compte est obligatoire dans l'app depuis la v1.1 : la branche anonyme
+  // n'avait plus d'usage légitime, mais permettait à n'importe qui de publier
+  // un pseudo arbitraire en tête du classement avec un simple curl, sans passer
+  // par l'app ni par aucune modération.
   const userId = authUserId(req);
-  let key;
-  if (userId) {
-    key = resolveAccountPlayer(userId, isDeviceId(deviceId) ? deviceId : null);
-  } else {
-    if (!isDeviceId(deviceId)) return send(res, 400, { error: 'deviceId invalide' });
-    const existing = selectPlayerByDevice.get(deviceId);
-    if (existing?.user_id)
-      return send(res, 403, { error: 'identité liée à un compte : connexion requise' });
-    key = deviceId;
-  }
+  if (!userId) return send(res, 401, { error: 'connexion requise' });
+  const key = resolveAccountPlayer(userId, isDeviceId(deviceId) ? deviceId : null);
 
   const now = Date.now();
   upsertPlayer.run(key, pseudo.trim(), now, now);
@@ -861,6 +929,33 @@ function handleDeleteMe(req, res) {
   send(res, 200, { ok: true });
 }
 
+const insertReport = db.prepare(
+  'INSERT INTO reports (pseudo, reporter_id, created_at, handled) VALUES (?, ?, ?, 0)',
+);
+const countOpenReports = db.prepare(
+  'SELECT COUNT(*) AS n FROM reports WHERE pseudo = ? AND handled = 0',
+);
+
+/**
+ * Signalement d'un pseudo offensant (guideline 1.2). Authentifié : un
+ * signalement anonyme ouvrirait la porte au harcèlement par signalements en
+ * masse. Le masquage, lui, est local et immédiat côté app — le signalement ne
+ * sert qu'à nous permettre d'intervenir.
+ */
+async function handleReport(req, res) {
+  if (!requireJson(req, res)) return;
+  const userId = authUserId(req);
+  if (!userId) return send(res, 401, { error: 'connexion requise' });
+  const { pseudo } = (await readJson(req)) ?? {};
+  if (typeof pseudo !== 'string' || !pseudo.trim() || pseudo.length > 40)
+    return send(res, 400, { error: 'pseudo invalide' });
+  const target = pseudo.trim();
+  insertReport.run(target, userId, Date.now());
+  const open = countOpenReports.get(target)?.n ?? 0;
+  console.warn(`[moderation] « ${target} » signalé (${open} signalement(s) en attente)`);
+  send(res, 200, { ok: true });
+}
+
 async function handleResetRequest(req, res) {
   if (!requireJson(req, res)) return;
   const { email } = (await readJson(req)) ?? {};
@@ -977,6 +1072,7 @@ const server = createServer(async (req, res) => {
     if (req.method === 'POST' && url.pathname === '/v1/me/2fa/disable')
       return await handle2faDisable(req, res);
     if (req.method === 'DELETE' && url.pathname === '/v1/me') return handleDeleteMe(req, res);
+    if (req.method === 'POST' && url.pathname === '/v1/report') return await handleReport(req, res);
     if (req.method === 'POST' && url.pathname === '/v1/auth/reset-request')
       return await handleResetRequest(req, res);
     if (req.method === 'POST' && url.pathname === '/v1/auth/reset')

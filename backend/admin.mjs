@@ -14,6 +14,8 @@
  *   ssh mateobrl 'node --experimental-sqlite /opt/pentaguin-api/admin.mjs set-progress Tux /tmp/demo.json --yes'
  *   ssh mateobrl 'node --experimental-sqlite /opt/pentaguin-api/admin.mjs clear-progress Tux --yes'
  *   ssh mateobrl 'node --experimental-sqlite /opt/pentaguin-api/admin.mjs create-demo review@… <mdp> Tux --yes'
+ *   ssh mateobrl 'node --experimental-sqlite /opt/pentaguin-api/admin.mjs reports'
+ *   ssh mateobrl 'node --experimental-sqlite /opt/pentaguin-api/admin.mjs ban <pseudo> --yes'
  */
 import { randomUUID } from 'node:crypto';
 import { readFileSync } from 'node:fs';
@@ -233,6 +235,47 @@ function createDemo(email, password, pseudo) {
   console.log('  Charge une progression avec set-progress pour qu\'il ne soit pas vide.');
 }
 
+/** Signalements de pseudos en attente de traitement (guideline 1.2). */
+function reports() {
+  const db = open(true);
+  const rows = db
+    .prepare(
+      `SELECT pseudo, COUNT(*) n, MAX(created_at) last
+       FROM reports WHERE handled = 0 GROUP BY pseudo ORDER BY n DESC, last DESC`,
+    )
+    .all();
+  if (!rows.length) console.log('Aucun signalement en attente.');
+  else {
+    console.log('\n=== SIGNALEMENTS EN ATTENTE ===\n');
+    console.log('PSEUDO                  NB   DERNIER');
+    for (const r of rows)
+      console.log(`${String(r.pseudo).padEnd(22)} ${String(r.n).padStart(3)}   ${new Date(r.last).toISOString().slice(0, 16)}`);
+    console.log('\nTraiter : admin.mjs ban <pseudo> --yes\n');
+  }
+  db.close();
+}
+
+/**
+ * Traite un signalement : vide le pseudo (le joueur disparaît du classement,
+ * l'app lui redemandera d'en choisir un) et purge son XP. Le compte reste, sa
+ * progression pédagogique aussi : on sanctionne le contenu, pas l'apprenant.
+ */
+function ban(pseudo) {
+  if (!pseudo) return console.error('usage: admin.mjs ban <pseudo> --yes');
+  if (!hasYes) { console.error('⚠ Retire le pseudo du classement. Ajoute --yes pour confirmer.'); process.exit(1); }
+  const db = open(false);
+  const players = db.prepare('SELECT device_id FROM players WHERE pseudo = ?').all(pseudo);
+  if (!players.length) { console.error(`Aucun joueur nommé « ${pseudo} ».`); db.close(); process.exit(1); }
+  let xp = 0;
+  for (const p of players) {
+    xp += db.prepare('DELETE FROM daily_xp WHERE device_id = ?').run(p.device_id).changes;
+    db.prepare('UPDATE players SET pseudo = ?, updated_at = ? WHERE device_id = ?').run('', Date.now(), p.device_id);
+  }
+  const n = db.prepare('UPDATE reports SET handled = 1 WHERE pseudo = ?').run(pseudo).changes;
+  db.close();
+  console.log(`✔ « ${pseudo} » retiré du classement : ${players.length} joueur(s), ${xp} jour(s) d'XP purgé(s), ${n} signalement(s) clos.`);
+}
+
 function confirmReset(what, run) {
   if (!hasYes) { console.error(`⚠ ${what} — action destructrice. Ajoute --yes pour confirmer.`); process.exit(1); }
   const db = open(false);
@@ -248,6 +291,8 @@ const COMMANDS = {
   'set-progress': () => setProgress(args[0], args[1]),
   'clear-progress': () => clearProgress(args[0]),
   'create-demo': () => createDemo(args[0], args[1], args[2]),
+  reports,
+  ban: () => ban(args[0]),
   'reset-xp': () => confirmReset('Réinitialisation de l\'XP/classement (daily_xp)', (db) => db.prepare('DELETE FROM daily_xp').run().changes),
   'reset-ranks': () => confirmReset('Réinitialisation des rangs (players.rank)', (db) => db.prepare('UPDATE players SET rank = NULL').run().changes),
   'reset-all': () => confirmReset('Réinitialisation XP + rangs', (db) => {
@@ -273,6 +318,7 @@ const fn = COMMANDS[cmd];
 if (!fn) {
   console.log('Commandes : stats | players | user <pseudo|email> | set-progress <pseudo> <fichier.json> --yes |');
   console.log('            clear-progress <pseudo> --yes | create-demo <email> <mdp> <pseudo> --yes |');
+  console.log('            reports | ban <pseudo> --yes |');
   console.log('            reset-xp --yes | reset-ranks --yes | reset-all --yes | wipe-users --yes');
   process.exit(cmd ? 1 : 0);
 }

@@ -64,3 +64,19 @@ export async function fetchLeaderboard(period: LeaderboardPeriod): Promise<Leade
   const data = await request<{ entries: LeaderboardEntry[] }>(`/v1/leaderboard?period=${period}`);
   return Array.isArray(data?.entries) ? data.entries : [];
 }
+
+/**
+ * Signale un pseudo jugé offensant. Authentifié quand c'est possible : un
+ * signalement rattaché à un compte est exploitable, un signalement anonyme
+ * ouvre la porte au harcèlement par signalements en masse.
+ */
+export async function reportPlayer(pseudo: string, token: string | null): Promise<void> {
+  await request<{ ok: boolean }>('/v1/report', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    body: JSON.stringify({ pseudo }),
+  });
+}
