@@ -33,6 +33,8 @@ import { clearToken, getToken, setToken } from './token';
 // de rouvrir l'app sans re-contacter le serveur : offline-first préservé une fois
 // le tout premier login effectué.
 const READY_KEY = 'account_ready';
+/** Compte auquel la progression locale appartient. */
+const BOUND_ACCOUNT_KEY = 'bound_account';
 
 /**
  * État d'entrée de l'app :
@@ -74,6 +76,20 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   // Applique un /me : miroir du pseudo en local (pour le sync classement) et
   // bascule vers ready / needsPseudo selon qu'un pseudo est déjà défini.
   const applyMe = useCallback((data: Me) => {
+    // Filet de sécurité : si un compte DIFFÉRENT se connecte sur cet appareil,
+    // la progression restée en base appartient au précédent. Sans cet effacement,
+    // la sauvegarde cloud la fusionnerait dans le compte neuf — ce qui est
+    // arrivé après une suppression de compte, le nouveau compte héritant du rang
+    // et de l'XP de l'ancien. Cette garde ne dépend d'aucun chemin de sortie :
+    // elle rattrape aussi une déconnexion incomplète ou un binaire plus ancien.
+    const bound = getKv(BOUND_ACCOUNT_KEY);
+    if (bound && bound !== data.id) {
+      resetLocalProgress();
+      reloadDailyGoal();
+      resetLeaderboardIdentity();
+    }
+    setKv(BOUND_ACCOUNT_KEY, data.id);
+
     setMe(data);
     // Restaure le rang du compte sur un appareil qui n'en a pas encore (le local
     // reste prioritaire s'il existe déjà).
