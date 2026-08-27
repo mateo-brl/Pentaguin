@@ -16,6 +16,8 @@ export type MfaChallenge = { mfaRequired: true; mfaToken: string };
 export type VerifyChallenge = { verifyRequired: true; verifyToken: string };
 export type LoginResult = Session | MfaChallenge | VerifyChallenge;
 export type Me = {
+  /** Identifiant du compte, pour détecter un changement de compte sur l'appareil. */
+  id: string;
   email: string | null;
   providers: string[];
   pseudo: string | null;

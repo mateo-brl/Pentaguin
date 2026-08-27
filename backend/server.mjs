@@ -816,6 +816,10 @@ function handleMe(req, res) {
   const player = selectPlayerByUser.get(userId);
   const xpTotal = player ? sumXpByDevice.get(player.device_id).total : 0;
   send(res, 200, {
+    // Identifiant de compte : l'app s'en sert pour détecter qu'un compte
+    // DIFFÉRENT se connecte sur cet appareil, et effacer la progression locale
+    // avant de la fusionner par erreur dans le nouveau compte.
+    id: userId,
     email: user.email ?? null,
     providers: [
       user.password_hash ? 'email' : null,
